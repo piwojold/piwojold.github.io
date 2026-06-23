@@ -1,0 +1,3236 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Obsidian OSINT Field Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=DM+Sans:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07090e;--card:#0d1118;--side:#0a0e17;
+  --amber:#e8a000;--cyan:#00b4d8;--green:#39d353;
+  --text:#c8d0dc;--muted:#7a8899;--border:rgba(232,160,0,0.1);
+  --fh:'Exo 2',sans-serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh}
+a{color:var(--cyan);text-decoration:none}
+
+/* ── Header ── */
+.header{position:sticky;top:0;z-index:100;background:var(--side);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:14px 40px;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:34px;height:34px;background:rgba(232,160,0,0.12);border:1px solid rgba(232,160,0,0.3);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.logo-name{font-family:var(--fh);font-size:14px;font-weight:800;color:var(--amber);letter-spacing:.05em}
+.logo-sub{font-family:var(--fm);font-size:9px;color:var(--muted);letter-spacing:.15em;display:block;margin-top:1px}
+.search{display:flex;align-items:center;gap:8px;background:#151c27;border:1px solid rgba(255,255,255,0.06);
+  border-radius:6px;padding:6px 12px;flex:1;max-width:340px}
+.search input{background:transparent;border:none;outline:none;color:var(--text);font-family:var(--fb);font-size:13px;width:100%}
+.search input::placeholder{color:var(--muted)}
+.search-icon{color:var(--muted);font-size:13px}
+.stats-row{display:flex;gap:20px;flex-shrink:0}
+.stat{text-align:center}
+.stat strong{display:block;font-family:var(--fh);font-size:18px;color:var(--amber)}
+.stat span{font-family:var(--fm);font-size:8px;color:var(--muted);letter-spacing:.12em}
+
+/* ── Nav tabs ── */
+.nav{display:flex;gap:4px;padding:12px 40px;background:var(--side);border-bottom:1px solid rgba(255,255,255,0.04)}
+.nav-btn{font-family:var(--fh);font-size:12px;font-weight:600;padding:6px 16px;border-radius:6px;
+  border:1px solid transparent;cursor:pointer;transition:all .15s;background:transparent;color:var(--muted)}
+.nav-btn.active{background:rgba(232,160,0,0.1);color:var(--amber);border-color:rgba(232,160,0,0.25)}
+.nav-btn:hover:not(.active){color:var(--text)}
+
+/* ── Content ── */
+.content{max-width:860px;margin:0 auto;padding:32px 24px 80px}
+
+/* ── Module ── */
+.module{display:none}
+.module.visible{display:block}
+.mod-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:20px 24px;
+  background:var(--card);border-radius:10px;border:1px solid rgba(255,255,255,0.05)}
+.mod-badge{font-family:var(--fm);font-size:11px;font-weight:700;padding:4px 10px;
+  border-radius:4px;border:1px solid;letter-spacing:.08em}
+.mod-title{font-family:var(--fh);font-size:18px;font-weight:700;flex:1}
+.mod-count{font-family:var(--fm);font-size:11px;color:var(--muted)}
+
+/* ── Lesson ── */
+.lesson{background:var(--card);border:1px solid rgba(255,255,255,0.04);border-radius:8px;
+  margin-bottom:6px;overflow:hidden;transition:border-color .15s}
+.lesson.open{border-color:rgba(232,160,0,0.2)}
+.lesson-btn{width:100%;display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:transparent;border:none;cursor:pointer;text-align:left;color:var(--text)}
+.lesson.open .lesson-btn{background:rgba(232,160,0,0.05)}
+.lesson-num{font-family:var(--fm);font-size:10px;color:var(--muted);width:22px;text-align:right;flex-shrink:0}
+.lesson-title{font-family:var(--fh);font-size:13px;font-weight:500;flex:1;text-align:left}
+.lesson-dur{font-family:var(--fm);font-size:10px;color:var(--muted);flex-shrink:0}
+.lesson-arrow{font-size:18px;color:var(--muted);transition:transform .2s;flex-shrink:0;line-height:1}
+.lesson.open .lesson-arrow{transform:rotate(90deg)}
+.lesson-body{padding:4px 16px 20px;border-top:1px solid rgba(232,160,0,0.08)}
+
+/* ── Overview ── */
+.overview{font-size:13px;line-height:1.7;color:#9aabb8;border-left:2px solid rgba(232,160,0,0.3);
+  padding-left:12px;margin:14px 0 18px}
+
+/* ── Steps ── */
+.step{display:flex;gap:12px;margin-bottom:14px}
+.step-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(232,160,0,0.1);
+  border:1px solid rgba(232,160,0,0.25);color:var(--amber);font-family:var(--fm);
+  font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.step-title{font-family:var(--fh);font-size:13px;font-weight:600;color:#d4dde8;margin-bottom:4px}
+.step-text{font-size:12px;line-height:1.65;color:var(--muted)}
+
+/* ── Code ── */
+.code-wrap{margin:14px 0;border-radius:6px;overflow:hidden;border:1px solid rgba(232,160,0,0.12)}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;
+  background:#0a0e17;border-bottom:1px solid rgba(232,160,0,0.08)}
+.code-label{font-family:var(--fm);font-size:10px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.copy-btn{font-family:var(--fm);font-size:10px;color:var(--muted);background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:2px 8px;cursor:pointer}
+.copy-btn:hover{color:var(--text)}
+.copy-btn.copied{color:var(--green)}
+.code-pre{background:#060810;padding:14px;overflow-x:auto;font-family:var(--fm);font-size:11px;
+  line-height:1.65;color:#7dd3a8;white-space:pre}
+
+/* ── Tips ── */
+.tip{display:flex;gap:8px;align-items:flex-start;border-radius:4px;padding:10px 12px;margin-top:10px;font-size:12px;line-height:1.6}
+.tip-pro{background:rgba(232,160,0,0.07);border:1px solid rgba(232,160,0,0.22)}
+.tip-warning{background:rgba(255,107,107,0.07);border:1px solid rgba(255,107,107,0.22)}
+.tip-info{background:rgba(0,180,216,0.07);border:1px solid rgba(0,180,216,0.22)}
+.tip-label{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.1em;white-space:nowrap;margin-top:2px}
+.tip-pro .tip-label{color:var(--amber)}
+.tip-warning .tip-label{color:#ff6b6b}
+.tip-info .tip-label{color:var(--cyan)}
+.tip-text{color:#9aabb8}
+
+/* ── Checklist ── */
+.checklist{background:rgba(57,211,83,0.05);border:1px solid rgba(57,211,83,0.15);
+  border-radius:6px;padding:12px;margin-top:12px}
+.checklist-title{font-family:var(--fm);font-size:9px;font-weight:700;color:var(--green);
+  letter-spacing:.15em;margin-bottom:8px}
+.check-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--muted);margin-bottom:6px}
+.check-icon{color:var(--green);flex-shrink:0;font-size:11px;margin-top:1px}
+
+/* ── No results ── */
+.no-results{text-align:center;padding:48px;color:var(--muted);font-size:13px}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:24px;font-family:var(--fm);font-size:11px;color:var(--muted);
+  border-top:1px solid rgba(255,255,255,0.04)}
+
+/* ── Print ── */
+@media print{
+  .header,.nav{position:static}
+  .search,.copy-btn{display:none}
+  .module{display:block!important}
+  .lesson-body{display:block!important}
+  .lesson{break-inside:avoid;border:1px solid #ddd}
+  body{background:#fff;color:#111}
+  .code-pre{background:#1e1e2e;color:#7dd3a8;font-size:9pt;white-space:pre-wrap}
+  .lesson-btn{pointer-events:none}
+  @page{margin:2cm;size:A4}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🔍</div>
+    <div>
+      <span class="logo-name">OBSIDIAN OSINT</span>
+      <span class="logo-sub">FIELD MANUAL</span>
+    </div>
+  </div>
+  <div class="search">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="search" placeholder="Szukaj lekcji..." oninput="filterLessons(this.value)"/>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><strong>3</strong><span>MODUŁY</span></div>
+    <div class="stat"><strong>29</strong><span>LEKCJE</span></div>
+    <div class="stat"><strong>13h</strong><span>CZAS</span></div>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="switchModule('basics',this)" style="color:#39d353;background:#39d35312;border-color:#39d35333">01 Podstawy</button><button class="nav-btn" onclick="switchModule('intermediate',this)" style="">02 Średniozaawansowane</button><button class="nav-btn" onclick="switchModule('advanced',this)" style="">03 Zaawansowane</button>
+</nav>
+
+<div class="content">
+  
+    <section class="module" id="mod-basics" data-color="#39d353">
+      <div class="mod-header">
+        <span class="mod-badge" style="color:#39d353;border-color:#39d35344;background:#39d35312">
+          01
+        </span>
+        <h2 class="mod-title">Podstawy</h2>
+        <span class="mod-count">8 lekcji</span>
+      </div>
+      
+      <div class="lesson" data-mod="basics">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">01</span>
+          <span class="lesson-title">Instalacja i pierwszy vault OSINT</span>
+          <span class="lesson-dur">15 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Obsidian to lokalny edytor notatek oparty na plikach Markdown. Dla pracy OSINT jest idealny — dane nigdy nie opuszczają Twojego komputera, możesz budować złożone bazy wiedzy i wizualizować powiązania między podmiotami. Brak konta, brak chmury, pełna kontrola.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Pobierz Obsidian</div>
+            <p class="step-text">Wejdź na obsidian.md i pobierz wersję dla swojego systemu (Windows, macOS, Linux). Obsidian jest bezpłatny do użytku osobistego i komercyjnego. Instalacja nie wymaga uprawnień administratora — dostępna też wersja portable.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Utwórz vault OSINT</div>
+            <p class="step-text">Vault to zwykły folder na dysku. Utwórz go w bezpiecznym miejscu — najlepiej na zaszyfrowanym wolumenie (VeraCrypt / BitLocker). Nazwij np. OSINT_Vault_2025. Jeden vault = jeden projekt lub tematyczny obszar pracy analitycznej.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Poznaj interfejs</div>
+            <p class="step-text">Lewy panel: nawigator plików i wyszukiwarka. Środek: edytor z Live Preview. Prawy panel: linki zwrotne i właściwości pliku. Pasek boczny przełącza Ctrl+B. Górny pasek: nazwa pliku, gwiazdka = niezapisany.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Konfiguracja wstępna bezpieczeństwa</div>
+            <p class="step-text">Ustawienia → O programie → wyłącz 'Send crash reports' i 'Send usage data'. Ustawienia → Pliki i linki → wyłącz 'Detect all file extensions'. Vault przechowuj wyłącznie na lokalnym, zaszyfrowanym dysku.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Zalecana struktura folderów dla vault OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>OSINT_Vault/
+├── 00_Inbox/          ← surowe dane, linki, screenshoty
+├── 01_Podmioty/
+│   ├── Osoby/         ← notatki POI (Person of Interest)
+│   ├── Firmy/         ← spółki, organizacje
+│   └── Grupy/         ← nieformalne grupy, środowiska
+├── 02_Zdarzenia/      ← incydenty, spotkania, transakcje
+├── 03_Lokalizacje/    ← adresy, miejsca, mapy
+├── 04_Zasoby/         ← źródła, narzędzia, bazy danych
+├── 05_Raporty/        ← finalne dokumenty
+├── 06_Szablony/       ← szablony Templater
+├── 07_Kanwasy/        ← pliki .canvas (mapy wizualne)
+└── 07_Archiwum/       ← zamknięte śledztwa</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Przechowuj vault na zaszyfrowanym kontenerze VeraCrypt (AES-256 + Twofish). Zainstaluj Obsidian w trybie portable — cały stack analityczny mieści się na zaszyfrowanym USB.</span>
+        </div>
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Nie używaj Dropbox, iCloud ani Google Drive dla vault z danymi śledztw. Obsidian Sync jest E2EE, ale dla wrażliwych materiałów synchronizuj przez własny serwer (Syncthing) lub pracuj offline.</span>
+        </div>
+          
+        <div class="checklist">
+          <div class="checklist-title">CHECKLIST</div>
+          <div class="check-item"><span class="check-icon">✓</span>Vault utworzony na zaszyfrowanym wolumenie</div><div class="check-item"><span class="check-icon">✓</span>Struktura folderów wdrożona</div><div class="check-item"><span class="check-icon">✓</span>Telemetria wyłączona</div><div class="check-item"><span class="check-icon">✓</span>Live Preview aktywny</div><div class="check-item"><span class="check-icon">✓</span>Autosave działa (Ctrl+S lub co 2s)</div>
+        </div>
+        </div>
+      </div>
+      <div class="lesson" data-mod="basics">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">02</span>
+          <span class="lesson-title">Markdown — język pracy analityka</span>
+          <span class="lesson-dur">20 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Markdown to uproszczony język znaczników zapisywany jako czysty tekst. W Obsidianie otwiera możliwości linkowania, osadzania i wyszukiwania. Dla OSINT kluczowe elementy to tabele, checklisty, nagłówki i callouts do oznaczania wiarygodności danych.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Nagłówki i hierarchia</div>
+            <p class="step-text"># do ###### tworzy hierarchię. W śledztwach: # Podmiot (najwyższy poziom), ## Sekcja (Dane kontaktowe, Historia, Powiązania), ### Podtemat. Nagłówki tworzą automatyczny spis treści widoczny po prawej stronie.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Tabele danych</div>
+            <p class="step-text">Tabele Markdown są wydajne dla danych strukturalnych: konta social media, adresy IP, daty, źródła. Plugin Advanced Tables dodaje autouzupełnianie kolumn skrótem Tab.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Checklisty zadań OSINT</div>
+            <p class="step-text">- [ ] dla otwartego zadania, - [x] dla wykonanego. Plugin Tasks rozszerza je o daty wykonania, priorytety i filtry. Checklisty w notatce POI śledzą postęp weryfikacji danych.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Callouts — semantyczne oznaczanie danych</div>
+            <p class="step-text">Callouts (> [!TYP]) to bloki wizualne oznaczające typ informacji. Kluczowe dla OSINT: [!INFO] fakt potwierdzony, [!WARNING] niezweryfikowane, [!DANGER] wrażliwe PII, [!NOTE] hipoteza robocza.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Formatowanie inline</div>
+            <p class="step-text">**bold** dla kluczowych danych, ==highlight== dla oznaczeń (wymaga pluginu), `kod` dla identyfikatorów (IP, hashi, ID kont). Użyj formatowania oszczędnie — nadmiar niszczy czytelność operacyjną.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Podstawowy schemat notatki OSINT — osoba fizyczna</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Jan Kowalski — POI-2024-0042
+
+## Dane podstawowe
+
+| Pole          | Wartość                   |
+|---------------|---------------------------|
+| Imię/Nazwisko | Jan Kowalski              |
+| Data urodzenia| 1985-03-14 (wiek: 39)     |
+| Miejscowość   | Warszawa, Mokotów         |
+| Alias         | "jkowalski85", "JK_PL"   |
+
+## Konta w mediach społecznościowych
+
+- [ ] Facebook: https://fb.com/jkowalski.pl — do weryfikacji
+- [x] LinkedIn: https://linkedin.com/in/jankowalski85 — aktywny
+- [ ] Twitter/X: @jkowalski_pl — konto usunięte ok. 2023-06
+
+## Callouts OSINT
+
+&gt; [!INFO] Informacja zweryfikowana (2 źródła)
+&gt; Adres: ul. Puławska 123/45 potwierdzony w KRS i CEIDG.
+
+&gt; [!WARNING] Wymaga weryfikacji
+&gt; Konto @jkowalski_pl — możliwe że przejęte lub sfałszowane.
+
+&gt; [!NOTE] Hipoteza
+&gt; Powiązanie z podmiotem w Luksemburgu wymaga analizy rejestru.</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Ctrl+Shift+K wstawia link. Alt+Enter tworzy nowy element listy zachowując wcięcie — idealny do szybkiej transkrypcji danych na żywo podczas wywiadu lub przeglądu źródeł.</span>
+        </div>
+        <div class="tip tip-info">
+          <span class="tip-label">ℹ️ INFO</span>
+          <span class="tip-text">Markdown zapisuje się jako .md — czysty tekst otwieralny w każdym edytorze. Twoje dane nigdy nie są zablokowane w formacie własnościowym. Możesz migrować do innego narzędzia w dowolnym momencie.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="basics">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">03</span>
+          <span class="lesson-title">Linkowanie notatek — budowanie sieci wiedzy</span>
+          <span class="lesson-dur">20 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Supermocem Obsidiana są dwukierunkowe linki. [[Podmiot A]] wpisany w notatce B automatycznie tworzy backlink B→A. Dla OSINT to fundament map powiązań bez żadnych dodatkowych wtyczek — sieć relacji buduje się sama w trakcie normalnej pracy.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Linki wewnętrzne [[]]</div>
+            <p class="step-text">Wpisz [[nazwa notatki]] by stworzyć link. Obsidian podpowiada istniejące pliki. Linkuj do sekcji: [[Jan Kowalski#Konta social media]]. Alias: [[Jan Kowalski|podmiot główny]] — link z własną etykietą.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Panel backlinków</div>
+            <p class="step-text">Prawy panel → zakładka Linki zwrotne. Widzisz wszystkie notatki odwołujące się do aktualnej z fragmentem kontekstu. Dla firmy: backlinki pokażą wszystkie osoby z nią powiązane i zdania w których jest wspomniana.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Linki wychodzące (Outgoing links)</div>
+            <p class="step-text">Panel Linki wychodzące pokazuje linki z bieżącej notatki — i 'unresolved' (brak docelowej notatki). Unresolved linki to twoja lista 'do zbadania' — podmiotów istniejących w sieci ale jeszcze niezbadanych.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Osadzanie notatek ![[]]</div>
+            <p class="step-text">![[plik]] osadza zawartość innej notatki inline. ![[Jan Kowalski#Dane podstawowe]] wciągnie tylko konkretną sekcję. Idealne do dynamicznych raportów złożonych z fragmentów wielu notatek podmiotów.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Linki do nagłówków i bloków</div>
+            <p class="step-text">[[Firma ABC#Struktura właścicielska]] linkuje do konkretnej sekcji. [[Notatka^id-bloku]] linkuje do konkretnego akapitu (oznaczonego ^id w docelowym pliku). Precyzja linków = precyzja analizy.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Gęsta siatka linków — przykładowa notatka POI</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Jan Kowalski
+
+Dyrektor zarządzający [[Firma ABC Sp. z o.o.]] od [[2019-01-15]].
+Wcześniej w [[TechCorp Polska]] — skąd pochodzi znajomość z [[Marek Nowak]].
+Zamieszkały przy [[Warszawa/Mokotów/ul. Puławska 123]].
+Nieruchomość zarejestrowana na [[Jan Kowalski Fundacja]].
+
+## Powiązania korporacyjne
+
+| Podmiot                    | Rola        | Od         | Status    |
+|----------------------------|-------------|------------|-----------|
+| [[Firma ABC Sp. z o.o.]]  | Prezes      | 2019-01-15 | aktywny   |
+| [[XYZ Holdings Ltd]]       | Udziałowiec | 2021-03    | aktywny   |
+| [[Projekt Alfa]]           | Beneficjent | 2020-06    | zamknięty |
+
+## Zdarzenia kluczowe
+
+- [[Zdarzenie 2023-04]] — zmiana adresu siedziby w KRS
+- [[Konferencja Fintech 2022]] — prelegent, nagranie online</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Twórz puste notatki-węzły dla kluczowych podmiotów zanim je zbadasz. Backlinki zaczną się zbierać automatycznie. Graf zbuduje się sam — a lista unresolved links stanie się Twoją kolejką zadań.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="basics">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">04</span>
+          <span class="lesson-title">Tagi i wyszukiwanie zaawansowane</span>
+          <span class="lesson-dur">15 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Tagi i wyszukiwanie to dwa filary nawigacji w dużych vaultach OSINT. Tagi kategoryzują notatki poprzecznie — jeden podmiot może mieć #osoba, #zweryfikowany, #priorytet-wysoki jednocześnie. Wyszukiwanie z operatorami daje precyzję bazy danych.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Taksonomia tagów OSINT</div>
+            <p class="step-text">Zaprojektuj taksonomię przed startem projektu. Rekomendowane grupy: typ podmiotu (#podmiot/osoba), status (#status/zweryfikowany), priorytet (#prio/1), źródło (#zrodlo/krs). Zmiana nazwy tagu później to edycja w każdym pliku.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Tagi hierarchiczne</div>
+            <p class="step-text">Obsidian obsługuje #podmiot/osoba/polityk — tagi zagnieżdżone. Panel tagów w lewym sidebarze pokazuje drzewo i liczność. Klik w tag → lista wszystkich notatek nim oznaczonych.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Wyszukiwanie operatorami</div>
+            <p class="step-text">Ctrl+Shift+F otwiera wyszukiwanie. Składnia: tag:#zweryfikowany AND file:Osoby/ — potwierdzone osoby. path: filtruje foldery, content: tekst w treści, line:() wyszukuje w linii. Operator NOT wyklucza.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Zapisane zapytania (query blocks)</div>
+            <p class="step-text">Blok `query` w notatce renderuje wyniki wyszukiwania inline — dynamiczna lista podmiotów bez ręcznego filtrowania. Idealne do dashboard śledztwa.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Pełna taksonomia tagów dla projektu OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Taksonomia tagów — OSINT Vault
+
+## Typ podmiotu
+#podmiot/osoba
+#podmiot/firma
+#podmiot/organizacja
+#podmiot/lokalizacja
+#podmiot/konto-online
+#podmiot/dokument
+#podmiot/zdarzenie
+
+## Status weryfikacji
+#status/potwierdzony     ← 2+ niezależne źródła
+#status/prawdopodobny    ← 1 wiarygodne źródło
+#status/niezweryfikowany ← tylko 1 źródło, wymaga kontroli
+#status/sprzeczny        ← różne źródła podają różne dane
+#status/obalony          ← informacja błędna
+
+## Priorytet śledztwa
+#prio/1-krytyczny
+#prio/2-wysoki
+#prio/3-normalny
+#prio/4-niski
+
+## Źródła informacji
+#zrodlo/krs
+#zrodlo/ceidg
+#zrodlo/regon
+#zrodlo/media-spolecznosciowe
+#zrodlo/rejestr-publiczny
+#zrodlo/dokument-sadowy
+#zrodlo/wywiad-otwarty
+#zrodlo/baza-wycieki
+#zrodlo/dark-web
+#zrodlo/geoint           ← obrazy satelitarne, mapy
+
+## Status operacyjny
+#inbox                   ← do przetworzenia
+#aktywny
+#zawieszony
+#zamkniety</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Bloki wyszukiwania w Dashboard projektu</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>## 🚨 Do natychmiastowego działania
+
+```query
+tag:#prio/1-krytyczny AND tag:#status/niezweryfikowany
+```
+
+## 📥 Inbox do przetworzenia
+
+```query
+tag:#inbox
+```
+
+## ✅ Potwierdzone dziś
+
+```query
+tag:#status/potwierdzony path:01_Podmioty
+```</code></pre>
+        </div>
+          
+        <div class="tip tip-info">
+          <span class="tip-label">ℹ️ INFO</span>
+          <span class="tip-text">Panel tagów (lewy sidebar → ikona #) pokazuje wszystkie tagi z liczbą użyć. Nieużywane tagi znikają automatycznie — vault się samoporządkuje bez zbędnych czyszczeń.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="basics">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">05</span>
+          <span class="lesson-title">Pliki, załączniki i screenshoty</span>
+          <span class="lesson-dur">15 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Obsidian obsługuje załączniki: obrazy, PDF, audio, wideo. Dla OSINT to kluczowe — screenshoty profili, kopie dokumentów, nagrania. Wszystko przechowywane lokalnie w vault, linkowane do notatek podmiotów.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Wklejanie screenshotów</div>
+            <p class="step-text">Ctrl+V lub przeciągnij obraz bezpośrednio do edytora — Obsidian automatycznie zapisuje plik w folderze załączników i wstawia link ![[screenshot.png]]. Ustaw folder załączników w: Ustawienia → Pliki i linki → Lokalizacja nowych załączników.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Organizacja folderów załączników</div>
+            <p class="step-text">Utwórz podfoldery załączników per podmiot: 01_Podmioty/Osoby/Jan Kowalski/_załączniki/. W ustawieniach wybierz 'W folderze określonym poniżej' i wskaż podkatalog. Unikaj jednego wspólnego folderu dla wszystkich — chaos po 100+ plikach.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Osadzanie PDF</div>
+            <p class="step-text">![[dokument.pdf]] osadza podgląd PDF inline. ![[dokument.pdf#page=3]] otwiera konkretną stronę. Dla dużych dokumentów lepszy jest link bez ! — otworzy w zewnętrznym czytniku.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Konwencja nazewnictwa</div>
+            <p class="step-text">Nazwa pliku = data + podmiot + opis: 2024-11-15_JanKowalski_profil-linkedin.png. Unikaj spacji i polskich znaków w nazwach plików — kompatybilność między systemami.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Eksport metadanych EXIF</div>
+            <p class="step-text">Przed załączeniem zdjęć oczyść EXIF: ExifTool -all= zdjecie.jpg. Metadane zdjęć mogą ujawnić GPS, urządzenie, czas. Screenshoty z macOS/Windows też zawierają metadane systemowe.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Sekcja dowodów w notatce POI</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>## Dowody i materiały źródłowe
+
+### Profil LinkedIn — zapis 2024-11-15
+
+![[2024-11-15_JanKowalski_linkedin-profil.png]]
+
+*Zrzut ekranu: profil publiczny, pobrany 2024-11-15 15:42 UTC*
+*Hash SHA256: a3f8c2d1e9b7...*
+
+### Odpis KRS 2024-10-01
+
+![[2024-10-01_FirmaABC_KRS-odpis.pdf#page=1]]
+
+[Pełny dokument](_załączniki/2024-10-01_FirmaABC_KRS-odpis.pdf)
+
+**Źródło:** https://ekrs.ms.gov.pl
+**Data pobrania:** 2024-10-01
+**Weryfikacja:** [[Jan Kowalski#Powiązania korporacyjne]]</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Dodaj hash SHA256 do każdego kluczowego załącznika — weryfikuje autentyczność i niezmienność dowodu. Linux/macOS: sha256sum plik. Windows: certutil -hashfile plik SHA256.</span>
+        </div>
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Screenshoty profilów social media mają ograniczoną wartość dowodową bez dodatkowej weryfikacji — konta mogą być sfałszowane lub usunięte. Zawsze notuj URL i datę pobrania.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="basics">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">06</span>
+          <span class="lesson-title">Skróty klawiszowe i produktywność</span>
+          <span class="lesson-dur">10 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Obsidian ma ponad 200 poleceń dostępnych przez paletę komend i przypisywalnych do skrótów. Opanowanie 20 kluczowych skrótów podwaja tempo pracy analitycznej — czas spędzony z klawiaturą zamiast myszą to czas na myślenie o śledztwie.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Paleta komend — Ctrl+P</div>
+            <p class="step-text">Wpisz fragment nazwy dowolnego polecenia. Obsidian szuka wśród wszystkich akcji i wtyczek. To szybszy dostęp niż szukanie w menu — naucz się go jako pierwszego skrótu.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Nawigacja błyskawiczna</div>
+            <p class="step-text">Ctrl+O — szybkie otwieranie pliku (fuzzy search). Ctrl+Shift+F — wyszukiwanie w vault. Alt+Strzałka — cofnij/naprzód w historii nawigacji jak przeglądarka. Ctrl+klik link — otwiera w podzielonym panelu.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Edycja i formatowanie</div>
+            <p class="step-text">Ctrl+B: bold, Ctrl+I: italic, Ctrl+K: wstaw link, Ctrl+]: wcięcie, Ctrl+[: cofnij wcięcie. Ctrl+D: usuń wiersz. Alt+Strzałka Górna/Dolna: przesuń wiersz bez kopiowania.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Własne skróty</div>
+            <p class="step-text">Ustawienia → Skróty klawiszowe → szukaj polecenia i przypisz kombinację. Zarezerwuj Ctrl+Shift+1/2/3 dla QuickAdd (nowy podmiot/firma/zdarzenie).</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Mapa kluczowych skrótów dla analityka OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Skróty klawiszowe — cheatsheet OSINT Obsidian
+
+## Nawigacja
+Ctrl+O          → Szybkie otwieranie (fuzzy search pliku)
+Ctrl+Shift+F    → Globalne wyszukiwanie w vault
+Ctrl+G          → Widok grafu (globalny)
+Ctrl+Shift+G    → Widok grafu (lokalny — bieżąca notatka)
+Alt+←/→         → Cofnij/naprzód w historii nawigacji
+Ctrl+klik       → Otwórz link w podzielonym panelu
+
+## Tworzenie i edycja
+Ctrl+N          → Nowa notatka (bieżący folder)
+Ctrl+Shift+T    → Wstaw szablon (Templates)
+Ctrl+Shift+A    → QuickAdd — menu makr OSINT
+Ctrl+D          → Usuń bieżący wiersz
+Alt+↑/↓         → Przesuń wiersz w górę/dół
+Ctrl+Shift+K    → Wstaw link wewnętrzny [[]]
+
+## Formatowanie
+Ctrl+B          → Pogrubienie
+Ctrl+I          → Kursywa
+Ctrl+]          → Zwiększ wcięcie
+Ctrl+[          → Zmniejsz wcięcie
+Ctrl+Enter      → Przełącz checkbox [ ] / [x]
+
+## Widok
+Ctrl+B          → Toggle lewy sidebar
+Ctrl+Shift+B    → Toggle prawy sidebar
+Ctrl+E          → Przełącz tryb edycji/podglądu
+F11             → Tryb pełnoekranowy
+Ctrl+P          → Paleta wszystkich poleceń</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Utwórz plik cheatsheet.md w vault z własną mapą skrótów i przypnij go przez prawy klik → 'Pin' na pierwszej zakładce. Masz go zawsze w zasięgu jednego kliknięcia.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="basics">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">07</span>
+          <span class="lesson-title">Synchronizacja i backup vaulta</span>
+          <span class="lesson-dur">15 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Utrata vaulta OSINT to utrata miesięcy pracy. Strategia backupu musi być wbudowana w rutynę — nie można o niej pamiętać ad hoc. Poznaj opcje: lokalne, sieciowe i E2EE, z uwzględnieniem wymagań bezpieczeństwa.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Backup lokalny — minimum</div>
+            <p class="step-text">Regularny backup vault na zewnętrzny dysk zaszyfrowany. Strategia 3-2-1: 3 kopie, na 2 różnych nośnikach, 1 poza lokalizacją. Automatyzuj przez skrypt lub Time Machine / Windows Backup.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Git jako backup z historią</div>
+            <p class="step-text">Vault to folder z plikami tekstowymi — idealny dla Git. git init w folderze vault. Plugin 'Obsidian Git' commituje zmiany automatycznie co N minut. Historia zmian każdej notatki przez git log.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Syncthing — P2P bez chmury</div>
+            <p class="step-text">Syncthing synchronizuje między własnymi urządzeniami bez zewnętrznych serwerów. Szyfrowanie TLS, zero danych na obcych serwerach. Idealne jeśli pracujesz na laptopie i desktopie równolegle.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Obsidian Sync (E2EE)</div>
+            <p class="step-text">Oficjalna synchronizacja Obsidiana z szyfrowaniem end-to-end — klucz szyfrowania tylko u Ciebie. 4 USD/miesiąc. Historia wersji 12 miesięcy. Nie polecane dla materiałów objętych tajemnicą zawodową.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Skrypt automatycznego backupu (Linux/macOS)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>#!/bin/bash
+# backup-vault.sh — uruchamiaj przez cron co 6 godzin
+
+VAULT_PATH="$HOME/OSINT_Vault"
+BACKUP_DIR="/mnt/encrypted-backup/obsidian-backups"
+DATE=$(date +%Y%m%d_%H%M)
+
+# Kompresja i szyfrowanie GPG
+tar -czf - "$VAULT_PATH" | \
+  gpg --symmetric --cipher-algo AES256 \
+      --output "$BACKUP_DIR/vault_$DATE.tar.gz.gpg"
+
+# Zachowaj tylko 30 ostatnich backupów
+ls -t "$BACKUP_DIR"/vault_*.gpg | tail -n +31 | xargs rm -f
+
+echo "Backup ukończony: vault_$DATE.tar.gz.gpg"
+
+# Crontab: co 6 godzin
+# 0 */6 * * * /home/user/backup-vault.sh &gt;&gt; /var/log/vault-backup.log 2&gt;&1</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Konfiguracja Obsidian Git (.obsidian/plugins/obsidian-git/data.json)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>{
+  "commitMessage": "vault: auto-backup {{date}}",
+  "autoCommitMessage": "vault: auto-save {{date}}",
+  "commitDateFormat": "YYYY-MM-DD HH:mm:ss",
+  "autoSaveInterval": 10,
+  "autoPullInterval": 30,
+  "autoPushOnCommit": false,
+  "pullBeforePush": true,
+  "disablePush": true,
+  "syncMethod": "merge",
+  "gitPath": "",
+  "showStatusBar": true
+}</code></pre>
+        </div>
+          
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Git backupowany na GitHub/GitLab = dane na obcych serwerach. Używaj prywatnego repozytorium i rozważ git-crypt do szyfrowania wrażliwych plików przed pushem.</span>
+        </div>
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Dodaj plik .gitignore do vault i wyklucz: .obsidian/workspace*, **/node_modules, załączniki > 10MB (przechowuj je oddzielnie). Repozytorium Git powinno zawierać tylko pliki .md i konfigurację.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="basics">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">08</span>
+          <span class="lesson-title">Codzienny workflow — Daily Notes</span>
+          <span class="lesson-dur">15 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Daily Note to dzienny dziennik operacyjny — centralny hub każdej sesji pracy OSINT. Przechwytuje nowe informacje, śledzi zadania, rejestruje decyzje analityczne i stanowi nieocenione archiwum chronologiczne śledztwa.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Włącz Daily Notes</div>
+            <p class="step-text">Ustawienia → Wtyczki podstawowe → Dzienne notatki → włącz. Ustaw: format nazwy (YYYY-MM-DD), folder (00_Dziennik/), szablon. Skrót Ctrl+Shift+D otwiera dzisiejszą notatkę.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">StrukturaDaily Note dla OSINT</div>
+            <p class="step-text">Nagłówek z datą, priorytety na dziś (checklisty), inbox zebranych danych, tabela nowych informacji (podmiot + dane + źródło + wiarygodność), obserwacje i hipotezy, plan na jutro.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Retroaktywne linkowanie</div>
+            <p class="step-text">W Daily Note linkuj [[podmiot]] przy każdej wzmiance. Po tygodniu backlinki podmiotu pokażą historię chronologiczną wszystkich zdarzeń — automatyczna oś czasu bez dodatkowego wysiłku.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Weekly Review</div>
+            <p class="step-text">Raz w tygodniu: przejrzyj daily notes, wyciągnij powtarzające się wzorce, zaktualizuj priorytety podmiotów, wyczyść inbox. Plugin Periodic Notes dodaje weekly i monthly review templates.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Szablon Daily Note dla analityka OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+date: {{date:YYYY-MM-DD}}
+dzien-tygodnia: {{date:dddd}}
+projekt:
+tags: [dziennik]
+---
+
+# {{date:YYYY-MM-DD, dddd}}
+
+## Priorytety na dziś
+
+- [ ]
+- [ ]
+- [ ]
+
+## 📥 Nowe informacje
+
+| Czas  | Podmiot | Dane / obserwacja | Źródło | Wiar. |
+|-------|---------|-------------------|--------|-------|
+| 09:15 |         |                   |        | ★★★   |
+|       |         |                   |        |       |
+
+## 🔍 Inbox do przetworzenia
+
+- [ ]
+
+## 💡 Obserwacje i hipotezy
+
+## 🔗 Powiązania odkryte dziś
+
+## ⚠️ Anomalie / niespójności
+
+## 📋 Plan na jutro
+
+---
+*Sesja pracy: {{time:HH:mm}} — {{time:HH:mm}}*</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Plugin Calendar (lewy sidebar) wyświetla miniaturowy kalendarz z kropkami dla dni z notatkami. Jedno kliknięcie otwiera dowolny dzień. Bezcenne przy rekonstrukcji chronologii śledztwa.</span>
+        </div>
+          
+        </div>
+      </div>
+    </section>
+    <section class="module" id="mod-intermediate" data-color="#00b4d8">
+      <div class="mod-header">
+        <span class="mod-badge" style="color:#00b4d8;border-color:#00b4d844;background:#00b4d812">
+          02
+        </span>
+        <h2 class="mod-title">Średniozaawansowane</h2>
+        <span class="mod-count">9 lekcji</span>
+      </div>
+      
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">01</span>
+          <span class="lesson-title">Szablony podmiotów OSINT (Templater)</span>
+          <span class="lesson-dur">25 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Szablony eliminują powtarzalność i zapewniają spójność danych. Każdy nowy podmiot startuje z pełną strukturą pól — nawet puste wymuszają metodyczność. Templater (zewnętrzny plugin) zastępuje podstawowe Templates i oferuje skrypty JavaScript.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Instalacja Templater</div>
+            <p class="step-text">Ustawienia → Wtyczki zewnętrzne → Przeglądaj → 'Templater' (SilentVoid13) → Zainstaluj. Wskaż folder szablonów: 06_Szablony/. Włącz 'Trigger Templater on new file creation'.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Szablon osoby fizycznej (POI)</div>
+            <p class="step-text">Szablon POI musi zawierać: dane identyfikacyjne (imię, nazwisko, data urodzenia, PESEL), konta online, adresy, powiązania, historię, źródła i metadane (operator, data, status weryfikacji).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Szablon firmy/organizacji</div>
+            <p class="step-text">Dla podmiotów prawnych: dane rejestrowe (KRS/NIP/REGON), właściciele, struktura udziałowa, adres siedziby, historia zmian, powiązane osoby fizyczne, aktywa.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Szablon zdarzenia</div>
+            <p class="step-text">Zdarzenia: data, miejsce, uczestnicy (linki POI), opis, znaczenie dla śledztwa, dowody, źródła. Pola date-start/date-end w YAML tworzą oś czasu przez Dataview.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Interaktywny formularz przy tworzeniu</div>
+            <p class="step-text">tp.system.prompt() pyta o wartość przy tworzeniu notatki. tp.system.suggester() daje listę wyboru. Kombinator tworzy frontmatter z odpowiedzi — notatka gotowa w 30 sekund.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Szablon Templater — Osoba fizyczna (POI) z formularzem</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>&lt;%*
+const imie = await tp.system.prompt("Imię i nazwisko:");
+const priorytet = await tp.system.suggester(
+  ["🔴 Krytyczny (1)", "🟠 Wysoki (2)", "🟡 Normalny (3)", "⚪ Niski (4)"],
+  [1, 2, 3, 4]
+);
+const projekt = await tp.system.prompt("Projekt:", "Projekt-Alfa");
+await tp.file.rename(imie);
+await tp.file.move("/01_Podmioty/Osoby/" + imie);
+-%&gt;
+---
+type: osoba
+id: POI-&lt;% tp.date.now("YYYY") %&gt;-&lt;% Math.floor(Math.random()*9000+1000) %&gt;
+status: aktywny
+weryfikacja: niezweryfikowany
+priorytet: &lt;% priorytet %&gt;
+projekt: "&lt;% projekt %&gt;"
+data-utworzenia: &lt;% tp.date.now("YYYY-MM-DD") %&gt;
+operator: analityk
+tags: [podmiot/osoba, status/niezweryfikowany]
+---
+
+# &lt;% imie %&gt;
+
+## Dane identyfikacyjne
+
+| Pole             | Wartość |
+|------------------|---------|
+| Imię i nazwisko  |         |
+| Data urodzenia   |         |
+| PESEL            |         |
+| Obywatelstwo     |         |
+| Pseudonimy       |         |
+
+## Adresy
+
+| Typ            | Adres | Od | Do | Źródło |
+|----------------|-------|----|----|--------|
+| Zameldowania   |       |    |    |        |
+| Korespondencji |       |    |    |        |
+
+## Konta online
+
+| Platforma  | Nick/URL | Status | Uwagi |
+|------------|----------|--------|-------|
+| Facebook   |          |        |       |
+| LinkedIn   |          |        |       |
+| Twitter/X  |          |        |       |
+| Instagram  |          |        |       |
+
+## Powiązania
+
+- **Osoby:**
+- **Firmy:**
+- **Zdarzenia:**
+
+## Historia
+
+## Źródła i dowody
+
+## Notatki operatora</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Szablon — Firma / Spółka</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+type: firma
+status: aktywny
+weryfikacja: niezweryfikowany
+data-utworzenia: {{date:YYYY-MM-DD}}
+tags: [podmiot/firma, status/niezweryfikowany]
+---
+
+# {{title}}
+
+## Dane rejestrowe
+
+| Pole         | Wartość |
+|--------------|---------|
+| Pełna nazwa  |         |
+| Forma prawna |         |
+| KRS          |         |
+| NIP          |         |
+| REGON        |         |
+| Data rej.    |         |
+| Status       | aktywny |
+
+## Adres siedziby
+
+## Struktura właścicielska
+
+| Podmiot | Udział % | Od | Do |
+|---------|----------|----|----|
+|         |          |    |    |
+
+## Osoby w organach (KRS)
+
+| Nazwisko | Funkcja | Okres |
+|----------|---------|-------|
+|          |         |       |
+
+## Powiązane podmioty
+
+## Aktywa i działalność</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Użyj zmiennej tp.date.now('YYYY') w ID podmiotu — ID będzie unikalny między projektami i czytelny chronologicznie: POI-2024-4821.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">02</span>
+          <span class="lesson-title">YAML Frontmatter i właściwości notatek</span>
+          <span class="lesson-dur">20 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">YAML frontmatter to sekcja metadanych na początku pliku .md. Obsidian 1.4+ pokazuje go jako formularz 'Właściwości'. Dla OSINT to kluczowy mechanizm: filtrowanie i sortowanie podmiotów według statusu, priorytetu, daty, projektu.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Składnia i typy danych</div>
+            <p class="step-text">text: string, number: liczba, date: YYYY-MM-DD (renderuje kalendarz), list: lista wartości, checkbox: boolean. Obsidian rozpoznaje typ automatycznie. Błędna składnia YAML = właściwości nie działają.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Standardowe pola OSINT</div>
+            <p class="step-text">Ustal spójne nazwy pól dla całego projektu. Zmiana nazwy pola (np. 'priorytet' → 'priority') wymaga edycji w każdym pliku — zrób to przez plugin MetaEdit lub skrypt Python na plikach .md.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Właściwości jako interfejs</div>
+            <p class="step-text">Widok właściwości (prawy panel → Właściwości) wyświetla frontmatter jako formularz. Kliknięcie wartości pozwala edytować bez wchodzenia w surowy YAML. Szybsza aktualizacja statusów podmiotów.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Masowa edycja metadanych</div>
+            <p class="step-text">Plugin MetaEdit pozwala zmieniać wartości YAML w wielu notatках jednocześnie — np. zmiana projektu wszystkich podmiotów z 'Projekt-Alfa' na 'Projekt-Beta'. Niezbędne przy reorganizacji śledztwa.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Kompletny frontmatter OSINT — osoba fizyczna</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+# === IDENTYFIKACJA ===
+type: osoba
+id: "POI-2024-0042"
+nazwa: "Jan Kowalski"
+
+# === STATUS ŚLEDZTWA ===
+status: aktywny              # aktywny | zawieszony | zamknięty
+weryfikacja: niezweryfikowany
+priorytet: 2                 # 1=krytyczny, 2=wysoki, 3=normalny
+projekt: "Projekt-Alfa"
+operator: "analityk-01"
+
+# === DATY ===
+data-utworzenia: 2024-11-15
+data-modyfikacji: 2024-11-20
+data-ostatni-kontakt:        # kiedy podmiot był aktywny online
+
+# === LOKALIZACJA ===
+miasto: Warszawa
+kraj: PL
+
+# === KLASYFIKACJA ===
+tags:
+  - podmiot/osoba
+  - status/niezweryfikowany
+  - prio/2-wysoki
+  - zrodlo/media-spolecznosciowe
+  - zrodlo/krs
+
+# === POWIĄZANIA (dla Dataview) ===
+powiazane-firmy:
+  - "[[Firma ABC Sp. z o.o.]]"
+powiazane-osoby:
+  - "[[Maria Kowalska]]"
+
+# === ŹRÓDŁA PIERWOTNE ===
+zrodla-weryfikacji:
+  - "KRS 2024-01-15"
+  - "LinkedIn profil 2024-11-10"
+---</code></pre>
+        </div>
+          
+        <div class="tip tip-info">
+          <span class="tip-label">ℹ️ INFO</span>
+          <span class="tip-text">Pole 'id' z unikalnym identyfikatorem (POI-2024-0042) zapewnia spójność między systemami — Obsidian, arkusze, raporty zewnętrzne. Skrypt Python może auto-generować ID i sprawdzać duplikaty.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">03</span>
+          <span class="lesson-title">Graph View — wizualizacja sieci powiązań</span>
+          <span class="lesson-dur">25 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Widok grafu to jeden z najmocniejszych feature'ów Obsidiana dla analityków. Każda notatka to węzeł, każdy link to krawędź. Możesz wizualizować całą sieć powiązań, filtrować po tagach, grupować kolorem i identyfikować huby.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Global vs Local Graph</div>
+            <p class="step-text">Ctrl+G: Global Graph — wszystkie notatki. Ctrl+Shift+G: Local Graph — powiązania bieżącej notatki do N poziomów. Dla codziennej pracy używaj Local Graph z depth 2-3: pokazuje podmiotowe środowisko bez szumu.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Filtry i czyszczenie grafu</div>
+            <p class="step-text">Panel filtru → wpisz path:01_Podmioty/ by pokazać tylko podmioty. Odfiltruj szablony: -path:06_Szablony. Graf z 500+ notatkami — filtruj agresywnie, pokaż tylko releqwantne węzły.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Grupowanie kolorami</div>
+            <p class="step-text">Ustawienia grafu → Groups → Dodaj grupy kolorystyczne. path:Osoby/ → czerwony, path:Firmy/ → niebieski, tag:#prio/1-krytyczny → żółty. Sieć zyska natychmiastowy sens wizualny.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Identyfikacja wzorców</div>
+            <p class="step-text">Szukaj: węzłów-hubów (wiele krawędzi = kluczowy podmiot), izolowanych klastrów (odrębna sieć), mostów (węzeł łączący klastry = krytyczna osoba), 'orphans' (izolowane notatki bez linków).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Zapis widoku grafu</div>
+            <p class="step-text">Ustawienia grafu są zapisywane automatycznie per vault. Możesz tworzyć oddzielne canvasy dla różnych perspektyw grafu — niekoniecznie musi to być Global Graph.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Konfiguracja grup kolorystycznych grafu (graph.json)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>{
+  "colorGroups": [
+    {
+      "query": "path:01_Podmioty/Osoby",
+      "color": { "a": 1, "rgb": 16724787 }
+    },
+    {
+      "query": "path:01_Podmioty/Firmy",
+      "color": { "a": 1, "rgb": 4093695 }
+    },
+    {
+      "query": "path:02_Zdarzenia",
+      "color": { "a": 1, "rgb": 16776960 }
+    },
+    {
+      "query": "tag:#prio/1-krytyczny",
+      "color": { "a": 1, "rgb": 16750848 }
+    },
+    {
+      "query": "tag:#status/potwierdzony",
+      "color": { "a": 1, "rgb": 3854419 }
+    },
+    {
+      "query": "tag:#status/obalony",
+      "color": { "a": 0.5, "rgb": 8421504 }
+    }
+  ],
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "repelStrength": 12,
+  "linkStrength": 0.8,
+  "centerStrength": 0.52,
+  "dagOrientation": "TB"
+}</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Local Graph dla podmiotu + depth=2 to twój codzienny widok operacyjny. Depth=1 pokazuje bezpośrednie powiązania, depth=2 ujawnia 'znajomych znajomych' — często tam kryją się powiązania pośrednie.</span>
+        </div>
+        <div class="tip tip-info">
+          <span class="tip-label">ℹ️ INFO</span>
+          <span class="tip-text">Graf nie zastąpi Maltego czy Gephi dla setek podmiotów, ale dla śledztw do 300 węzłów działa sprawnie bez żadnej dodatkowej instalacji.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">04</span>
+          <span class="lesson-title">Plugin Dataview — baza danych OSINT</span>
+          <span class="lesson-dur">35 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Dataview zamienia Obsidian w relacyjną bazę danych. Każda notatka z frontmatter staje się rekordem. Zapytania DQL (Dataview Query Language) lub JavaScript renderują tabele, listy i kalendarze bezpośrednio w notatkach.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Instalacja i konfiguracja</div>
+            <p class="step-text">Wtyczki zewnętrzne → 'Dataview' (mgmeyers) → Zainstaluj. W ustawieniach Dataview włącz: Enable JavaScript Queries, Enable Inline Dataview, Inline Query Prefix ($).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Zapytania TABLE</div>
+            <p class="step-text">Blok ```dataview``` z DQL. SELECT-like: TABLE pola FROM źródło WHERE warunki SORT kolumna ORDER LIMIT n. FROM akceptuje: folder w cudzysłowie, tag #tag, kombinacje AND/OR.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Zapytania LIST i TASK</div>
+            <p class="step-text">LIST zwraca linki do pasujących notatek. TASK agreguje checklisty ze wszystkich plików — widok wszystkich otwartych zadań w projekcie bez otwierania każdej notatki.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">DataviewJS — JavaScript</div>
+            <p class="step-text">```dataviewjs``` — pełny JS. dv.pages() zwraca wszystkie notatki jako obiekt. Możesz agregować, liczyć, budować niestandardowe widoki. Idealne do statystyk śledztwa i raportów wykonawczych.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Dashboard główny — wszystkie kluczowe zapytania</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># 📊 Dashboard — Projekt Alfa
+
+## Aktywne podmioty do zbadania
+
+```dataview
+TABLE
+  priorytet AS "Prio",
+  weryfikacja AS "Status",
+  miasto AS "Miasto",
+  data-modyfikacji AS "Ostatnia zm."
+FROM "01_Podmioty"
+WHERE status = "aktywny" AND weryfikacja != "potwierdzony"
+SORT priorytet ASC, data-modyfikacji DESC
+```
+
+## 🚨 Krytyczne — niezweryfikowane
+
+```dataview
+LIST
+FROM #prio/1-krytyczny
+WHERE weryfikacja = "niezweryfikowany"
+```
+
+## Zdarzenia w ostatnich 30 dniach
+
+```dataview
+TABLE date-start AS "Data", lokalizacja AS "Miejsce", wynik AS "Wynik"
+FROM "02_Zdarzenia"
+WHERE date(today) - date(date-start) &lt;= dur(30 days)
+SORT date-start DESC
+```
+
+## 📋 Otwarte zadania OSINT
+
+```dataview
+TASK
+FROM "01_Podmioty"
+WHERE !completed AND contains(text, "weryfik")
+GROUP BY file.link
+```</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">DataviewJS — statystyki i analiza śledztwa</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>```dataviewjs
+const pages = dv.pages('"01_Podmioty"');
+
+// Statystyki zbiorcze
+const stats = {
+  total: pages.length,
+  osoby: pages.where(p =&gt; p.type === "osoba").length,
+  firmy: pages.where(p =&gt; p.type === "firma").length,
+  aktywne: pages.where(p =&gt; p.status === "aktywny").length,
+  potwierdzone: pages.where(p =&gt; p.weryfikacja === "potwierdzony").length,
+  krytyczne: pages.where(p =&gt; p.priorytet === 1).length,
+};
+
+// Statystyki procentowe
+const pctPotw = Math.round(stats.potwierdzone / stats.total * 100) || 0;
+
+dv.header(3, "Podsumowanie śledztwa");
+dv.table(
+  ["Metryka", "Wartość", "Info"],
+  [
+    ["Łącznie podmiotów", stats.total, ""],
+    ["Osoby", stats.osoby, "${Math.round(stats.osoby/stats.total*100)}%"],
+    ["Firmy", stats.firmy, "${Math.round(stats.firmy/stats.total*100)}%"],
+    ["Aktywnych", stats.aktywne, ""],
+    ["Potwierdzonych", stats.potwierdzone, "${pctPotw}% pokrycia"],
+    ["Krytycznych", stats.krytyczne, "🔴 priorytet 1"],
+  ]
+);
+```</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Dataview jest read-only — nigdy nie modyfikuje Twoich plików. Wyniki przeliczają się przy każdym otwarciu notatki. Eksperymentuj bez ryzyka utraty danych.</span>
+        </div>
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Przy vaulcie 1000+ plików pierwsze uruchomienie Dataview może zająć 20-30 sekund na budowę indeksu. To normalne — indeks jest następnie utrzymywany na bieżąco.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">05</span>
+          <span class="lesson-title">Canvas — interaktywne mapy powiązań</span>
+          <span class="lesson-dur">20 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Canvas to wbudowany w Obsidian infinite whiteboard. Rozkładasz notatki, obrazy, linki i kształty w przestrzeni 2D. Dla OSINT: mapowanie powiązań, org-charty, oś czasu, przestrzeń do 'myślenia karteczkami' bez opuszczania vault.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Tworzenie canvasa OSINT</div>
+            <p class="step-text">Nowy plik → Canvas. Plik .canvas zapisuje się jako JSON. Tematyczne canvasy: org-chart dla firmy, mapa geograficzna, timeline projektu, schemat przepływu środków finansowych.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Osadzanie notatek podmiotów</div>
+            <p class="step-text">Przeciągnij notatkę .md z explorera na canvas — wyświetla się jako karta z podglądem treści. Bezpośrednia edycja z poziomu canvas. Zmiany synchronizują się z plikiem .md.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Krawędzie z etykietami relacji</div>
+            <p class="step-text">Połącz karty przeciągając od krawędzi. Podwójny klik na krawędź → dodaj etykietę: 'właściciel', 'małżonek', 'transakcja 2.4M PLN'. Kolor krawędzi = typ relacji.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Grupy i klastry wizualne</div>
+            <p class="step-text">Zaznacz kilka kart → prawy klik → 'Utwórz grupę'. Grupy to pojemniki wizualne: osobna grupa dla każdej organizacji, rodziny, sieci przestępczej. Etykiety widoczne z dystansu.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Prezentacja na canvas</div>
+            <p class="step-text">Canvas w trybie fullscreen (F11) + zoom-out daje widok całości siatki. Możesz prezentować śledztwo klientowi bez eksportu do PowerPoint — kliknięcie karty otwiera pełną notatkę.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Schemat canvas — struktura pliku JSON</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>{
+  "nodes": [
+    {
+      "id": "hub-kowalski",
+      "type": "file",
+      "file": "01_Podmioty/Osoby/Jan Kowalski.md",
+      "x": 0, "y": 0,
+      "width": 320, "height": 240,
+      "color": "1"
+    },
+    {
+      "id": "hub-firma-abc",
+      "type": "file",
+      "file": "01_Podmioty/Firmy/Firma ABC Sp. z o.o..md",
+      "x": 450, "y": -80,
+      "width": 300, "height": 180,
+      "color": "4"
+    },
+    {
+      "id": "note-1",
+      "type": "text",
+      "text": "## Sieć powiązań\n**Projekt Alfa** — stan 2024-11-20",
+      "x": -380, "y": -160,
+      "width": 320, "height": 100
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-wlasciciel",
+      "fromNode": "hub-kowalski",
+      "toNode": "hub-firma-abc",
+      "label": "Prezes, 85% udziałów (od 2019)",
+      "color": "6",
+      "fromEnd": "arrow",
+      "toEnd": "none"
+    }
+  ]
+}</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Canvas + Excalidraw (plugin) = dwa różne narzędzia do różnych celów. Canvas do strukturalnych map notatek, Excalidraw do swobodnych szkiców, schematów ręcznych i diagramów przepływu.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">06</span>
+          <span class="lesson-title">Plugin Tasks — zarządzanie zadaniami śledztwa</span>
+          <span class="lesson-dur">20 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Plugin Tasks rozbudowuje zwykłe checklisty Obsidiana w pełny system zarządzania zadaniami: daty wykonania, priorytety, powtarzalność, filtry. Idealne do śledzenia zadań analitycznych rozproszonych po setkach notatek podmiotów.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Instalacja i podstawy</div>
+            <p class="step-text">Wtyczki zewnętrzne → 'Tasks' (Martin Schenk / obsidian-tasks-group). Zadanie z datą: - [ ] Zweryfikuj adres KRS 📅 2024-11-25. Kliknięcie [x] automatycznie dodaje datę wykonania ✅ 2024-11-22.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Priorytety i emoji</div>
+            <p class="step-text">🔺 krytyczny, ⬆️ wysoki, 🔼 średni, ⬇️ niski. Dodawaj do zadania: - [ ] Sprawdź powiązania z Luksemburgiem ⬆️ 📅 2024-11-30. Filtruj i sortuj po priorytecie w zapytaniach.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Zadania powtarzalne</div>
+            <p class="step-text">- [ ] Monitoruj profil LinkedIn 🔁 co tydzień 📅 2024-11-25. 🔁 every day / every week / every month. Automatyczne tworzenie następnej instancji po zaznaczeniu.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Globalne zapytania Tasks</div>
+            <p class="step-text">Blok ```tasks``` renderuje listę ze wszystkich notatek vault. Filtry: not done, due before tomorrow, priority is high, path includes Podmioty/. Buduj dashboard zadań dzienny.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Dashboard zadań OSINT (Tasks query)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># 📋 Zadania OSINT — Dashboard
+
+## 🚨 Przeterminowane
+
+```tasks
+not done
+due before today
+sort by priority
+sort by due
+```
+
+## ⏰ Na dziś
+
+```tasks
+not done
+due today
+sort by priority
+```
+
+## 📅 Ten tydzień
+
+```tasks
+not done
+due after today
+due before in 7 days
+path includes 01_Podmioty
+sort by due
+sort by priority
+group by path
+```
+
+## ✅ Wykonane dziś
+
+```tasks
+done today
+```</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Połącz Tasks z Daily Notes: każda daily note zawiera blok zapytania Tasks z filtruje 'due today'. Poranną rutynę zaczynasz od przeglądu listy zadań analitycznych bez ręcznego przeszukiwania vault.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">07</span>
+          <span class="lesson-title">Excalidraw — schematy i diagramy ręczne</span>
+          <span class="lesson-dur">20 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Excalidraw to wbudowany w Obsidian whiteboard z 'ręcznym' stylem rysowania. Świetny do swobodnych szkiców podczas analizy: org-charty, schematy przepływów, mind mapy. Plik .excalidraw zapisuje się w vault jak notatka.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Instalacja i uruchomienie</div>
+            <p class="step-text">Wtyczki zewnętrzne → 'Excalidraw' (Zsolt Viczian). Nowy plik → wybierz Excalidraw. Lub Ctrl+P → 'Excalidraw: Create new drawing'. Plik .md z osadzonym Excalidraw.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Elementy do OSINT</div>
+            <p class="step-text">Prostokąty dla podmiotów, elipsy dla lokalizacji, strzałki z etykietami dla relacji. Używaj warstw (ikona stosu) do organizacji. Kolor czerwony = podejrzane, zielony = zweryfikowane, szary = nieaktywne.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Osadzanie notatek w rysunku</div>
+            <p class="step-text">W Excalidraw: drag-and-drop pliku .md tworzy interaktywną kartę podmiotu. Kliknięcie karty otwiera notatkę. Rysunek i notatki są zsynchronizowane.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Eksport do prezentacji</div>
+            <p class="step-text">Excalidraw → Export → PNG/SVG. Przydatne do raportów PDF i prezentacji gdy potrzebujesz statycznego obrazu bez Obsidiana. SVG zachowuje pełną rozdzielczość.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Konwencja kolorów w schematach Excalidraw dla OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Konwencja kolorystyczna — Excalidraw OSINT
+
+## Węzły (podmiot)
+Czerwony (#e05252)   → podmiot podejrzany / powiązany z działalnością
+Niebieski (#00b4d8)  → firma / podmiot prawny
+Zielony (#39d353)    → podmiot zweryfikowany / niewinny
+Żółty (#e8a000)      → podmiot kluczowy dla śledztwa
+Szary (#7a8899)      → podmiot nieaktywny / historyczny
+
+## Krawędzie (relacja)
+Pełna strzałka →     → relacja bezpośrednia (właściciel, dyrektor)
+Przerywana ---&gt;      → relacja pośrednia (wspólnik wspólnika)
+Dwustronna &lt;-&gt;       → relacja wzajemna (partnerzy)
+
+## Grubość linii
+Cienka (1px)         → słabe powiązanie / niepotwierdzone
+Średnia (2px)        → standardowe powiązanie
+Gruba (4px)          → silne / kluczowe powiązanie
+
+## Ikony (wbudowane w Excalidraw)
+💰 → przepływ pieniędzy
+🏠 → nieruchomość
+📱 → konto online
+⚖️ → sprawa sądowa</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Excalidraw obsługuje Markdown w kartach tekstowych — możesz wstawiać listy i nagłówki bezpośrednio w rysunku. Idealne do dodawania kluczowych faktów przy węzłach schematu.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">08</span>
+          <span class="lesson-title">Advanced Tables — profesjonalne tabele danych</span>
+          <span class="lesson-dur">15 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Tabele Markdown bez wspomagania są żmudne w utrzymaniu. Plugin Advanced Tables dodaje autouzupełnianie, sortowanie, wyrównanie i nawigację klawiaturą. Dla OSINT z dziesiątkami tabel danych to ogromna oszczędność czasu.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Instalacja i automatyczne formowanie</div>
+            <p class="step-text">Wtyczki zewnętrzne → 'Advanced Tables' (Tony Grosinger). Po instalacji: Tab w tabeli przechodzi do następnej komórki i automatycznie formatuje kolumny. Enter dodaje nowy wiersz.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Sortowanie i wyrównanie</div>
+            <p class="step-text">Paleta komend → 'Advanced Tables: Sort table ascending/descending'. Ctrl+P → 'Table: Set alignment' — lewo/prawo/środek dla kolumny. Sortowanie po dowolnej kolumnie jednym poleceniem.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Formuły w tabelach</div>
+            <p class="step-text">Advanced Tables obsługuje formuły: <!-- TBLFM: @>$2=sum(@2..@-1) --> pod tabelą sumuje kolumnę. Ograniczone ale przydatne do podstawowych agregacji danych liczbowych.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Szybkie tworzenie tabel</div>
+            <p class="step-text">Paleta komend → 'Advanced Tables: Spreadsheet Mode' dla trybu arkuszowego. Wpisz | col1 | col2 | i naciśnij Tab — tabela jest gotowa.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Tabele danych z formatowaniem — przykłady OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>## Transakcje finansowe — Jan Kowalski (2023)
+
+| Data       | Od                    | Do                  | Kwota (PLN) | Opis               |
+|------------|-----------------------|---------------------|------------:|--------------------|
+| 2023-02-14 | [[Jan Kowalski]]      | [[Firma ABC]]       |   250 000   | Pożyczka wspólnicy |
+| 2023-05-30 | [[Firma ABC]]         | [[XYZ Holdings]]    | 1 200 000   | Dywidenda          |
+| 2023-08-15 | [[XYZ Holdings]]      | [[konto CH-xxx]]    |   980 000   | Transfer           |
+|            |                       | **SUMA:**           | **2 430 000**|                   |
+&lt;!-- TBLFM: @&gt;$4=sum(@2..@-1) --&gt;
+
+## Konta bankowe
+
+| Bank       | Nr konta (fragment) | Kraj | Status   |
+|------------|---------------------|------|----------|
+| PKO BP     | PL61 .... 7890      | PL   | aktywny  |
+| ING        | PL24 .... 1234      | PL   | zamknięty|
+| UBS Zurich | CH56 .... 5678      | CH   | nieznany |</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Advanced Tables w połączeniu z Dataview: dane surowe przechowuj w tabelach Markdown w notatce podmiotu, a Dataview agreguje je z wielu notatek w widokach zbiorczych. Najlepsze z obu podejść.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="intermediate">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">09</span>
+          <span class="lesson-title">Omnisearch i wyszukiwanie semantyczne</span>
+          <span class="lesson-dur">15 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Natywne wyszukiwanie Obsidiana jest dobre ale ograniczone. Omnisearch to plugin wyszukiwania pełnotekstowego z rankingiem trafności, podglądem wyników i wyszukiwaniem w załącznikach PDF. Dla dużego vaultu OSINT to game-changer.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Instalacja Omnisearch</div>
+            <p class="step-text">Wtyczki zewnętrzne → 'Omnisearch' (Simon Cambier). Po instalacji: Ctrl+Shift+O (konfigurowalne) otwiera modal wyszukiwania. Indeksuje automatycznie cały vault przy uruchomieniu.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Wyszukiwanie pełnotekstowe</div>
+            <p class="step-text">Omnisearch rankinguje wyniki po trafności, nie tylko po dopasowaniu. Wpisz fragment zdania — znajdzie najlepiej pasującą notatkę nawet bez dokładnego dopasowania słów.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Wyszukiwanie w PDF</div>
+            <p class="step-text">Omnisearch indeksuje treść plików PDF załączonych do vault (z obsługą OCR po instalacji Tesseract). Wyszukaj frazę z dokumentu KRS bez ręcznego otwierania każdego PDF.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Filtrowanie w Omnisearch</div>
+            <p class="step-text">Prefix ext:pdf filtruje tylko PDF. ext:png — obrazy. Combine z tekstem: wyrok ext:pdf. Wpisz nazwa-folderu/ by zawęzić do folderu.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Strategie wyszukiwania w dużym vaulcie OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Techniki wyszukiwania — cheatsheet
+
+## Wyszukiwanie natywne (Ctrl+Shift+F)
+tag:#status/niezweryfikowany AND path:01_Podmioty/
+file:Jan Kowalski tag:#prio/1-krytyczny
+content:"ul. Puławska" path:Osoby/
+line:(kowalski AND krs)
+
+## Omnisearch (Ctrl+Shift+O)
+Jan Kowalski Mokotów LinkedIn
+wyrok sądowy 2023 ext:pdf
+umowa udziały 2021 ext:md
+
+## Dataview — wyszukiwanie po metadanych
+```dataview
+LIST
+FROM "01_Podmioty"
+WHERE contains(zrodla-weryfikacji, "KRS")
+AND priorytet &lt;= 2
+```
+
+## Kombinacja — workflow weryfikacji
+1. Omnisearch: "PESEL 85031" → znajdź wszystkie wzmianki
+2. Dataview: WHERE id = "POI-2024-0042" → znajdź rekord podmiotu
+3. Backlinki → kto jeszcze odwołuje się do tego podmiotu
+4. Local Graph depth 2 → sieć powiązań podmiotu</code></pre>
+        </div>
+          
+        <div class="tip tip-info">
+          <span class="tip-label">ℹ️ INFO</span>
+          <span class="tip-text">Omnisearch przechowuje indeks w pamięci — duży vault (1000+ plików, dużo PDF) zwiększa zużycie RAM. Na słabszym sprzęcie rozważ indeksowanie tylko folderów OSINT bez archiwum.</span>
+        </div>
+          
+        </div>
+      </div>
+    </section>
+    <section class="module" id="mod-advanced" data-color="#e8a000">
+      <div class="mod-header">
+        <span class="mod-badge" style="color:#e8a000;border-color:#e8a00044;background:#e8a00012">
+          03
+        </span>
+        <h2 class="mod-title">Zaawansowane</h2>
+        <span class="mod-count">12 lekcji</span>
+      </div>
+      
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">01</span>
+          <span class="lesson-title">Pełny workflow OSINT — 5 faz</span>
+          <span class="lesson-dur">45 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Profesjonalny workflow OSINT w Obsidianie składa się z 5 faz: Zbieranie → Przetwarzanie → Analiza → Synteza → Raport. Obsidian inaczej obsługuje każdą fazę. Poznaj optymalny pipeline eliminujący chaos i duplikację pracy.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Faza 1: Zbieranie — Inbox Zero</div>
+            <p class="step-text">Wszystko trafia do 00_Inbox/: linki, screenshoty, surowy tekst, eksporty z narzędzi. Obsidian Web Clipper (rozszerzenie przeglądarki) jednym klikiem zapisuje stronę z metadanymi. Quick capture przez QuickAdd bez otwierania Obsidiana.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Faza 2: Przetwarzanie — codzienne 30 minut</div>
+            <p class="step-text">Każdy element Inbox → stwórz/zaktualizuj notatkę podmiotu, dodaj frontmatter, tagi, linki. Usuń z Inbox. Zasada: Inbox poniżej 20 elementów zawsze. Raz dziennie, nie rzadziej.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Faza 3: Analiza — graf i Dataview</div>
+            <p class="step-text">Otwórz Local Graph dla kluczowego podmiotu (depth 2). Przejrzyj Dataview dashboard — co wymaga weryfikacji. Zadaj pytania: kto jest hubem? Co łączy klastry? Jakie białe plamy?</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Faza 4: Synteza — Canvas i hipotezy</div>
+            <p class="step-text">Utwórz Canvas dla głównego wątku. Rozmieść kluczowe notatki, połącz etykietami. Dodaj węzły tekstowe z hipotezami i pytaniami otwartymi. Canvas to przestrzeń myślenia — nie końcowy produkt.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <div class="step-title">Faza 5: Raport — osadzenia i eksport</div>
+            <p class="step-text">Notatka raportu w 05_Raporty/. ![[embeddy]] wciągają sekcje podmiotów. Dataview generuje tabele automatycznie. Eksport: Pandoc → DOCX/PDF lub Better Export PDF dla gotowego dokumentu.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Szablon raportu końcowego OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+type: raport
+projekt: Projekt-Alfa
+data: {{date:YYYY-MM-DD}}
+status: roboczy
+klasyfikacja: POUFNE
+operator: analityk-01
+tags: [raport]
+---
+
+# Raport OSINT: [tytuł]
+
+**Data:** {{date:YYYY-MM-DD}} | **Operator:** [inicjały]
+**Klasyfikacja:** POUFNE | **Dystrybucja:** [lista]
+
+---
+
+## Streszczenie wykonawcze
+
+&gt; Kluczowe ustalenia w 3-5 zdaniach.
+
+## Metodologia
+
+Narzędzia i źródła użyte w śledztwie:
+- Obsidian (baza wiedzy)
+- Rejestr KRS / CEIDG / REGON
+- [...]
+
+## Kluczowe podmioty
+
+### [[Jan Kowalski]]
+
+![[Jan Kowalski#Dane identyfikacyjne]]
+![[Jan Kowalski#Powiązania korporacyjne]]
+
+## Sieć powiązań
+
+![[07_Kanwasy/Projekt Alfa — org-chart.canvas]]
+
+## Chronologia zdarzeń
+
+```dataview
+TABLE date-start AS "Data", wynik AS "Zdarzenie"
+FROM "02_Zdarzenia"
+WHERE projekt = "Projekt-Alfa"
+SORT date-start ASC
+```
+
+## Wnioski i rekomendacje
+
+## Źródła
+
+## Zastrzeżenia prawne</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Jeden projekt = jeden vault lub jeden folder z Dashboard.md jako punktem wejścia. Dash filtruje Dataview po polu 'projekt' — izolacja między projektami przy wspólnym vault.</span>
+        </div>
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Nigdy nie umieszczaj surowych haseł z wycieków ani danych biometrycznych w niezaszyfrowanych notatkach. Używaj plugin Meld Encrypt dla konkretnych notatek z bardzo wrażliwymi danymi.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">02</span>
+          <span class="lesson-title">Analiza powiązań i entity mapping</span>
+          <span class="lesson-dur">40 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Zaawansowana analiza powiązań to serce pracy OSINT. Obsidian z Graph Analysis pozwala stosować algorytmy analizy sieci: shortest path, betweenness centrality, co-citations. Ujawniają ukryte struktury niewidoczne na poziomie jednostkowych faktów.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Semantyka kontekstu linku</div>
+            <p class="step-text">Tekst otaczający link [[Firma ABC]] w notatce to kontekst relacji widoczny w panelu backlinków. Zamiast prostego linku pisz: 'Jan Kowalski jako właściciel [[Firma ABC]] od 2019' — kontekst relacji jest automatycznie archiwizowany.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Notatki-relacje (Relation notes)</div>
+            <p class="step-text">Dla złożonych relacji utwórz oddzielną notatkę: [[Kowalski — FirmaABC — RELACJA]]. Zawiera: typ, daty, dokumenty potwierdzające, wartości transakcji, kontekst prawny. Obie strony linkują do tej notatki.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Plugin Graph Analysis</div>
+            <p class="step-text">Wtyczki zewnętrzne → 'Graph Analysis'. Dostarcza: Shortest Path (najkrótsza ścieżka między podmiotami), Co-Citations (kto jest często cytowany razem = powiązania pośrednie), Betweenness Centrality (mosty w sieci).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Eksport do Gephi</div>
+            <p class="step-text">Plugin 'Obsidian to Graph' eksportuje vault do GEXF/GraphML dla Gephi. Gephi oferuje Force Atlas 2, modularity detection (automatyczne wykrywanie klastrów), Eigenvector Centrality. Dla śledztw powyżej 200 podmiotów.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Notatka-relacja — pełny schemat</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+type: relacja
+podmiot-a: "[[Jan Kowalski]]"
+podmiot-b: "[[Firma ABC Sp. z o.o.]]"
+typ-relacji: właściciel-udziałowiec
+kierunek: a-do-b         # a-do-b | b-do-a | wzajemna
+data-od: 2019-01-15
+data-do:                 # puste = trwa
+udzial-procent: 85
+wartosc-pln:
+weryfikacja: potwierdzony
+zrodla:
+  - "KRS wpis 2019-01-15"
+  - "Akt not. Rep.A Nr 1234/2019"
+tags: [relacja/korporacyjna, status/potwierdzony]
+---
+
+# Jan Kowalski ↔ Firma ABC | Relacja właścicielska
+
+## Szczegóły relacji
+
+Jan Kowalski posiada **85% udziałów** w Firma ABC Sp. z o.o.
+od dnia 15 stycznia 2019. Pozostałe 15% należy do [[Maria Kowalska]].
+
+Powiązanie wynika z pierwotnej umowy spółki z dnia 15.01.2019
+(akt notarialny Rep. A Nr 1234/2019, notariusz: [[Kancelaria XYZ]]).
+
+## Historia zmian udziałów
+
+| Data       | Kowalski | M. Kowalska | Zmiana         |
+|------------|----------|-------------|----------------|
+| 2019-01-15 | 100%     | 0%          | Założenie spółki|
+| 2021-06-01 | 85%      | 15%         | Darowanie 15%  |
+
+## Dokumenty
+
+- [[_załączniki/KRS_FirmaABC_wydruk_20240101.pdf]]
+- [[_załączniki/AktNotarialny_1234_2019.pdf]]</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Dataviewjs — ranking węzłów centralnych (hubów)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>## Analiza centralności — top 20 węzłów
+
+```dataviewjs
+const podmioty = dv.pages('"01_Podmioty"');
+
+const ranked = podmioty
+  .map(p =&gt; ({
+    link: p.file.link,
+    typ: p.type || "—",
+    wychodzace: p.file.outlinks.length,
+    przychodzace: p.file.inlinks.length,
+    suma: p.file.outlinks.length + p.file.inlinks.length,
+    weryfikacja: p.weryfikacja || "—",
+  }))
+  .sort((a, b) =&gt; b.suma - a.suma)
+  .slice(0, 20);
+
+dv.table(
+  ["Podmiot", "Typ", "→ Linki", "← Backlinki", "Suma", "Status"],
+  ranked.map(r =&gt; [
+    r.link, r.typ, r.wychodzace, r.przychodzace, r.suma, r.weryfikacja
+  ])
+);
+```</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Betweenness Centrality z Graph Analysis wskaże 'mostki' — osoby spajające odrębne klastry. W śledztwach finansowych to typowo prawnicy, doradcy podatkowi lub podstawione osoby fizyczne.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">03</span>
+          <span class="lesson-title">Automatyzacja — Templater i QuickAdd</span>
+          <span class="lesson-dur">35 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Templater to silnik szablonów z JavaScript. QuickAdd tworzy makra i formularze. Razem redukują czas dodawania nowego podmiotu z 5 minut do 30 sekund — i eliminują błędy przy tworzeniu notatek.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Templater — dynamiczne skrypty</div>
+            <p class="step-text">Bloki <%* ... -%> uruchamiają JavaScript przy wstawianiu szablonu. tp.system.prompt() interaktywne pytanie, tp.system.suggester() lista wyboru, tp.file.move() automatyczne przenoszenie do folderu.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Formularz przy tworzeniu notatki</div>
+            <p class="step-text">Sekwencja tp.system.prompt() dla każdego pola frontmatter. Podmiot wpisany → automatyczna nazwa pliku, przeniesienie do właściwego folderu, wypełniony frontmatter. Zero ręcznego formatowania.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">QuickAdd — makra jednym skrótem</div>
+            <p class="step-text">QuickAdd definiuje przepływy: Capture (szybki zapis do Inbox), Template (tworzenie z szablonem), Macro (seria poleceń). Globalny skrót Ctrl+Shift+1 = nowy POI, Ctrl+Shift+2 = nowa firma.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Auto-rename i auto-move</div>
+            <p class="step-text">await tp.file.move('/01_Podmioty/Osoby/' + imie) przenosi plik po wypełnieniu formularza. Pliki lądują w odpowiednim folderze bez przeciągania — vault porządkuje się sam.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Pełny szablon Templater — POI z formularzem JS</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>&lt;%*
+// === FORMULARZ TWORZENIA POI ===
+const imie = await tp.system.prompt("📋 Imię i nazwisko podmiotu:");
+if (!imie) { new Notice("Anulowano."); return; }
+
+const typ = await tp.system.suggester(
+  ["👤 Osoba fizyczna", "🏢 Firma/Spółka", "🏛 Organizacja", "🌐 Konto online"],
+  ["osoba", "firma", "organizacja", "konto-online"]
+);
+
+const priorytet = await tp.system.suggester(
+  ["🔴 1 — Krytyczny", "🟠 2 — Wysoki", "🟡 3 — Normalny", "⚪ 4 — Niski"],
+  [1, 2, 3, 4]
+);
+
+const projekt = await tp.system.prompt("📁 Projekt:", "Projekt-Alfa");
+const operator = await tp.system.prompt("👤 Operator:", "analityk");
+
+// Auto-ID z random suffix
+const rok = tp.date.now("YYYY");
+const id = `POI-${rok}-${Math.floor(Math.random()*9000+1000)}`;
+
+// Auto-rename i auto-move
+await tp.file.rename(imie);
+const folderMap = {
+  osoba: "/01_Podmioty/Osoby/",
+  firma: "/01_Podmioty/Firmy/",
+  organizacja: "/01_Podmioty/Grupy/",
+  "konto-online": "/01_Podmioty/",
+};
+await tp.file.move(folderMap[typ] + imie);
+-%&gt;
+---
+type: &lt;% typ %&gt;
+id: "&lt;% id %&gt;"
+status: aktywny
+weryfikacja: niezweryfikowany
+priorytet: &lt;% priorytet %&gt;
+projekt: "&lt;% projekt %&gt;"
+data-utworzenia: &lt;% tp.date.now("YYYY-MM-DD") %&gt;
+operator: &lt;% operator %&gt;
+tags:
+  - podmiot/&lt;% typ %&gt;
+  - status/niezweryfikowany
+  - prio/&lt;% priorytet %&gt;-&lt;% ["","krytyczny","wysoki","normalny","niski"][priorytet] %&gt;
+---
+
+# &lt;% imie %&gt;
+
+## Dane podstawowe
+
+## Konta online
+
+## Powiązania
+
+## Historia
+
+## Źródła i dowody
+
+## Notatki operatora</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">QuickAdd Capture z append do Daily Note = błyskawiczny inbox. Jedno naciśnięcie skrótu, wpisz URL lub fakt, Enter. Pojawia się w dziennej notatce z timestampem. Zero rozproszenia podczas zbierania.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">04</span>
+          <span class="lesson-title">Analiza temporalna i oś czasu</span>
+          <span class="lesson-dur">30 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Analiza czasowa to fundamentalna technika OSINT — kiedy zdarzenia następują po sobie, korelacje aktywności online, ewolucja struktury organizacji. Obsidian z Dataview i Timelines buduje precyzyjne osie czasu bez zewnętrznych narzędzi.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Zdarzenia jako notatki z datami YAML</div>
+            <p class="step-text">Każde zdarzenie = notatka z polami date-start i date-end w YAML (format YYYY-MM-DD). Dataview sortuje i filtruje. Link do uczestników tworzy automatyczne backlinki — każdy podmiot 'pamięta' swoje zdarzenia.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Plugin Timelines</div>
+            <p class="step-text">Wtyczki zewnętrzne → 'Obsidian Timelines'. Tag #timeline w notatce zdarzenia + pole date. Blok ```timeline``` w dedykowanej notatce renderuje interaktywną oś czasu wszystkich oznaczonych zdarzeń.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">CALENDAR w Dataview</div>
+            <p class="step-text">CALENDAR date-start FROM #zdarzenie — widok kalendarza z aktywnością. Identyfikuje wzorce (regularne spotkania), przerwy (zawieszenie aktywności), i anomalie (nagłe skoki aktywności).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Analiza wzorców</div>
+            <p class="step-text">Szukaj: regularności (spotkania co 2 tygodnie = zaplanowane), antecedencji (co było przed zdarzeniem kluczowym), zbieżności (dwa podmioty aktywne w tym samym czasie i miejscu), przerw (kto znika z danych w podejrzanym okresie).</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Notatka zdarzenia — pełny schemat</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+type: zdarzenie
+date-start: 2024-09-15
+date-end: 2024-09-17
+lokalizacja: "[[Warszawa/Centrum konferencyjne Hotel Sheraton]]"
+uczestnicy:
+  - "[[Jan Kowalski]]"
+  - "[[Maria Nowak]]"
+  - "[[Firma XYZ Ltd]]"
+wynik: "Podpisanie listu intencyjnego — wartość 2.4M PLN"
+typ: spotkanie-biznesowe
+projekt: Projekt-Alfa
+weryfikacja: potwierdzony
+zrodla:
+  - media/artykul-biznes.pl-2024-09-16
+  - zdjecie/konferencja-foto-id-123
+tags: [zdarzenie, timeline, projekt/alfa, status/potwierdzony]
+---
+
+# Konferencja Fintech Warsaw 2024
+
+## Uczestnictwo podmiotów
+
+Dnia 15-17 września 2024 [[Jan Kowalski]] uczestniczył jako prelegent
+w panelu "Inwestycje alternatywne" (→ [[Nagranie panel fintech YT]]).
+16 września wieczorem: udokumentowane spotkanie z [[Maria Nowak]]
+(fotografia → [[_załączniki/konferencja-foto-123.jpg]]).
+
+**Znaczenie:** pierwsze udokumentowane spotkanie Kowalski-Nowak.
+Trzy tygodnie później podpisano umowę → [[Umowa XYZ 2024-10-08]].
+
+## Źródła
+
+- [Artykuł Biznes.pl](https://biznes.pl/...) — wymienienie Kowalskiego
+- Fotografia konferencyjna (nr referencyjny: 123)</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Oś czasu podmiotu — Dataview</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>## Chronologia — Jan Kowalski
+
+```dataview
+TABLE
+  date-start AS "Data",
+  lokalizacja AS "Miejsce",
+  wynik AS "Wynik",
+  weryfikacja AS "Wer."
+FROM #zdarzenie
+WHERE contains(uczestnicy, "[[Jan Kowalski]]")
+SORT date-start ASC
+```
+
+## Kalendaryzacja aktywności
+
+```dataview
+CALENDAR date-start
+FROM #zdarzenie
+WHERE contains(uczestnicy, "[[Jan Kowalski]]")
+```
+
+## Nakładające się zdarzenia (ten sam czas)
+
+```dataview
+TABLE date-start, uczestnicy
+FROM #zdarzenie
+WHERE date-start &gt;= date(2024-09-01)
+  AND date-start &lt;= date(2024-09-30)
+SORT date-start ASC
+```</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Porównaj osie czasu kilku podmiotów w jednej tabeli Dataview. Zbieżności czasowe (obaj aktywni w tym samym czasie i miejscu) i luki (kto znika razem) są bardzo wymowne analitycznie.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">05</span>
+          <span class="lesson-title">Analiza finansowa i przepływy pieniędzy</span>
+          <span class="lesson-dur">40 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Śledzenie przepływów finansowych to jedna z najtrudniejszych technik OSINT. Obsidian pozwala zbudować strukturalną bazę transakcji powiązaną z podmiotami, datami i dokumentami źródłowymi — bez specjalistycznego oprogramowania.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Notatki transakcji</div>
+            <p class="step-text">Każda transakcja jako osobna notatka lub wpis w tabeli notatki podmiotu. Pola: data, nadawca, odbiorca, kwota, waluta, bank, opis, dokumenty źródłowe, status weryfikacji.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Śledzenie przepływu środków</div>
+            <p class="step-text">Linkuj transakcje: [[Transakcja A]] → [[Transakcja B]] tworzy łańcuch przepływu. Dataview agreguje sumy. Graf wizualizuje kierunek i objętość przepływu między podmiotami.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Struktury korporacyjne i ukryte własności</div>
+            <p class="step-text">Buduj łańcuchy właścicielskie: Kowalski (85%) → Firma ABC → XYZ Holdings (Jersey) → Trust Luksemburg. Każdy poziom = notatka-relacja z dokumentami. Ostateczny beneficjent to cel analizy.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Porównanie z rejestrami publicznymi</div>
+            <p class="step-text">Weryfikuj transakcje w: rejestrach nieruchomości (ceny zakupu), KRS (wkłady do spółek), dokumentach sądowych (kwoty roszczeń), mediach (ujawnione kwoty kontraktów). Rozbieżności = czerwona flaga.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Schemat analizy finansowej — notatka transakcji</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+type: transakcja
+data: 2023-08-15
+nadawca: "[[Firma ABC Sp. z o.o.]]"
+odbiorca: "[[XYZ Holdings Ltd]]"
+kwota-pln: 980000
+waluta: PLN
+bank-nadawcy: PKO BP
+bank-odbiorcy: UBS Zurich
+opis: Transfer — "opłata licencyjna"
+weryfikacja: prawdopodobny
+zrodla:
+  - sprawozdanie-finansowe-2023
+  - przelew-wyciag-pkobp-08-2023
+tags: [transakcja, projekt/alfa, status/prawdopodobny]
+---
+
+# Transakcja: Firma ABC → XYZ Holdings | 980 000 PLN
+
+&gt; [!WARNING] Wymaga weryfikacji
+&gt; Kwota z wyciągu bankowego nie pokrywa się z pozycją w
+&gt; sprawozdaniu finansowym (różnica: 20 000 PLN).
+
+## Łańcuch przepływu
+
+[[Jan Kowalski]] → [[Firma ABC Sp. z o.o.]] → **tu** →
+[[XYZ Holdings Ltd]] → [[Konto CH-xxx (nieznane)]]
+
+## Dokumenty
+
+- [[_załączniki/wyciag-pkobp-2023-08.pdf#page=3]]
+- [[_załączniki/sprawozdanie-ABC-2023.pdf#page=12]]</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Agregacja transakcji — Dataview</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>## Przepływy finansowe — Projekt Alfa
+
+```dataview
+TABLE
+  date AS "Data",
+  nadawca AS "Od",
+  odbiorca AS "Do",
+  kwota-pln AS "Kwota (PLN)",
+  weryfikacja AS "Status"
+FROM #transakcja
+WHERE projekt = "Projekt-Alfa"
+SORT date ASC
+```
+
+## Sumy per podmiot (DataviewJS)
+
+```dataviewjs
+const tx = dv.pages("#transakcja").where(p =&gt; p.projekt === "Projekt-Alfa");
+
+// Agreguj kwoty per odbiorca
+const sumy = {};
+for (const t of tx) {
+  const key = String(t.odbiorca);
+  sumy[key] = (sumy[key] || 0) + (t["kwota-pln"] || 0);
+}
+
+dv.table(
+  ["Odbiorca", "Suma (PLN)"],
+  Object.entries(sumy)
+    .sort((a, b) =&gt; b[1] - a[1])
+    .map(([k, v]) =&gt; [k, v.toLocaleString("pl-PL")])
+);
+```</code></pre>
+        </div>
+          
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Dane finansowe z wycieków, dark web lub nieoficjalnych źródeł muszą być wyraźnie oznaczone i traktowane z najwyższą ostrożnością. Nigdy nie przedstawiaj ich jako potwierdzonych bez niezależnej weryfikacji.</span>
+        </div>
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Połącz analizę finansową z Timeline — koreluj daty transakcji ze zdarzeniami (spotkaniami, zmianami w KRS). Transakcja dzień po spotkaniu to wzorzec wart odnotowania.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">06</span>
+          <span class="lesson-title">Geolokalizacja i analiza przestrzenna</span>
+          <span class="lesson-dur">30 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Geolokalizacja w OSINT to nie tylko adresy — to analiza zdjęć satelitarnych, metadanych GPS, wzorców przemieszczania i fizycznych powiązań podmiotów z lokalizacjami. Obsidian organizuje informacje przestrzenne i linkuje je z podmiotami.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Notatki lokalizacji</div>
+            <p class="step-text">Każda ważna lokalizacja = osobna notatka w 03_Lokalizacje/. Adres, współrzędne GPS, zdjęcia satelitarne (screenshot z Google Maps), powiązane podmioty. Plugin Map View integruje mapy Leaflet bezpośrednio w vault.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Plugin Map View</div>
+            <p class="step-text">Wtyczki zewnętrzne → 'Map View'. Notatki z polem 'location: [lat, lon]' w YAML pojawiają się jako piny na interaktywnej mapie Leaflet. Filtruj pinezki po tagach i właściwościach YAML.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Weryfikacja geolokalizacji z EXIF</div>
+            <p class="step-text">Zdjęcia z telefonów zawierają GPS w EXIF: ExifTool -GPS* zdjecie.jpg. Weryfikuj lokalizację ze wskazaniami podmiotów. Niespójność GPS = fałszywe alibi lub sfałszowane zdjęcie.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Analiza satelitarna</div>
+            <p class="step-text">Google Earth Pro (bezpłatny) eksportuje snapshoty historyczne. SunCalc.org weryfikuje kąt cienia na zdjęciach (datowanie). What3Words i Plus Codes do precyzyjnej geolokalizacji bez adresu.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Notatka lokalizacji z YAML dla Map View</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+type: lokalizacja
+location: [52.2297, 21.0122]
+adres: "ul. Puławska 123/45, 02-595 Warszawa"
+dzielnica: Mokotów
+miasto: Warszawa
+kraj: PL
+kategoria: nieruchomość-mieszkalna
+podmiot-powiazany: "[[Jan Kowalski]]"
+weryfikacja: potwierdzony
+zrodla:
+  - KRS wpis 2023
+  - Google Maps Street View 2024-03
+tags: [lokalizacja, podmiot/lokalizacja, status/potwierdzony]
+---
+
+# ul. Puławska 123/45, Warszawa
+
+## Powiązane podmioty
+
+- **Właściciel:** [[Jan Kowalski]] (od 2019, → [[Akt not. 5678/2019]])
+- **Meldunek:** [[Maria Kowalska]]
+
+## Opis lokalizacji
+
+Mieszkanie 78m², 4 piętro, kamienica przedwojenna.
+Widoczne ze zdjęć satelitarnych (→ ![[satelita-puławska-2024.png]]).
+
+## Historia użytkowania
+
+| Okres       | Podmiot         | Rola    |
+|-------------|-----------------|---------|
+| 2019–dziś   | Jan Kowalski    | Właściciel|
+| 2015–2019   | Inwestycja Alfa | Deweloper|
+
+## Notatki geolokalizacyjne
+
+Współrzędne GPS zweryfikowane przez porównanie ze zdjęciem
+satelitarnym i danymi adresowymi GUS.</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Plugin Map View z filtrami tagów to potężne narzędzie — możesz wyświetlić mapę tylko podmiotów z tagiem #powiazany-z-projektem. Wizualizacja geograficzna ujawnia klastry lokalizacji niewidoczne w tekście.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">07</span>
+          <span class="lesson-title">Social Media OSINT — workflow</span>
+          <span class="lesson-dur">40 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Social media OSINT wymaga systematycznego podejścia: zbieranie → archiwizacja → weryfikacja → analiza. Obsidian organizuje dane z dziesiątek platform, śledzi zmiany profili i buduje pełny obraz obecności cyfrowej podmiotu.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Inwentaryzacja kont</div>
+            <p class="step-text">Zbierz wszystkie konta podmiotu: nazwa użytkownika, URL, platforma, data rejestracji (jeśli widoczna), aktywność (ostatni post), liczba obserwujących. Używaj narzędzi: Sherlock, Maigret, WhatsMyName do wyszukiwania po nicku.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Archiwizacja profili</div>
+            <p class="step-text">Przed analizą zarchiwizuj: Wayback Machine (site:twitter.com/nick), archive.today (save URL), Web Clipper + screenshot. Konta mogą znikać. Archiwizuj w 00_Inbox/ z timestampem.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Analiza połączeń w social media</div>
+            <p class="step-text">Kto obserwuje kogo, wspólni znajomi, tagowanie na zdjęciach, wzmianki (@), komentarze. Te powiązania linkuj do notatek podmiotów. Graf Obsidiana wizualizuje sieć social media.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Śledzenie zmian profilu</div>
+            <p class="step-text">Zmiany avatara, bio, nazwy użytkownika, liczby znajomych — rejestruj w notatce jako timeline. Nagłe usunięcie konta lub zmiana nazwy to sygnał ostrzegawczy. Checkuj co 1-2 tygodnie aktywne profile.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Sekcja Social Media w notatce POI</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>## Obecność cyfrowa — Jan Kowalski
+
+### Konta zweryfikowane
+
+| Platforma  | Nick/URL                               | Status     | Weryfikacja  |
+|------------|----------------------------------------|------------|--------------|
+| LinkedIn   | linkedin.com/in/jankowalski85          | aktywny    | ✅ potwierdzony |
+| Twitter/X  | @jkowalski_pl (usunięte ~2023-06)     | nieaktywny | ✅ archiw.    |
+| Facebook   | fb.com/jankowalski.pl                  | aktywny    | ⚠️ wymaga wer.|
+| GitHub     | github.com/jkowalski85                 | aktywny    | ✅ potwierdzony |
+
+### Nicki historyczne
+
+| Nick            | Platforma  | Okres          | Źródło              |
+|-----------------|------------|----------------|---------------------|
+| jkowalski85     | Twitter    | 2015–2023-06   | Archive.today       |
+| jan.kowalski85  | Instagram  | 2018–2020      | Wayback Machine     |
+| j_kowalski      | Reddit     | 2019–?         | Profil r/finanse    |
+
+### Archiwum profili
+
+- [[_załączniki/2024-11-15_linkedin-kowalski-snapshot.png]]
+- [Twitter archive (archive.today)](https://archive.ph/xxxx)
+- [[_załączniki/2023-06-01_twitter-kowalski-ostatni-post.png]]
+
+### Analiza aktywności
+
+&gt; [!NOTE] Wzorzec aktywności
+&gt; LinkedIn: posty głównie wtorek-środa 10:00-12:00 (czas PL).
+&gt; Twitter: aktywny do usunięcia konta, ostatni post 2023-06-01.
+&gt; Brak aktywności na TikTok, Snapchat (pokolenie +35?).</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Śledzenie zmian profilu — log</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>## Log zmian profilu — monitorowanie
+
+| Data       | Platforma | Zmiana                            | Uwagi          |
+|------------|-----------|-----------------------------------|----------------|
+| 2024-11-15 | LinkedIn  | Baseline — 1240 koneksji, CTO     | Pierwsze obs.  |
+| 2024-11-22 | LinkedIn  | Zmiana tytułu: "CTO" → "Konsultant"| 🔴 Sygnał!   |
+| 2024-11-22 | LinkedIn  | Usunięcie Firma ABC z doświadczenia| Powiązano z... |
+| 2024-12-01 | LinkedIn  | Avatar zmieniony                  |                |
+
+&gt; [!WARNING] Zmiana statusu w LinkedIn
+&gt; Podmiot zmienił tytuł z CTO → Konsultant w dniu 2024-11-22 —
+&gt; tego samego dnia KRS odnotowało rezygnację z zarządu Firma ABC.
+&gt; Korelacja potwierdzona → [[Zdarzenie 2024-11-22]].</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Narzędzie Sherlock (github.com/sherlock-project/sherlock) wyszukuje nick na 300+ platformach jednocześnie. Wyniki CSV możesz wkleić do Obsidiana — jeden nick = dziesiątki potencjalnych kont do weryfikacji.</span>
+        </div>
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Weryfikuj konta przed uznaniem za należące do podmiotu. Nick 'jankowalski85' może być inną osobą. Wymagaj co najmniej: zbieżności nicku + treści + powiązań z innymi potwierdzonymi kontami.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">08</span>
+          <span class="lesson-title">Dark Web i monitoring zagrożeń</span>
+          <span class="lesson-dur">35 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Monitoring dark web w OSINT to legalna technika zbierania informacji o wyciekach danych, handlu skradzionymi danymi i zagrożeniach. Obsidian organizuje wyniki z narzędzi monitoringowych i buduje bazę incydentów.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Kontekst prawny i etyczny</div>
+            <p class="step-text">Monitoring dark web jest legalny gdy: zbieramy ogólnodostępne informacje, nie kupujemy/sprzedajemy danych, nie wchodzimy na fora wymagające weryfikacji działalnością przestępczą. OSINT = pasywna obserwacja, nie aktywna infiltracja.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Narzędzia monitoringu dark web</div>
+            <p class="step-text">Dedyczone platformy: Have I Been Pwned (hibp.com), IntelX.io, DeHashed, Leakix. Monitorują wycieki bez wchodzenia na .onion. Wyniki importuj do Obsidiana jako incydenty z metadanymi.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Notatki incydentów</div>
+            <p class="step-text">Każdy wyciek jako notatka-incydent: data wycieku, źródło (nazwa wycieku), typ danych, powiązane podmioty, ryzyko operacyjne. Linkuj do podmiotów z notatki POI.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Integracja z profilami podmiotów</div>
+            <p class="step-text">Sekcja 'Wycieki i incydenty' w szablonie POI. Dataview aggreguje incydenty per podmiot. Podmiot z 5 wyciekami email = inne ryzyko profilu niż podmiot bez śladów.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Notatka incydentu — wyciek danych</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+type: incydent
+kategoria: wyciek-danych
+data-wycieku: 2023-11-01
+data-odkrycia: 2024-01-15
+zrodlo-wycieku: "Collection #5 (2023)"
+typ-danych:
+  - email
+  - haslo-hash-bcrypt
+  - numer-telefonu
+podmiot-powiazany: "[[Jan Kowalski]]"
+ryzyko: wysokie
+status: odnotowany
+weryfikacja: potwierdzony
+zrodlo-info: "HaveIBeenPwned.com API"
+tags: [incydent, wyciek, podmiot/osoba]
+---
+
+# Wyciek: jan.kowalski@gmail.com — Collection #5
+
+&gt; [!DANGER] Dane wrażliwe — dostęp ograniczony
+&gt; Notatka zawiera informacje o skradzionych danych osobowych.
+
+## Szczegóły
+
+Email **jan.kowalski@gmail.com** (→ [[Jan Kowalski]]) pojawił się
+w wycieku Collection #5 z listopada 2023.
+
+| Pole         | Wartość                 |
+|--------------|-------------------------|
+| Email        | jan.kowalski@gmail.com  |
+| Hash hasła   | bcrypt (nieodwracalny)  |
+| Telefon      | +48 xxx xxx 890         |
+| Źródło wyc.  | Forum hakerskie (2023)  |
+
+## Implikacje operacyjne
+
+Email potencjalnie kompromitowany. Podmiot może być nieświadomy.
+Numer telefonu zbieżny z danymi z KRS → potwierdzenie tożsamości.
+
+## Powiązane incydenty
+
+- [[Incydent 2021-Adobe]] — ten sam email w wycieku Adobe 2021</code></pre>
+        </div>
+          
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Nigdy nie przechowuj w Obsidianie pełnych danych z wycieków (hasła, numery kart, pełne PESEL z baz). Przechowuj tylko referencje i metadane potwierdzające fakt wycieku.</span>
+        </div>
+        <div class="tip tip-info">
+          <span class="tip-label">ℹ️ INFO</span>
+          <span class="tip-text">HaveIBeenPwned oferuje bezpłatne API dla 1 domeny/emaila dziennie. IntelX.io i DeHashed mają płatne plany z większymi możliwościami — warto rozważyć przy regularnym monitoringu.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">09</span>
+          <span class="lesson-title">Eksport, raportowanie i Pandoc</span>
+          <span class="lesson-dur">30 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Finalny krok każdego śledztwa to raport. Obsidian eksportuje natywnie do PDF, ale Pandoc daje pełną kontrolę nad formatem: DOCX, LaTeX, HTML, ePub. Poznaj obie ścieżki i naucz się budować profesjonalne raporty z osadzonego contentu.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Natywny eksport PDF</div>
+            <p class="step-text">Ctrl+P → 'Export to PDF'. Renderuje Markdown z motywem CSS vault. Ograniczenia: brak kontroli nagłówka/stopki, brak numeracji stron (bez CSS custom). Dobre dla szybkich wydruków roboczych.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Better Export PDF (plugin)</div>
+            <p class="step-text">Plugin 'Better Export PDF' dodaje: niestandardowy CSS, nagłówek/stopka z numeracją stron, bookmark PDF, eksport wielu notatek naraz. Instaluj dla raportów formalnych.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Pandoc — eksport profesjonalny</div>
+            <p class="step-text">Plugin 'Obsidian Pandoc' + Pandoc zainstalowany lokalnie. Konwertuje .md → DOCX (Word), LaTeX/PDF, HTML, ePub. Obsługuje cytowania BibTeX. pandoc raport.md -o raport.docx --reference-doc=szablon.docx.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Raporty złożone z embedów</div>
+            <p class="step-text">Notatka raportu złożona z ![[sekcji]] osadzonych z notatek podmiotów. Eksport spłaszcza osadzenia do jednego pliku. Dynamiczny raport który aktualizuje się z notatkami źródłowymi.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Pandoc — komendy eksportu dla różnych formatów</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Pandoc — komendy eksportu OSINT
+
+## Instalacja Pandoc
+# Ubuntu/Debian
+sudo apt install pandoc
+
+# macOS
+brew install pandoc
+
+# Windows
+winget install JohnMacFarlane.Pandoc
+
+## Eksport do DOCX (z szablonem korporacyjnym)
+pandoc "05_Raporty/Raport Alfa.md" \
+  --output="raport_alfa_$(date +%Y%m%d).docx" \
+  --reference-doc="06_Szablony/szablon-korporacyjny.docx" \
+  --from=markdown+smart \
+  --toc --toc-depth=3
+
+## Eksport do PDF (przez LaTeX)
+pandoc "05_Raporty/Raport Alfa.md" \
+  --output="raport_alfa.pdf" \
+  --pdf-engine=xelatex \
+  --variable geometry:margin=2.5cm \
+  --variable fontsize=11pt \
+  --toc
+
+## Eksport HTML (standalone, z CSS)
+pandoc "05_Raporty/Raport Alfa.md" \
+  --output="raport_alfa.html" \
+  --standalone \
+  --css="styl-raport.css" \
+  --self-contained
+
+## Flatten embedów przed eksportem (skrypt Python)
+# python flatten-obsidian.py "Raport Alfa.md" &gt; "Raport Alfa Flat.md"</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Skrypt Python — flatten osadzonych notatek</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>#!/usr/bin/env python3
+"""flatten-obsidian.py — spłaszcza ![[osadzenia]] do eksportu Pandoc"""
+
+import re
+import sys
+from pathlib import Path
+
+VAULT_PATH = Path("/home/user/OSINT_Vault")
+
+def flatten(file_path: Path, depth=0, visited=None) -&gt; str:
+    if visited is None:
+        visited = set()
+    if file_path in visited or depth &gt; 10:
+        return f"[CIRCULAR REF: {file_path.name}]"
+    visited.add(file_path)
+
+    try:
+        content = file_path.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        return f"[MISSING: {file_path.name}]"
+
+    # Zamień ![[plik#sekcja]] na zawartość
+    def replace_embed(match):
+        embed_name = match.group(1).split("#")[0].strip()
+        candidates = list(VAULT_PATH.rglob(f"{embed_name}.md"))
+        if not candidates:
+            return f"[NOT FOUND: {embed_name}]"
+        return flatten(candidates[0], depth + 1, visited)
+
+    return re.sub(r"![[([^]]+)]]", replace_embed, content)
+
+if __name__ == "__main__":
+    input_file = Path(sys.argv[1])
+    print(flatten(input_file))</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Pandoc + szablon DOCX korporacyjny = raporty które wyglądają jak z działu prawnego. Utwórz raz szablon z nagłówkiem, stopką, stylami nagłówków i używaj przy każdym raporcie.</span>
+        </div>
+          
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">10</span>
+          <span class="lesson-title">OPSEC i bezpieczeństwo operacyjne</span>
+          <span class="lesson-dur">30 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Vault OSINT zawiera wrażliwe dane o podmiotach, metodach i niezakończonych śledztwach. Bezpieczeństwo operacyjne (OPSEC) to nie opcja — to wymóg. Zdefiniuj model zagrożeń i dobierz środki proporcjonalnie.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Model zagrożeń (Threat Modeling)</div>
+            <p class="step-text">Zidentyfikuj: co chronisz (dane podmiotów, tożsamość analityka, metody), przed kim (podmiot śledztwa, konkurencja, atak hakerski, kradzież urządzenia), jak bardzo (proporcjonalnie do wrażliwości materiałów i ryzyka).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Szyfrowanie vault — warstwy</div>
+            <p class="step-text">Warstwa 1: FDE (Full Disk Encryption) — BitLocker/FileVault/LUKS. Warstwa 2: Vault w kontenerze VeraCrypt (AES-256 + Serpent). Kontener montowany tylko podczas pracy. Hasło: 24+ znaki, passphrase.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Izolacja operacyjna</div>
+            <p class="step-text">Dla wysokiego ryzyka: Obsidian na izolowanej VM (Qubes OS, Whonix). Sieć: Tor Browser lub VPN dla zbierania danych (nie dla samego vaultu — działa offline). Osobne urządzenie dla najwrażliwszych materiałów.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Zarządzanie danymi po zakończeniu</div>
+            <p class="step-text">Polityka retencji: jak długo. Bezpieczne usuwanie: shred -n 3 (Linux), sdelete (Windows), Secure Empty Trash (macOS). Archiwizacja: zaszyfrowane .zip, usunięcie roboczego vaulta. Audyt kto ma co gdzie.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Polityka bezpieczeństwa projektu — szablon</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>---
+type: polityka-bezpieczenstwa
+projekt: Projekt-Alfa
+data-przeglądu: 2025-06-01
+klasyfikacja: WEWNĘTRZNE
+---
+
+# Polityka OPSEC — Projekt Alfa
+
+## Klasyfikacja danych
+
+| Kategoria          | Przykłady                   | Wymagana ochrona     |
+|--------------------|---------------------------  |----------------------|
+| KRYTYCZNE          | PESEL, hasła, biometria     | Szyfrowanie + limit  |
+| POUFNE             | Adresy, telefony, transakcje| Vault VeraCrypt      |
+| WEWNĘTRZNE         | Metody, narzędzia, raport   | Standard FDE         |
+| OTWARTE            | Dane z rej. publicznych     | Standardowe          |
+
+## Aktywne środki ochrony
+
+- [x] FDE: BitLocker/FileVault aktywny
+- [x] Vault: kontener VeraCrypt AES-256+Serpent
+- [x] Hasło vault: passphrase 24 znaki
+- [x] Screen-lock: 3 minuty
+- [ ] Izolowana VM dla materiałów KRYTYCZNYCH
+- [ ] Audyt dostępu: log kto otwierał vault
+
+## Procedura zakończenia projektu
+
+1. Eksport finalnego raportu (zaszyfrowany ZIP + hasło)
+2. Archiwizacja vault: gpg --symmetric vault.tar.gz
+3. Bezpieczne usunięcie: shred -n 3 -v OSINT_Vault/
+4. Weryfikacja: brak pozostałości w Koszu, temp
+5. Dokumentacja: log zamknięcia projektu</code></pre>
+        </div>
+          
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Metadane plików (.md, zdjęcia, PDF) ujawniają: autora, datę, urządzenie. ExifTool -all= plik przed udostępnieniem. Screenshoty z macOS zawierają nazwę systemu w EXIF.</span>
+        </div>
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Plugin Meld Encrypt szyfruje wybrane notatki hasłem bezpośrednio w vault. Dla notatek z PII lub metodami wywiadowczymi które musisz trzymać w vault ale z dodatkową warstwą ochrony.</span>
+        </div>
+          
+        <div class="checklist">
+          <div class="checklist-title">CHECKLIST</div>
+          <div class="check-item"><span class="check-icon">✓</span>Model zagrożeń udokumentowany i zatwierdzony</div><div class="check-item"><span class="check-icon">✓</span>FDE aktywny na wszystkich urządzeniach z vault</div><div class="check-item"><span class="check-icon">✓</span>Vault na kontenerze VeraCrypt</div><div class="check-item"><span class="check-icon">✓</span>Hasło minimum 20 znaków (passphrase)</div><div class="check-item"><span class="check-icon">✓</span>Screen-lock automatyczny po 3 minutach</div><div class="check-item"><span class="check-icon">✓</span>Polityka retencji zdefiniowana</div><div class="check-item"><span class="check-icon">✓</span>Procedura zamknięcia projektu przetestowana</div><div class="check-item"><span class="check-icon">✓</span>EXIF czyszczony przed udostępnieniem materiałów</div>
+        </div>
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">11</span>
+          <span class="lesson-title">Masterclass: Stack wtyczek i konfiguracja</span>
+          <span class="lesson-dur">50 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">Optymalny zestaw wtyczek dla profesjonalnego analityka OSINT: 15 wtyczek które razem tworzą kompletne środowisko pracy. Każda ma konkretną rolę. Strategia instalacji i konfiguracji dla maksymalnej wydajności.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Core stack — niezbędne 5</div>
+            <p class="step-text">Dataview (baza danych), Templater (szablony z JS), QuickAdd (makra), Obsidian Web Clipper (zbieranie z web), Omnisearch (wyszukiwanie). To minimum viable stack — zainstaluj najpierw te.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Analiza i wizualizacja — 5 kolejnych</div>
+            <p class="step-text">Graph Analysis (algorytmy sieci), Excalidraw (schematy), Map View (mapy geograficzne), Obsidian Timelines (oś czasu), Canvas (natywny whiteboard — bez instalacji).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Produktywność — 5 wspierających</div>
+            <p class="step-text">Tasks (zarządzanie zadaniami), Periodic Notes (dzienniki), Advanced Tables (tabele), Calendar (sidebar kalendarz), Hotkeys++ (dodatkowe skróty klawiszowe).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Bezpieczeństwo i eksport — 3 specjalistyczne</div>
+            <p class="step-text">Meld Encrypt (szyfrowanie notatek), Better Export PDF (profesjonalny PDF), Pandoc Plugin (Word, LaTeX, HTML). Zainstaluj tylko jeśli potrzebujesz.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Pełna lista wtyczek do instalacji (Obsidian Community Plugins)</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># CORE STACK — instaluj w tej kolejności
+✅ Dataview              (mgmeyers)         — baza danych
+✅ Templater             (SilentVoid13)     — szablony JS
+✅ QuickAdd              (chhoumann)        — makra i capture
+✅ Obsidian Web Clipper  (Obsidian team)    — zbieranie z web
+✅ Omnisearch            (scambier)         — wyszukiwanie
+
+# ANALIZA I WIZUALIZACJA
+✅ Graph Analysis        (SkepticMystic)    — algorytmy sieci
+✅ Excalidraw            (phibr0)           — schematy ręczne
+✅ Map View              (esm7)             — mapy Leaflet
+✅ Obsidian Timelines    (Darakah)          — oś czasu
+[Canvas — wbudowany, bez instalacji]
+
+# PRODUKTYWNOŚĆ
+✅ Tasks                 (obsidian-tasks-group) — zadania
+✅ Periodic Notes        (liamcain)         — dzienniki
+✅ Advanced Tables       (tgrosinger)       — tabele
+✅ Calendar              (liamcain)         — sidebar kalend.
+✅ Hotkeys++             (argenos)          — skróty
+
+# BEZPIECZEŃSTWO I EKSPORT
+✅ Meld Encrypt          (meld-cp)          — szyfrowanie notatek
+✅ Better Export PDF     (l1xnan)           — PDF profesjonalny
+✅ Obsidian Pandoc       (OliverBalfour)    — multi-format export
+
+# OPCJONALNE — dla zaawansowanych
+✅ Obsidian Git          (Vinzent03)        — backup + wersjonowanie
+✅ MetaEdit              (chhoumann)        — masowa edycja YAML
+✅ Linter                (platers)          — auto-formatowanie .md
+✅ Kanban                (mgmeyers)         — tablice Kanban w vault</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Plik OSINT_SETTINGS.json — zalecana konfiguracja vault</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code>// .obsidian/app.json — konfiguracja vault OSINT
+
+{
+  "promptDelete": false,
+  "defaultViewMode": "source",
+  "livePreview": true,
+  "foldHeading": true,
+  "foldIndent": true,
+  "showLineNumber": true,
+  "readableLineLength": true,
+  "strictLineBreaks": false,
+  "showFrontmatter": true,
+  "allowIframesByDefault": false,
+  "newFileLocation": "current",
+  "attachmentFolderPath": "./_załączniki",
+  "spellcheck": false,
+  "spellcheckLanguages": ["pl-PL"],
+  "tabSize": 2,
+  "useTab": false,
+  "autoConvertHtml": false,
+  "autoPairBrackets": true,
+  "vimMode": false,
+  "editorStatus": true
+}</code></pre>
+        </div>
+          
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Instaluj po jednej wtyczce tygodniowo i ucz się jej gruntownie. Stack 18 wtyczek zainstalowanych naraz = przeciążenie poznawcze i konflikty. Optymum to 10-12 aktywnych wtyczek.</span>
+        </div>
+        <div class="tip tip-warning">
+          <span class="tip-label">⚠️ UWAGA</span>
+          <span class="tip-text">Każda wtyczka to zewnętrzny kod z dostępem do plików vault. Przed instalacją: sprawdź reputację autora, gwiazdki GitHub, ostatni commit. Dla vault z wrażliwymi danymi — tylko zaufane źródła.</span>
+        </div>
+          
+        <div class="checklist">
+          <div class="checklist-title">CHECKLIST</div>
+          <div class="check-item"><span class="check-icon">✓</span>Core 5 wtyczek zainstalowane i skonfigurowane</div><div class="check-item"><span class="check-icon">✓</span>QuickAdd z makrami POI/firma/zdarzenie/capture</div><div class="check-item"><span class="check-icon">✓</span>Templater z formularzami interaktywnymi</div><div class="check-item"><span class="check-icon">✓</span>Graph Analysis — testy centralności działają</div><div class="check-item"><span class="check-icon">✓</span>Map View — pinezki lokalizacji widoczne</div><div class="check-item"><span class="check-icon">✓</span>Tasks — dashboard zadań dzienny działa</div><div class="check-item"><span class="check-icon">✓</span>Backup automatyczny skonfigurowany (Git lub skrypt)</div><div class="check-item"><span class="check-icon">✓</span>Eksport PDF przetestowany na przykładowym raporcie</div>
+        </div>
+        </div>
+      </div>
+      <div class="lesson" data-mod="advanced">
+        <button class="lesson-btn" onclick="toggleLesson(this)">
+          <span class="lesson-num">12</span>
+          <span class="lesson-title">Współpraca zespołowa i multi-analyst</span>
+          <span class="lesson-dur">30 min</span>
+          <span class="lesson-arrow">›</span>
+        </button>
+        <div class="lesson-body" hidden>
+          <div class="overview">OSINT w zespole wymaga koordynacji: kto pracuje nad czym, jak unikać nadpisywania danych, jak scalać ustalenia z różnych analityków. Obsidian nie ma natywnej funkcji współpracy — ale są sprawdzone strategie.</div>
+          
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Git jako platforma współpracy</div>
+            <p class="step-text">Wspólne repozytorium Git (prywatne, zaszyfrowane git-crypt). Każdy analityk pracuje na własnej gałęzi. Pull request = review ustaleń przed merge do gałęzi głównej. Historia commitów = audit trail kto co dodał.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title">Podział odpowiedzialności (Vault splits)</div>
+            <p class="step-text">Każdy analityk ma własną gałąź folderów: 01_Podmioty/JK/ (analityk 1), 01_Podmioty/AK/ (analityk 2). Merge przez Git. Wspólne pliki: Dashboard.md, taksonomia tagów, szablony — tylko przez PR.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title">Standard notatek dla teamów</div>
+            <p class="step-text">Pole 'operator' w frontmatter identyfikuje autora. Sekcja 'Notatki operatora' na końcu każdego pliku z podpisem i datą. Nigdy nie edytuj cudzej sekcji bez merge — zostawiaj komentarz jako nową notatkę.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <div class="step-title">Review i walidacja krzyżowa</div>
+            <p class="step-text">Dwóch analityków niezależnie weryfikuje kluczowe ustalenia. Plugin 'Review' dodaje adnotacje do notatek. Dataview: WHERE weryfikacja != 'potwierdzony' AND operator != 'twoj-nick' — lista do Twojego review.</p>
+          </div>
+        </div>
+          
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Workflow Git dla zespołu OSINT</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Workflow Git — team OSINT
+
+## Setup repozytorium (jednorazowo)
+git init OSINT_Vault
+cd OSINT_Vault
+git-crypt init                        # szyfrowanie wrażliwych plików
+git-crypt add-gpg-user &lt;GPG_KEY_ID&gt;   # dodaj klucze GPG analityków
+
+# .gitattributes — co szyfrować
+*.md filter=git-crypt diff=git-crypt
+_załączniki/** filter=git-crypt diff=git-crypt
+
+## Codzienny workflow analityka
+git checkout -b analityk-jan          # własna gałąź
+# ... praca: tworzenie i edycja notatek ...
+git add -p                            # selektywne dodawanie (nigdy -A)
+git commit -m "osoba: Jan Kowalski — dane KRS, LinkedIn"
+git push origin analityk-jan
+
+## Merge do main (po review)
+git checkout main
+git pull origin main
+git merge --no-ff analityk-jan
+git push origin main
+
+## Rozwiązywanie konfliktów w .md
+# Konflikt: dwie osoby edytowały tę samą sekcję
+# Użyj: git mergetool lub ręcznie przejrzyj diff
+# Zasada: merge content (nie overwrite)</code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-header">
+            <span class="code-label">Standard notatki dla zespołu — sekcja audytu</span>
+            <button class="copy-btn" onclick="copyCode(this)">Kopiuj</button>
+          </div>
+          <pre class="code-pre"><code># Jan Kowalski
+
+[... treść notatki ...]
+
+---
+
+## 📋 Log zmian — audit trail
+
+| Data       | Operator    | Zmiana                              |
+|------------|-------------|-------------------------------------|
+| 2024-11-15 | analityk-01 | Utworzenie notatki, dane podstawowe |
+| 2024-11-18 | analityk-02 | Dodanie danych KRS, powiązania firm |
+| 2024-11-20 | analityk-01 | Weryfikacja adresu — potwierdzony   |
+| 2024-11-22 | analityk-03 | Review i cross-check LinkedIn       |
+
+## ⚠️ Otwarte kwestie (dla zespołu)
+
+- [ ] @analityk-02: zweryfikuj transakcję z 2023-08 (numer konta)
+- [ ] @analityk-03: sprawdź alias "JK_PL" na Reddit/Wykop
+- [ ] TEAM: zdecydować o statusie — potwierdzony czy prawdopodobny?</code></pre>
+        </div>
+          
+        <div class="tip tip-info">
+          <span class="tip-label">ℹ️ INFO</span>
+          <span class="tip-text">Obsidian Publish NIE nadaje się do współpracy nad wrażliwymi materiałami. To publiczna platforma hostingowa. Dla prywatnej współpracy: Git + własny serwer (Gitea, Forgejo) lub zaszyfrowane repo prywatne.</span>
+        </div>
+        <div class="tip tip-pro">
+          <span class="tip-label">💡 PRO TIP</span>
+          <span class="tip-text">Dla małego zespołu (2-3 osoby) i mniej wrażliwych projektów: Syncthing + własny serwer synchronizacji. Każdy analityk ma lokalną kopię, zmiany synchronizują się P2P bez chmury.</span>
+        </div>
+          
+        </div>
+      </div>
+    </section>
+  <div class="no-results" id="no-results" hidden>Brak wyników wyszukiwania</div>
+</div>
+
+<footer class="footer">Obsidian OSINT Field Manual — materiały edukacyjne · 23.06.2026</footer>
+
+<script>
+// ── Module switching ───────────────────────────────────────────────
+function switchModule(id, btn) {
+  document.querySelectorAll('.module').forEach(m => m.classList.remove('visible'));
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.remove('active');
+    b.style.cssText = '';
+  });
+  const mod = document.getElementById('mod-' + id);
+  if (mod) {
+    mod.classList.add('visible');
+    const color = mod.dataset.color;
+    btn.classList.add('active');
+    btn.style.color = color;
+    btn.style.background = color + '12';
+    btn.style.borderColor = color + '33';
+  }
+}
+
+// ── Lesson toggle ───────────────────────────────────────────────────
+function toggleLesson(btn) {
+  const lesson = btn.closest('.lesson');
+  const body = lesson.querySelector('.lesson-body');
+  const open = !body.hidden;
+  body.hidden = open;
+  lesson.classList.toggle('open', !open);
+}
+
+// ── Search ─────────────────────────────────────────────────────────
+function filterLessons(q) {
+  const term = q.toLowerCase().trim();
+  let anyVisible = false;
+  document.querySelectorAll('.lesson').forEach(l => {
+    const text = l.textContent.toLowerCase();
+    const show = !term || text.includes(term);
+    l.style.display = show ? '' : 'none';
+    if (show) anyVisible = true;
+    // Auto-open matching lessons
+    if (term && show) {
+      l.querySelector('.lesson-body').hidden = false;
+      l.classList.add('open');
+    } else if (!term) {
+      l.querySelector('.lesson-body').hidden = true;
+      l.classList.remove('open');
+    }
+  });
+  document.getElementById('no-results').hidden = anyVisible || !term;
+}
+
+// ── Copy code ──────────────────────────────────────────────────────
+function copyCode(btn) {
+  const code = btn.closest('.code-wrap').querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = '✓ Skopiowano';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Kopiuj'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+// ── Init: show first module ────────────────────────────────────────
+document.querySelector('.module').classList.add('visible');
+</script>
+</body>
+</html>
