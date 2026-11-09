@@ -840,6 +840,27 @@ textarea{resize:vertical;min-height:56px}
 .cbox textarea{width:100%;min-height:140px;font:13px/1.5 var(--f-mono)}
 .cbox .help{gap:10px}
 .cbox code{font:12px var(--f-mono);background:var(--bg);padding:1px 4px;border-radius:3px}
+.app>*{min-width:0}
+.items,.cat,.section,.head{grid-template-columns:minmax(0,1fr)}
+.chip.arm{background:var(--bad)!important;color:#fff}
+.rbox{max-width:920px!important;display:flex;flex-direction:column}
+.rtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
+.rtools .sp{flex:1}
+.rwarn{padding:0 18px;color:var(--bad);font-size:12.5px}
+.rdoc{background:#fff;color:#1d221d;margin:12px 18px 18px;padding:32px 36px;border:1px solid var(--line);border-radius:4px;font:14px/1.5 var(--f-body);outline:none;min-height:300px}
+.rdoc:focus{box-shadow:0 0 0 2px var(--accent)}
+.rdoc h1{font:700 26px/1.15 var(--f-disp);margin:0 0 8px;color:#1f3a1f}
+.rdoc h2{font:600 19px var(--f-disp);margin:22px 0 6px;padding-bottom:3px;border-bottom:1px solid #c9d0c5;color:#2f4f2c}
+.rdoc p{margin:0 0 8px}
+.rdoc .meta{color:#5d665c;font-size:12.5px}
+.rdoc figure{margin:10px 0 14px}
+.rdoc figure img{width:100%;border:1px solid #c9d0c5}
+.rdoc figcaption{font-size:12px;color:#5d665c;font-style:italic;text-align:center;margin-top:4px}
+.rdoc table{border-collapse:collapse;width:100%;font-size:12px;margin:4px 0 12px}
+.rdoc th,.rdoc td{border:1px solid #c9d0c5;padding:3px 5px;vertical-align:top;text-align:left}
+.rdoc th{background:#e3e8df}
+.rscroll{overflow:auto;flex:1}
+@media (max-width:760px){.rdoc{margin:8px;padding:16px}.rdoc table{font-size:11px}.rtools{padding:8px}}
 .drawing .leaflet-interactive{pointer-events:none!important}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:1600;background:var(--panel);border-top:1px solid var(--line);border-radius:14px 14px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.25);max-height:72vh;overflow:auto;padding:4px max(14px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
 .sheet .sh{position:sticky;top:0;background:var(--panel);display:flex;align-items:center;gap:8px;padding:8px 0;z-index:1}
@@ -942,7 +963,7 @@ textarea{resize:vertical;min-height:56px}
     <div class="pane" id="p-pomoc" hidden><div class="help" id="helpPane"></div></div>
 
     <div class="foot">
-      <button class="btn primary" id="bReport">Pobierz raport</button>
+      <button class="btn primary" id="bReport">Raport DOCX / PDF</button>
       <button class="btn" id="bCopy">Kopiuj raport</button>
       <button class="btn" id="bExport">Zapisz plik</button>
       <button class="btn" id="bImport">Wczytaj plik</button>
@@ -962,6 +983,8 @@ textarea{resize:vertical;min-height:56px}
         <button class="chip tool" data-draw="polygon" title="Obszar (O)"><svg viewBox="0 0 24 24"><path d="M5 7l7-4 7 5-2 10H7z"/></svg><span class="lbl">Obszar</span></button>
       </div>
       <div class="group" data-manual hidden><button class="chip tool" id="bDoct" aria-pressed="true" title="Symbole doktrynalne (D)"><svg viewBox="0 0 24 24"><path d="M3 15h11v-4l7 6-7 6v-4H3z" transform="translate(0 -5)"/></svg><span class="lbl">Symbole</span></button><button class="chip tool" id="bBrush" hidden title="Popraw MCOO pędzlem (M)"><svg viewBox="0 0 24 24"><path d="M14 4l6 6-9 9H5v-6z"/><path d="M12 6l6 6"/></svg><span class="lbl">Popraw MCOO</span></button><button class="chip tool" id="bUndo" disabled title="Cofnij (Ctrl+Z)"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></button><button class="chip tool" id="bRedo" disabled title="Ponów (Ctrl+Y)"><svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></svg></button></div>
+      <div class="group" data-manual hidden aria-label="Edycja zaznaczonego obiektu"><button class="chip tool" id="bEd" disabled title="Edytuj zaznaczony obiekt (E)"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg><span class="lbl">Edytuj</span></button><button class="chip tool" id="bMv" disabled title="Przesuń zaznaczony obiekt"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg><span class="lbl">Przesuń</span></button><button class="chip tool" id="bSh" disabled title="Zmień kształt (wierzchołki)"><svg viewBox="0 0 24 24"><path d="M5 7l7-4 7 5-2 10H7z"/><circle cx="5" cy="7" r="1.6"/><circle cx="12" cy="3" r="1.6"/><circle cx="19" cy="8" r="1.6"/></svg><span class="lbl">Kształt</span></button><button class="chip tool" id="bDl" disabled title="Usuń zaznaczony obiekt (Delete)"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg><span class="lbl">Usuń</span></button></div>
+      <div class="group" data-manual hidden><button class="chip tool" id="bOcena" hidden title="Pokaż lub ukryj okno oceny rejonu"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="1"/><path d="M9 4V2h6v2M8 10h8M8 14h8M8 18h5"/></svg><span>Ocena</span></button><button class="chip tool" id="bRep" title="Raport: edycja i eksport DOCX / PDF"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h8"/></svg><span class="lbl">Raport</span></button></div>
       <div class="group"><button class="chip tool autob" id="bAuto" title="Automatyczna ocena rejonu (R)"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1" stroke-dasharray="3 2"/><path d="M8 15l3-4 2 2 3-4"/></svg><span>Zaznacz rejon</span></button></div>
     </div>
     <div class="blocked" id="blocked" hidden><b>Mapy się nie wczytują</b><span>Ta przeglądarka albo podgląd pliku blokuje mapy z internetu (np. podgląd w aplikacji Claude lub pliku na telefonie). Otwórz narzędzie w Safari lub Chrome z adresu internetowego, np. z GitHub Pages.</span><button class="btn sm" id="blkX">Zamknij</button></div>
@@ -1001,6 +1024,24 @@ textarea{resize:vertical;min-height:56px}
   </div>
 </div>
 
+<div class="modal" id="rmodal" hidden>
+  <div class="box rbox" role="dialog" aria-modal="true" aria-labelledby="rTitle">
+    <div class="mh"><h2 id="rTitle">Raport</h2><button class="btn sm" id="rX">Zamknij</button></div>
+    <div class="rtools">
+      <button class="btn primary" id="rDocx">Pobierz DOCX</button>
+      <button class="btn primary" id="rPdf">Pobierz PDF z warstwami</button>
+      <button class="btn" id="rMd">Markdown</button>
+      <span class="sp"></span>
+      <label class="check"><input type="checkbox" id="rFit" checked> Kadr: rejon oceny</label>
+      <button class="btn" id="rRegen">Odśwież z analizy</button>
+    </div>
+    <div class="rscroll">
+      <p class="hint" style="padding:8px 18px 0;margin:0">Kliknij w tekst raportu, aby go edytować: zmieniaj wnioski, dopisuj akapity, poprawiaj tabele. Pliki DOCX i PDF powstają z tej treści. PDF ma mapę z osobnymi warstwami (podkład, rzeźba, MCOO, siatka, infrastruktura, OCOKA, przeciwnik), które włączasz i wyłączasz w czytniku PDF.</p>
+      <div class="rwarn" id="rWarn"></div>
+      <div class="rdoc" id="rDoc" contenteditable="true" spellcheck="true" lang="pl"></div>
+    </div>
+  </div>
+</div>
 <div class="modal" id="cmodal" hidden>
   <div class="box cbox" role="dialog" aria-modal="true" aria-labelledby="cTitle">
     <div class="mh"><h2 id="cTitle">Przeciwnik po współrzędnych</h2><button class="btn sm" id="cX">Zamknij</button></div>
@@ -1102,12 +1143,16 @@ const HELP=`
 </ol>
 <h3>Edycja</h3>
 <ol>
+<li><b>Zaznacz obiekt</b> kliknięciem na mapie lub na liście (żółta obwódka). Przyciski nad mapą: <i>Edytuj</i> <kbd>E</kbd>, <i>Przesuń</i>, <i>Kształt</i> (wierzchołki), <i>Usuń</i> <kbd>Delete</kbd> (kliknij dwa razy). Na liście obiektów: ✎ edycja, ✕ usuwanie.</li>
 <li>Kliknij dowolny obiekt (także wygenerowany automatycznie), aby zmienić nazwę, kategorię, opis i parametry.</li>
 <li><i>Przesuń</i> przenosi cały obiekt, <i>Zmień kształt</i> pozwala przeciągać wierzchołki. Zakończ przyciskiem na dole mapy.</li>
 <li>Obiekty usuwasz w okienku albo krzyżykiem na liście w panelu.</li>
 <li><i>Popraw MCOO</i> <kbd>M</kbd> to pędzel do ręcznej korekty klasyfikacji terenu: wybierz klasę i rozmiar, maluj z wciśniętym przyciskiem myszy.</li>
 <li><kbd>Ctrl</kbd>+<kbd>Z</kbd> cofa ostatnią zmianę, <kbd>Ctrl</kbd>+<kbd>Y</kbd> ją ponawia (także przyciski ↶ ↷ nad mapą). Cofnąć można nawet <i>Wyczyść</i>.</li>
 </ol>
+<h3>Okno oceny i raport</h3>
+<p>Okno z wynikiem oceny zamykasz przyciskiem <i>Zamknij</i>, a otwierasz ponownie przyciskiem <i>Ocena</i> nad mapą. Pokazuje bieżące wnioski, także po Twoich poprawkach.</p>
+<p><i>Raport</i> (nad mapą lub w stopce panelu) otwiera edytor: treść raportu z mapą, wnioskami i tabelami możesz dowolnie poprawiać, a potem pobrać jako <b>DOCX</b> (edytowalny w Wordzie i LibreOffice), <b>PDF z warstwami</b> (mapa na pierwszej stronie, warstwy włączane w panelu „Warstwy” czytnika, np. Adobe Acrobat) albo Markdown. Opcja <i>Kadr: rejon oceny</i> dopasowuje mapę do zaznaczonego rejonu. Generator PDF pobiera przy pierwszym użyciu bibliotekę i czcionkę z polskimi znakami, więc wymaga internetu.</p>
 <h3>Podkłady i nakładki</h3>
 <p>W zakładce <i>Mapa i teren</i> wybierasz podkład z grup: topograficzne, zdjęcia lotnicze i satelitarne, Geoportal (mapa topograficzna, BDOT10k, ortofotomapa), wojskowe i historyczne (radzieckie mapy sztabowe). Nakładki: siatka MGRS, granice administracyjne, BDOT10k, koleje, szlaki i warstwa infrastruktury. Aktualne mapy wojskowe (np. WCG) nie są publicznie udostępniane, dlatego ich tu nie ma.</p>
 <h3>Rozpoznawanie infrastruktury</h3>
@@ -1342,6 +1387,7 @@ $('lOtm').addEventListener('click',()=>{const c=map.getCenter();$('lOtm').href=`
 // ================= Rysowanie =================
 const drawn=new L.FeatureGroup().addTo(map);
 const deco=new L.LayerGroup().addTo(map);
+let _decoCat=null;deco.addLayer=function(l){l._cat=_decoCat;return L.LayerGroup.prototype.addLayer.call(this,l)};
 const losLayer=new L.LayerGroup().addTo(map);
 
 const D=L.drawLocal.draw.handlers;
@@ -1487,6 +1533,7 @@ function decorate(){
   let nOP=0,nAA=0,nMC=0;
   drawn.eachLayer(l=>{
     const p=l.feature.properties,c=colOf(p.cat),isLine=l instanceof L.Polyline&&!(l instanceof L.Polygon);
+    _decoCat=p.cat;
     if(p.cat==='I')return;
     const hasSector=doct&&l instanceof L.Marker&&+p.range>0&&p.az!==''&&p.az!=null&&!isNaN(+p.az)&&+p.sw>0&&+p.sw<360;
     if(hasSector)deco.addLayer(L.polygon(wedge(l.getLatLng(),+p.az,+p.sw,+p.range),{color:c,weight:1.5,dashArray:'6 4',fillOpacity:.06,interactive:false}));
@@ -1506,7 +1553,7 @@ function decorate(){
       dlabel(ll[Math.floor((ll.length-1)/2)],mc?'MC'+(++nMC):'AA'+(++nAA),col,-(w/2/(40075016.686*Math.cos(ll[0].lat*Math.PI/180)/(256*2**map.getZoom())))-6);
     }
   });
-  updateLegend();
+  _decoCat=null;updateLegend();if(typeof drawSel==='function')drawSel();
 }
 function decoClassic(l,p,c){
   {
@@ -1588,7 +1635,7 @@ function startEdit(l){
   updateStatus();
 }
 function openEditor(l){
-  closeEditor();
+  closeEditor();selectObj(l);
   if(narrow()){
     $('shT').textContent=l.feature.properties.name||'Obiekt';
     const b=$('shB');b.innerHTML='';b.appendChild(popupFor(l));$('sheet').hidden=false;$('sheet').scrollTop=0;
@@ -1983,7 +2030,8 @@ function infraName(type,t){
   if(type==='substation'&&t.voltage)extra.push(String(t.voltage).split(';').map(v=>Math.round(+v/1000)).filter(Boolean).join('/')+' kV');
   if(type==='airfield'&&(t.icao||t.iata))extra.push(t.icao||t.iata);
   if(type==='mast'&&t.height)extra.push(t.height+' m');
-  return IT[type].n+(nm?' '+nm:'')+(extra.length?' ('+extra.join(', ')+')':'');
+  const base=nm&&nm.toLowerCase().includes(IT[type].n.split(/[ /]/)[0].toLowerCase())?nm:IT[type].n+(nm?' '+nm:'');
+  return base+(extra.length?' ('+extra.join(', ')+')':'');
 }
 function parseInfra(d,b,avoid){
   const items=[],cnt={};
@@ -2092,6 +2140,445 @@ function pointMenu(ll,auto){
 }
 map.on('contextmenu',e=>{if(!mode)pointMenu(e.latlng)});
 
+// ================= Zaznaczanie i przyciski edycji =================
+let selected=null;
+const selHL=new L.LayerGroup().addTo(map);
+function selectObj(l){selected=l&&drawn.hasLayer(l)?l:null;drawSel();updEditBtns()}
+function drawSel(){
+  selHL.clearLayers();
+  if(!selected||!drawn.hasLayer(selected)){selected=null;return}
+  if(selected instanceof L.Marker)selHL.addLayer(L.circleMarker(selected.getLatLng(),{radius:24,color:'#ffb300',weight:3,fill:false,dashArray:'5 4',interactive:false}));
+  else selHL.addLayer((selected instanceof L.Polygon?L.polygon:L.polyline)(selected.getLatLngs(),{color:'#ffb300',weight:(selected.options.weight||3)+8,opacity:.5,fill:false,interactive:false}));
+}
+function updEditBtns(){
+  const has=!!selected;
+  ['bEd','bMv','bDl'].forEach(id=>$(id).disabled=!has);
+  $('bSh').disabled=!has||selected instanceof L.Marker;
+  $('bEd').title=has?`Edytuj: ${selected.feature.properties.name||'obiekt'} (E)`:'Edytuj zaznaczony obiekt (E)';
+}
+drawn.on('layerremove',e=>{if(e.layer===selected)selectObj(null)});
+const needSel=()=>{if(selected)return true;toast('Najpierw kliknij obiekt na mapie albo na liście, żeby go zaznaczyć.');return false};
+let delArm=0;
+function deleteSelected(){
+  if(!needSel())return;
+  if(Date.now()-delArm>2500){delArm=Date.now();$('bDl').classList.add('arm');toast(`Usunąć „${selected.feature.properties.name||'obiekt'}”? Kliknij Usuń jeszcze raz.`);setTimeout(()=>$('bDl').classList.remove('arm'),2500);return}
+  delArm=0;$('bDl').classList.remove('arm');const nm=selected.feature.properties.name||'obiekt';
+  closeEditor();drawn.removeLayer(selected);decorate();render();save();toast('Usunięto: '+nm);
+}
+$('bEd').onclick=()=>{if(needSel())openEditor(selected)};
+$('bMv').onclick=()=>{if(needSel()){closeEditor();startMove(selected)}};
+$('bSh').onclick=()=>{if(needSel()&&!(selected instanceof L.Marker)){closeEditor();startEdit(selected)}};
+$('bDl').onclick=deleteSelected;
+
+// ================= Okno oceny (ponowne otwieranie) =================
+let lastSum=null;
+function updOcenaBtn(){$('bOcena').hidden=!lastSum}
+$('bOcena').onclick=()=>{const p=$('profile');if(!p.hidden&&p.dataset.kind==='ocena'){p.hidden=true;return}if(lastSum)showAutoPanel(lastSum)};
+
+// ================= Zrzut mapy warstwami =================
+function loadImg(src,cors){return new Promise((res,rej)=>{const i=new Image();if(cors)i.crossOrigin='anonymous';i.onload=()=>res(i);i.onerror=rej;i.src=src})}
+function newCanvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
+function relRect(el,cR){const r=el.getBoundingClientRect();return [r.left-cR.left,r.top-cR.top,r.width,r.height]}
+async function drawTiles(ctx,layer,S,cR,warn,label){
+  if(!layer||!layer._tiles)return 0;
+  const jobs=Object.values(layer._tiles).filter(t=>t.el&&t.current!==false).map(async t=>{
+    const [x,y,w,h]=relRect(t.el,cR);
+    if(t.el.tagName==='CANVAS'){ctx.drawImage(t.el,x*S,y*S,w*S,h*S);return 1}
+    if(!t.el.src)return 0;
+    try{const im=await loadImg(t.el.src,true);ctx.drawImage(im,x*S,y*S,w*S,h*S);return 1}catch(e){return -1}
+  });
+  const r=await Promise.all(jobs);
+  if(r.includes(-1)&&!r.includes(1))warn.push(`${label}: serwer nie pozwala na eksport kafli (CORS), warstwa jest pusta.`);
+  else if(r.includes(-1))warn.push(`${label}: część kafli nie została wyeksportowana.`);
+  return r.filter(x=>x===1).length;
+}
+function flatRings(ll){if(!Array.isArray(ll[0]))return [ll];if(!Array.isArray(ll[0][0]))return ll;return ll.flat()}
+function styleHtml(html,prop){const m=html.match(new RegExp(prop+':\\s*([^;"]+)'));return m?m[1].trim():null}
+const htmlText=h=>{const d=document.createElement('div');d.innerHTML=h;return d.textContent.trim()};
+function haloText(ctx,txt,x,y,color,font){ctx.font=font;ctx.lineJoin='round';ctx.strokeStyle='rgba(255,255,255,.95)';ctx.lineWidth=4;ctx.strokeText(txt,x,y);ctx.fillStyle=color;ctx.fillText(txt,x,y)}
+async function drawVec(ctx,layers,S){
+  ctx.save();ctx.scale(S,S);
+  const P=ll=>map.latLngToContainerPoint(ll);
+  for(const l of layers){
+    try{
+      if(l instanceof L.ImageOverlay){
+        if(!l._image||!l.getBounds)continue;
+        const a=P(l.getBounds().getNorthWest()),b=P(l.getBounds().getSouthEast());
+        ctx.globalAlpha=l.options.opacity??1;ctx.imageSmoothingEnabled=!/pix/.test(l.options.className||'');
+        ctx.drawImage(l._image,a.x,a.y,b.x-a.x,b.y-a.y);ctx.globalAlpha=1;ctx.imageSmoothingEnabled=true;continue;
+      }
+      if(l instanceof L.Path){
+        const o=l.options;if(o.opacity===0&&!o.fill)continue;
+        ctx.beginPath();
+        if(l instanceof L.CircleMarker){
+          const c=P(l.getLatLng());let r=o.radius||10;
+          if(l instanceof L.Circle)r=Math.abs(P(dest(l.getLatLng(),90,l.getRadius())).x-c.x);
+          ctx.arc(c.x,c.y,r,0,Math.PI*2);
+        }else{
+          const isPoly=l instanceof L.Polygon;
+          flatRings(l.getLatLngs()).forEach(ring=>{ring.forEach((q,i)=>{const p=P(q);i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)});if(isPoly)ctx.closePath()});
+        }
+        const fill=o.fill??(l instanceof L.Polygon||l instanceof L.CircleMarker);
+        if(fill&&(o.fillOpacity??.2)>0){ctx.globalAlpha=o.fillOpacity??.2;ctx.fillStyle=o.fillColor||o.color;ctx.fill('evenodd')}
+        if(o.stroke!==false&&(o.opacity??1)>0){
+          ctx.globalAlpha=o.opacity??1;ctx.strokeStyle=o.color||'#3388ff';ctx.lineWidth=o.weight??3;ctx.lineCap='round';ctx.lineJoin='round';
+          ctx.setLineDash(o.dashArray?String(o.dashArray).split(/[ ,]+/).map(Number):[]);ctx.stroke();ctx.setLineDash([]);
+        }
+        ctx.globalAlpha=1;continue;
+      }
+      if(l instanceof L.Marker){
+        const ic=l.options.icon&&l.options.icon.options;if(!ic||!ic.html)continue;
+        const p=P(l.getLatLng()),html=ic.html,cls=ic.className||'';
+        const sz=ic.iconSize?L.point(ic.iconSize):null,an=ic.iconAnchor?L.point(ic.iconAnchor):(sz?sz.divideBy(2):L.point(0,0));
+        const x0=p.x-an.x,y0=p.y-an.y;
+        ctx.textBaseline='top';ctx.textAlign='left';
+        if(/dlabelc/.test(cls)){ctx.textAlign='center';ctx.textBaseline='middle';haloText(ctx,htmlText(html),p.x,p.y,styleHtml(html,'color')||'#000','bold 13px "IBM Plex Mono",monospace');continue}
+        if(/dlabel/.test(cls)){haloText(ctx,htmlText(html),x0,y0,styleHtml(html,'color')||'#000','bold 13px "IBM Plex Mono",monospace');continue}
+        if(/glab/.test(cls)){
+          if(/gcap/.test(cls)){ctx.font='10px "IBM Plex Mono",monospace';const w=ctx.measureText(htmlText(html)).width;ctx.fillStyle='rgba(255,255,255,.85)';ctx.fillRect(x0-2,y0-1,w+6,14);ctx.fillStyle='#1f4fbf';ctx.fillText(htmlText(html),x0+1,y0+1)}
+          else haloText(ctx,htmlText(html),x0,y0,'#1f4fbf','600 11px "IBM Plex Mono",monospace');
+          continue;
+        }
+        const svg=html.match(/<svg[\s\S]*<\/svg>/);
+        if(svg&&!/iico|ksym/.test(html)){
+          let s=svg[0];if(!/xmlns=/.test(s))s=s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"');
+          const w=+(s.match(/width="([\d.]+)"/)||[0,sz?sz.x:24])[1],h=+(s.match(/height="([\d.]+)"/)||[0,sz?sz.y:24])[1];
+          const im=await loadImg('data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s));ctx.drawImage(im,x0,y0,w,h);continue;
+        }
+        if(/ksym/.test(html)){const c=styleHtml(html,'border-color')||'#7b3fa0',cx=x0+(sz?sz.x/2:14),cy=y0+(sz?sz.y/2:14);
+          ctx.beginPath();ctx.arc(cx,cy,12.5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2.5;ctx.strokeStyle=c;ctx.stroke();
+          ctx.fillStyle=c;ctx.font='bold 16px "Barlow Condensed",Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('K',cx,cy+1);continue}
+        if(/iico/.test(html)){const bg=styleHtml(html,'background')||'#37474f',fg=/color:\s*#c62828/.test(html)?'#c62828':'#fff',cx=x0+12,cy=y0+12;
+          ctx.fillStyle='#fff';roundRect(ctx,cx-12,cy-12,24,24,6);ctx.fill();ctx.fillStyle=bg;roundRect(ctx,cx-10,cy-10,20,20,4);ctx.fill();
+          ctx.fillStyle=fg;ctx.font='bold 10px "IBM Plex Mono",monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(htmlText(html),cx,cy+.5);continue}
+        if(/class="pin"/.test(html)){const bg=styleHtml(html,'background')||'#2166ac';ctx.beginPath();ctx.arc(p.x,p.y,9,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.beginPath();ctx.arc(p.x,p.y,6,0,Math.PI*2);ctx.fillStyle=bg;ctx.fill();continue}
+        if(/class="arrow"/.test(html)){const c=styleHtml(html,'border-bottom-color')||'#e07b00',deg=+((html.match(/rotate\(([-\d.]+)deg\)/)||[0,0])[1]);
+          ctx.save();ctx.translate(p.x,p.y);ctx.rotate(deg*Math.PI/180);ctx.beginPath();ctx.moveTo(0,-9);ctx.lineTo(9,9);ctx.lineTo(-9,9);ctx.closePath();ctx.fillStyle=c;ctx.fill();ctx.restore();continue}
+      }
+    }catch(e){}
+  }
+  ctx.restore();
+}
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function waitTiles(ms=5000){return new Promise(r=>{let done=false;const fin=()=>{if(!done){done=true;r()}};setTimeout(fin,ms);
+  const ls=[curBase,map.hasLayer(relief)?relief:null].filter(x=>x&&x.once&&x._tiles);if(!ls.length)return setTimeout(fin,800);
+  let n=ls.length;ls.forEach(l=>{if(l.isLoading&&!l.isLoading()){if(--n===0)setTimeout(fin,400)}else l.once('load',()=>{if(--n===0)setTimeout(fin,400)})})})}
+async function snapMap(fit){
+  closeEditor();selHL.clearLayers();
+  if(fit&&autoBox){map.fitBounds(autoBox,{padding:[20,20],animate:false});await waitTiles()}
+  else await new Promise(r=>setTimeout(r,200));
+  const S=2,sz=map.getSize(),cR=map.getContainer().getBoundingClientRect(),warn=[],W=sz.x*S,H=sz.y*S,layers=[];
+  const mk=(name,opaque)=>{const c=newCanvas(W,H);layers.push({name,canvas:c,opaque});return c.getContext('2d')};
+  // 1. podkład
+  {const ctx=mk('Podkład mapowy',true);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);await drawTiles(ctx,curBase,S,cR,warn,'Podkład „'+baseSel.value+'”')}
+  // 2. rzeźba
+  if(map.hasLayer(relief)||map.hasLayer(GUGIK)){const ctx=mk('Rzeźba terenu',false);
+    if(map.hasLayer(relief)){ctx.globalAlpha=relief.options.opacity;await drawTiles(ctx,relief,S,cR,warn,'Rzeźba');ctx.globalAlpha=1}
+    if(map.hasLayer(GUGIK)){ctx.globalAlpha=GUGIK.options.opacity;await drawTiles(ctx,GUGIK,S,cR,warn,'Cieniowanie GUGiK');ctx.globalAlpha=1}}
+  // 3. nakładki rastrowe
+  const ras=Object.entries(OVER).filter(([k,o])=>o.layer&&o.layer!==gridL&&map.hasLayer(o.layer));
+  if(ras.length){const ctx=mk('Nakładki',false);for(const [k,o] of ras)await drawTiles(ctx,o.layer,S,cR,warn,o.n)}
+  // 4. MCOO
+  if((MC&&map.hasLayer(mcoo))||(ovSlope&&map.hasLayer(ovSlope))){const ctx=mk('MCOO, martwe pola, nachylenie',false);
+    if(ovSlope&&map.hasLayer(ovSlope))await drawVec(ctx,[ovSlope],S);
+    if(MC&&map.hasLayer(mcoo))await drawTiles(ctx,mcoo,S,cR,warn,'MCOO')}
+  // 5. siatka
+  if(map.hasLayer(gridL)){const ctx=mk('Siatka MGRS',false);await drawVec(ctx,gridL.getLayers(),S)}
+  // 6. infrastruktura
+  const inf=drawn.getLayers().filter(l=>l.feature.properties.cat==='I');
+  if(inf.length&&map.getPane('infraM').style.display!=='none'){const ctx=mk('Infrastruktura',false);
+    await drawVec(ctx,inf.filter(l=>!(l instanceof L.Marker)),S);await drawVec(ctx,inf.filter(l=>l instanceof L.Marker),S)}
+  // 7. OCOKA
+  {const ctx=mk('Obiekty OCOKA',false);
+    const own=drawn.getLayers().filter(l=>CATS.some(c=>c.k===l.feature.properties.cat)),dk=deco.getLayers().filter(l=>l._cat!=='E');
+    await drawVec(ctx,[...autoBoxLayer.getLayers(),...losLayer.getLayers(),...own.filter(l=>!(l instanceof L.Marker)),...dk.filter(l=>!(l instanceof L.Marker)),...own.filter(l=>l instanceof L.Marker),...dk.filter(l=>l instanceof L.Marker)],S)}
+  // 8. przeciwnik
+  const en=drawn.getLayers().filter(l=>l.feature.properties.cat==='E');
+  if(en.length){const ctx=mk('Przeciwnik',false);const de=deco.getLayers().filter(l=>l._cat==='E'),vs=en.map(l=>l._vs).filter(Boolean);
+    await drawVec(ctx,[...vs,...en.filter(l=>!(l instanceof L.Marker)),...de.filter(l=>!(l instanceof L.Marker)),...en.filter(l=>l instanceof L.Marker),...de.filter(l=>l instanceof L.Marker)],S)}
+  drawSel();
+  const c=map.getCenter(),mpp=40075016.686*Math.cos(c.lat*Math.PI/180)/(256*2**map.getZoom());
+  const b=map.getBounds();
+  return {W,H,S,layers,warn,mpp,widthM:sz.x*mpp,nw:b.getNorthWest(),se:b.getSouthEast(),zoom:map.getZoom()};
+}
+function composite(snap){const c=newCanvas(snap.W,snap.H),x=c.getContext('2d');snap.layers.forEach(l=>x.drawImage(l.canvas,0,0));return c}
+const canvasBytes=(c,type,q)=>new Promise(r=>c.toBlob(b=>b.arrayBuffer().then(a=>r(new Uint8Array(a))),type,q));
+function niceScale(x){const p=10**Math.floor(Math.log10(x));for(const m of [1,1.5,2,2.5,3,4,5,7.5,10])if(m*p>=x*.95)return m*p;return 10*p}
+
+// ================= Edytor raportu =================
+let rSnap=null,rBusy=false;
+const stripAuto=t=>(t||'').replace(/^\[AUTO\]\s*/gm,'').trim();
+const escH=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function tableHTML(head,rows){return `<table><thead><tr>${head.map(h=>`<th>${escH(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${escH(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`}
+async function buildReportHTML(snap){
+  const d=new Date(),parts=[];
+  parts.push(`<h1>Analiza terenu OCOKA – ${escH(areaEl.value||'rejon bez nazwy')}</h1>`);
+  const meta=[`Data: ${d.toLocaleString('pl-PL')}`,`Podkład: ${baseSel.value}`];
+  if(autoBox){const nw=autoBox.getNorthWest(),se=autoBox.getSouthEast();meta.push(`Rejon oceny: ${mgrs(nw.lat,nw.lng)} – ${mgrs(se.lat,se.lng)}`)}
+  meta.push('Źródła: model terenu AWS Terrain Tiles (~30 m), OpenStreetMap, opracowanie własne');
+  parts.push(`<p class="meta">${meta.map(escH).join('<br>')}</p>`);
+  if(snap){
+    const sc=niceScale(snap.widthM/0.25);
+    parts.push(`<figure data-map><img alt="Mapa rejonu" src="${composite(snap).toDataURL('image/jpeg',.88)}"><figcaption>Mapa rejonu: ${escH(baseSel.value)}. Narożniki: ${mgrs(snap.nw.lat,snap.nw.lng)} (NW), ${mgrs(snap.se.lat,snap.se.lng)} (SE). Szerokość kadru ok. ${fmtDist(snap.widthM)}. Warstwy: ${snap.layers.map(l=>l.name).join(', ')}.</figcaption></figure>`);
+  }
+  if(lastSum){const s=lastSum;
+    parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'—':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}; MCOO: teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}.</p>`)}
+  const cl=t=>(t||'—').replace(/\n/g,' ');
+  const en=drawn.getLayers().filter(l=>l.feature.properties.cat==='E');
+  if(en.length||notes.E.trim()){
+    parts.push(`<h2>Przeciwnik i siły własne</h2><p><b>Ocena przeciwnika:</b> ${escH(notes.E.trim()||'—')}</p>`);
+    if(en.length)parts.push(tableHTML(['Oznaczenie','Strona','Rodzaj','Szczebel','Pewność','MGRS','Uwagi'],en.map(l=>{const p=l.feature.properties,a=anchor(l),isPt=l instanceof L.Marker;
+      return [p.name||'—',p.side==='własne'?'własne':'przeciwnik',kind(l),isPt?(ECH[p.ech||'']||'—'):'—',p.conf==='prz'?'przypuszczalny':'potwierdzony',mgrs(a.lat,a.lng),cl([p.note,p.vs?'pole widzenia: '+p.vs:'',isPt&&p.mv!==''&&p.mv!=null?'kierunek ruchu '+p.mv+'°':''].filter(Boolean).join('; '))]})));
+  }
+  const inf=drawn.getLayers().filter(l=>l.feature.properties.cat==='I');
+  if(inf.length){
+    inf.sort((a,b)=>String(a.feature.properties.itype).localeCompare(b.feature.properties.itype));
+    parts.push(`<h2>Infrastruktura</h2><p>${escH(stripAuto(notes.I))}</p>`);
+    parts.push(tableHTML(['Obiekt','Rodzaj','MGRS','Wymiar','Znaczenie'],inf.map(l=>{const p=l.feature.properties,a=anchor(l);return [p.name||'—',kind(l),mgrs(a.lat,a.lng),measure(l)||'—',cl(p.note)]})));
+  }
+  for(const c of CATS){
+    parts.push(`<h2>${c.l} – ${escH(c.name)} (${c.en})</h2><p><b>Wnioski:</b> ${escH(stripAuto(notes[c.k])||'—').replace(/\n/g,'<br>')}</p>`);
+    const ls=drawn.getLayers().filter(l=>l.feature.properties.cat===c.k);
+    if(!ls.length)continue;
+    const rows=[];
+    for(const l of ls){const p=l.feature.properties,a=anchor(l);let h='—';try{h=String(Math.round(await elevAt(a,13)))}catch(e){}
+      rows.push([p.name||'—',kind(l),mgrs(a.lat,a.lng),h,[measure(l),+p.range>0?`zasięg ${p.range} m`:''].filter(Boolean).join(', ')||'—',cl(p.note)])}
+    parts.push(tableHTML(['Obiekt','Typ','MGRS','Wys. [m]','Wymiar','Opis'],rows));
+  }
+  parts.push(`<p class="meta">Opracowano w OCOKA Planer. Wnioski oznaczone jako automatyczne wymagają weryfikacji na mapie, ortofotomapie i w terenie.</p>`);
+  return parts.join('\n');
+}
+async function openReport(regen){
+  const m=$('rmodal');m.hidden=false;
+  if($('rDoc').innerHTML.trim()&&!regen&&rSnap)return;
+  if(rBusy)return;rBusy=true;
+  $('rDoc').innerHTML='<p class="meta">Przygotowuję mapę i treść raportu…</p>';
+  try{
+    m.style.visibility='hidden';
+    rSnap=await snapMap($('rFit').checked);
+    m.style.visibility='';
+    $('rDoc').innerHTML=await buildReportHTML(rSnap);
+    $('rWarn').textContent=rSnap.warn.length?'Uwaga: '+rSnap.warn.join(' '):'';
+  }catch(e){console.error(e);m.style.visibility='';$('rDoc').innerHTML='<p>Nie udało się przygotować raportu.</p>'}
+  rBusy=false;
+}
+
+// ================= Eksport: DOCX (OOXML, bez bibliotek) =================
+const CRC_T=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC_T[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zipStore(files){
+  const enc=new TextEncoder(),chunks=[],cen=[];let off=0;
+  for(const f of files){
+    const name=enc.encode(f.name),data=typeof f.data==='string'?enc.encode(f.data):f.data,crc=crc32(data);
+    const h=new DataView(new ArrayBuffer(30));h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);
+    h.setUint16(10,0,true);h.setUint16(12,0x21,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);h.setUint16(26,name.length,true);h.setUint16(28,0,true);
+    chunks.push(new Uint8Array(h.buffer),name,data);
+    const c=new DataView(new ArrayBuffer(46));c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);
+    c.setUint16(12,0,true);c.setUint16(14,0x21,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);
+    c.setUint32(42,off,true);cen.push(new Uint8Array(c.buffer),name);
+    off+=30+name.length+data.length;
+  }
+  const cenLen=cen.reduce((s,x)=>s+x.length,0),e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cenLen,true);e.setUint32(16,off,true);
+  return new Blob([...chunks,...cen,new Uint8Array(e.buffer)],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+}
+const xe=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function docxRuns(node,fmt={}){
+  let out='';
+  node.childNodes.forEach(n=>{
+    if(n.nodeType===3){const t=n.textContent.replace(/\s+/g,' ');if(t)out+=`<w:r><w:rPr>${fmt.b?'<w:b/>':''}${fmt.i?'<w:i/>':''}${fmt.sz?`<w:sz w:val="${fmt.sz}"/>`:''}${fmt.color?`<w:color w:val="${fmt.color}"/>`:''}</w:rPr><w:t xml:space="preserve">${xe(t)}</w:t></w:r>`}
+    else if(n.nodeType===1){const tg=n.tagName;
+      if(tg==='BR')out+='<w:r><w:br/></w:r>';
+      else out+=docxRuns(n,{...fmt,b:fmt.b||tg==='B'||tg==='STRONG'||tg==='TH',i:fmt.i||tg==='I'||tg==='EM'})}
+  });
+  return out;
+}
+const para=(runs,style,extra='')=>`<w:p><w:pPr>${style?`<w:pStyle w:val="${style}"/>`:''}${extra}</w:pPr>${runs}</w:p>`;
+function docxTable(tb){
+  const rows=[...tb.querySelectorAll('tr')];if(!rows.length)return '';
+  const ncol=Math.max(...rows.map(r=>r.children.length)),tw=9638,cw=Math.floor(tw/ncol);
+  const brd='<w:tblBorders>'+['top','left','bottom','right','insideH','insideV'].map(s=>`<w:${s} w:val="single" w:sz="4" w:space="0" w:color="9AA597"/>`).join('')+'</w:tblBorders>';
+  let x=`<w:tbl><w:tblPr><w:tblW w:w="${tw}" w:type="dxa"/>${brd}<w:tblLayout w:type="autofit"/><w:tblCellMar><w:left w:w="70" w:type="dxa"/><w:right w:w="70" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${'<w:gridCol w:w="'+cw+'"/>'.repeat(ncol)}</w:tblGrid>`;
+  rows.forEach((r,ri)=>{const head=r.closest('thead')||[...r.children].every(c=>c.tagName==='TH');
+    x+=`<w:tr>${head?'<w:trPr><w:tblHeader/></w:trPr>':''}`;
+    [...r.children].forEach(c=>{x+=`<w:tc><w:tcPr><w:tcW w:w="${cw}" w:type="dxa"/>${head?'<w:shd w:val="clear" w:color="auto" w:fill="E3E8DF"/>':''}</w:tcPr>${para(docxRuns(c,{b:head,sz:17}),'',`<w:spacing w:before="20" w:after="20"/>`)}</w:tc>`});
+    x+='</w:tr>'});
+  return x+'</w:tbl>'+para('');
+}
+function docxImage(rid,wEmu,hEmu,id){
+  return `<w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="${wEmu}" cy="${hEmu}"/><wp:docPr id="${id}" name="Mapa ${id}"/><wp:cNvGraphicFramePr><a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/></wp:cNvGraphicFramePr><a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:nvPicPr><pic:cNvPr id="${id}" name="mapa${id}.jpg"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="${rid}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${wEmu}" cy="${hEmu}"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>`;
+}
+async function buildDocx(){
+  const doc=$('rDoc'),media=[];let body='',imgId=1;
+  const walk=async el=>{
+    for(const n of [...el.children]){
+      const tg=n.tagName;
+      if(tg==='H1')body+=para(docxRuns(n),'Heading1');
+      else if(tg==='H2')body+=para(docxRuns(n),'Heading2');
+      else if(tg==='H3')body+=para(docxRuns(n),'Heading3');
+      else if(tg==='TABLE')body+=docxTable(n);
+      else if(tg==='FIGURE'||tg==='IMG'){
+        const img=tg==='IMG'?n:n.querySelector('img');
+        if(img&&img.src){const bytes=new Uint8Array(await (await fetch(img.src)).arrayBuffer());const iw=img.naturalWidth||1600,ih=img.naturalHeight||1000;
+          const w=6120000,h=Math.round(w*ih/iw);const rid='rIdImg'+imgId,ext=/png/.test(img.src.slice(0,30))?'png':'jpeg';media.push({name:`word/media/mapa${imgId}.${ext==='png'?'png':'jpg'}`,data:bytes,rid,ext});
+          body+=docxImage(rid,w,h,imgId);imgId++}
+        const cap=n.querySelector&&n.querySelector('figcaption');if(cap)body+=para(docxRuns(cap),'Caption');
+      }
+      else if(tg==='UL'||tg==='OL')[...n.children].forEach((li,i)=>body+=para(`<w:r><w:t xml:space="preserve">${tg==='OL'?(i+1)+'. ':'• '}</w:t></w:r>`+docxRuns(li),''));
+      else if(tg==='DIV'||tg==='SECTION')await walk(n);
+      else if(n.textContent.trim()||n.querySelector('br'))body+=para(docxRuns(n),n.classList.contains('meta')?'Meta':'');
+    }
+  };
+  await walk(doc);
+  const ns='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"';
+  const document=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${ns}><w:body>${body}<w:sectPr><w:footerReference w:type="default" r:id="rIdFtr"/><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="567" w:footer="567" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+  const st=(id,name,rpr,ppr='',based='Normal')=>`<w:style w:type="paragraph" w:styleId="${id}"><w:name w:val="${name}"/><w:basedOn w:val="${based}"/><w:next w:val="Normal"/><w:qFormat/><w:pPr>${ppr}</w:pPr><w:rPr>${rpr}</w:rPr></w:style>`;
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri" w:eastAsia="Calibri"/><w:sz w:val="21"/><w:lang w:val="pl-PL"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="100" w:line="264" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>
+<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>
+${st('Heading1','heading 1','<w:b/><w:color w:val="1F3A1F"/><w:sz w:val="34"/>','<w:keepNext/><w:spacing w:before="0" w:after="160"/><w:outlineLvl w:val="0"/>')}
+${st('Heading2','heading 2','<w:b/><w:color w:val="2F4F2C"/><w:sz w:val="26"/>','<w:keepNext/><w:spacing w:before="280" w:after="100"/><w:pBdr><w:bottom w:val="single" w:sz="6" w:space="2" w:color="9AA597"/></w:pBdr><w:outlineLvl w:val="1"/>')}
+${st('Heading3','heading 3','<w:b/><w:sz w:val="22"/>','<w:keepNext/><w:spacing w:before="200" w:after="80"/><w:outlineLvl w:val="2"/>')}
+${st('Caption','caption','<w:i/><w:color w:val="5D665C"/><w:sz w:val="17"/>','<w:jc w:val="center"/><w:spacing w:after="200"/>')}
+${st('Meta','Meta','<w:color w:val="5D665C"/><w:sz w:val="18"/>')}
+${st('Footer','footer','<w:color w:val="5D665C"/><w:sz w:val="16"/>','<w:jc w:val="center"/>')}
+</w:styles>`;
+  const footer=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr ${ns}><w:p><w:pPr><w:pStyle w:val="Footer"/></w:pPr><w:r><w:t xml:space="preserve">OCOKA Planer · ${xe(areaEl.value||'analiza terenu')} · strona </w:t></w:r><w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r><w:r><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:t>1</w:t></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r></w:p></w:ftr>`;
+  const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rIdFtr" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>${media.map(m=>`<Relationship Id="${m.rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="${m.name.replace('word/','')}"/>`).join('')}</Relationships>`;
+  const now=new Date().toISOString().replace(/\.\d+Z$/,'Z');
+  const core=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${xe(doc.querySelector('h1')?doc.querySelector('h1').textContent:'Analiza terenu OCOKA')}</dc:title><dc:creator>OCOKA Planer</dc:creator><dc:language>pl-PL</dc:language><dcterms:created xsi:type="dcterms:W3CDTF">${now}</dcterms:created></cp:coreProperties>`;
+  const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Default Extension="jpg" ContentType="image/jpeg"/><Default Extension="png" ContentType="image/png"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>`;
+  const root=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/></Relationships>`;
+  return zipStore([{name:'[Content_Types].xml',data:ct},{name:'_rels/.rels',data:root},{name:'docProps/core.xml',data:core},{name:'word/document.xml',data:document},{name:'word/styles.xml',data:styles},{name:'word/footer1.xml',data:footer},{name:'word/_rels/document.xml.rels',data:rels},...media.map(m=>({name:m.name,data:m.data}))]);
+}
+
+// ================= Eksport: PDF z warstwami (pdf-lib, warstwy OCG) =================
+const LIBS={pdf:'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js',fk:'https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js',
+  reg:'https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/DejaVuSans.ttf',bold:'https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/DejaVuSans-Bold.ttf'};
+const loadScript=src=>new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)});
+let fontCache=null;
+async function pdfLibs(){
+  if(!window.PDFLib)await loadScript(LIBS.pdf);
+  if(!window.fontkit)await loadScript(LIBS.fk);
+  if(!fontCache){const [a,b]=await Promise.all([LIBS.reg,LIBS.bold].map(u=>fetch(u).then(r=>{if(!r.ok)throw new Error('font');return r.arrayBuffer()})));fontCache={reg:a,bold:b}}
+}
+async function buildPdf(){
+  await pdfLibs();
+  const {PDFDocument,rgb,PDFName,PDFOperator,PDFHexString,PDFDict}=PDFLib;
+  const doc=await PDFDocument.create();doc.registerFontkit(fontkit);
+  const F=await doc.embedFont(fontCache.reg,{subset:true}),FB=await doc.embedFont(fontCache.bold,{subset:true});
+  const title=($('rDoc').querySelector('h1')||{textContent:'Analiza terenu OCOKA'}).textContent.trim();
+  doc.setTitle(title);doc.setCreator('OCOKA Planer');doc.setProducer('OCOKA Planer (pdf-lib)');doc.setLanguage('pl-PL');
+  const ink=rgb(.11,.13,.11),muted=rgb(.36,.4,.36),line=rgb(.6,.65,.59),acc=rgb(.24,.35,.23);
+  // --- strona mapy (A4 poziomo) z warstwami ---
+  const snap=rSnap,hasMap=snap&&$('rDoc').querySelector('figure[data-map],img');
+  if(hasMap){
+    const pg=doc.addPage([841.89,595.28]),M=28;
+    pg.drawText(title,{x:M,y:595.28-M-14,size:14,font:FB,color:ink});
+    const sub=`Podkład: ${baseSel.value} · NW ${mgrs(snap.nw.lat,snap.nw.lng)} · SE ${mgrs(snap.se.lat,snap.se.lng)}`;
+    pg.drawText(sub,{x:M,y:595.28-M-30,size:8.5,font:F,color:muted});
+    const aw=841.89-2*M,ah=595.28-2*M-58,k=Math.min(aw/snap.W,ah/snap.H),iw=snap.W*k,ih=snap.H*k,ix=M+(aw-iw)/2,iy=M+22+(ah-ih)/2;
+    const refs=[];
+    for(let i=0;i<snap.layers.length;i++){
+      const Lr=snap.layers[i];
+      const img=Lr.opaque?await doc.embedJpg(await canvasBytes(Lr.canvas,'image/jpeg',.9)):await doc.embedPng(await canvasBytes(Lr.canvas,'image/png'));
+      const ref=doc.context.register(doc.context.obj({Type:'OCG',Name:PDFHexString.fromText(Lr.name)}));refs.push(ref);
+      pg.pushOperators(PDFOperator.of('BDC',[PDFName.of('OC'),PDFName.of('OC'+i)]));
+      pg.drawImage(img,{x:ix,y:iy,width:iw,height:ih});
+      pg.pushOperators(PDFOperator.of('EMC'));
+    }
+    pg.drawRectangle({x:ix,y:iy,width:iw,height:ih,borderColor:line,borderWidth:.8});
+    const res=pg.node.Resources();let props=res.lookupMaybe(PDFName.of('Properties'),PDFDict);
+    if(!props){props=doc.context.obj({});res.set(PDFName.of('Properties'),props)}
+    refs.forEach((r,i)=>props.set(PDFName.of('OC'+i),r));
+    doc.catalog.set(PDFName.of('OCProperties'),doc.context.obj({OCGs:refs,D:{Name:PDFHexString.fromText('Warstwy mapy OCOKA'),Order:refs,ON:refs,OFF:[],BaseState:'ON'}}));
+    const scale=niceScale(snap.widthM/(iw*0.000352778));
+    pg.drawText(`Skala ok. 1:${scale.toLocaleString('pl-PL')} (A4) · szerokość kadru ${fmtDist(snap.widthM)} · warstwy do włączania w panelu „Warstwy” czytnika PDF`,{x:M,y:M+8,size:7.5,font:F,color:muted});
+    // strzałka północy
+    const nx=ix+iw-22,ny=iy+ih-40;pg.drawSvgPath('M 0 0 L 7 20 L 0 15 L -7 20 Z',{x:nx,y:ny+28,color:ink,scale:1});pg.drawText('N',{x:nx-3.5,y:ny+30,size:9,font:FB,color:ink});
+  }
+  // --- tekst (A4 pionowo) ---
+  const PW=595.28,PH=841.89,M=48,TW=PW-2*M;let page=null,y=0;
+  const newPage=()=>{page=doc.addPage([PW,PH]);y=PH-M};
+  const ensure=h=>{if(!page||y-h<M+20)newPage()};
+  const wrapRuns=(runs,size,maxW)=>{ // runs: [{t,b}]
+    const lines=[];let cur=[],w=0;const sp=F.widthOfTextAtSize(' ',size);
+    const push=()=>{lines.push(cur);cur=[];w=0};
+    runs.forEach(r=>{
+      if(r.br){push();return}
+      r.t.split(/(\s+)/).forEach(tok=>{if(!tok)return;const f=r.b?FB:F;
+        if(/^\s+$/.test(tok)){if(cur.length){cur.push({t:' ',f});w+=sp}return}
+        let tw=f.widthOfTextAtSize(tok,size);
+        if(w+tw>maxW&&cur.length){while(cur.length&&cur[cur.length-1].t===' ')cur.pop();push()}
+        while(tw>maxW){let n=tok.length;while(n>1&&f.widthOfTextAtSize(tok.slice(0,n),size)>maxW)n--;cur.push({t:tok.slice(0,n),f});push();tok=tok.slice(n);tw=f.widthOfTextAtSize(tok,size)}
+        cur.push({t:tok,f});w+=tw})});
+    if(cur.length)push();return lines;
+  };
+  const runsOf=(node,b=false,acc=[])=>{node.childNodes.forEach(n=>{if(n.nodeType===3){const t=n.textContent.replace(/\s+/g,' ');if(t)acc.push({t,b})}else if(n.nodeType===1){if(n.tagName==='BR')acc.push({br:true});else runsOf(n,b||/^(B|STRONG|TH)$/.test(n.tagName),acc)}});return acc};
+  const merge=ln=>{const out=[];ln.forEach(s=>{const l=out[out.length-1];if(l&&l.f===s.f)l.t+=s.t;else out.push({t:s.t,f:s.f})});return out};
+  const drawLines=(lines,size,x,lh,color)=>{lines.forEach(ln=>{ensure(lh);let cx=x;merge(ln).forEach(seg=>{page.drawText(seg.t,{x:cx,y:y-size,size,font:seg.f,color});cx+=seg.f.widthOfTextAtSize(seg.t,size)});y-=lh})};
+  const block=(node,size,gapB,gapA,color=ink,bold=false)=>{const lines=wrapRuns(runsOf(node,bold),size,TW);y-=gapB;drawLines(lines,size,M,size*1.38,color);y-=gapA};
+  const table=tb=>{
+    const rows=[...tb.querySelectorAll('tr')].map(r=>({head:!!r.closest('thead')||[...r.children].every(c=>c.tagName==='TH'),cells:[...r.children].map(c=>runsOf(c,c.tagName==='TH'))}));
+    if(!rows.length)return;
+    const n=Math.max(...rows.map(r=>r.cells.length)),fs=7.6,pad=3,lh=fs*1.3;
+    const cellW=(c,fn)=>c?fn(c):0;
+    const minW=Array.from({length:n},(_,i)=>Math.max(24,...rows.map(r=>cellW(r.cells[i],c=>Math.max(0,...c.filter(x=>x.t).flatMap(x=>x.t.split(/\s+/).map(w=>(x.b?FB:F).widthOfTextAtSize(w,fs)))))+2*pad)));
+    const nat=Array.from({length:n},(_,i)=>Math.max(minW[i],Math.min(190,Math.max(...rows.map(r=>cellW(r.cells[i],c=>c.reduce((s,x)=>s+(x.t?(x.b?FB:F).widthOfTextAtSize(x.t,fs):0),0))+2*pad)))));
+    const tot=nat.reduce((a,b)=>a+b,0),totMin=minW.reduce((a,b)=>a+b,0);
+    const cw=tot<=TW?nat.map(w=>w*TW/tot):totMin>=TW?minW.map(w=>w*TW/totMin):nat.map((w,i)=>minW[i]+(w-minW[i])*(TW-totMin)/(tot-totMin));
+    const layout=r=>{const ls=r.cells.map((c,i)=>wrapRuns(c,fs,cw[i]-2*pad));return {ls,h:Math.max(1,...ls.map(l=>l.length))*lh+2*pad}};
+    const head=rows.find(r=>r.head);const headL=head?layout(head):null;
+    const drawRow=(r,L2)=>{let x=M;
+      if(r.head)page.drawRectangle({x:M,y:y-L2.h,width:TW,height:L2.h,color:rgb(.89,.91,.87)});
+      L2.ls.forEach((ls,i)=>{let yy=y-pad;ls.forEach(ln=>{let cx=x+pad;merge(ln).forEach(seg=>{page.drawText(seg.t,{x:cx,y:yy-fs,size:fs,font:seg.f,color:ink});cx+=seg.f.widthOfTextAtSize(seg.t,fs)});yy-=lh});
+        page.drawRectangle({x,y:y-L2.h,width:cw[i],height:L2.h,borderColor:line,borderWidth:.5});x+=cw[i]});
+      y-=L2.h};
+    y-=4;
+    rows.forEach((r,ri)=>{const L2=r===head?headL:layout(r);
+      if(!page||y-L2.h<M+20){newPage();if(head&&r!==head)drawRow(head,headL)}
+      drawRow(r,L2)});
+    y-=10;
+  };
+  newPage();
+  for(const n of [...$('rDoc').children]){
+    const tg=n.tagName;
+    if(tg==='H1')block(n,17,0,8,acc,true);
+    else if(tg==='H2'){ensure(60);block(n,12.5,12,2,acc,true);page.drawLine({start:{x:M,y:y+2},end:{x:PW-M,y:y+2},thickness:.6,color:line});y-=6}
+    else if(tg==='H3')block(n,11,8,2,ink,true);
+    else if(tg==='TABLE')table(n);
+    else if(tg==='FIGURE'){const cap=n.querySelector('figcaption');ensure(30);
+      if(hasMap){const t=document.createElement('p');t.textContent='Mapa rejonu z warstwami: strona 1. '+(cap?cap.textContent:'');block(t,8.5,2,8,muted)}}
+    else if(tg==='UL'||tg==='OL')[...n.children].forEach((li,i)=>{const p=document.createElement('p');p.innerHTML=(tg==='OL'?(i+1)+'. ':'• ')+li.innerHTML;block(p,9.5,0,2)});
+    else if(n.textContent.trim())block(n,n.classList.contains('meta')?8.5:9.5,0,6,n.classList.contains('meta')?muted:ink);
+  }
+  const pages=doc.getPages();
+  pages.forEach((p,i)=>{const {width}=p.getSize();const t=`OCOKA Planer · ${areaEl.value||'analiza terenu'} · strona ${i+1}/${pages.length}`;p.drawText(t,{x:(width-F.widthOfTextAtSize(t,7))/2,y:16,size:7,font:F,color:muted})});
+  return new Blob([await doc.save()],{type:'application/pdf'});
+}
+
+// ================= Eksport: Markdown z edytora =================
+function mdFromDoc(){
+  const out=[],txt=n=>n.textContent.replace(/\s+/g,' ').trim();
+  [...$('rDoc').children].forEach(n=>{const tg=n.tagName;
+    if(tg==='H1')out.push('# '+txt(n));else if(tg==='H2')out.push('## '+txt(n));else if(tg==='H3')out.push('### '+txt(n));
+    else if(tg==='TABLE'){const rows=[...n.querySelectorAll('tr')].map(r=>[...r.children].map(c=>txt(c).replace(/\|/g,'/')));if(rows.length){out.push('| '+rows[0].join(' | ')+' |','|'+rows[0].map(()=>'---').join('|')+'|',...rows.slice(1).map(r=>'| '+r.join(' | ')+' |'))}}
+    else if(tg==='FIGURE'){const c=n.querySelector('figcaption');out.push('_'+(c?txt(c):'Mapa')+'_')}
+    else if(n.textContent.trim())out.push(n.innerHTML.replace(/<br\s*\/?>/g,'  \n').replace(/<\/?(b|strong)>/g,'**').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').trim());
+    out.push('')});
+  return out.join('\n');
+}
+function initReport(){
+  $('rX').onclick=()=>{$('rmodal').hidden=true};
+  $('rmodal').onclick=e=>{if(e.target===$('rmodal'))$('rmodal').hidden=true};
+  let regenArm=0;
+  $('rRegen').onclick=()=>{if(Date.now()-regenArm>3000){regenArm=Date.now();toast('Odświeżenie zastąpi Twoje zmiany w raporcie. Kliknij jeszcze raz, aby potwierdzić.');return}regenArm=0;openReport(true)};
+  $('rFit').onchange=()=>toast('Kadr zmieni się przy następnym odświeżeniu raportu.');
+  const busy=(b,on,label)=>{b.disabled=on;b.textContent=on?'Przygotowuję…':label};
+  $('rDocx').onclick=async()=>{const b=$('rDocx');busy(b,true);try{download(`${slug()}-${stamp()}.docx`,await buildDocx(),'application/vnd.openxmlformats-officedocument.wordprocessingml.document');toast('Pobrano raport DOCX')}catch(e){console.error(e);toast('Nie udało się utworzyć pliku DOCX.')}busy(b,false,'Pobierz DOCX')};
+  $('rPdf').onclick=async()=>{const b=$('rPdf');busy(b,true);try{download(`${slug()}-${stamp()}.pdf`,await buildPdf(),'application/pdf');toast('Pobrano PDF z warstwami')}catch(e){console.error(e);toast('Nie udało się utworzyć PDF. Generator pobiera bibliotekę i czcionkę z internetu – sprawdź połączenie.')}busy(b,false,'Pobierz PDF z warstwami')};
+  $('rMd').onclick=()=>{download(`${slug()}-${stamp()}.md`,mdFromDoc(),'text/markdown');toast('Pobrano Markdown')};
+}
+
 // ================= Profil i linia widoczności =================
 function samplePath(lls,N=200){
   const seg=[],cum=[0];
@@ -2131,7 +2618,7 @@ function chart(pts,h,opt={}){
   return s+'</svg>';
 }
 function openProfile(title,stats,svg){
-  const p=$('profile');p.hidden=false;
+  const p=$('profile');p.hidden=false;p.dataset.kind='';
   p.innerHTML=`<div class="ph"><h4>${title}</h4><button class="btn sm" id="pClose">Zamknij</button></div><div class="stats">${stats}</div>${svg}`;
   $('pClose').onclick=()=>{p.hidden=true;losLayer.clearLayers()};
 }
@@ -2249,7 +2736,9 @@ async function runAuto(b){
       res.NI=infraNotes(pinf,res.N);res.infCount=pinf.items.length;
     }
     applyAuto(res,b,g,t);
-    showAutoPanel(res,osmErr,km2);showManual(true);orientAA(true);
+    lastSum={km2,mn:t.mn,mx:t.mx,forest:osm?osm.forestShare:null,union:t.union,mU:t.mU,mR:t.mR,mS:t.mS,objs:res.F.length,inf:res.infCount||0,NI:res.NI||'',osmErr,date:new Date().toISOString()};
+    updOcenaBtn();save();
+    showAutoPanel(lastSum);showManual(true);orientAA(true);
   }catch(e){
     console.error(e);
     openProfile('Ocena rejonu','Nie udało się pobrać modelu terenu. Sprawdź połączenie z internetem i spróbuj ponownie.','');
@@ -2585,38 +3074,46 @@ function applyAuto(res,b,g,t){
   map.fitBounds(b,{padding:[40,40]});
 }
 
-function showAutoPanel(res,osmErr,km2){
-  const {t,o,N}=res;
-  const stats=`<span>Powierzchnia <b>${km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(t.mn)}–${Math.round(t.mx)} m</b></span><span>Lasy <b>${o?pct(o.forestShare):'—'}</b></span><span>Widoczność z wzgórz <b>${pct(t.union)}</b></span><span>MCOO U/R/SR <b>${pct(t.mU)} / ${pct(t.mR)} / ${pct(t.mS)}</b></span><span>Obiekty auto <b>${res.F.length}</b></span><span>Infrastruktura <b>${res.infCount||0}</b></span>`;
+function showAutoPanel(sum){
+  const S=sum;
+  const stats=`<span>Powierzchnia <b>${S.km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(S.mn)}–${Math.round(S.mx)} m</b></span><span>Lasy <b>${S.forest==null?'—':pct(S.forest)}</b></span><span>Widoczność z wzgórz <b>${pct(S.union)}</b></span><span>MCOO U/R/SR <b>${pct(S.mU)} / ${pct(S.mR)} / ${pct(S.mS)}</b></span><span>Obiekty auto <b>${S.objs}</b></span><span>Infrastruktura <b>${S.inf}</b></span>`;
+  const txt=k=>esc(stripAuto(notes[k])||'—').replace(/\n/g,'<br>');
+  const enN=drawn.getLayers().filter(l=>l.feature.properties.cat==='E').length;
   const body=`
     <div class="row">
       <label class="check"><input type="checkbox" id="ovM" ${MC&&MC.showMob?'checked':''}> MCOO</label><span class="sw h1"></span><span class="hint">ograniczony</span><span class="sw h2"></span><span class="hint">bardzo ograniczony</span>
       <label class="check" style="margin-left:12px"><input type="checkbox" id="ovD" ${MC&&MC.showDead?'checked':''}> Martwe pola</label><span class="sw hd"></span>
+      <label class="check" style="margin-left:12px"><input type="checkbox" id="ovI" ${$('ov-infra').checked?'checked':''}> Infrastruktura</label><span class="iico" style="background:#37474f;width:18px;height:18px;font-size:9px">M</span>
     </div>
     <div class="row">
-      <label class="check"><input type="checkbox" id="ovS" ${map.hasLayer(ovSlope)?'checked':''}> Nachylenie</label>
+      <label class="check"><input type="checkbox" id="ovS" ${ovSlope&&map.hasLayer(ovSlope)?'checked':''} ${ovSlope?'':'disabled'}> Nachylenie</label>
       <span class="sw" style="background:rgba(46,125,50,.5)"></span><span class="hint">&lt;15%</span>
       <span class="sw" style="background:rgba(240,190,30,.7)"></span><span class="hint">15–30%</span>
       <span class="sw" style="background:rgba(198,40,40,.75)"></span><span class="hint">&gt;30%</span>
     </div>
-    <div class="row"><label class="check"><input type="checkbox" id="ovI" ${$('ov-infra').checked?'checked':''}> Infrastruktura</label><span class="iico" style="background:#37474f;width:18px;height:18px;font-size:9px">M</span><span class="hint">${esc(res.NI||'')}</span></div>
-    ${osmErr?'<div class="note">Serwer OpenStreetMap (Overpass) nie odpowiedział, więc lasy, wody i drogi nie zostały uwzględnione. Spróbuj ponownie za chwilę.</div>':''}
-    <div class="res">${CATS.map(c=>`<div class="ri" style="--c:var(${c.v})"><div class="letter">${c.l}</div><div><b>${c.name}</b><div>${N[c.k].map(esc).join(' ')}</div></div></div>`).join('')}</div>
-    <div class="row"><button class="btn sm primary" id="aEdit">Przejdź do wniosków</button><button class="btn sm" id="aAgain">Oceń inny rejon</button><button class="btn sm" id="aDel">Usuń wyniki automatyczne</button></div>
-    <div class="hint">Wnioski oznaczone [AUTO] trafiły do zakładki Analiza, a obiekty z dopiskiem „auto” na mapę. To wersja robocza: zweryfikuj ją na mapie, ortofotomapie i w terenie.</div>`;
+    ${S.osmErr?'<div class="note">Serwer OpenStreetMap (Overpass) nie odpowiedział, więc lasy, wody i drogi nie zostały uwzględnione. Spróbuj ponownie za chwilę.</div>':''}
+    <div class="res">${CATS.map(c=>`<div class="ri" style="--c:var(${c.v})"><div class="letter">${c.l}</div><div><b>${c.name}</b><div>${txt(c.k)}</div></div></div>`).join('')}
+      <div class="ri" style="--c:var(--I)"><div class="letter">I</div><div><b>Infrastruktura</b><div>${txt('I')}</div></div></div>
+      ${enN||notes.E.trim()?`<div class="ri" style="--c:var(--E)"><div class="letter" style="background:none">${diamondMini().replace(/20/g,'26')}</div><div><b>Przeciwnik</b><div>${enN} naniesionych obiektów. ${esc(notes.E.trim())}</div></div></div>`:''}
+    </div>
+    <div class="row"><button class="btn sm primary" id="aEdit">Edytuj wnioski</button><button class="btn sm primary" id="aRep">Raport DOCX / PDF</button><button class="btn sm" id="aAgain">Oceń inny rejon</button><button class="btn sm" id="aDel">Usuń wyniki automatyczne</button></div>
+    <div class="hint">Okno pokazuje aktualne wnioski, także po Twoich poprawkach. Zamknij je, a otworzysz ponownie przyciskiem „Ocena” nad mapą. Wynik automatyczny jest wersją roboczą: zweryfikuj go na mapie, ortofotomapie i w terenie.</div>`;
   openProfile('Ocena rejonu – wynik',stats,body);
-  $('ovS').onchange=e=>e.target.checked?ovSlope.addTo(map):map.removeLayer(ovSlope);
+  const p=$('profile');p.dataset.kind='ocena';
+  $('pClose').onclick=()=>{p.hidden=true;if(!window._ocenaHint){window._ocenaHint=1;toast('Okno oceny otworzysz ponownie przyciskiem „Ocena” nad mapą.')}};
+  $('ovS').onchange=e=>{if(!ovSlope)return;e.target.checked?ovSlope.addTo(map):map.removeLayer(ovSlope)};
   $('ovI').onchange=e=>{setOver('infra',e.target.checked);save()};
   $('ovD').onchange=e=>{if(MC){MC.showDead=e.target.checked;mcoo.redraw();save()}};
   $('ovM').onchange=e=>{if(MC){MC.showMob=e.target.checked;mcoo.redraw();save()}};
-  $('aEdit').onclick=()=>{$('profile').hidden=true;document.querySelector('.tab[data-tab=analiza]').click()};
-  $('aAgain').onclick=()=>{$('profile').hidden=true;startAuto()};
-  $('aDel').onclick=()=>{clearAuto();$('profile').hidden=true;toast('Usunięto wyniki automatyczne')};
+  $('aEdit').onclick=()=>{p.hidden=true;document.querySelector('.tab[data-tab=analiza]').click();if(narrow())$('cats').scrollIntoView({behavior:'smooth'})};
+  $('aRep').onclick=()=>{p.hidden=true;openReport(true)};
+  $('aAgain').onclick=()=>{p.hidden=true;startAuto()};
+  $('aDel').onclick=()=>{clearAuto();p.hidden=true;toast('Usunięto wyniki automatyczne')};
 }
 function clearAuto(){
   drawn.getLayers().filter(l=>l.feature.properties.auto).forEach(l=>drawn.removeLayer(l));
   [...CATS,INFRA].forEach(c=>notes[c.k]=notes[c.k].split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim());
-  if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;setMC(null);
+  if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;setMC(null);lastSum=null;updOcenaBtn();
   setAutoBox(null);decorate();render();save();
 }
 
@@ -2751,9 +3248,10 @@ function render(){
     if(!ls.length)ul.innerHTML=c.k==='I'?'<li class="empty">Pojawi się po ocenie rejonu.</li>':isE?'<li class="empty">Brak naniesionego przeciwnika.</li>':'<li class="empty">Brak obiektów. Pojawią się po zaznaczeniu rejonu.</li>';
     ls.forEach(l=>{
       const p=l.feature.properties,li=document.createElement('li');
-      li.innerHTML=`<span class="nm">${esc(p.name)||'(bez nazwy)'}</span><span class="meta">${kind(l)}${measure(l)?' · '+measure(l):''}</span><button class="x" title="Usuń">✕</button>`;
+      li.innerHTML=`<span class="nm">${esc(p.name)||'(bez nazwy)'}</span><span class="meta">${kind(l)}${measure(l)?' · '+measure(l):''}</span><button class="x ed" title="Edytuj">✎</button><button class="x" title="Usuń">✕</button>`;
       li.title=p.note||'';
-      const xb=li.querySelector('.x');
+      li.querySelector('.ed').onclick=ev=>{ev.stopPropagation();li.onclick()};
+      const xb=li.querySelector('.x:not(.ed)');
       xb.onclick=ev=>{ev.stopPropagation();if(xb.classList.contains('arm')){drawn.removeLayer(l);decorate();render();save();toast('Usunięto: '+(p.name||'obiekt'));return}
         xb.classList.add('arm');xb.textContent='Usuń?';setTimeout(()=>{xb.classList.remove('arm');xb.textContent='✕'},2500)};
       li.onclick=()=>{if(narrow())$('map').scrollIntoView({behavior:'smooth',block:'start'});l instanceof L.Marker?map.setView(l.getLatLng(),Math.max(map.getZoom(),15)):map.fitBounds(l.getBounds(),{maxZoom:16});setTimeout(()=>openEditor(l),300)};
@@ -2774,7 +3272,7 @@ const areaEl=$('area');areaEl.oninput=()=>save();
 function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
-    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),
+    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,
     mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
@@ -2791,6 +3289,7 @@ function load(fc,opt={}){
     if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;
   }
   setAutoBox(m.autoBox?L.latLngBounds(m.autoBox):null);
+  lastSum=m.sum||null;updOcenaBtn();selectObj(null);
   doct=m.doct!==false;$('bDoct').setAttribute('aria-pressed',doct);doct?mcoo.addTo(map):map.removeLayer(mcoo);
   const mc=m.mc;setMC(mc&&mc.mob&&mc.mob.length===mc.n*mc.n?{b:L.latLngBounds(mc.b),n:mc.n,mob:Uint8Array.from(mc.mob,Number),dead:Uint8Array.from(mc.dead,Number),showMob:mc.showMob!==false,showDead:mc.showDead!==false,stats:mc.stats}:null);
   if(!opt.keepView&&Array.isArray(m.over))Object.keys(OVER).forEach(k=>setOver(k,m.over.includes(k)));
@@ -2857,7 +3356,7 @@ async function report(){
   }
   return s;
 }
-$('bReport').onclick=async()=>{toast('Przygotowuję raport…');download(`${slug()}-${stamp()}.md`,await report(),'text/markdown');toast('Raport pobrany')};
+$('bReport').onclick=()=>openReport(false);$('bRep').onclick=()=>openReport(false);
 $('bCopy').onclick=async()=>{const t=await report();navigator.clipboard.writeText(t).then(()=>toast('Raport skopiowany do schowka'),()=>toast('Nie udało się skopiować. Użyj „Pobierz raport”.'))};
 $('bExport').onclick=()=>{download(`${slug()}-${stamp()}.geojson`,JSON.stringify(toGeoJSON(),null,1),'application/geo+json');toast('Plik zapisany')};
 $('bImport').onclick=()=>$('file').click();
@@ -2879,15 +3378,17 @@ modal.onclick=e=>{if(e.target===modal)$('mClose').onclick()};
 
 // ================= Skróty klawiszowe =================
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){if(!modal.hidden){$('mClose').onclick();return}if(!$('cmodal').hidden){$('cmodal').hidden=true;return}if((!$('sheet').hidden||map._popup)&&!mode){closeEditor();return}stopModes();return}
+  if(e.key==='Escape'){if(!modal.hidden){$('mClose').onclick();return}if(!$('cmodal').hidden){$('cmodal').hidden=true;return}if(!$('rmodal').hidden){$('rmodal').hidden=true;return}if((!$('sheet').hidden||map._popup)&&!mode){closeEditor();return}stopModes();return}
   if(e.key==='Enter'&&drawState&&drawState.type!=='marker'&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)){finishDraw();return}
-  if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+  if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;
   if((e.ctrlKey||e.metaKey)&&!e.altKey){const k=e.key.toLowerCase();
     if(k==='z'&&!e.shiftKey){e.preventDefault();undo();return}
     if(k==='y'||(k==='z'&&e.shiftKey)){e.preventDefault();redo();return}}
   if(e.ctrlKey||e.metaKey||e.altKey)return;
   const n=+e.key;if(n>=1&&n<=5){setActive(CATS[n-1].k);return}
   if(e.key==='6'){setActive('E');return}
+  if((e.key==='Delete'||e.key==='Backspace')&&selected&&!mode){e.preventDefault();deleteSelected();return}
+  if(e.key.toLowerCase()==='e'&&selected&&!mode){openEditor(selected);return}
   if(e.key.toLowerCase()==='m'&&MC){mode==='brush'?stopModes():startBrush();return}
   const k=e.key.toLowerCase();
   if(k==='r')startAuto();else if(k==='d'&&!$('bDoct').closest('[hidden]'))setDoct(!doct);else if(k==='p')startDraw('marker');else if(k==='l')startDraw('polyline');else if(k==='o')startDraw('polygon');
@@ -2904,7 +3405,7 @@ if(saved&&saved.features&&saved.features.length){
   $('wRestore').textContent=`Przywróć poprzednią analizę${saved.ocoka&&saved.ocoka.area?': '+saved.ocoka.area:''}`;
   $('wRestore').onclick=()=>{load(saved);showWelcome(false);showManual(true);save();toast('Przywrócono poprzednią analizę')};
 }
-initCoordDialog();
+initCoordDialog();initReport();updEditBtns();updOcenaBtn();
 histPush();
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawn.eachLayer(styleLayer);decorate();render();renderCatBar()});
 </script>
