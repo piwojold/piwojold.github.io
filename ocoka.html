@@ -684,14 +684,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* Układ: panel z zakładkami po lewej, mapa z paskiem narzędzi u góry i panelem profilu u dołu */
 :root{
   --bg:#eef0ec; --panel:#f8f9f6; --ink:#1d221d; --muted:#5d665c; --line:#cfd5cb; --accent:#3d5a3a; --accent-ink:#ffffff;
-  --O:#2166ac; --C:#2e7d32; --Ob:#c62828; --K:#7b3fa0; --A:#e07b00; --E:#d0021b; --ok:#2e7d32; --bad:#c62828;
+  --O:#2166ac; --C:#2e7d32; --Ob:#c62828; --K:#7b3fa0; --A:#e07b00; --E:#d0021b; --I:#37474f; --ok:#2e7d32; --bad:#c62828;
   --f-disp:"Barlow Condensed","Arial Narrow",sans-serif;
   --f-body:"IBM Plex Sans",system-ui,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){:root{
   --bg:#141714; --panel:#1b1f1b; --ink:#e3e8e0; --muted:#9aa597; --line:#323a31; --accent:#9cc297; --accent-ink:#142014;
-  --O:#5ea3e6; --C:#66bb6a; --Ob:#ef5350; --K:#b884d6; --A:#ffa53a; --E:#ff4d5e; --ok:#66bb6a; --bad:#ef5350; color-scheme:dark}}
+  --O:#5ea3e6; --C:#66bb6a; --Ob:#ef5350; --K:#b884d6; --A:#ffa53a; --E:#ff4d5e; --I:#90a4ae; --ok:#66bb6a; --bad:#ef5350; color-scheme:dark}}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%;margin:0}
@@ -833,6 +833,13 @@ textarea{resize:vertical;min-height:56px}
 .blocked{position:absolute;left:12px;right:12px;bottom:28px;z-index:965;background:var(--panel);border:2px solid var(--bad);border-radius:8px;padding:10px 12px;display:grid;gap:6px;font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.2)}
 .blocked b{color:var(--bad);font:600 17px var(--f-disp)}
 .blocked .btn{justify-self:start}
+.iico{width:22px;height:22px;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.45),0 1px 3px rgba(0,0,0,.3);color:#fff;display:grid;place-items:center;font:700 10px/1 var(--f-mono);letter-spacing:-.03em}
+.glab{font:600 11px var(--f-mono);color:#1f4fbf;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff;white-space:nowrap;pointer-events:none}
+.gcap{font-size:10px;background:rgba(255,255,255,.8);padding:1px 4px;border-radius:3px;text-shadow:none}
+.overs{display:grid;gap:6px}
+.cbox textarea{width:100%;min-height:140px;font:13px/1.5 var(--f-mono)}
+.cbox .help{gap:10px}
+.cbox code{font:12px var(--f-mono);background:var(--bg);padding:1px 4px;border-radius:3px}
 .drawing .leaflet-interactive{pointer-events:none!important}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:1600;background:var(--panel);border-top:1px solid var(--line);border-radius:14px 14px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.25);max-height:72vh;overflow:auto;padding:4px max(14px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
 .sheet .sh{position:sticky;top:0;background:var(--panel);display:flex;align-items:center;gap:8px;padding:8px 0;z-index:1}
@@ -890,7 +897,12 @@ textarea{resize:vertical;min-height:56px}
       <div class="section">
         <h3>Podkład mapowy</h3>
         <select id="base"></select>
-        <div class="hint">Wszystkie podkłady pochodzą z otwartych lub bezpłatnych źródeł.</div>
+        <div class="hint" id="baseHint">Wszystkie podkłady pochodzą z otwartych lub bezpłatnych źródeł.</div>
+      </div>
+      <div class="section">
+        <h3>Nakładki</h3>
+        <div class="overs" id="overList"></div>
+        <div class="hint">Siatka MGRS rysuje linie co 1 km, 10 km lub 100 km zależnie od skali, z opisem jak na mapach wojskowych.</div>
       </div>
       <div class="section">
         <h3>Rzeźba terenu</h3>
@@ -942,7 +954,7 @@ textarea{resize:vertical;min-height:56px}
   <div class="mapwrap">
     <div id="map"></div>
     <div class="toolbar">
-      <div class="group search tsearch"><input type="text" id="q2" placeholder="Szukaj miejscowości…" aria-label="Szukaj miejscowości" autocomplete="off"><ul class="sres" id="r2" hidden></ul></div>
+      <div class="group search tsearch"><input type="text" id="q2" placeholder="Miejscowość, MGRS lub współrzędne…" aria-label="Szukaj miejscowości lub współrzędnych" autocomplete="off"><ul class="sres" id="r2" hidden></ul></div>
       <div class="group" id="catBar" aria-label="Kategoria" data-manual hidden></div>
       <div class="group" aria-label="Narzędzia rysowania" data-manual hidden>
         <button class="chip tool" data-draw="marker" title="Punkt (P)"><svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="4"/><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/></svg><span class="lbl">Punkt</span></button>
@@ -979,7 +991,9 @@ textarea{resize:vertical;min-height:56px}
       <div class="li"><svg width="28" height="18" viewBox="0 0 48 40"><polygon points="24,2 43,21 24,40 5,21" fill="#ff8080" stroke="#000" stroke-width="2.5"/></svg>Jednostka przeciwnika</div>
       <div class="li"><svg width="28" height="16"><rect x="4" y="2" width="20" height="12" fill="#80e0ff" stroke="#000" stroke-width="1.5"/></svg>Jednostka własna</div>
       <div class="li"><svg width="28" height="14"><path d="M1 4h17V1l9 6-9 6V10H1z" fill="rgba(208,2,27,.3)" stroke="#d0021b" stroke-width="1.5"/></svg>Kierunek natarcia npl</div>
-      <div class="li"><span class="sym" style="background:rgba(215,30,45,.4)!important"></span>Pole widzenia npl</div></div>
+      <div class="li"><span class="sym" style="background:rgba(215,30,45,.4)!important"></span>Pole widzenia npl</div>
+      <div class="li"><span class="iico" style="background:#37474f;width:18px;height:18px;font-size:9px">M</span>Infrastruktura (OSM)</div>
+      <div class="li"><svg width="28" height="14"><path d="M1 7h26" stroke="#b26a00" stroke-width="2" stroke-dasharray="6 3"/></svg>Linia WN</div></div>
     </div>
     <div class="status" id="status" hidden></div>
     <div class="coords" id="coords">Najedź na mapę</div>
@@ -987,6 +1001,20 @@ textarea{resize:vertical;min-height:56px}
   </div>
 </div>
 
+<div class="modal" id="cmodal" hidden>
+  <div class="box cbox" role="dialog" aria-modal="true" aria-labelledby="cTitle">
+    <div class="mh"><h2 id="cTitle">Przeciwnik po współrzędnych</h2><button class="btn sm" id="cX">Zamknij</button></div>
+    <div class="help">
+      <p>Jedna pozycja w linii. Najpierw współrzędne (MGRS albo szerokość i długość), dalej opcjonalnie: oznaczenie, rodzaj, szczebel, oddzielone średnikiem.</p>
+      <textarea id="cTxt" aria-label="Pozycje przeciwnika" placeholder="34U CA 95343 81287; 1/2 BZ; zmechanizowane; kompania
+50.3612, 19.5204; Npl OPL; opl; pluton
+50°21'40&quot;N 19°31'13&quot;E; Rozp; rozpoznanie; drużyna; przypuszczalny"></textarea>
+      <div class="hint" id="cPrev">Wpisz co najmniej jedną linię.</div>
+      <p class="hint">Rodzaje: piechota, zmechanizowane, pancerne, rozpoznanie, artyleria, moździerze, ppanc, OPL, inżynieryjne, śmigłowce, dowództwo. Szczeble: drużyna, sekcja, pluton, kompania, batalion, pułk, brygada, dywizja (lub I, II, III, X, XX). Słowo „przypuszczalny” daje ramkę przerywaną, „własne” – siły własne.</p>
+      <div class="row"><button class="btn primary" id="cGo" disabled>Nanieś na mapę</button></div>
+    </div>
+  </div>
+</div>
 <div class="sheet" id="sheet" hidden><div class="sh"><b id="shT">Obiekt</b><button class="btn sm" id="shClose">Zamknij</button></div><div id="shB"></div></div>
 <div class="modal" id="modal" hidden>
   <div class="box" role="dialog" aria-modal="true" aria-labelledby="mTitle">
@@ -1031,7 +1059,8 @@ const CATS=[
 ];
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const ENEMY={k:'E',l:'N',name:'Przeciwnik',en:'Enemy situation',v:'--E',q:'Skład, ugrupowanie i prawdopodobny sposób działania przeciwnika.'};
-const ALLCATS=[...CATS,ENEMY];
+const INFRA={k:'I',l:'I',name:'Infrastruktura',en:'Infrastructure',v:'--I',q:'Obiekty infrastruktury krytycznej i ich znaczenie dla działań.'};
+const ALLCATS=[...CATS,INFRA,ENEMY];
 const catOf=k=>ALLCATS.find(c=>c.k===k)||CATS[0];
 const colOf=k=>css(catOf(k).v);
 
@@ -1062,6 +1091,8 @@ const HELP=`
 </ol>
 <h3>Nanoszenie przeciwnika</h3>
 <ol>
+<li><b>Po współrzędnych</b>: w sekcji <i>Przeciwnik</i> kliknij <i>+ Po współrzędnych</i> i wpisz pozycje (MGRS, stopnie dziesiętne lub stopnie-minuty-sekundy), jedna w linii, np. <code>34U CA 95343 81287; 1/2 BZ; zmechanizowane; kompania</code>. Możesz wkleić całą listę z meldunku.</li>
+<li><b>Z mapy</b>: kliknij prawym przyciskiem myszy (na telefonie dotknij mapy) i wybierz <i>Nanieś przeciwnika</i>. Wyszukiwarka nad mapą przyjmuje też MGRS i współrzędne.</li>
 <li>Wybierz kategorię <i>Przeciwnik</i> na pasku nad mapą (klawisz <kbd>6</kbd>) albo użyj przycisków w sekcji <i>Przeciwnik</i> w zakładce Analiza.</li>
 <li><b>Jednostka</b>: narzędzie <i>Punkt</i>. W okienku wybierz rodzaj (symbol APP-6), szczebel, pewność (potwierdzony lub przypuszczalny, czyli ramka przerywana), stronę i kierunek ruchu.</li>
 <li><b>Kierunek natarcia</b>: narzędzie <i>Linia</i>, rysuj od przeciwnika w stronę celu. W okienku możesz zmienić rodzaj na kierunek przemieszczania lub linię obrony.</li>
@@ -1077,6 +1108,10 @@ const HELP=`
 <li><i>Popraw MCOO</i> <kbd>M</kbd> to pędzel do ręcznej korekty klasyfikacji terenu: wybierz klasę i rozmiar, maluj z wciśniętym przyciskiem myszy.</li>
 <li><kbd>Ctrl</kbd>+<kbd>Z</kbd> cofa ostatnią zmianę, <kbd>Ctrl</kbd>+<kbd>Y</kbd> ją ponawia (także przyciski ↶ ↷ nad mapą). Cofnąć można nawet <i>Wyczyść</i>.</li>
 </ol>
+<h3>Podkłady i nakładki</h3>
+<p>W zakładce <i>Mapa i teren</i> wybierasz podkład z grup: topograficzne, zdjęcia lotnicze i satelitarne, Geoportal (mapa topograficzna, BDOT10k, ortofotomapa), wojskowe i historyczne (radzieckie mapy sztabowe). Nakładki: siatka MGRS, granice administracyjne, BDOT10k, koleje, szlaki i warstwa infrastruktury. Aktualne mapy wojskowe (np. WCG) nie są publicznie udostępniane, dlatego ich tu nie ma.</p>
+<h3>Rozpoznawanie infrastruktury</h3>
+<p>Ocena rejonu rozpoznaje z OpenStreetMap: mosty, tunele, węzły drogowe, stacje kolejowe, lotniska i lądowiska, elektrownie, stacje elektroenergetyczne, linie wysokiego napięcia, rurociągi, stacje paliw, maszty telekomunikacyjne, wieże ciśnień, zapory, ujęcia wody, szpitale, straż, policję, tereny wojskowe i zakłady przemysłowe. Każdy obiekt ma ikonę z literą i opis znaczenia, a wnioski trafiają do kategorii OCOKA (np. linie WN jako przeszkody, maszty jako dominanty, węzły jako teren kluczowy). Kompletność zależy od danych OSM w danym rejonie.</p>
 <h3>Grafika doktrynalna</h3>
 <p>Po ocenie rejonu mapa pokazuje nakładkę w konwencji MCOO (zmodyfikowana połączona nakładka przeszkód, wg ATP 2-01.3) i symbole OCOKA. Przycisk <i>Symbole</i> <kbd>D</kbd> przełącza między grafiką doktrynalną a widokiem uproszczonym. Legenda jest w lewym dolnym rogu mapy.</p>
 <table>
@@ -1103,10 +1138,11 @@ document.getElementById('helpPane').innerHTML=HELP;
 document.getElementById('helpModal').innerHTML=HELP;
 
 // ================= MGRS =================
-function toUTM(lat,lon){
+function toUTM(lat,lon,fz){
   let zone=Math.floor((lon+180)/6)+1;
   if(lat>=56&&lat<64&&lon>=3&&lon<12)zone=32;
   if(lat>=72&&lat<84){if(lon>=0&&lon<9)zone=31;else if(lon<21)zone=33;else if(lon<33)zone=35;else if(lon<42)zone=37;}
+  if(fz)zone=fz;
   const a=6378137,f=1/298.257223563,k0=.9996,e2=f*(2-f),ep2=e2/(1-e2);
   const l0=((zone-1)*6-177)*Math.PI/180,p=lat*Math.PI/180,l=lon*Math.PI/180;
   const N=a/Math.sqrt(1-e2*Math.sin(p)**2),T=Math.tan(p)**2,C=ep2*Math.cos(p)**2,A=Math.cos(p)*(l-l0);
@@ -1202,6 +1238,25 @@ const ReliefLayer=L.GridLayer.extend({
 const relief=new ReliefLayer();
 
 // ================= Mapa i podkłady =================
+function wmsAlt(url,opts,alts){
+  const l=L.tileLayer.wms(url,{...opts,layers:alts[0]});l._alts=alts.slice(1);l._ok=0;l._err=0;
+  l.on('tileload',()=>{l._ok++}).on('tileerror',()=>{l._err++;if(!l._ok&&l._err>=3&&l._alts.length){l._err=0;l.setParams({layers:l._alts.shift()})}});
+  return l;
+}
+const BASEGROUPS=[
+ ['Topograficzne',['OpenTopoMap – mapa topograficzna','Esri World Topo','CyclOSM (szczegółowa, rzeźba)','Esri National Geographic','OpenStreetMap','OSM Humanitarian (infrastruktura)','CARTO Voyager (OSM)']],
+ ['Zdjęcia lotnicze i satelitarne',['Ortofotomapa – Geoportal (PL)','Ortofotomapa wysokiej rozdzielczości – Geoportal (PL)','Zdjęcia satelitarne – Esri','Sentinel-2 bez chmur (EOX)']],
+ ['Polska – Geoportal (GUGiK)',['Mapa topograficzna – Geoportal (PL)','BDOT10k – Geoportal (PL)']],
+ ['Wojskowe i historyczne',['Radzieckie mapy sztabowe (Genshtab)','Esri cieniowanie rzeźby']],
+ ['Inne',['Tylko rzeźba terenu (bez podkładu)']],
+];
+const BASEINFO={
+ 'Radzieckie mapy sztabowe (Genshtab)':'Radzieckie mapy topograficzne Sztabu Generalnego (1:50 000–1:1 000 000, stan sprzed 1990 r.), serwowane przez nakarte.me (AtloMaps). Serwis zewnętrzny – może nie odpowiadać.',
+ 'Mapa topograficzna – Geoportal (PL)':'Mapa topograficzna GUGiK (WMS). Najlepiej przy przybliżeniu 1:10 000–1:50 000.',
+ 'BDOT10k – Geoportal (PL)':'Baza Danych Obiektów Topograficznych 1:10 000 (GUGiK, WMS).',
+ 'Sentinel-2 bez chmur (EOX)':'Mozaika Sentinel-2 cloudless 2020 (EOX, licencja CC BY-NC-SA 4.0 – do użytku niekomercyjnego).',
+ 'OSM Humanitarian (infrastruktura)':'Styl humanitarny OSM – wyraźnie pokazuje obiekty infrastruktury i usług.',
+};
 const BASES={
  'OpenTopoMap – mapa topograficzna':L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'}),
  'OpenStreetMap':L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}),
@@ -1209,6 +1264,15 @@ const BASES={
  'Ortofotomapa – Geoportal (PL)':L.tileLayer.wms('https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/StandardResolution',{layers:'Raster',format:'image/jpeg',maxZoom:20,attribution:'© GUGiK geoportal.gov.pl'}),
  'Zdjęcia satelitarne – Esri':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri, Maxar, Earthstar Geographics'}),
  'Esri World Topo':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri'}),
+ 'CyclOSM (szczegółowa, rzeźba)':L.tileLayer('https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',{maxZoom:20,subdomains:'abc',attribution:'© OpenStreetMap, CyclOSM'}),
+ 'Esri National Geographic':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:16,attribution:'Esri, National Geographic'}),
+ 'OSM Humanitarian (infrastruktura)':L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',{maxZoom:19,subdomains:'abc',attribution:'© OpenStreetMap, HOT'}),
+ 'Ortofotomapa wysokiej rozdzielczości – Geoportal (PL)':L.tileLayer.wms('https://mapy.geoportal.gov.pl/wss/service/PZGIK/ORTO/WMS/HighResolution',{layers:'Raster',format:'image/jpeg',maxZoom:21,attribution:'© GUGiK geoportal.gov.pl'}),
+ 'Sentinel-2 bez chmur (EOX)':L.tileLayer('https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg',{maxZoom:17,maxNativeZoom:15,attribution:'Sentinel-2 cloudless – s2maps.eu by EOX IT Services GmbH (zmodyfikowane dane Copernicus Sentinel 2020)'}),
+ 'Mapa topograficzna – Geoportal (PL)':wmsAlt('https://mapy.geoportal.gov.pl/wss/service/img/guest/TOPO/MapServer/WMSServer',{format:'image/png',maxZoom:19,attribution:'Mapa topograficzna © GUGiK'},['0','Raster','TOPO','1']),
+ 'BDOT10k – Geoportal (PL)':wmsAlt('https://mapy.geoportal.gov.pl/wss/service/pub/guest/kompozycja_BDOT10k_WMS/MapServer/WMSServer',{format:'image/png',maxZoom:20,attribution:'BDOT10k © GUGiK'},['0','1','2']),
+ 'Radzieckie mapy sztabowe (Genshtab)':L.tileLayer('https://tiles.nakarte.me/topomapper/{z}/{x}/{y}',{maxZoom:17,maxNativeZoom:13,attribution:'Mapy Sztabu Generalnego ZSRR © AtloMaps / nakarte.me'}),
+ 'Esri cieniowanie rzeźby':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',{maxZoom:17,maxNativeZoom:13,attribution:'Esri'}),
  'Tylko rzeźba terenu (bez podkładu)':L.layerGroup(),
 };
 const GUGIK=L.tileLayer.wms('https://mapy.geoportal.gov.pl/wss/service/PZGIK/NMT/GRID1/WMS/ShadedRelief',{layers:'Raster',format:'image/png',transparent:true,opacity:.45,maxZoom:20,attribution:'NMT © GUGiK'});
@@ -1220,13 +1284,14 @@ relief.options.pane='relief';GUGIK.options.pane='relief';
 
 const $=id=>document.getElementById(id);
 const baseSel=$('base');
-Object.keys(BASES).forEach(n=>baseSel.add(new Option(n,n)));
+BASEGROUPS.forEach(([g,names])=>{const og=document.createElement('optgroup');og.label=g;names.forEach(n=>{if(BASES[n])og.appendChild(new Option(n,n))});baseSel.appendChild(og)});
+const baseHintDefault='Wszystkie podkłady pochodzą z otwartych lub bezpłatnych źródeł.';
 let curBase=BASES[baseSel.value].addTo(map);
 let tOk=0,tErr=0,blkShown=false;
 function watchTiles(layer){layer.on('tileload',()=>{tOk++;$('blocked').hidden=true}).on('tileerror',()=>{tErr++;if(!tOk&&tErr>=4&&!blkShown){blkShown=true;$('blocked').hidden=false}})}
 Object.values(BASES).forEach(l=>{if(l.on)watchTiles(l)});
 $('blkX').onclick=()=>$('blocked').hidden=true;
-baseSel.onchange=()=>{map.removeLayer(curBase);curBase=BASES[baseSel.value].addTo(map);save()};
+baseSel.onchange=()=>{map.removeLayer(curBase);curBase=BASES[baseSel.value].addTo(map);$('baseHint').textContent=BASEINFO[baseSel.value]||baseHintDefault;save()};
 
 // sterowanie warstwą wysokości
 function niceStep(span){const t=span/14;for(const s of [1,2,5,10,20,25,50,100,200,250,500,1000])if(s>=t)return s;return 2000}
@@ -1286,10 +1351,10 @@ D.polygon.tooltip={start:'Kliknij, aby rozpocząć obszar.',cont:'Kliknij kolejn
 D.polyline.error='<b>Błąd:</b> linie nie mogą się przecinać.';
 
 let active='O',seq=1,handler=null,mode=null,losFrom=null;
-const notes={O:'',C:'',Ob:'',K:'',A:'',E:''};
+const notes={O:'',C:'',Ob:'',K:'',A:'',I:'',E:''};
 
 function pinIcon(k){return L.divIcon({className:'',html:`<div class="pin" style="background:${colOf(k)}"></div>`,iconSize:[18,18],iconAnchor:[9,9],popupAnchor:[0,-10]})}
-function kind(l){const p=l.feature&&l.feature.properties||{};if(p.cat==='E')return l instanceof L.Marker?(UT[p.utype]||'Jednostka'):l instanceof L.Polygon?(EPA[p.pa]||'Rejon'):(ELN[p.ln]||'Linia');return l instanceof L.Marker?'Punkt':l instanceof L.Polygon?'Obszar':'Linia'}
+function kind(l){const p=l.feature&&l.feature.properties||{};if(p.cat==='I')return (IT[p.itype]||{n:'Obiekt'}).n;if(p.cat==='E')return l instanceof L.Marker?(UT[p.utype]||'Jednostka'):l instanceof L.Polygon?(EPA[p.pa]||'Rejon'):(ELN[p.ln]||'Linia');return l instanceof L.Marker?'Punkt':l instanceof L.Polygon?'Obszar':'Linia'}
 const TOOLNAME={marker:'punkt',polyline:'linię',polygon:'obszar'};
 
 const COARSE=matchMedia('(pointer:coarse)').matches;
@@ -1390,6 +1455,12 @@ function renderCatBar(){
 // ---- styl i dekoracje ----
 function styleLayer(l){
   const p=l.feature.properties,c=colOf(p.cat);
+  if(p.cat==='I'){
+    const it=IT[p.itype]||{g:'tr'},ic=IG[it.g][0];
+    if(l instanceof L.Marker){l.setIcon(infraIcon(p.itype));return}
+    if(l instanceof L.Polygon){l.setStyle({color:ic,weight:2,fillColor:ic,fillOpacity:.12,dashArray:null});return}
+    l.setStyle({color:ic,weight:p.itype==='powerline'?2.5:3,opacity:.9,dashArray:p.itype==='powerline'?'8 4':p.itype==='pipeline'?'2 5':null});return;
+  }
   if(p.cat==='E'){
     const ec=eCol(p),dash=p.conf==='prz'?'8 6':null;
     if(l instanceof L.Marker){l.setIcon(unitIcon(p));return}
@@ -1416,6 +1487,7 @@ function decorate(){
   let nOP=0,nAA=0,nMC=0;
   drawn.eachLayer(l=>{
     const p=l.feature.properties,c=colOf(p.cat),isLine=l instanceof L.Polyline&&!(l instanceof L.Polygon);
+    if(p.cat==='I')return;
     const hasSector=doct&&l instanceof L.Marker&&+p.range>0&&p.az!==''&&p.az!=null&&!isNaN(+p.az)&&+p.sw>0&&+p.sw<360;
     if(hasSector)deco.addLayer(L.polygon(wedge(l.getLatLng(),+p.az,+p.sw,+p.range),{color:c,weight:1.5,dashArray:'6 4',fillOpacity:.06,interactive:false}));
     else if(l instanceof L.Marker&&+p.range>0)
@@ -1464,7 +1536,8 @@ function popupFor(l){
     <label class="small">${p.cat==='E'?'Oznaczenie':'Nazwa'}</label><input type="text" data-f="name">
     <label class="small">Kategoria</label><select data-f="cat">${ALLCATS.map(c=>`<option value="${c.k}">${c.k==='E'?'Przeciwnik / siły':c.l+' – '+c.name}</option>`).join('')}</select>
     ${p.cat==='E'?enemyFields(l,isPt,isLine):''}
-    ${isPt&&p.cat!=='E'?'<label class="small">Zasięg obserwacji / ognia (m)</label><input type="number" min="0" step="50" data-f="range" placeholder="np. 800">':''}
+    ${p.cat==='I'?`<label class="small">Rodzaj obiektu</label><select data-f="itype">${Object.entries(IT).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join('')}</select>${p.itype&&IT[p.itype]?`<div class="hint">Znaczenie: ${IT[p.itype].sig}</div>`:''}`:''}
+    ${isPt&&p.cat!=='E'&&p.cat!=='I'?'<label class="small">Zasięg obserwacji / ognia (m)</label><input type="number" min="0" step="50" data-f="range" placeholder="np. 800">':''}
     ${isPt&&p.cat==='O'?'<div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small">Sektor: azymut (°)</label><input type="number" min="0" max="359" step="5" data-f="az" placeholder="np. 180"></div><div style="flex:1"><label class="small">Szerokość (°)</label><input type="number" min="5" max="355" step="5" data-f="sw" placeholder="np. 90"></div></div>':''}
     ${isLine&&p.cat==='A'?'<div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small">Rodzaj</label><select data-f="aaType"><option value="AA">Kierunek podejścia (AA)</option><option value="MC">Korytarz ruchu (MC)</option></select></div><div style="flex:1"><label class="small">Strona</label><select data-f="side"><option value="wróg">Przeciwnik</option><option value="własne">Własne</option></select></div></div>':''}
     <label class="small">Opis i wpływ na działania</label><textarea data-f="note" rows="3"></textarea>
@@ -1721,6 +1794,304 @@ function redo(){if(hi>=hist.length-1)return;hi++;restore(hist[hi]);toast('Ponowi
 $('bUndo').onclick=undo;$('bRedo').onclick=redo;
 $('bBrush').onclick=()=>mode==='brush'?stopModes():startBrush();
 
+// ================= Współrzędne: UTM/MGRS ⇄ geograficzne =================
+function fromUTM(zone,E,N,south){
+  const a=6378137,f=1/298.257223563,k0=.9996,e2=f*(2-f),ep2=e2/(1-e2),e1=(1-Math.sqrt(1-e2))/(1+Math.sqrt(1-e2));
+  const x=E-500000,y=south?N-1e7:N,lon0=((zone-1)*6-177)*Math.PI/180;
+  const M=y/k0,mu=M/(a*(1-e2/4-3*e2*e2/64-5*e2**3/256));
+  const p1=mu+(3*e1/2-27*e1**3/32)*Math.sin(2*mu)+(21*e1*e1/16-55*e1**4/32)*Math.sin(4*mu)+(151*e1**3/96)*Math.sin(6*mu)+(1097*e1**4/512)*Math.sin(8*mu);
+  const s=Math.sin(p1),c=Math.cos(p1),t=Math.tan(p1);
+  const N1=a/Math.sqrt(1-e2*s*s),T1=t*t,C1=ep2*c*c,R1=a*(1-e2)/Math.pow(1-e2*s*s,1.5),D=x/(N1*k0);
+  const lat=p1-(N1*t/R1)*(D*D/2-(5+3*T1+10*C1-4*C1*C1-9*ep2)*D**4/24+(61+90*T1+298*C1+45*T1*T1-252*ep2-3*C1*C1)*D**6/720);
+  const lon=lon0+(D-(1+2*T1+C1)*D**3/6+(5-2*C1+28*T1-3*C1*C1+8*ep2+24*T1*T1)*D**5/120)/c;
+  return L.latLng(lat*180/Math.PI,lon*180/Math.PI);
+}
+function parseMGRS(str){
+  const m=str.toUpperCase().replace(/\s+/g,' ').trim().match(/^(\d{1,2})\s?([C-HJ-NP-X])\s?([A-HJ-NP-Z])([A-HJ-NP-V])\s?(\d{0,5})\s?(\d{0,5})$/);
+  if(!m)return null;
+  const zone=+m[1];if(zone<1||zone>60)return null;
+  let de=m[5],dn=m[6];
+  if(!dn&&de){if(de.length%2)return null;dn=de.slice(de.length/2);de=de.slice(0,de.length/2)}
+  if(de.length!==dn.length)return null;
+  const sc=de.length?10**(5-de.length):0;
+  const col=['ABCDEFGH','JKLMNPQR','STUVWXYZ'][(zone-1)%3].indexOf(m[3]);if(col<0)return null;
+  let row='ABCDEFGHJKLMNPQRSTUV'.indexOf(m[4]);if(zone%2===0)row=(row-5+20)%20;
+  const E=(col+1)*1e5+(de?+de*sc:0)+(sc?sc/2:5e4);
+  const bandIdx='CDEFGHJKLMNPQRSTUVWX'.indexOf(m[2]),bandLat=-80+8*bandIdx,south=bandLat<0;
+  const minN=toUTM(bandLat,(zone-1)*6-177,zone).y-1000;
+  let N=row*1e5+(dn?+dn*sc:0)+(sc?sc/2:5e4);while(N<minN)N+=2e6;
+  const ll=fromUTM(zone,E,N,south);
+  return isFinite(ll.lat)&&isFinite(ll.lng)?ll:null;
+}
+function parseCoord(str){
+  if(!str)return null;
+  const s=str.trim();
+  const mg=parseMGRS(s);if(mg)return mg;
+  // DMS: 50°20'44"N 19°07'23"E
+  const dms=[...s.matchAll(/(\d{1,3})\s*[°º\s]\s*(\d{1,2})?\s*['′]?\s*(\d{1,2}(?:[.,]\d+)?)?\s*(?:["″]|'')?\s*([NSEW])/gi)];
+  if(dms.length===2){
+    const v=d=>{const x=(+d[1])+(+(d[2]||0))/60+(+(String(d[3]||0).replace(',','.')))/3600;return /[SW]/i.test(d[4])?-x:x};
+    const a=dms[0],b=dms[1];let lat,lng;
+    if(/[NS]/i.test(a[4])){lat=v(a);lng=v(b)}else{lat=v(b);lng=v(a)}
+    if(Math.abs(lat)<=90&&Math.abs(lng)<=180)return L.latLng(lat,lng);
+  }
+  // dziesiętne, z opcjonalnymi literami N/E
+  let t=s.toUpperCase().replace(/[NE]/g,' ').trim(),neg=[false,false];
+  if(/[SW]/.test(t)){const parts=t.split(/[\s,;]+/);t=t.replace(/[SW]/g,' ')}
+  let m=t.match(/^(-?\d+(?:\.\d+)?)\s*[,;]\s*(-?\d+(?:\.\d+)?)$/)||t.match(/^(-?\d+(?:[.,]\d+)?)\s+(-?\d+(?:[.,]\d+)?)$/);
+  if(m){let lat=+m[1].replace(',','.'),lng=+m[2].replace(',','.');
+    if(/S/.test(s.toUpperCase()))lat=-Math.abs(lat);if(/W/.test(s.toUpperCase()))lng=-Math.abs(lng);
+    if(Math.abs(lat)<=90&&Math.abs(lng)<=180)return L.latLng(lat,lng)}
+  return null;
+}
+
+// ================= Siatka MGRS / UTM =================
+const gridL=new L.LayerGroup();
+map.createPane('gridP');map.getPane('gridP').style.zIndex=420;map.getPane('gridP').style.pointerEvents='none';
+function crossAt(lls,axis,val){
+  const P=lls.map(x=>map.latLngToContainerPoint(x));
+  for(let i=1;i<P.length;i++){const a=P[i-1],b=P[i],va=axis==='y'?a.y:a.x,vb=axis==='y'?b.y:b.x;
+    if((va-val)*(vb-val)<=0&&va!==vb){const f=(val-va)/(vb-va);return map.containerPointToLatLng([a.x+(b.x-a.x)*f,a.y+(b.y-a.y)*f])}}
+  return null;
+}
+function drawGrid(){
+  gridL.clearLayers();if(!map.hasLayer(gridL))return;
+  const z=map.getZoom();if(z<6)return;
+  const c=map.getCenter(),zone=toUTM(c.lat,c.lng).zone,south=c.lat<0,b=map.getBounds();
+  let step=z>=12?1000:z>=9?10000:100000;
+  const cs=[b.getNorthWest(),b.getNorthEast(),b.getSouthWest(),b.getSouthEast(),L.latLng(b.getNorth(),c.lng),L.latLng(b.getSouth(),c.lng),L.latLng(c.lat,b.getWest()),L.latLng(c.lat,b.getEast())].map(p=>toUTM(p.lat,p.lng,zone));
+  const minE=Math.min(...cs.map(p=>p.x)),maxE=Math.max(...cs.map(p=>p.x)),minN=Math.min(...cs.map(p=>p.y)),maxN=Math.max(...cs.map(p=>p.y));
+  while((maxE-minE)/step>60||(maxN-minN)/step>60)step*=10;
+  const col='#1f4fbf',lab=(v)=>step===1000?String(Math.floor(v/1000)%100).padStart(2,'0'):step===10000?String(Math.floor(v/1000)%1000).padStart(3,'0'):String(Math.floor(v/1000));
+  const sz=map.getSize(),S=16;
+  for(let e=Math.ceil(minE/step)*step;e<=maxE;e+=step){
+    const pts=[];for(let k=0;k<=S;k++)pts.push(fromUTM(zone,e,minN+(maxN-minN)*k/S,south));
+    const major=e%(step*10)===0;
+    gridL.addLayer(L.polyline(pts,{pane:'gridP',color:col,weight:major?1.6:.9,opacity:major?.75:.5,interactive:false}));
+    const at=crossAt(pts,'y',sz.y-58);if(at)gridL.addLayer(L.marker(at,{pane:'gridP',interactive:false,keyboard:false,icon:L.divIcon({className:'glab',html:lab(e),iconSize:null,iconAnchor:[8,0]})}));
+  }
+  for(let n=Math.ceil(minN/step)*step;n<=maxN;n+=step){
+    const pts=[];for(let k=0;k<=S;k++)pts.push(fromUTM(zone,minE+(maxE-minE)*k/S,n,south));
+    const major=n%(step*10)===0;
+    gridL.addLayer(L.polyline(pts,{pane:'gridP',color:col,weight:major?1.6:.9,opacity:major?.75:.5,interactive:false}));
+    const at=crossAt(pts,'x',sz.x-34);if(at)gridL.addLayer(L.marker(at,{pane:'gridP',interactive:false,keyboard:false,icon:L.divIcon({className:'glab',html:lab(n),iconSize:null,iconAnchor:[0,14]})}));
+  }
+  const corner=map.containerPointToLatLng([sz.x-8,sz.y-78]);
+  gridL.addLayer(L.marker(corner,{pane:'gridP',interactive:false,keyboard:false,icon:L.divIcon({className:'glab gcap',html:`Siatka MGRS ${zone}${'CDEFGHJKLMNPQRSTUVWXX'[Math.floor((c.lat+80)/8)]} · co ${step>=1000?step/1000+' km':step+' m'}`,iconSize:null,iconAnchor:[180,0]})}));
+}
+map.on('moveend zoomend',()=>{if(map.hasLayer(gridL))drawGrid()});
+
+// ================= Nakładki =================
+const OVER={
+  grid:{n:'Siatka MGRS / UTM (kilometrowa)',layer:gridL,on:()=>drawGrid()},
+  prg:{n:'Granice administracyjne (PRG, Polska)',layer:wmsAlt('https://mapy.geoportal.gov.pl/wss/service/PZGIK/PRG/WMS/AdministrativeBoundaries',{format:'image/png',transparent:true,maxZoom:20,attribution:'PRG © GUGiK'},['A00_Granice_panstwa,A01_Granice_wojewodztw,A02_Granice_powiatow,A03_Granice_gmin','0'])},
+  bdot:{n:'BDOT10k – obiekty topograficzne (Polska)',layer:wmsAlt('https://mapy.geoportal.gov.pl/wss/service/pub/guest/kompozycja_BDOT10k_WMS/MapServer/WMSServer',{format:'image/png',transparent:true,maxZoom:20,attribution:'BDOT10k © GUGiK'},['0','1','2'])},
+  rail:{n:'Koleje i infrastruktura kolejowa (OpenRailwayMap)',layer:L.tileLayer('https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png',{maxZoom:19,subdomains:'abc',attribution:'© OpenRailwayMap (CC-BY-SA)'})},
+  trails:{n:'Szlaki turystyczne (Waymarked Trails)',layer:L.tileLayer('https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© waymarkedtrails.org'})},
+  infra:{n:'Infrastruktura rozpoznana automatycznie',pane:true},
+};
+map.createPane('overP');map.getPane('overP').style.zIndex=340;
+Object.values(OVER).forEach(o=>{if(o.layer&&o.layer!==gridL){o.layer.options.pane='overP'}});
+function setOver(k,on){
+  const o=OVER[k];if(!o)return;
+  if(o.pane){['infraP','infraM'].forEach(p=>map.getPane(p).style.display=on?'':'none')}
+  else if(on){o.layer.addTo(map);if(o.on)o.on()}else map.removeLayer(o.layer);
+  const cb=$('ov-'+k);if(cb)cb.checked=on;
+}
+function overState(){return Object.keys(OVER).filter(k=>{const cb=$('ov-'+k);return cb&&cb.checked})}
+(function(){
+  const box=$('overList');
+  Object.entries(OVER).forEach(([k,o])=>{const l=document.createElement('label');l.className='check';
+    l.innerHTML=`<input type="checkbox" id="ov-${k}"${k==='infra'?' checked':''}> ${o.name||o.n}`;box.appendChild(l);
+    l.querySelector('input').onchange=e=>{setOver(k,e.target.checked);save()}});
+})();
+
+// ================= Infrastruktura (OSM) =================
+const IG={tr:['#37474f','Transport'],en:['#b26a00','Energia i paliwa'],co:['#6a1b9a','Łączność'],wa:['#1565c0','Woda'],sv:['#c62828','Służby'],mil:['#4e5d23','Wojsko'],ind:['#5d4037','Przemysł']};
+const IT={
+  bridge:{n:'Most',g:'tr',a:'M',max:25,sig:'Przeprawa: kandydat na teren kluczowy, wąskie gardło dla ruchu.'},
+  tunnel:{n:'Tunel',g:'tr',a:'T',max:10,sig:'Przewężenie komunikacyjne, łatwe do zablokowania.'},
+  junction:{n:'Węzeł drogowy',g:'tr',a:'W',max:15,sig:'Węzeł komunikacyjny: jego kontrola daje swobodę manewru.'},
+  station:{n:'Stacja kolejowa',g:'tr',a:'S',max:15,sig:'Punkt przeładunkowy, znaczenie logistyczne.'},
+  airfield:{n:'Lotnisko',g:'tr',a:'L',max:6,sig:'Znaczenie operacyjne i logistyczne; możliwy desant.'},
+  helipad:{n:'Lądowisko śmigłowców',g:'tr',a:'H',max:10,sig:'Lądowanie śmigłowców: ewakuacja medyczna, desant.'},
+  plant:{n:'Elektrownia',g:'en',a:'E',max:10,sig:'Infrastruktura krytyczna (energia).'},
+  substation:{n:'Stacja elektroenergetyczna',g:'en',a:'P',max:15,sig:'Węzeł sieci energetycznej, infrastruktura krytyczna.'},
+  powerline:{n:'Linia wysokiego napięcia',g:'en',a:'',max:40,sig:'Przeszkoda dla śmigłowców i BSP; punkt orientacyjny.'},
+  pipeline:{n:'Rurociąg',g:'en',a:'',max:12,sig:'Infrastruktura krytyczna; pas techniczny w terenie.'},
+  fuel:{n:'Stacja paliw',g:'en',a:'F',max:15,sig:'Źródło paliwa, znaczenie logistyczne.'},
+  mast:{n:'Maszt / wieża telekomunikacyjna',g:'co',a:'Ł',max:20,sig:'Łączność; dominanta terenowa i punkt orientacyjny.'},
+  watertower:{n:'Wieża ciśnień',g:'wa',a:'Wc',max:15,sig:'Dominanta terenowa, możliwy punkt obserwacyjny.'},
+  dam:{n:'Zapora / jaz',g:'wa',a:'Z',max:10,sig:'Zniszczenie może zalać teren; przeprawa, teren kluczowy.'},
+  waterworks:{n:'Ujęcie / stacja uzdatniania wody',g:'wa',a:'U',max:10,sig:'Infrastruktura krytyczna (woda).'},
+  hospital:{n:'Szpital',g:'sv',a:'+',max:10,sig:'Obiekt chroniony; znaczenie dla ewakuacji medycznej.'},
+  fire:{n:'Straż pożarna',g:'sv',a:'PSP',max:10,sig:'Ratownictwo, sprzęt ciężki.'},
+  police:{n:'Policja',g:'sv',a:'Po',max:10,sig:'Służby porządkowe.'},
+  military:{n:'Teren wojskowy',g:'mil',a:'Wj',max:10,sig:'Obiekt wojskowy oznaczony w OSM.'},
+  industry:{n:'Zakład przemysłowy',g:'ind',a:'Zp',max:15,sig:'Zabudowa przemysłowa: osłona, możliwe materiały niebezpieczne.'},
+};
+map.createPane('infraP');map.getPane('infraP').style.zIndex=395;
+map.createPane('infraM');map.getPane('infraM').style.zIndex=595;
+function infraIcon(t){
+  const it=IT[t]||{a:'?',g:'tr'},c=IG[it.g][0];
+  const html=t==='hospital'?`<div class="iico" style="background:#fff;color:#c62828;border-color:#c62828">+</div>`:`<div class="iico" style="background:${c}">${it.a}</div>`;
+  return L.divIcon({className:'',iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-12],html});
+}
+async function overpassInfra(b){
+  const bb=`${b.getSouth().toFixed(5)},${b.getWest().toFixed(5)},${b.getNorth().toFixed(5)},${b.getEast().toFixed(5)}`;
+  const q=`[out:json][timeout:60];(
+way["bridge"]["bridge"!="no"]["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified)$"](${bb});
+way["bridge"]["bridge"!="no"]["railway"="rail"](${bb});
+way["tunnel"]["tunnel"!="no"]["highway"~"^(motorway|trunk|primary|secondary|tertiary)$"](${bb});
+way["tunnel"]["tunnel"!="no"]["railway"="rail"](${bb});
+node["highway"="motorway_junction"](${bb});
+node["railway"~"^(station|halt)$"](${bb});
+nwr["aeroway"~"^(aerodrome|airstrip|helipad)$"](${bb});
+nwr["power"~"^(plant|substation)$"](${bb});
+nwr["amenity"~"^(fuel|hospital|fire_station|police)$"](${bb});
+nwr["man_made"~"^(mast|communications_tower|water_tower|water_works|works)$"](${bb});
+nwr["man_made"="tower"]["tower:type"="communication"](${bb});
+nwr["waterway"~"^(dam|weir)$"](${bb});
+nwr["landuse"="military"](${bb});
+);out center tags 800;
+(way["power"="line"](${bb});way["man_made"="pipeline"](${bb}););out geom tags 300;`;
+  for(const ep of OVERPASS){
+    try{const r=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q)});if(r.ok)return await r.json()}catch(e){}
+  }
+  throw new Error('overpass');
+}
+function classifyInfra(t){
+  if(t.power==='line')return 'powerline';if(t.man_made==='pipeline')return 'pipeline';
+  if(t.bridge&&t.bridge!=='no'&&(t.highway||t.railway))return 'bridge';
+  if(t.tunnel&&t.tunnel!=='no'&&(t.highway||t.railway))return 'tunnel';
+  if(t.highway==='motorway_junction')return 'junction';
+  if(t.railway==='station'||t.railway==='halt')return 'station';
+  if(t.aeroway==='helipad')return 'helipad';if(t.aeroway)return 'airfield';
+  if(t.power==='plant')return 'plant';if(t.power==='substation')return 'substation';
+  if(t.amenity==='fuel')return 'fuel';if(t.amenity==='hospital')return 'hospital';if(t.amenity==='fire_station')return 'fire';if(t.amenity==='police')return 'police';
+  if(t.man_made==='mast'||t.man_made==='communications_tower'||t.man_made==='tower')return 'mast';
+  if(t.man_made==='water_tower')return 'watertower';if(t.man_made==='water_works')return 'waterworks';if(t.man_made==='works')return 'industry';
+  if(t.waterway==='dam'||t.waterway==='weir')return 'dam';
+  if(t.landuse==='military')return 'military';
+  return null;
+}
+function infraName(type,t){
+  const nm=t.name||t.ref||t['name:pl']||'',extra=[];
+  if(type==='powerline'&&t.voltage)extra.push(Math.round(+String(t.voltage).split(';')[0]/1000)+' kV');
+  if(type==='pipeline'&&t.substance)extra.push({gas:'gaz',oil:'ropa',water:'woda',fuel:'paliwo'}[t.substance]||t.substance);
+  if(type==='bridge')extra.push(t.railway?'kolejowy':(t.ref?'droga '+t.ref:'drogowy'));
+  if(type==='substation'&&t.voltage)extra.push(String(t.voltage).split(';').map(v=>Math.round(+v/1000)).filter(Boolean).join('/')+' kV');
+  if(type==='airfield'&&(t.icao||t.iata))extra.push(t.icao||t.iata);
+  if(type==='mast'&&t.height)extra.push(t.height+' m');
+  return IT[type].n+(nm?' '+nm:'')+(extra.length?' ('+extra.join(', ')+')':'');
+}
+function parseInfra(d,b,avoid){
+  const items=[],cnt={};
+  for(const el of d.elements||[]){
+    const t=el.tags||{},type=classifyInfra(t);if(!type)continue;
+    if(type==='powerline'||type==='pipeline'){
+      if(!el.geometry)continue;
+      const {runs,len}=clipRuns(toLL(el.geometry),b);if(!runs.length||len<150)continue;
+      runs.forEach(r=>items.push({type,kind:'line',lls:r,len:runLen(r),name:infraName(type,t),t}));
+      continue;
+    }
+    const c=el.type==='node'?L.latLng(el.lat,el.lon):el.center?L.latLng(el.center.lat,el.center.lon):null;
+    if(!c||!b.contains(c))continue;
+    items.push({type,kind:'pt',ll:c,name:infraName(type,t),t});
+  }
+  // usuwanie duplikatów (np. dwa pasy mostu) i limit na rodzaj
+  const out=[],sum={};
+  const rank=it=>(it.t.name?2:0)+(it.t.ref?1:0)+(it.len?it.len/1e4:0);
+  items.sort((a,c)=>rank(c)-rank(a));
+  for(const it of items){
+    sum[it.type]=sum[it.type]||{n:0,len:0};sum[it.type].n++;if(it.len)sum[it.type].len+=it.len;
+    if(it.kind==='pt'){
+      const tooClose=out.some(o=>o.kind==='pt'&&o.type===it.type&&o.ll.distanceTo(it.ll)<(it.type==='bridge'?120:60))||(it.type==='bridge'&&avoid.some(a=>a.distanceTo(it.ll)<150));
+      if(tooClose){sum[it.type].n--;continue}
+    }
+    cnt[it.type]=(cnt[it.type]||0)+1;if(cnt[it.type]>IT[it.type].max)continue;
+    out.push(it);
+  }
+  return {items:out,sum};
+}
+function infraNotes(inf,N){
+  const s=inf.sum,c=k=>(s[k]?s[k].n:0),km=k=>s[k]?(s[k].len/1000).toFixed(1):'0';
+  const list=keys=>keys.filter(k=>c(k)).map(k=>`${IT[k].n.toLowerCase()}: ${c(k)}`).join(', ');
+  const crit=list(['plant','substation','dam','waterworks','junction','station','airfield','tunnel']);
+  if(crit)N.K.push(`Infrastruktura krytyczna w rejonie – ${crit}.`);
+  const dom=list(['mast','watertower']);
+  if(dom)N.O.push(`Dominanty i punkty orientacyjne – ${dom}; mogą służyć jako punkty obserwacyjne lub przekaźniki.`);
+  if(c('powerline'))N.Ob.push(`Linie wysokiego napięcia: ok. ${km('powerline')} km – przeszkoda dla śmigłowców i BSP.`);
+  if(c('pipeline'))N.Ob.push(`Rurociągi: ok. ${km('pipeline')} km.`);
+  const av=list(['airfield','helipad']);if(av)N.A.push(`Lotniska i lądowiska – ${av}: możliwe kierunki działań z powietrza.`);
+  const sv=list(['hospital','fire','police','fuel']);if(sv)N.C.push(`Obiekty służb i zaopatrzenia – ${sv}.`);
+  if(c('military'))N.K.push(`Tereny wojskowe (wg OSM): ${c('military')}.`);
+  const all=Object.keys(s).filter(k=>c(k)).map(k=>`${IT[k].n}: ${c(k)}${s[k].len?' ('+km(k)+' km)':''}`);
+  return all.length?`Rozpoznano automatycznie z OpenStreetMap – ${all.join('; ')}.`:'Nie rozpoznano obiektów infrastruktury w OSM dla tego rejonu.';
+}
+
+// ================= Wstawianie przeciwnika po współrzędnych =================
+const UT_SYN=[[/piech|inf/,'inf'],[/zmech|bwp|mech/,'mech'],[/panc|czołg|czolg|tank|arm/,'arm'],[/ppanc|przeciwpanc|ppk/,'at'],[/rozp|rec/,'rec'],[/moźdz|mozdz|mor/,'mor'],[/art|haub|wr/,'art'],[/opl|plot|ad\b/,'ad'],[/inż|inz|sap|eng/,'eng'],[/śmigł|smigl|heli/,'heli'],[/dow|hq|sztab|stanowisko/,'hq']];
+const ECH_SYN=[[/druż|druz/,'•'],[/sekc/,'••'],[/plut/,'•••'],[/komp|^i$/,'I'],[/bat|^ii$/,'II'],[/pułk|pulk|^iii$/,'III'],[/dyw|^xx$/,'XX'],[/bryg|^x$/,'X']];
+function placeEnemy(ll,props={},open=true){
+  showWelcome(false);showManual(true);
+  const n=drawn.getLayers().filter(x=>x.feature.properties.cat==='E').length+1;
+  const l=L.marker(ll);
+  attach(l,{cat:'E',name:`Npl-${n}`,...lastUnit,mv:'',range:'',...props});
+  decorate();render();save();
+  if(open)setTimeout(()=>openEditor(l),0);
+  return l;
+}
+function parseEnemyLines(txt){
+  const res=[],bad=[];
+  txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean).forEach((line,i)=>{
+    const f=line.split(/\s*[;\t|]\s*/),ll=parseCoord(f[0]);
+    if(!ll){bad.push(i+1);return}
+    const low=line.toLowerCase(),p={};
+    if(f[1])p.name=f[1];
+    const ut=f[2]?f[2].toLowerCase():'';for(const [re,k] of UT_SYN)if(re.test(ut)){p.utype=k;break}
+    const ec=f[3]?f[3].toLowerCase().trim():'';for(const [re,k] of ECH_SYN)if(re.test(ec)){p.ech=k;break}
+    if(/przypusz|prz\b|\?/.test(low))p.conf='prz';
+    if(/własne|wlasne|swoi|own/.test(low))p.side='własne';
+    res.push({ll,p});
+  });
+  return {res,bad};
+}
+function openCoordDialog(){
+  const m=$('cmodal');m.hidden=false;$('cTxt').focus();updCoordPrev();
+}
+function updCoordPrev(){
+  const {res,bad}=parseEnemyLines($('cTxt').value);
+  $('cPrev').textContent=!$('cTxt').value.trim()?'Wpisz co najmniej jedną linię.':
+    `Rozpoznane pozycje: ${res.length}`+(bad.length?` · nie rozpoznano współrzędnych w liniach: ${bad.join(', ')}`:'')+(res.length?` · pierwsza: ${mgrs(res[0].ll.lat,res[0].ll.lng)}`:'');
+  $('cGo').disabled=!res.length;
+}
+function initCoordDialog(){
+  $('cTxt').oninput=updCoordPrev;
+  $('cX').onclick=()=>{$('cmodal').hidden=true};
+  $('cmodal').onclick=e=>{if(e.target===$('cmodal'))$('cmodal').hidden=true};
+  $('cGo').onclick=()=>{
+    const {res}=parseEnemyLines($('cTxt').value);if(!res.length)return;
+    const ls=res.map(r=>placeEnemy(r.ll,r.p,false));
+    $('cmodal').hidden=true;$('cTxt').value='';
+    if(ls.length===1){map.setView(ls[0].getLatLng(),Math.max(map.getZoom(),14));setTimeout(()=>openEditor(ls[0]),300)}
+    else map.fitBounds(L.featureGroup(ls).getBounds(),{padding:[60,60],maxZoom:14});
+    toast(`Naniesiono przeciwnika: ${ls.length} ${ls.length===1?'pozycja':'pozycji'}`);
+  };
+}
+function pointMenu(ll,auto){
+  const el=document.createElement('div');el.className='vpt';
+  const mg=mgrs(ll.lat,ll.lng);
+  el.innerHTML=`<b>${mg}</b><span>${ll.lat.toFixed(5)}, ${ll.lng.toFixed(5)}</span><span data-h>wysokość…</span>
+    <div class="row" style="margin-top:6px;gap:6px"><button class="btn sm primary" data-a="en">Nanieś przeciwnika</button><button class="btn sm" data-a="cp">Kopiuj MGRS</button></div>`;
+  const pop=L.popup({offset:L.point(0,0)}).setLatLng(ll).setContent(el).openOn(map);
+  el.querySelector('[data-a=en]').onclick=()=>{map.closePopup();placeEnemy(ll)};
+  el.querySelector('[data-a=cp]').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(mg).then(()=>toast('Skopiowano '+mg),()=>toast(mg))};
+  elevAt(ll,Math.min(14,Math.max(8,map.getZoom()))).then(h=>{el.querySelector('[data-h]').textContent=Math.round(h)+' m n.p.m.'}).catch(()=>{el.querySelector('[data-h]').textContent=''});
+  return pop;
+}
+map.on('contextmenu',e=>{if(!mode)pointMenu(e.latlng)});
+
 // ================= Profil i linia widoczności =================
 function samplePath(lls,N=200){
   const seg=[],cum=[0];
@@ -1801,11 +2172,7 @@ async function runLOS(from,to){
 map.on('click',e=>{
   if(drawState){addDrawPt(e.latlng);return}
   if(mode==='los'&&losFrom){const f=losFrom;stopModes();runLOS(f,e.latlng);return}
-  if(!mode&&COARSE){
-    const ll=e.latlng,el=document.createElement('div');el.className='vpt';
-    el.innerHTML=`<b>${mgrs(ll.lat,ll.lng)}</b><span>${ll.lat.toFixed(5)}, ${ll.lng.toFixed(5)}</span><span data-h>wysokość…</span>`;
-    L.popup({offset:L.point(0,0)}).setLatLng(ll).setContent(el).openOn(map);
-    elevAt(ll,Math.min(14,Math.max(8,map.getZoom()))).then(h=>{el.querySelector('[data-h]').textContent=Math.round(h)+' m n.p.m.'}).catch(()=>{el.querySelector('[data-h]').textContent=''});
+  if(!mode&&COARSE){pointMenu(e.latlng)
   }
 });
 
@@ -1866,12 +2233,21 @@ async function runAuto(b){
     step('Krok 1 z 3: pobieram model terenu…');
     const g=await demGrid(b,64,w,h);
     step('Krok 2 z 3: pobieram dane OpenStreetMap (lasy, wody, drogi, zabudowa)…');
-    let osm=null,osmErr=false;
+    let osm=null,osmErr=false,inf=null;
+    const pInf=overpassInfra(b);pInf.catch(()=>{});
     try{osm=parseOSM(await overpass(b),b,g)}catch(e){osmErr=true}
+    step('Krok 2 z 3: rozpoznaję obiekty infrastruktury…');
+    try{inf=await pInf}catch(e){inf=null}
     step('Krok 3 z 3: liczę nachylenia i widoczność…');
     await new Promise(r=>setTimeout(r,30));
     const t=analyzeTerrain(g);
     const res=buildResults(b,g,t,osm,km2);
+    res.NI=inf?null:'Nie udało się pobrać danych o infrastrukturze (serwer Overpass niedostępny).';
+    if(inf){
+      const pinf=parseInfra(inf,b,res.F.filter(f=>f.cat==='K'&&f.kind==='pt').map(f=>f.ll));
+      pinf.items.forEach(it=>res.F.push({cat:'I',kind:it.kind,ll:it.ll,lls:it.lls,name:it.name,note:IT[it.type].sig,extra:{itype:it.type}}));
+      res.NI=infraNotes(pinf,res.N);res.infCount=pinf.items.length;
+    }
     applyAuto(res,b,g,t);
     showAutoPanel(res,osmErr,km2);showManual(true);orientAA(true);
   }catch(e){
@@ -2189,13 +2565,15 @@ function buildResults(b,g,t,o,km2){
 function applyAuto(res,b,g,t){
   drawn.getLayers().filter(l=>l.feature.properties.auto).forEach(l=>drawn.removeLayer(l));
   res.F.forEach(f=>{
-    const l=f.kind==='pt'?L.marker(f.ll):f.kind==='line'?L.polyline(f.lls):L.polygon(f.ring);
+    const po=f.cat==='I'?{pane:f.kind==='pt'?'infraM':'infraP'}:{};
+    const l=f.kind==='pt'?L.marker(f.ll,po):f.kind==='line'?L.polyline(f.lls,po):L.polygon(f.ring,po);
     attach(l,{cat:f.cat,name:f.name,note:f.note,auto:true,range:'',...(f.extra||{})});
   });
   CATS.forEach(c=>{
     const own=notes[c.k].split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim();
     notes[c.k]='[AUTO] '+res.N[c.k].join(' ')+(own?'\n'+own:'');
   });
+  {const own=notes.I.split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim();notes.I='[AUTO] '+(res.NI||'')+(own?'\n'+own:'')}
   // warstwy: przejezdność i martwe pola
   const n=g.n,mk=fn=>{const cv=document.createElement('canvas');cv.width=cv.height=n;const x=cv.getContext('2d'),im=x.createImageData(n,n);
     for(let k=0;k<n*n;k++){const [r,gg,bb,a]=fn(k);im.data.set([r,gg,bb,a],k*4)}x.putImageData(im,0,0);return cv.toDataURL()};
@@ -2209,7 +2587,7 @@ function applyAuto(res,b,g,t){
 
 function showAutoPanel(res,osmErr,km2){
   const {t,o,N}=res;
-  const stats=`<span>Powierzchnia <b>${km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(t.mn)}–${Math.round(t.mx)} m</b></span><span>Lasy <b>${o?pct(o.forestShare):'—'}</b></span><span>Widoczność z wzgórz <b>${pct(t.union)}</b></span><span>MCOO U/R/SR <b>${pct(t.mU)} / ${pct(t.mR)} / ${pct(t.mS)}</b></span><span>Obiekty auto <b>${res.F.length}</b></span>`;
+  const stats=`<span>Powierzchnia <b>${km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(t.mn)}–${Math.round(t.mx)} m</b></span><span>Lasy <b>${o?pct(o.forestShare):'—'}</b></span><span>Widoczność z wzgórz <b>${pct(t.union)}</b></span><span>MCOO U/R/SR <b>${pct(t.mU)} / ${pct(t.mR)} / ${pct(t.mS)}</b></span><span>Obiekty auto <b>${res.F.length}</b></span><span>Infrastruktura <b>${res.infCount||0}</b></span>`;
   const body=`
     <div class="row">
       <label class="check"><input type="checkbox" id="ovM" ${MC&&MC.showMob?'checked':''}> MCOO</label><span class="sw h1"></span><span class="hint">ograniczony</span><span class="sw h2"></span><span class="hint">bardzo ograniczony</span>
@@ -2221,12 +2599,14 @@ function showAutoPanel(res,osmErr,km2){
       <span class="sw" style="background:rgba(240,190,30,.7)"></span><span class="hint">15–30%</span>
       <span class="sw" style="background:rgba(198,40,40,.75)"></span><span class="hint">&gt;30%</span>
     </div>
+    <div class="row"><label class="check"><input type="checkbox" id="ovI" ${$('ov-infra').checked?'checked':''}> Infrastruktura</label><span class="iico" style="background:#37474f;width:18px;height:18px;font-size:9px">M</span><span class="hint">${esc(res.NI||'')}</span></div>
     ${osmErr?'<div class="note">Serwer OpenStreetMap (Overpass) nie odpowiedział, więc lasy, wody i drogi nie zostały uwzględnione. Spróbuj ponownie za chwilę.</div>':''}
     <div class="res">${CATS.map(c=>`<div class="ri" style="--c:var(${c.v})"><div class="letter">${c.l}</div><div><b>${c.name}</b><div>${N[c.k].map(esc).join(' ')}</div></div></div>`).join('')}</div>
     <div class="row"><button class="btn sm primary" id="aEdit">Przejdź do wniosków</button><button class="btn sm" id="aAgain">Oceń inny rejon</button><button class="btn sm" id="aDel">Usuń wyniki automatyczne</button></div>
     <div class="hint">Wnioski oznaczone [AUTO] trafiły do zakładki Analiza, a obiekty z dopiskiem „auto” na mapę. To wersja robocza: zweryfikuj ją na mapie, ortofotomapie i w terenie.</div>`;
   openProfile('Ocena rejonu – wynik',stats,body);
   $('ovS').onchange=e=>e.target.checked?ovSlope.addTo(map):map.removeLayer(ovSlope);
+  $('ovI').onchange=e=>{setOver('infra',e.target.checked);save()};
   $('ovD').onchange=e=>{if(MC){MC.showDead=e.target.checked;mcoo.redraw();save()}};
   $('ovM').onchange=e=>{if(MC){MC.showMob=e.target.checked;mcoo.redraw();save()}};
   $('aEdit').onclick=()=>{$('profile').hidden=true;document.querySelector('.tab[data-tab=analiza]').click()};
@@ -2235,7 +2615,7 @@ function showAutoPanel(res,osmErr,km2){
 }
 function clearAuto(){
   drawn.getLayers().filter(l=>l.feature.properties.auto).forEach(l=>drawn.removeLayer(l));
-  CATS.forEach(c=>notes[c.k]=notes[c.k].split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim());
+  [...CATS,INFRA].forEach(c=>notes[c.k]=notes[c.k].split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim());
   if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;setMC(null);
   setAutoBox(null);decorate();render();save();
 }
@@ -2326,10 +2706,13 @@ async function nameArea(ll){
 function setupSearch(inp,list,after){
   let timer=null,items=[],sel=-1;
   const close=()=>{list.hidden=true;sel=-1};
-  const go=it=>{close();inp.value=it.display_name.split(',').slice(0,2).join(',');
+  const go=it=>{close();
+    if(it.coord){inp.value=it.label;map.setView(it.coord,Math.max(map.getZoom(),14));setTimeout(()=>pointMenu(it.coord),350);return}
+    inp.value=it.display_name.split(',').slice(0,2).join(',');
     const bb=it.boundingbox.map(Number);map.fitBounds([[bb[0],bb[2]],[bb[1],bb[3]]],{maxZoom:13});if(after)after()};
   const draw=()=>{list.innerHTML='';items.forEach((it,i)=>{const li=document.createElement('li');li.textContent=it.display_name;li.setAttribute('aria-selected',i===sel);li.onmousedown=e=>{e.preventDefault();go(it)};list.appendChild(li)});list.hidden=!items.length};
   inp.addEventListener('input',()=>{clearTimeout(timer);const q=inp.value.trim();if(q.length<3){items=[];draw();return}
+    const cc=parseCoord(q);if(cc){const lab=mgrs(cc.lat,cc.lng);items=[{coord:cc,label:lab,display_name:`Przejdź do: ${lab}  (${cc.lat.toFixed(5)}, ${cc.lng.toFixed(5)})`}];sel=0;draw();return}
     timer=setTimeout(async()=>{try{const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=pl&q=${encodeURIComponent(q)}`);items=await r.json();sel=-1;draw()}catch(e){toast('Wyszukiwarka jest niedostępna. Przybliż mapę ręcznie.')}},450)});
   inp.addEventListener('keydown',e=>{
     if(e.key==='ArrowDown'&&items.length){sel=(sel+1)%items.length;draw();e.preventDefault()}
@@ -2354,14 +2737,18 @@ function render(){
     if(isE)sec.style.borderTop='3px solid var(--line)';
     sec.innerHTML=`<div class="cat-h" title="Ustaw jako aktywną (${i+1})"><div class="letter"${isE?' style="background:none"':''}>${isE?diamondMini().replace(/20/g,'30'):c.l}</div><h2>${c.name}<small>${c.en}</small></h2><span class="count">${ls.length}</span></div>
       <ul class="items"></ul>
-      ${isE?'<div class="row"><button class="btn sm" data-e="unit">+ Jednostka</button><button class="btn sm" data-e="atk">+ Kierunek natarcia</button><button class="btn sm" data-e="area">+ Rejon</button><button class="btn sm" data-e="orient" title="Odwraca AA tak, by zaczynały się od strony przeciwnika">Ukierunkuj AA</button></div>':''}
+      ${c.k==='I'?'<div class="row"><button class="btn sm" data-i="tog">'+($('ov-infra')&&$('ov-infra').checked?'Ukryj na mapie':'Pokaż na mapie')+'</button></div>':''}
+      ${isE?'<div class="row"><button class="btn sm primary" data-e="coord">+ Po współrzędnych</button><button class="btn sm" data-e="unit">+ Jednostka</button><button class="btn sm" data-e="atk">+ Kierunek natarcia</button><button class="btn sm" data-e="area">+ Rejon</button><button class="btn sm" data-e="orient" title="Odwraca AA tak, by zaczynały się od strony przeciwnika">Ukierunkuj AA</button></div>':''}
       <textarea rows="2" aria-label="${isE?'Ocena przeciwnika':'Wnioski: '+c.name}" placeholder="${isE?'Ocena przeciwnika… ':'Wnioski… '}${c.q}"></textarea>`;
     if(isE){const q=k=>sec.querySelector(`[data-e=${k}]`);
       q('unit').onclick=()=>{setActive('E');startDraw('marker')};q('atk').onclick=()=>{setActive('E');startDraw('polyline')};
-      q('area').onclick=()=>{setActive('E');startDraw('polygon')};q('orient').onclick=()=>orientAA(false)}
+      q('area').onclick=()=>{setActive('E');startDraw('polygon')};q('orient').onclick=()=>orientAA(false);q('coord').onclick=openCoordDialog}
+    if(c.k==='I'){sec.querySelector('[data-i=tog]').onclick=()=>{const on=!$('ov-infra').checked;setOver('infra',on);save();render()};sec.querySelector('.cat-h').onclick=null}
     sec.querySelector('.cat-h').onclick=()=>setActive(c.k);
     const ul=sec.querySelector('.items');
-    if(!ls.length)ul.innerHTML=isE?'<li class="empty">Brak naniesionego przeciwnika.</li>':'<li class="empty">Brak obiektów. Pojawią się po zaznaczeniu rejonu.</li>';
+    const cap=c.k==='I'?30:1e9;
+    if(ls.length>cap){const more=ls.length-cap;ls.splice(cap);setTimeout(()=>{const li=document.createElement('li');li.className='empty';li.textContent=`…i ${more} więcej (pełna lista w raporcie)`;ul.appendChild(li)},0)}
+    if(!ls.length)ul.innerHTML=c.k==='I'?'<li class="empty">Pojawi się po ocenie rejonu.</li>':isE?'<li class="empty">Brak naniesionego przeciwnika.</li>':'<li class="empty">Brak obiektów. Pojawią się po zaznaczeniu rejonu.</li>';
     ls.forEach(l=>{
       const p=l.feature.properties,li=document.createElement('li');
       li.innerHTML=`<span class="nm">${esc(p.name)||'(bez nazwy)'}</span><span class="meta">${kind(l)}${measure(l)?' · '+measure(l):''}</span><button class="x" title="Usuń">✕</button>`;
@@ -2387,7 +2774,7 @@ const areaEl=$('area');areaEl.oninput=()=>save();
 function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
-    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,
+    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),
     mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
@@ -2406,13 +2793,15 @@ function load(fc,opt={}){
   setAutoBox(m.autoBox?L.latLngBounds(m.autoBox):null);
   doct=m.doct!==false;$('bDoct').setAttribute('aria-pressed',doct);doct?mcoo.addTo(map):map.removeLayer(mcoo);
   const mc=m.mc;setMC(mc&&mc.mob&&mc.mob.length===mc.n*mc.n?{b:L.latLngBounds(mc.b),n:mc.n,mob:Uint8Array.from(mc.mob,Number),dead:Uint8Array.from(mc.dead,Number),showMob:mc.showMob!==false,showDead:mc.showDead!==false,stats:mc.stats}:null);
-  L.geoJSON(fc,{pointToLayer:(f,ll)=>L.marker(ll)}).eachLayer(l=>{
+  if(!opt.keepView&&Array.isArray(m.over))Object.keys(OVER).forEach(k=>setOver(k,m.over.includes(k)));
+  (fc.features||[]).forEach(ft=>{const isI=ft&&ft.properties&&ft.properties.cat==='I';
+   L.geoJSON(ft,{pointToLayer:(f,ll)=>L.marker(ll,isI?{pane:'infraM'}:{}),...(isI?{pane:'infraP'}:{})}).eachLayer(l=>{
     const pr={...(l.feature.properties||{})};delete l.feature;
     if(!ALLCATS.some(c=>c.k===pr.cat))pr.cat='O';
     const g=l.getLatLngs?l.getLatLngs():null;
     if(g&&g.length&&Array.isArray(g[0])&&Array.isArray(g[0][0]))return;
     attach(l,pr);
-  });
+  })});
   decorate();render();
   if(!opt.keepView&&drawn.getLayers().length)map.fitBounds(drawn.getBounds(),{padding:[60,60],maxZoom:15});
 }
@@ -2443,6 +2832,14 @@ async function report(){
         s+=`| ${cl(p.name)} | ${p.side==='własne'?'własne':'przeciwnik'} | ${kind(l)} | ${isPt?(ECH[p.ech||'']||'—'):'—'} | ${p.conf==='prz'?'przypuszczalny':'potwierdzony'} | ${mgrs(a.lat,a.lng)} | ${isPt&&p.mv!==''&&p.mv!=null?p.mv+'°':'—'} | ${cl([p.note,p.vs?'pole widzenia: '+p.vs:''].filter(Boolean).join('; '))} |\n`}
       s+='\n';
     }
+  }
+  const inf=drawn.getLayers().filter(l=>l.feature.properties.cat==='I');
+  if(inf.length){
+    s+=`## Infrastruktura (rozpoznana automatycznie z OpenStreetMap)\n\n${notes.I.trim()||''}\n\n| Obiekt | Rodzaj | MGRS | Wymiar | Znaczenie |\n|---|---|---|---|---|\n`;
+    const cl=t=>(t||'—').replace(/\|/g,'/').replace(/\n/g,' ');
+    inf.sort((a,b)=>String(a.feature.properties.itype).localeCompare(b.feature.properties.itype));
+    for(const l of inf){const p=l.feature.properties,a=anchor(l);s+=`| ${cl(p.name)} | ${kind(l)} | ${mgrs(a.lat,a.lng)} | ${measure(l)||'—'} | ${cl(p.note)} |\n`}
+    s+='\n';
   }
   for(const c of CATS){
     s+=`## ${c.l} – ${c.name} (${c.en})\n\n**Wnioski:** ${notes[c.k].trim()||'—'}\n\n`;
@@ -2482,7 +2879,7 @@ modal.onclick=e=>{if(e.target===modal)$('mClose').onclick()};
 
 // ================= Skróty klawiszowe =================
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){if(!modal.hidden){$('mClose').onclick();return}if((!$('sheet').hidden||map._popup)&&!mode){closeEditor();return}stopModes();return}
+  if(e.key==='Escape'){if(!modal.hidden){$('mClose').onclick();return}if(!$('cmodal').hidden){$('cmodal').hidden=true;return}if((!$('sheet').hidden||map._popup)&&!mode){closeEditor();return}stopModes();return}
   if(e.key==='Enter'&&drawState&&drawState.type!=='marker'&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)){finishDraw();return}
   if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
   if((e.ctrlKey||e.metaKey)&&!e.altKey){const k=e.key.toLowerCase();
@@ -2507,6 +2904,7 @@ if(saved&&saved.features&&saved.features.length){
   $('wRestore').textContent=`Przywróć poprzednią analizę${saved.ocoka&&saved.ocoka.area?': '+saved.ocoka.area:''}`;
   $('wRestore').onclick=()=>{load(saved);showWelcome(false);showManual(true);save();toast('Przywrócono poprzednią analizę')};
 }
+initCoordDialog();
 histPush();
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawn.eachLayer(styleLayer);decorate();render();renderCatBar()});
 </script>
