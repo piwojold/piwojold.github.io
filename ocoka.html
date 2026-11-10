@@ -873,6 +873,7 @@ textarea{resize:vertical;min-height:56px}
 .rdoc th{background:#e3e8df}
 .rscroll{overflow:auto;flex:1}
 @media (max-width:760px){.rdoc{margin:8px;padding:16px}.rdoc table{font-size:11px}.rtools{padding:8px}}
+.hide-ig-tr .ig-tr,.hide-ig-en .ig-en,.hide-ig-co .ig-co,.hide-ig-wa .ig-wa,.hide-ig-sv .ig-sv,.hide-ig-mil .ig-mil,.hide-ig-ind .ig-ind{display:none!important}
 .drawing .leaflet-interactive{pointer-events:none!important}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:1600;background:var(--panel);border-top:1px solid var(--line);border-radius:14px 14px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.25);max-height:72vh;overflow:auto;padding:4px max(14px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
 .sheet .sh{position:sticky;top:0;background:var(--panel);display:flex;align-items:center;gap:8px;padding:8px 0;z-index:1}
@@ -941,6 +942,8 @@ textarea{resize:vertical;min-height:56px}
       <div class="section">
         <h3>Nakładki</h3>
         <div class="overs" id="overList"></div>
+        <div class="small" style="margin-top:6px">Infrastruktura na mapie – grupy</div>
+        <div class="overs" id="igList"></div>
         <div class="hint">Siatka MGRS rysuje linie co 1 km, 10 km lub 100 km zależnie od skali, z opisem jak na mapach wojskowych.</div>
       </div>
       <div class="section">
@@ -1893,7 +1896,7 @@ function startBrush(){
   modeCleanup=()=>{
     L.DomEvent.off(box,'pointermove',mv);L.DomEvent.off(box,'pointerdown',dn);L.DomEvent.off(document,'pointerup pointercancel',up);box.classList.remove('brushing');map.dragging.enable();map.touchZoom.enable();
     if(brush.circle){map.removeLayer(brush.circle);brush.circle=null}
-    const N2=MC.n*MC.n,cnt=[0,0,0];MC.mob.forEach(v=>cnt[v]++);MC.stats=cnt.map(v=>v/N2);
+    const cnt=[0,0,0];MC.mob.forEach((v,k)=>{if(!MC.inside||MC.inside[k])cnt[v]++});const tot=cnt[0]+cnt[1]+cnt[2]||1;MC.stats=cnt.map(v=>v/tot);
     notes.Ob=notes.Ob.replace(/MCOO \(pojazdy gąsienicowe\):[^.]*\./,`MCOO (pojazdy gąsienicowe, poprawione ręcznie): teren nieograniczony ${pct(MC.stats[0])}, ograniczony ${pct(MC.stats[1])}, bardzo ograniczony ${pct(MC.stats[2])}.`);
     render();save();
   };
@@ -2238,13 +2241,14 @@ const IT={
   airfield:{n:'Lotnisko',g:'tr',a:'L',max:6,sig:'Znaczenie operacyjne i logistyczne; możliwy desant.'},
   helipad:{n:'Lądowisko śmigłowców',g:'tr',a:'H',max:10,sig:'Lądowanie śmigłowców: ewakuacja medyczna, desant.'},
   plant:{n:'Elektrownia',g:'en',a:'E',max:10,sig:'Infrastruktura krytyczna (energia).'},
-  substation:{n:'Stacja elektroenergetyczna',g:'en',a:'P',max:15,sig:'Węzeł sieci energetycznej, infrastruktura krytyczna.'},
+  substation:{n:'Stacja elektroenergetyczna WN',g:'en',a:'P',max:15,sig:'Stacja wysokiego napięcia (≥110 kV): węzeł sieci przesyłowej, infrastruktura krytyczna.'},
   powerline:{n:'Linia wysokiego napięcia',g:'en',a:'',max:40,sig:'Przeszkoda dla śmigłowców i BSP; punkt orientacyjny.'},
   pipeline:{n:'Rurociąg',g:'en',a:'',max:12,sig:'Infrastruktura krytyczna; pas techniczny w terenie.'},
   fuel:{n:'Stacja paliw',g:'en',a:'F',max:15,sig:'Źródło paliwa, znaczenie logistyczne.'},
   mast:{n:'Maszt / wieża telekomunikacyjna',g:'co',a:'Ł',max:20,sig:'Łączność; dominanta terenowa i punkt orientacyjny.'},
   watertower:{n:'Wieża ciśnień',g:'wa',a:'Wc',max:15,sig:'Dominanta terenowa, możliwy punkt obserwacyjny.'},
-  dam:{n:'Zapora / jaz',g:'wa',a:'Z',max:10,sig:'Zniszczenie może zalać teren; przeprawa, teren kluczowy.'},
+  dam:{n:'Zapora',g:'wa',a:'Z',max:10,sig:'Zapora czołowa zbiornika: jej zniszczenie może zalać teren poniżej; zwykle przeprawa – kandydat na teren kluczowy.'},
+  weir:{n:'Jaz / próg wodny',g:'wa',a:'J',max:8,sig:'Budowla piętrząca na cieku; lokalne przejście pieszo, zwykle niewielkie znaczenie taktyczne.'},
   waterworks:{n:'Ujęcie / stacja uzdatniania wody',g:'wa',a:'U',max:10,sig:'Infrastruktura krytyczna (woda).'},
   hospital:{n:'Szpital',g:'sv',a:'+',max:10,sig:'Obiekt chroniony; znaczenie dla ewakuacji medycznej.'},
   fire:{n:'Straż pożarna',g:'sv',a:'PSP',max:10,sig:'Ratownictwo, sprzęt ciężki.'},
@@ -2254,10 +2258,12 @@ const IT={
 };
 map.createPane('infraP');map.getPane('infraP').style.zIndex=395;
 map.createPane('infraM');map.getPane('infraM').style.zIndex=595;
+let igHide=new Set(['sv']);
+function applyIgHide(){const c=map.getContainer();Object.keys(IG).forEach(g=>c.classList.toggle('hide-ig-'+g,igHide.has(g)));Object.keys(IG).forEach(g=>{const cb=$('ig-'+g);if(cb)cb.checked=!igHide.has(g)})}
 function infraIcon(t){
   const it=IT[t]||{a:'?',g:'tr'},c=IG[it.g][0];
   const html=t==='hospital'?`<div class="iico" style="background:#fff;color:#c62828;border-color:#c62828">+</div>`:`<div class="iico" style="background:${c}">${it.a}</div>`;
-  return L.divIcon({className:'',iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-12],html});
+  return L.divIcon({className:'ig-'+it.g,iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-12],html});
 }
 async function overpassInfra(b){
   const bb=`${b.getSouth().toFixed(5)},${b.getWest().toFixed(5)},${b.getNorth().toFixed(5)},${b.getEast().toFixed(5)}`;
@@ -2289,26 +2295,36 @@ function classifyInfra(t){
   if(t.highway==='motorway_junction')return 'junction';
   if(t.railway==='station'||t.railway==='halt')return 'station';
   if(t.aeroway==='helipad')return 'helipad';if(t.aeroway)return 'airfield';
-  if(t.power==='plant')return 'plant';if(t.power==='substation')return 'substation';
+  if(t.power==='plant')return 'plant';
+  if(t.power==='substation'){const v=Math.max(0,...String(t.voltage||'').split(';').map(Number).filter(isFinite));
+    return v>=110000||['transmission','generation'].includes(t.substation)?'substation':null}
   if(t.amenity==='fuel')return 'fuel';if(t.amenity==='hospital')return 'hospital';if(t.amenity==='fire_station')return 'fire';if(t.amenity==='police')return 'police';
   if(t.man_made==='mast'||t.man_made==='communications_tower'||t.man_made==='tower')return 'mast';
   if(t.man_made==='water_tower')return 'watertower';if(t.man_made==='water_works')return 'waterworks';if(t.man_made==='works')return 'industry';
-  if(t.waterway==='dam'||t.waterway==='weir')return 'dam';
+  if(t.waterway==='dam')return 'dam';if(t.waterway==='weir')return 'weir';
   if(t.landuse==='military')return 'military';
   return null;
 }
 function infraName(type,t){
+  if(type==='bridge'||type==='tunnel'){
+    const own=t[type+':name'],lr=t['railway:ref']||(t.railway?t.ref:'');
+    let s=own?(own.toLowerCase().includes(type==='bridge'?'most':'tunel')?own:IT[type].n+' '+own):IT[type].n+(t.railway?' kolejowy':' drogowy');
+    const via=t.railway?(lr?'linia nr '+lr:''):(t.ref?fmtRef(t.ref):t.name?'ul. '+t.name:'');
+    return s+(via?(own?` (${via})`:` w ciągu: ${via}`):'');
+  }
+  if(type==='fire'){const nm=t.name||'';const osp=/ochotnicz|\bosp\b/i.test(nm);const rest=nm.replace(/^(Ochotnicza|Państwowa)\s+Straż\s+Pożarna\s*/i,'').replace(/^(OSP|PSP)\s*/i,'');return (osp?'OSP':'PSP')+(rest?' '+rest:'')}
   const nm=t.name||t.ref||t['name:pl']||'',extra=[];
+  if(type==='plant'){const src=t['plant:source']||t['generator:source'];if(src)extra.push({solar:'słoneczna',wind:'wiatrowa',gas:'gazowa',coal:'węglowa',hydro:'wodna',biomass:'biomasa',biogas:'biogazowa'}[src]||src);if(t['plant:output:electricity'])extra.push(t['plant:output:electricity'])}
   if(type==='powerline'&&t.voltage)extra.push(Math.round(+String(t.voltage).split(';')[0]/1000)+' kV');
   if(type==='pipeline'&&t.substance)extra.push({gas:'gaz',oil:'ropa',water:'woda',fuel:'paliwo'}[t.substance]||t.substance);
-  if(type==='bridge')extra.push(t.railway?'kolejowy':(t.ref?'droga '+t.ref:'drogowy'));
+
   if(type==='substation'&&t.voltage)extra.push(String(t.voltage).split(';').map(v=>Math.round(+v/1000)).filter(Boolean).join('/')+' kV');
   if(type==='airfield'&&(t.icao||t.iata))extra.push(t.icao||t.iata);
   if(type==='mast'&&t.height)extra.push(t.height+' m');
   const base=nm&&nm.toLowerCase().includes(IT[type].n.split(/[ /]/)[0].toLowerCase())?nm:IT[type].n+(nm?' '+nm:'');
   return base+(extra.length?' ('+extra.join(', ')+')':'');
 }
-function parseInfra(d,b,avoid){
+function parseInfra(d,b,avoid,ring){
   const items=[],cnt={};
   for(const el of d.elements||[]){
     const t=el.tags||{},type=classifyInfra(t);if(!type)continue;
@@ -2320,7 +2336,11 @@ function parseInfra(d,b,avoid){
     }
     const c=el.type==='node'?L.latLng(el.lat,el.lon):el.center?L.latLng(el.center.lat,el.center.lon):null;
     if(!c||!b.contains(c))continue;
-    items.push({type,kind:'pt',ll:c,name:infraName(type,t),t});
+    if(ring&&!pip(c,ring))continue;
+    const it={type,kind:'pt',ll:c,name:infraName(type,t),t};
+    if(type==='fire'&&/^OSP/.test(it.name))it.sig='Ochotnicza straż pożarna: lokalny potencjał ratowniczy.';
+    if(type==='plant'&&/słoneczna|wiatrowa/.test(it.name))it.sig='Farma OZE: obiekt energetyczny o lokalnym znaczeniu; rozległy teren ogrodzony.';
+    items.push(it);
   }
   // usuwanie duplikatów (np. dwa pasy mostu) i limit na rodzaj
   const out=[],sum={};
@@ -2339,8 +2359,10 @@ function parseInfra(d,b,avoid){
 }
 function infraNotes(inf,N){
   const s=inf.sum,c=k=>(s[k]?s[k].n:0),km=k=>s[k]?(s[k].len/1000).toFixed(1):'0';
-  const list=keys=>keys.filter(k=>c(k)).map(k=>`${IT[k].n.toLowerCase()}: ${c(k)}`).join(', ');
+  const lc=t=>t.replace(/^\S+/,w=>w.toLowerCase());
+  const list=keys=>keys.filter(k=>c(k)).map(k=>`${lc(IT[k].n)}: ${c(k)}`).join(', ');
   const crit=list(['plant','substation','dam','waterworks','junction','station','airfield','tunnel']);
+  if(c('weir'))N.Ob.push(`Jazy i progi wodne: ${c('weir')} – lokalne budowle na ciekach, zwykle bez znaczenia taktycznego.`);
   if(crit)N.K.push(`Infrastruktura krytyczna w rejonie – ${crit}.`);
   const dom=list(['mast','watertower']);
   if(dom)N.O.push(`Dominanty i punkty orientacyjne – ${dom}; mogą służyć jako punkty obserwacyjne lub przekaźniki.`);
@@ -2564,7 +2586,7 @@ async function snapMap(fit){
   // 5. siatka
   if(map.hasLayer(gridL)){const ctx=mk('Siatka MGRS',false);await drawVec(ctx,gridL.getLayers(),S)}
   // 6. infrastruktura
-  const inf=drawn.getLayers().filter(l=>l.feature.properties.cat==='I');
+  const inf=drawn.getLayers().filter(l=>l.feature.properties.cat==='I'&&!igHide.has((IT[l.feature.properties.itype]||{g:'tr'}).g));
   if(inf.length&&map.getPane('infraM').style.display!=='none'){const ctx=mk('Infrastruktura',false);
     await drawVec(ctx,inf.filter(l=>!(l instanceof L.Marker)),S);await drawVec(ctx,inf.filter(l=>l instanceof L.Marker),S)}
   // 7. OCOKA
@@ -3015,12 +3037,14 @@ async function runAuto(b,opt={}){
   if(km2<0.2){toast('Rejon jest za mały. Zaznacz co najmniej 0,2 km².');return}
   if(km2>400){toast(`Rejon ma ${Math.round(km2)} km². Zaznacz mniejszy (maks. 400 km², np. 20 × 20 km).`);return}
   setAutoBox(b,opt.ring,opt.desc||`${mgrs(b.getSouth(),b.getWest())} (SW) – ${mgrs(b.getNorth(),b.getEast())} (NE), ${(w/1000).toFixed(1)} × ${(h/1000).toFixed(1)} km`);showWelcome(false);
-  if(!areaEl.value.trim())nameArea(b.getCenter());
+  if(!areaEl.value.trim()||areaAuto)nameArea(b.getCenter(),true);
   const step=t=>openProfile('Ocena rejonu',`<span>${t}</span>`,'');
   try{
     const n=Math.max(64,Math.min(161,Math.round(Math.max(w,h)/75)+1));
     step(`Krok 1 z 3: pobieram model terenu (siatka ${n}×${n}, co ok. ${Math.round(Math.max(w,h)/(n-1))} m)…`+(km2>150?' Duży rejon – to potrwa dłużej.':''));
     const g=await demGrid(b,n,w,h);
+    g.inside=new Uint8Array(n*n);
+    if(opt.ring){for(let k=0;k<n*n;k++)g.inside[k]=pip(g.pts[k],autoRing)?1:0}else g.inside.fill(1);
     step('Krok 2 z 3: pobieram dane OpenStreetMap (lasy, wody, drogi, zabudowa)…');
     let osm=null,osmErr=false,inf=null;
     const pInf=overpassInfra(b);pInf.catch(()=>{});
@@ -3036,8 +3060,8 @@ async function runAuto(b,opt={}){
     const res=buildResults(b,g,t,osm,km2);
     res.NI=inf?null:'Nie udało się pobrać danych o infrastrukturze (serwer Overpass niedostępny).';
     if(inf){
-      const pinf=parseInfra(inf,b,res.F.filter(f=>f.cat==='K'&&f.kind==='pt').map(f=>f.ll));
-      pinf.items.forEach(it=>res.F.push({cat:'I',kind:it.kind,ll:it.ll,lls:it.lls,name:it.name,note:IT[it.type].sig,extra:{itype:it.type}}));
+      const pinf=parseInfra(inf,b,res.F.filter(f=>f.cat==='K'&&f.kind==='pt').map(f=>f.ll),opt.ring?autoRing:null);
+      pinf.items.forEach(it=>res.F.push({cat:'I',kind:it.kind,ll:it.ll,lls:it.lls,name:it.name,note:it.sig||IT[it.type].sig,extra:{itype:it.type}}));
       res.NI=infraNotes(pinf,res.N);res.infCount=pinf.items.length;
     }
     applyAuto(res,b,g,t);
@@ -3070,21 +3094,24 @@ async function demGrid(b,n,wM,hM){
 }
 
 function analyzeTerrain(g,cover){
-  const {n,h,dx,dy}=g,H=(i,j)=>h[j*n+i],N2=n*n;
+  const {n,h,dx,dy}=g,H=(i,j)=>h[j*n+i],N2=n*n,ins=g.inside||new Uint8Array(N2).fill(1);
+  let NI=0;for(let k=0;k<N2;k++)NI+=ins[k];NI=NI||1;
   const hs=new Float32Array(N2);for(let k=0;k<N2;k++)hs[k]=h[k]+(cover?(cover.forest[k]?cover.hF:cover.built[k]?cover.hB:0):0);
   const HS=(i,j)=>hs[j*n+i];
   const slope=new Float32Array(N2);let go=0,slow=0,nogo=0,steep=0,mn=Infinity,mx=-Infinity,sum=0;
   for(let j=0;j<n;j++)for(let i=0;i<n;i++){
     const i0=Math.max(0,i-1),i1=Math.min(n-1,i+1),j0=Math.max(0,j-1),j1=Math.min(n-1,j+1);
     const gx=(H(i1,j)-H(i0,j))/((i1-i0)*dx),gy=(H(i,j1)-H(i,j0))/((j1-j0)*dy);
-    const s=100*Math.hypot(gx,gy);slope[j*n+i]=s;
+    const s=100*Math.hypot(gx,gy),k=j*n+i;slope[k]=s;
+    if(!ins[k])continue;
     if(s<15)go++;else if(s<30)slow++;else nogo++;
     if(s>=60)steep++;
     const v=H(i,j);mn=Math.min(mn,v);mx=Math.max(mx,v);sum+=v;
   }
-  // wzniesienia dominujące
+  // kandydaci na punkty obserwacyjne: lokalne wyniesienia wewnątrz rejonu, poza lasem i zabudową (jeśli są takie)
   const Rm=3,Rt=8,cands=[];
   for(let j=0;j<n;j++)for(let i=0;i<n;i++){
+    if(!ins[j*n+i])continue;
     const v=H(i,j);let isMax=true,s=0,c=0;
     for(let dj=-Rt;dj<=Rt;dj++)for(let di=-Rt;di<=Rt;di++){
       const ii=i+di,jj=j+dj;if(ii<0||jj<0||ii>=n||jj>=n)continue;
@@ -3092,33 +3119,38 @@ function analyzeTerrain(g,cover){
       if(Math.abs(di)<=Rm&&Math.abs(dj)<=Rm&&u>v)isMax=false;
     }
     const tpi=v-s/c;
-    if(isMax&&tpi>2)cands.push({i,j,h:v,tpi});
+    if(isMax&&tpi>1)cands.push({i,j,h:v,tpi});
   }
   const inCov=c=>cover&&(cover.forest[c.j*n+c.i]||cover.built[c.j*n+c.i]);
   const anyOpen=cands.some(c=>!inCov(c));
   cands.sort((a,b)=>(b.h+2*b.tpi-(anyOpen&&inCov(b)?1e4:0))-(a.h+2*a.tpi-(anyOpen&&inCov(a)?1e4:0)));
-  const peaks=[];
-  for(const c of cands){if(peaks.every(p=>Math.hypot(p.i-c.i,p.j-c.j)>n/5))peaks.push(c);if(peaks.length===3)break}
-  if(!peaks.length){let k=0;for(let q=1;q<N2;q++)if(h[q]>h[k])k=q;peaks.push({i:k%n,j:Math.floor(k/n),h:h[k],tpi:0})}
-  // widoczność z wzniesień (po gołym terenie)
+  const pool=[];
+  for(const c of cands){if(anyOpen&&inCov(c))continue;if(pool.every(p=>Math.hypot(p.i-c.i,p.j-c.j)>n/8))pool.push(c);if(pool.length===10)break}
+  if(!pool.length){let k=-1;for(let q=0;q<N2;q++)if(ins[q]&&(k<0||h[q]>h[k]))k=q;pool.push({i:k%n,j:Math.floor(k/n),h:h[k],tpi:0})}
+  // widoczność z kandydatów
   const hO=+$('hObs').value||2,hT=+$('hTgt').value||1.5,Rk=6371000/(1-.13),drop=d=>d*d/(2*Rk);
   const bil=(x,y)=>{const x0=Math.floor(x),y0=Math.floor(y),x1=Math.min(n-1,x0+1),y1=Math.min(n-1,y0+1),fx=x-x0,fy=y-y0;
     return HS(x0,y0)*(1-fx)*(1-fy)+HS(x1,y0)*fx*(1-fy)+HS(x0,y1)*(1-fx)*fy+HS(x1,y1)*fx*fy};
-  const vis=new Uint8Array(N2);
-  peaks.forEach((p,pi)=>{
-    const eye=p.h+hO;let cnt=0;
-    for(let j=0;j<n;j++)for(let i=0;i<n;i++){
-      const k=j*n+i;
-      if(i===p.i&&j===p.j){vis[k]|=1<<pi;cnt++;continue}
-      const di=i-p.i,dj=j-p.j,steps=Math.max(Math.abs(di),Math.abs(dj)),D=Math.hypot(di*dx,dj*dy);
-      let maxA=-Infinity;
+  const viewOf=p=>{const v=new Uint8Array(N2),eye=p.h+hO;let cnt=0;
+    for(let j=0;j<n;j++)for(let i=0;i<n;i++){const k=j*n+i;
+      if(i===p.i&&j===p.j){v[k]=1;cnt+=ins[k];continue}
+      const di=i-p.i,dj=j-p.j,steps=Math.max(Math.abs(di),Math.abs(dj)),D=Math.hypot(di*dx,dj*dy);let maxA=-Infinity;
       for(let s=1;s<steps;s++){const f=s/steps,d=D*f,a=(bil(p.i+di*f,p.j+dj*f)-drop(d)-eye)/d;if(a>maxA)maxA=a}
-      if((H(i,j)+hT-drop(D)-eye)/D>=maxA){vis[k]|=1<<pi;cnt++}
-    }
-    p.visShare=cnt/N2;
-  });
-  let union=0;for(let k=0;k<N2;k++)if(vis[k])union++;
-  return {slope,vis,peaks,mn,mx,mean:sum/N2,relief:mx-mn,go:go/N2,slow:slow/N2,nogo:nogo/N2,steep:steep/N2,union:union/N2};
+      if((H(i,j)+hT-drop(D)-eye)/D>=maxA){v[k]=1;cnt+=ins[k]}}
+    p.visShare=cnt/NI;return v};
+  pool.forEach(p=>p.v=viewOf(p));
+  // wybór zachłanny: punkty dające największy łączny zasięg obserwacji
+  const peaks=[],cov=new Uint8Array(N2);
+  for(let r=0;r<3&&pool.length;r++){
+    let best=-1,gain=-1;
+    pool.forEach((p,pi)=>{let gsum=0;for(let k=0;k<N2;k++)if(ins[k]&&p.v[k]&&!cov[k])gsum++;if(gsum>gain){gain=gsum;best=pi}});
+    if(best<0||(peaks.length&&gain/NI<0.01))break;
+    const p=pool.splice(best,1)[0];p.gain=gain/NI;peaks.push(p);for(let k=0;k<N2;k++)if(p.v[k])cov[k]=1;
+  }
+  const vis=new Uint8Array(N2);peaks.forEach((p,pi)=>{for(let k=0;k<N2;k++)if(p.v[k])vis[k]|=1<<pi;delete p.v});
+  let union=0;for(let k=0;k<N2;k++)if(vis[k]&&ins[k])union++;
+  for(let k=0;k<N2;k++)if(!ins[k])vis[k]=255; // poza rejonem – nie oznaczaj jako martwe pole
+  return {slope,vis,peaks,mn,mx,mean:sum/NI,relief:mx-mn,go:go/NI,slow:slow/NI,nogo:nogo/NI,steep:steep/NI,union:union/NI,NI,dsm:!!cover,cand:cands.length};
 }
 
 // ---- OpenStreetMap (Overpass API) ----
@@ -3180,6 +3212,11 @@ function clipRuns(lls,b){
 const runLen=r=>{let d=0;for(let i=1;i<r.length;i++)d+=r[i-1].distanceTo(r[i]);return d};
 function dirLabel(r){const d=bearing(r[0],r[r.length-1])%180;return d<22.5||d>=157.5?'N–S':d<67.5?'NE–SW':d<112.5?'E–W':'NW–SE'}
 
+function fmtRef(ref){
+  return String(ref).split(/\s*[;,]\s*/).filter(Boolean).map(r=>{r=r.trim().toUpperCase();
+    if(/^[AS]\s?\d+/.test(r))return r.replace(/\s/,'');if(/^DK|^DW/.test(r))return r.replace(/\s/,'');
+    if(/^\d{1,2}$/.test(r))return 'DK'+r;if(/^\d{3}$/.test(r))return 'DW'+r;return r}).join('/');
+}
 function parseOSM(d,b,g){
   const N2=g.n*g.n,cellA=g.dx*g.dy;
   const n=g.n,S=b.getSouth(),N=b.getNorth(),W=b.getWest(),E=b.getEast();
@@ -3198,7 +3235,7 @@ function parseOSM(d,b,g){
     for(let s2=0;s2<=st;s2++){const f=s2/st,ci=Math.round((a.lng+(c.lng-a.lng)*f-W)/(E-W)*(n-1)),cj=Math.round((N-(a.lat+(c.lat-a.lat)*f))/(N-S)*(n-1));
       if(ci>=0&&cj>=0&&ci<n&&cj<n)mask[cj*n+ci]=1}}});
   const MAIN={motorway:0,trunk:1,primary:2,secondary:3,tertiary:4};
-  const ROADNAME={motorway:'autostrada',trunk:'droga ekspresowa',primary:'droga główna',secondary:'droga drugorzędna',tertiary:'droga lokalna'};
+  const ROADNAME={motorway:'autostrada / droga ekspresowa',trunk:'droga główna (ruchu przyspieszonego)',primary:'droga główna',secondary:'droga drugorzędna',tertiary:'droga lokalna'};
   for(const el of d.elements||[]){
     const t=el.tags||{};
     if(el.type==='count'){o.buildings=+(t.ways||t.total||0);continue}
@@ -3244,26 +3281,28 @@ function parseOSM(d,b,g){
       if(t.highway in MAIN||t.highway==='unclassified')mark(runs,o.roadMask);
       if(t.bridge&&t.bridge!=='no'&&(t.highway in MAIN||t.highway==='unclassified')){
         const mid=lls[Math.floor(lls.length/2)];
-        if(b.contains(mid))o.bridges.push({ll:mid,name:t.ref||t.name||'',main:t.highway in MAIN});
+        if(b.contains(mid))o.bridges.push({ll:mid,name:t.ref?fmtRef(t.ref):(t.name?'ul. '+t.name:''),main:t.highway in MAIN});
       }
       if(t.highway in MAIN){
-        const k=t.ref||t.name||t.highway;
-        const grp=o.roads[k]||(o.roads[k]={name:t.ref?`${t.ref}${t.name?' '+t.name:''}`:(t.name||ROADNAME[t.highway]),cls:MAIN[t.highway],clsName:ROADNAME[t.highway],len:0,runs:[]});
+        const k=t.ref?fmtRef(t.ref):(t.name||t.highway);
+        const grp=o.roads[k]||(o.roads[k]={name:t.ref?`${fmtRef(t.ref)}${t.name?' (ul. '+t.name+')':''}`:(t.name?'ul. '+t.name:ROADNAME[t.highway]),cls:MAIN[t.highway],clsName:ROADNAME[t.highway],len:0,runs:[]});
         grp.cls=Math.min(grp.cls,MAIN[t.highway]);grp.len+=len;grp.runs.push(...runs);
       }else if(t.highway==='track')o.trackKm+=len/1000;
       else o.minorKm+=len/1000;
     }else if(t.railway){
-      const k=t.name||'linia kolejowa';const grp=o.rail[k]||(o.rail[k]={name:k,len:0,runs:[]});grp.len+=len;grp.runs.push(...runs);
+      if(t.service){o.railSvcKm=(o.railSvcKm||0)+len/1000;continue}
+      const lr=t['railway:ref']||t.ref;const k=lr?'linia nr '+lr:(t.name||'tory kolejowe');const grp=o.rail[k]||(o.rail[k]={name:k,len:0,runs:[]});grp.len+=len;grp.runs.push(...runs);
     }
   }
   // scal mosty leżące blisko siebie
   const br=[];for(const x of o.bridges.sort((a,c)=>c.main-a.main))if(br.every(y=>y.ll.distanceTo(x.ll)>150))br.push(x);
   o.bridges=br;
-  let fc=0,wc=0;for(let k=0;k<N2;k++){fc+=o.forestMask[k];wc+=o.waterMask[k]}
-  o.forestShare=fc/N2;o.waterShare=wc/N2;
-  let sc=0,oc=0,bc=0,open=0;for(let k=0;k<N2;k++){sc+=o.scrubMask[k];oc+=o.orchMask[k];bc+=o.builtMask[k];
+  const ins=g.inside||new Uint8Array(N2).fill(1);let NI=0;for(let k=0;k<N2;k++)NI+=ins[k];NI=NI||1;
+  let fc=0,wc=0;for(let k=0;k<N2;k++)if(ins[k]){fc+=o.forestMask[k];wc+=o.waterMask[k]}
+  o.forestShare=fc/NI;o.waterShare=wc/NI;
+  let sc=0,oc=0,bc=0,open=0;for(let k=0;k<N2;k++){if(!ins[k])continue;sc+=o.scrubMask[k];oc+=o.orchMask[k];bc+=o.builtMask[k];
     if(!o.forestMask[k]&&!o.waterMask[k]&&!o.wetMask[k]&&!o.builtMask[k]&&!o.scrubMask[k]&&!o.orchMask[k]&&!o.quarryMask[k])open++}
-  o.scrubShare=sc/N2;o.orchShare=oc/N2;o.builtShare=bc/N2;o.openShare=open/N2;
+  o.scrubShare=sc/NI;o.orchShare=oc/NI;o.builtShare=bc/NI;o.openShare=open/NI;
   o.osmTime=(d.osm3s&&d.osm3s.timestamp_osm_base)||'';o.remark=d.remark||'';
   return o;
 }
@@ -3276,7 +3315,7 @@ class Heap{constructor(){this.a=[]}
   pop(){const a=this.a,top=a[0],last=a.pop();if(a.length){a[0]=last;let i=0;for(;;){const l=2*i+1,r=l+1;let m=i;if(l<a.length&&a[l][0]<a[m][0])m=l;if(r<a.length&&a[r][0]<a[m][0])m=r;if(m===i)break;[a[m],a[i]]=[a[i],a[m]];i=m}}return top}
   get size(){return this.a.length}}
 function leastCost(g,mob,road,from){
-  const n=g.n,N2=n*n,cost=k=>road&&road[k]?0.6:[1,5,60][mob[k]];
+  const n=g.n,N2=n*n,ins=g.inside,cost=k=>ins&&!ins[k]?200:road&&road[k]?0.6:[1,5,60][mob[k]];
   const D=new Float64Array(N2).fill(Infinity),P=new Int32Array(N2).fill(-1),h=new Heap();
   for(let q=0;q<n;q++){const k=from==='S'?(n-1)*n+q:q*n;D[k]=cost(k);h.push(k,D[k])}
   const isT=k=>from==='S'?k<n:k%n===n-1;let end=-1;
@@ -3298,17 +3337,17 @@ function simplify(pts,tol){
 function buildResults(b,g,t,o,km2){
   const F=[],n=g.n,N2=n*n,llOf=p=>g.pts[p.j*n+p.i];
   // MCOO: kryteria dla pojazdów gąsienicowych (nachylenie) + pokrycie terenu z OSM
-  const mob=new Uint8Array(N2);let mU=0,mR=0,mS=0;
+  const mob=new Uint8Array(N2);let mU=0,mR=0,mS=0;const ins=g.inside||new Uint8Array(N2).fill(1),NI=t.NI||N2;
   for(let k=0;k<N2;k++){
     const s=t.slope[k];let c=s>=45?2:s>=30?1:0;
     if(o){if(o.waterMask[k]||o.wetMask[k]||o.riverMask[k]||o.quarryMask[k]||o.cliffMask[k])c=2;else if(o.forestMask[k]||o.builtMask[k]||o.orchMask[k]||o.embMask[k])c=Math.max(c,1)}
-    mob[k]=c;c===0?mU++:c===1?mR++:mS++;
+    mob[k]=c;if(ins[k])c===0?mU++:c===1?mR++:mS++;
   }
-  t.mob=mob;t.mU=mU/N2;t.mR=mR/N2;t.mS=mS/N2;
+  t.mob=mob;t.mU=mU/NI;t.mR=mR/NI;t.mS=mS/NI;t.inside=ins;
   // sektory obserwacji z punktów dominujących
   t.peaks.forEach((p,pi)=>{
     let sx=0,sy=0;const items=[];
-    for(let j=0;j<n;j++)for(let i=0;i<n;i++){if(!(t.vis[j*n+i]&(1<<pi))||(i===p.i&&j===p.j))continue;
+    for(let j=0;j<n;j++)for(let i=0;i<n;i++){if(!ins[j*n+i]||!(t.vis[j*n+i]&(1<<pi))||(i===p.i&&j===p.j))continue;
       const ex=(i-p.i)*g.dx,ny=(p.j-j)*g.dy,az=Math.atan2(ex,ny),d=Math.hypot(ex,ny);sx+=Math.sin(az);sy+=Math.cos(az);items.push({az,d})}
     if(!items.length)return;
     const m=Math.atan2(sx,sy),dev=items.map(x=>Math.abs(Math.atan2(Math.sin(x.az-m),Math.cos(x.az-m)))).sort((a,c)=>a-c);
@@ -3318,19 +3357,20 @@ function buildResults(b,g,t,o,km2){
     p.rng=Math.max(100,Math.round(ds[Math.floor(ds.length*.8)]/50)*50);
   });
   const reliefCls=t.relief<30?'płaski':t.relief<100?'falisty':t.relief<300?'pagórkowaty':'górzysty';
-  const peakTxt=t.peaks.map((p,i)=>{const ll=llOf(p);return `PO-auto ${i+1} (${Math.round(p.h)} m, ${mgrs(ll.lat,ll.lng)}) – widać ${pct(p.visShare)}`}).join('; ');
+  const how=t.dsm?`z uwzględnieniem lasu i zabudowy, obserwator ${$('hObs').value} m`:`po gołym terenie, obserwator ${$('hObs').value} m`;
+  const peakTxt=t.peaks.map((p,i)=>{const ll=llOf(p);return `PO-auto ${i+1} (${Math.round(p.h)} m, ${mgrs(ll.lat,ll.lng)}) – widać ${pct(p.visShare)} rejonu`}).join('; ');
   t.peaks.forEach((p,i)=>F.push({cat:'O',kind:'pt',ll:llOf(p),name:`PO-auto ${i+1} (${Math.round(p.h)} m)`,
-    note:`Wzniesienie dominujące. Z tego miejsca widać ok. ${pct(p.visShare)} rejonu (po gołym terenie, obserwator ${$('hObs').value} m)`+(p.az!=null?`; główny sektor obserwacji ${p.az}° ±${p.sw/2}°, do ok. ${fmtDist(p.rng)}.`:'.'),
+    note:`Punkt obserwacyjny wybrany automatycznie spośród ${Math.min(10,t.cand||10)} lokalnych wyniesień jako dający największy łączny zasięg obserwacji. Widać stąd ok. ${pct(p.visShare)} rejonu (${how})`+(p.az!=null?`; główny sektor obserwacji ${p.az}° ±${p.sw/2}°, do ok. ${fmtDist(p.rng)}.`:'.'),
     extra:p.az!=null?{az:String(p.az),sw:String(p.sw),range:String(p.rng)}:{}}));
   const best=[...t.peaks].sort((a,c)=>c.visShare-a.visShare)[0];
-  F.push({cat:'K',kind:'pt',ll:llOf(best),name:`K-auto: wzgórze ${Math.round(best.h)} m`,note:`Najlepsza obserwacja rejonu (${pct(best.visShare)} powierzchni). Kandydat na teren kluczowy.`});
+  F.push({cat:'K',kind:'pt',ll:llOf(best),name:`K-auto: wyniesienie ${Math.round(best.h)} m`,note:`Najlepsza obserwacja rejonu (${pct(best.visShare)} powierzchni). Kandydat na teren kluczowy.`});
 
   const N={O:[],C:[],Ob:[],K:[],A:[]};
   N.O.push(`Teren ${reliefCls}: wysokości ${Math.round(t.mn)}–${Math.round(t.mx)} m n.p.m. (deniwelacja ${Math.round(t.relief)} m).`);
-  N.O.push(`Wzniesienia dominujące: ${peakTxt}. Łącznie widać z nich ${pct(t.union)} rejonu, martwe pola ok. ${pct(1-t.union)}.`);
-  N.C.push(`Martwe pola względem wzniesień dominujących zajmują ok. ${pct(1-t.union)} rejonu i dają osłonę przed obserwacją z tych punktów.`);
+  N.O.push(`Najlepsze punkty obserwacyjne (wybrane według zasięgu widoczności): ${peakTxt}. Łącznie widać z nich ${pct(t.union)} rejonu, martwe pola ok. ${pct(1-t.union)}.${t.union<0.25?' Mała widoczność oznacza teren zakryty – obserwacja wymaga wież, masztów lub BSP.':''}`);
+  N.C.push(`Martwe pola względem tych punktów obserwacyjnych zajmują ok. ${pct(1-t.union)} rejonu i dają osłonę przed obserwacją z tych punktów.`);
   N.Ob.push(`Nachylenie powyżej 30% (niedostępne dla pojazdów): ${pct(t.nogo)} rejonu; 15–30% (ruch utrudniony): ${pct(t.slow)}.`+(t.steep>0.005?` Stoki powyżej 60% (trudne pieszo): ${pct(t.steep)}.`:''));
-  N.A.push(`Teren o nachyleniu poniżej 15%, dostępny dla pojazdów poza drogami: ${pct(t.go)} rejonu.`);
+  N.A.push(`Nachylenie poniżej 15% występuje na ${pct(t.go)} rejonu, więc o przejezdności poza drogami decyduje głównie pokrycie terenu: według MCOO teren nieograniczony to ${pct(t.mU)} rejonu.`);
   N.Ob.push(`MCOO (pojazdy gąsienicowe): teren nieograniczony ${pct(t.mU)}, ograniczony ${pct(t.mR)}, bardzo ograniczony ${pct(t.mS)}.`);
   // kierunki podejścia: korytarze najmniejszego oporu
   [['S','z S na N'],['W','z W na E']].forEach(([from,lab],ix)=>{
@@ -3341,7 +3381,7 @@ function buildResults(b,g,t,o,km2){
     F.push({cat:'A',kind:'line',lls,name:`AA-auto ${ix+1} (${lab})`,note:`Korytarz najmniejszego oporu ${lab}, ${fmtDist(len)}; ${pct(u)} trasy w terenie nieograniczonym. Zmień zwrot („Odwróć kierunek”), jeśli przeciwnik działa z innej strony.`,extra:{aaType:'AA',side:'wróg'}});
     N.A.push(`AA-auto ${ix+1}: korytarz najmniejszego oporu ${lab} (${fmtDist(len)}, ${pct(u)} w terenie nieograniczonym).`);
   });
-  N.K.push(`Wzgórze ${Math.round(best.h)} m (${mgrs(llOf(best).lat,llOf(best).lng)}) daje najlepszą obserwację rejonu.`);
+  N.K.push(`Wyniesienie ${Math.round(best.h)} m (${mgrs(llOf(best).lat,llOf(best).lng)}) daje najlepszą obserwację rejonu.`);
 
   if(o){
     N.O.push(`Teren otwarty (bez lasu, zarośli, sadów, zabudowy i wód): ok. ${pct(o.openShare)} rejonu – dobre pola obserwacji i ostrzału, a zarazem brak ukrycia.`);
@@ -3372,8 +3412,8 @@ function buildResults(b,g,t,o,km2){
     if(wt.length){N.Ob.push(`Mokradła: ${wt.length} (łącznie ${fmtArea(wt.reduce((s,w)=>s+w.area,0))}) – nieprzejezdne dla pojazdów.`);
       wt.slice(0,4).forEach(w=>F.push({cat:'Ob',kind:'poly',ring:w.ring,name:w.name||'Mokradło (auto)',note:`Teren podmokły, ${fmtArea(w.area)}.`}))}
     const rl=Object.values(o.rail).filter(r=>r.len>200);
-    if(rl.length){N.Ob.push('Linie kolejowe: '+rl.map(r=>`${r.name} (${fmtDist(r.len)})`).join(', ')+' – możliwe nasypy i wykopy.');
-      rl.slice(0,2).forEach(r=>{const run=r.runs.sort((a,c)=>runLen(c)-runLen(a))[0];F.push({cat:'Ob',kind:'line',lls:run,name:`${r.name} (auto)`,note:'Linia kolejowa – sprawdź nasypy, wykopy i przejazdy.'})})}
+    if(rl.length){N.Ob.push('Linie kolejowe: '+rl.sort((a,c)=>c.len-a.len).slice(0,6).map(r=>`${r.name} (${fmtDist(r.len)} torów)`).join(', ')+(o.railSvcKm>0.5?`; tory stacyjne i bocznice ok. ${o.railSvcKm.toFixed(1)} km`:'')+'. Długości obejmują wszystkie tory (tory równoległe liczone osobno). Możliwe nasypy i wykopy.');
+      rl.slice(0,3).forEach(r=>{const run=r.runs.sort((a,c)=>runLen(c)-runLen(a))[0];F.push({cat:'Ob',kind:'line',lls:run,name:`Kolej: ${r.name} (auto)`,note:'Linia kolejowa – sprawdź nasypy, wykopy i przejazdy.'})})}
     // drogi
     const rd=Object.values(o.roads).filter(r=>r.len>300).sort((a,c)=>a.cls-c.cls||c.len-a.len);
     if(rd.length){
@@ -3395,7 +3435,7 @@ function buildResults(b,g,t,o,km2){
 function applyAuto(res,b,g,t){
   drawn.getLayers().filter(l=>l.feature.properties.auto).forEach(l=>drawn.removeLayer(l));
   res.F.forEach(f=>{
-    const po=f.cat==='I'?{pane:f.kind==='pt'?'infraM':'infraP'}:{};
+    const po=f.cat==='I'?{pane:f.kind==='pt'?'infraM':'infraP',className:'ig-'+((IT[f.extra&&f.extra.itype]||{g:'tr'}).g)}:{};
     const l=f.kind==='pt'?L.marker(f.ll,po):f.kind==='line'?L.polyline(f.lls,po):L.polygon(f.ring,po);
     attach(l,{cat:f.cat,name:f.name,note:f.note,auto:true,range:'',...(f.extra||{})});
   });
@@ -3410,7 +3450,7 @@ function applyAuto(res,b,g,t){
   const sl=mk(k=>{const s=t.slope[k];return s<15?[46,125,50,60]:s<30?[240,190,30,140]:[198,40,40,170]});
   if(ovSlope)map.removeLayer(ovSlope);
   ovSlope=L.imageOverlay(sl,b,{pane:'auto',interactive:false,className:'pix'});
-  setMC({b,n,mob:t.mob,dead:Uint8Array.from(t.vis,v=>v?0:1),showMob:true,showDead:true,stats:[t.mU,t.mR,t.mS]});
+  setMC({b,n,mob:t.mob,dead:Uint8Array.from(t.vis,v=>v?0:1),inside:t.inside,showMob:true,showDead:true,stats:[t.mU,t.mR,t.mS]});
   decorate();render();save();
   map.fitBounds(b,{padding:[40,40]});
 }
@@ -3480,6 +3520,7 @@ const McooLayer=L.GridLayer.extend({
         const lng=lngs[x];if(lng<W||lng>E)continue;
         const fx=(lng-W)/(E-W)*(n-1),i0=Math.floor(fx),i1=Math.min(n-1,i0+1),tx=fx-i0;
         const gx=ox+x,gy=oy+y,p=(y*256+x)*4;
+        if(MC.inside&&!MC.inside[Math.round(fy)*n+Math.round(fx)])continue;
         if(MC.showMob){
           const sc=M(i0,j0)*(1-tx)*(1-ty)+M(i1,j0)*tx*(1-ty)+M(i0,j1)*(1-tx)*ty+M(i1,j1)*tx*ty;
           const cls=sc>=1.5?2:sc>=.5?1:0;
@@ -3535,12 +3576,14 @@ map.on('zoomend',()=>{if(doct)decorate()});
 function showWelcome(on){$('welcome').hidden=!on}
 function showManual(on){document.querySelectorAll('[data-manual]').forEach(e=>e.hidden=!on)}
 $('wStart').onclick=()=>{showWelcome(false);startAuto()};
-async function nameArea(ll){
+let areaAuto=false;
+async function nameArea(ll,force){
+  if(force){areaEl.value='';areaAuto=true}
   try{
     const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${ll.lat.toFixed(5)}&lon=${ll.lng.toFixed(5)}&zoom=12&accept-language=pl`);
     const j=await r.json(),a=j.address||{};
     const nm=a.village||a.town||a.city||a.hamlet||a.municipality||a.county||j.name;
-    if(nm&&!areaEl.value.trim()){areaEl.value=`Rejon ${nm}${a.county&&a.county!==nm?' ('+a.county+')':''}`;save()}
+    if(nm&&(!areaEl.value.trim()||areaAuto)){areaEl.value=`Rejon ${nm}${a.county&&a.county!==nm?' ('+a.county+')':''}`;areaAuto=true;save()}
   }catch(e){}
 }
 function setupSearch(inp,list,after){
@@ -3611,18 +3654,19 @@ document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
 });
 
 // ================= Zapis, raport, import =================
-const areaEl=$('area');areaEl.oninput=()=>save();
+const areaEl=$('area');areaEl.oninput=()=>{areaAuto=false;save()};
 function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
-    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,
-    mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
+    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,
+    mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),inside:MC.inside?Array.from(MC.inside).join(''):null,showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
 }
 function load(fc,opt={}){
   drawn.clearLayers();losLayer.clearLayers();
-  const m=fc.ocoka||{};areaEl.value=m.area||'';
+  const m=fc.ocoka||{};areaEl.value=m.area||'';areaAuto=m.areaAuto!=null?!!m.areaAuto:/^Rejon [^\n]+$/.test(m.area||'');
+  if(Array.isArray(m.igHide)){igHide=new Set(m.igHide);applyIgHide()}
   ALLCATS.forEach(c=>notes[c.k]=(m.notes&&m.notes[c.k])||'');
   if(!opt.keepView){
     if(m.base&&BASES[m.base]&&m.base!==baseSel.value){baseSel.value=m.base;baseSel.onchange()}
@@ -3636,10 +3680,11 @@ function load(fc,opt={}){
   if(!opt.keepView){let th=null;try{th=JSON.parse(localStorage.getItem('ocoka-theme')||'null')}catch(e){}
     if(th&&m.autoBox&&Math.abs(th.b[0][0]-m.autoBox[0][0])<1e-6&&Math.abs(th.b[1][1]-m.autoBox[1][1])<1e-6){theme=th;renderTheme()}else if(!m.autoBox){theme=null;renderTheme()}}
   doct=m.doct!==false;$('bDoct').setAttribute('aria-pressed',doct);doct?mcoo.addTo(map):map.removeLayer(mcoo);
-  const mc=m.mc;setMC(mc&&mc.mob&&mc.mob.length===mc.n*mc.n?{b:L.latLngBounds(mc.b),n:mc.n,mob:Uint8Array.from(mc.mob,Number),dead:Uint8Array.from(mc.dead,Number),showMob:mc.showMob!==false,showDead:mc.showDead!==false,stats:mc.stats}:null);
+  const mc=m.mc;setMC(mc&&mc.mob&&mc.mob.length===mc.n*mc.n?{b:L.latLngBounds(mc.b),n:mc.n,mob:Uint8Array.from(mc.mob,Number),dead:Uint8Array.from(mc.dead,Number),inside:mc.inside?Uint8Array.from(mc.inside,Number):null,showMob:mc.showMob!==false,showDead:mc.showDead!==false,stats:mc.stats}:null);
   if(!opt.keepView&&Array.isArray(m.over))Object.keys(OVER).forEach(k=>setOver(k,m.over.includes(k)));
   (fc.features||[]).forEach(ft=>{const isI=ft&&ft.properties&&ft.properties.cat==='I';
-   L.geoJSON(ft,{pointToLayer:(f,ll)=>L.marker(ll,isI?{pane:'infraM'}:{}),...(isI?{pane:'infraP'}:{})}).eachLayer(l=>{
+   const igc=isI?'ig-'+((IT[ft.properties.itype]||{g:'tr'}).g):'';
+   L.geoJSON(ft,{pointToLayer:(f,ll)=>L.marker(ll,isI?{pane:'infraM'}:{}),...(isI?{pane:'infraP',className:igc}:{})}).eachLayer(l=>{
     const pr={...(l.feature.properties||{})};delete l.feature;
     if(!ALLCATS.some(c=>c.k===pr.cat))pr.cat='O';
     const g=l.getLatLngs?l.getLatLngs():null;
@@ -3750,6 +3795,9 @@ if(saved&&saved.features&&saved.features.length){
   $('wRestore').textContent=`Przywróć poprzednią analizę${saved.ocoka&&saved.ocoka.area?': '+saved.ocoka.area:''}`;
   $('wRestore').onclick=()=>{load(saved);showWelcome(false);showManual(true);save();toast('Przywrócono poprzednią analizę')};
 }
+(function(){const box=$('igList');Object.entries(IG).forEach(([g,[c,n]])=>{const l=document.createElement('label');l.className='check';
+  l.innerHTML=`<input type="checkbox" id="ig-${g}"> <span class="iico" style="background:${c};width:16px;height:16px;font-size:8px;display:inline-grid"></span> ${n}`;box.appendChild(l);
+  l.querySelector('input').onchange=e=>{e.target.checked?igHide.delete(g):igHide.add(g);applyIgHide();save()}});applyIgHide()})();
 initCoordDialog();initReport();initMgrsDialog();updEditBtns();updOcenaBtn();updThemeInfo();
 $('bMgrs').onclick=openMgrsDialog;$('wMgrs').onclick=()=>{showWelcome(false);openMgrsDialog()};
 $('thLoad').onclick=()=>loadThemeFor(autoBox||map.getBounds());
