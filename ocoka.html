@@ -842,6 +842,18 @@ textarea{resize:vertical;min-height:56px}
 .cbox code{font:12px var(--f-mono);background:var(--bg);padding:1px 4px;border-radius:3px}
 .app>*{min-width:0}
 .items,.cat,.section,.head{grid-template-columns:minmax(0,1fr)}
+.rel{margin:4px 0;font-size:12.5px}
+.rel summary{cursor:pointer;font-weight:600}
+.rel table{border-collapse:collapse;width:100%;margin-top:6px}
+.rel td{border-top:1px solid var(--line);padding:5px 4px;vertical-align:top}
+.rel td:first-child{font-weight:600;white-space:nowrap}
+.cf{display:inline-block;padding:1px 8px;border-radius:10px;font:600 11px var(--f-mono);color:#fff;background:var(--cc)}
+.mform{display:grid;gap:10px}
+.mform .modes{display:flex;flex-wrap:wrap;gap:6px 14px}
+.mform input[type=text]{font-family:var(--f-mono)}
+.mout{background:var(--bg);border-radius:6px;padding:8px 10px;font:12.5px/1.5 var(--f-mono)}
+.szs{display:flex;flex-wrap:wrap;gap:4px}
+.szs button{padding:4px 9px}
 .chip.arm{background:var(--bad)!important;color:#fff}
 .rbox{max-width:920px!important;display:flex;flex-direction:column}
 .rtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
@@ -921,6 +933,12 @@ textarea{resize:vertical;min-height:56px}
         <div class="hint" id="baseHint">Wszystkie podkłady pochodzą z otwartych lub bezpłatnych źródeł.</div>
       </div>
       <div class="section">
+        <h3>Mapa terenu (OpenStreetMap)</h3>
+        <div class="hint" id="thInfo">—</div>
+        <button class="btn sm" id="thLoad">Wczytaj mapę terenu dla rejonu / widoku</button>
+        <div class="hint">Wektorowa mapa wód, lasów, dróg, kolei, zabudowy, skarp i nasypów. Warstwy włączasz w nakładkach poniżej. Dobrze współgra z podkładem „Mapa terenowa OSM – bez podkładu” albo z ortofotomapą.</div>
+      </div>
+      <div class="section">
         <h3>Nakładki</h3>
         <div class="overs" id="overList"></div>
         <div class="hint">Siatka MGRS rysuje linie co 1 km, 10 km lub 100 km zależnie od skali, z opisem jak na mapach wojskowych.</div>
@@ -939,6 +957,15 @@ textarea{resize:vertical;min-height:56px}
         <div class="row" style="justify-content:space-between;font:12px var(--f-mono);color:var(--muted)"><span id="lgMin">—</span><span id="lgInt">—</span><span id="lgMax">—</span></div>
         <div class="hint">Kolory skalują się do widocznego fragmentu mapy, tak jak w topographic-map.com. Dane: AWS Terrain Tiles (SRTM, EU-DEM), rozdzielczość ok. 30 m.</div>
         <label class="check"><input type="checkbox" id="gugik"> Cieniowanie NMT GUGiK (tylko Polska, 1 m)</label>
+      </div>
+      <div class="section">
+        <h3>Parametry analizy</h3>
+        <label class="check"><input type="checkbox" id="pDsm" checked> Uwzględnij las i zabudowę w widoczności</label>
+        <div class="row" style="flex-wrap:nowrap">
+          <div style="flex:1"><label class="small" for="pHF">Wysokość lasu (m)</label><input type="number" id="pHF" value="20" min="0" max="50" step="1"></div>
+          <div style="flex:1"><label class="small" for="pHB">Wysokość zabudowy (m)</label><input type="number" id="pHB" value="10" min="0" max="60" step="1"></div>
+        </div>
+        <div class="hint">Bez tej opcji martwe pola liczone są „po gołym terenie”, co zawyża widoczność.</div>
       </div>
       <div class="section">
         <h3>Linia widoczności</h3>
@@ -985,7 +1012,7 @@ textarea{resize:vertical;min-height:56px}
       <div class="group" data-manual hidden><button class="chip tool" id="bDoct" aria-pressed="true" title="Symbole doktrynalne (D)"><svg viewBox="0 0 24 24"><path d="M3 15h11v-4l7 6-7 6v-4H3z" transform="translate(0 -5)"/></svg><span class="lbl">Symbole</span></button><button class="chip tool" id="bBrush" hidden title="Popraw MCOO pędzlem (M)"><svg viewBox="0 0 24 24"><path d="M14 4l6 6-9 9H5v-6z"/><path d="M12 6l6 6"/></svg><span class="lbl">Popraw MCOO</span></button><button class="chip tool" id="bUndo" disabled title="Cofnij (Ctrl+Z)"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></button><button class="chip tool" id="bRedo" disabled title="Ponów (Ctrl+Y)"><svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></svg></button></div>
       <div class="group" data-manual hidden aria-label="Edycja zaznaczonego obiektu"><button class="chip tool" id="bEd" disabled title="Edytuj zaznaczony obiekt (E)"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg><span class="lbl">Edytuj</span></button><button class="chip tool" id="bMv" disabled title="Przesuń zaznaczony obiekt"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg><span class="lbl">Przesuń</span></button><button class="chip tool" id="bSh" disabled title="Zmień kształt (wierzchołki)"><svg viewBox="0 0 24 24"><path d="M5 7l7-4 7 5-2 10H7z"/><circle cx="5" cy="7" r="1.6"/><circle cx="12" cy="3" r="1.6"/><circle cx="19" cy="8" r="1.6"/></svg><span class="lbl">Kształt</span></button><button class="chip tool" id="bDl" disabled title="Usuń zaznaczony obiekt (Delete)"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg><span class="lbl">Usuń</span></button></div>
       <div class="group" data-manual hidden><button class="chip tool" id="bOcena" hidden title="Pokaż lub ukryj okno oceny rejonu"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="1"/><path d="M9 4V2h6v2M8 10h8M8 14h8M8 18h5"/></svg><span>Ocena</span></button><button class="chip tool" id="bRep" title="Raport: edycja i eksport DOCX / PDF"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h8"/></svg><span class="lbl">Raport</span></button></div>
-      <div class="group"><button class="chip tool autob" id="bAuto" title="Automatyczna ocena rejonu (R)"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1" stroke-dasharray="3 2"/><path d="M8 15l3-4 2 2 3-4"/></svg><span>Zaznacz rejon</span></button></div>
+      <div class="group"><button class="chip tool autob" id="bAuto" title="Automatyczna ocena rejonu (R)"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1" stroke-dasharray="3 2"/><path d="M8 15l3-4 2 2 3-4"/></svg><span>Zaznacz rejon</span></button><button class="chip tool" id="bMgrs" title="Rejon z siatki MGRS: narożniki, środek z wymiarem lub kwadraty siatki"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 12h16M12 4v16"/></svg><span>MGRS</span></button></div>
     </div>
     <div class="blocked" id="blocked" hidden><b>Mapy się nie wczytują</b><span>Ta przeglądarka albo podgląd pliku blokuje mapy z internetu (np. podgląd w aplikacji Claude lub pliku na telefonie). Otwórz narzędzie w Safari lub Chrome z adresu internetowego, np. z GitHub Pages.</span><button class="btn sm" id="blkX">Zamknij</button></div>
     <div class="welcome" id="welcome">
@@ -998,6 +1025,7 @@ textarea{resize:vertical;min-height:56px}
       <p class="wsub">Wpisz miejscowość w wyszukiwarkę nad mapą albo ustaw mapę palcami, a potem dotknij przycisku poniżej. Ocena OCOKA wygeneruje się automatycznie.</p>
       <div class="search"><input type="text" id="q1" placeholder="Np. Pustynia Błędowska, Rybnik, Bieszczady" aria-label="Szukaj miejscowości" autocomplete="off"><ul class="sres" id="r1" hidden></ul></div>
       <button class="btn primary big" id="wStart">Zaznacz rejon na mapie</button>
+      <button class="btn big" id="wMgrs">Podaj rejon w MGRS</button>
       <button class="linkbtn" id="wRestore" hidden>Przywróć poprzednią analizę</button>
     </div>
     <div class="dlegend" id="dlegend" hidden>
@@ -1016,6 +1044,12 @@ textarea{resize:vertical;min-height:56px}
       <div class="li"><svg width="28" height="14"><path d="M1 4h17V1l9 6-9 6V10H1z" fill="rgba(208,2,27,.3)" stroke="#d0021b" stroke-width="1.5"/></svg>Kierunek natarcia npl</div>
       <div class="li"><span class="sym" style="background:rgba(215,30,45,.4)!important"></span>Pole widzenia npl</div>
       <div class="li"><span class="iico" style="background:#37474f;width:18px;height:18px;font-size:9px">M</span>Infrastruktura (OSM)</div>
+      <div class="li"><span class="sym" style="background:#8bc28b!important"></span>Las</div>
+      <div class="li"><span class="sym" style="background:#7fb6e8!important"></span>Woda / <span style="color:#2f6fbf">━</span> rzeka</div>
+      <div class="li"><span class="sym" style="background:#b5aea7!important"></span>Zabudowa</div>
+      <div class="li"><svg width="28" height="14"><path d="M1 7h26" stroke="#ef6c00" stroke-width="4"/></svg>Droga główna</div>
+      <div class="li"><svg width="28" height="14"><path d="M1 7h26" stroke="#212121" stroke-width="3.2"/><path d="M1 7h26" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 5"/></svg>Kolej</div>
+      <div class="li"><svg width="28" height="14"><path d="M1 7h26" stroke="#6d4c41" stroke-width="3" stroke-dasharray="2 3"/></svg>Skarpa / urwisko</div>
       <div class="li"><svg width="28" height="14"><path d="M1 7h26" stroke="#b26a00" stroke-width="2" stroke-dasharray="6 3"/></svg>Linia WN</div></div>
     </div>
     <div class="status" id="status" hidden></div>
@@ -1039,6 +1073,37 @@ textarea{resize:vertical;min-height:56px}
       <p class="hint" style="padding:8px 18px 0;margin:0">Kliknij w tekst raportu, aby go edytować: zmieniaj wnioski, dopisuj akapity, poprawiaj tabele. Pliki DOCX i PDF powstają z tej treści. PDF ma mapę z osobnymi warstwami (podkład, rzeźba, MCOO, siatka, infrastruktura, OCOKA, przeciwnik), które włączasz i wyłączasz w czytniku PDF.</p>
       <div class="rwarn" id="rWarn"></div>
       <div class="rdoc" id="rDoc" contenteditable="true" spellcheck="true" lang="pl"></div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="mmodal" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-labelledby="mTitle2">
+    <div class="mh"><h2 id="mTitle2">Rejon z siatki MGRS</h2><button class="btn sm" id="mX">Zamknij</button></div>
+    <div class="help mform">
+      <div class="modes">
+        <label class="check"><input type="radio" name="mMode" value="center" checked> Środek i wymiar</label>
+        <label class="check"><input type="radio" name="mMode" value="corners"> Dwa narożniki</label>
+        <label class="check"><input type="radio" name="mMode" value="squares"> Kwadraty siatki</label>
+      </div>
+      <div><label class="small" for="mGzd">Strefa domyślna (GZD i kwadrat 100 km)</label><input type="text" id="mGzd" placeholder="34U CA" autocomplete="off"><div class="hint">Używana, gdy w polach poniżej podasz same cyfry albo kwadrat bez strefy, np. „95 80” lub „CA 955 805”.</div></div>
+      <div data-mm="center" class="mform">
+        <div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small" for="mC">Środek rejonu (MGRS)</label><input type="text" id="mC" placeholder="34U CA 9550 8050" autocomplete="off"></div><button class="btn sm" id="mFromView" style="align-self:end">Środek mapy</button></div>
+        <div><span class="small">Wielkość rejonu</span><div class="szs"><button class="btn sm" data-msz="1">1 km</button><button class="btn sm" data-msz="2">2 km</button><button class="btn sm" data-msz="3">3 km</button><button class="btn sm" data-msz="5">5 km</button><button class="btn sm" data-msz="10">10 km</button><button class="btn sm" data-msz="15">15 km</button><button class="btn sm" data-msz="20">20 km</button></div></div>
+        <div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small" for="mW">Szerokość W–E (km)</label><input type="number" id="mW" value="5" min="0.5" max="20" step="0.5"></div><div style="flex:1"><label class="small" for="mH">Wysokość S–N (km)</label><input type="number" id="mH" value="5" min="0.5" max="20" step="0.5"></div></div>
+        <label class="check"><input type="checkbox" id="mSnap" checked> Wyrównaj do siatki kilometrowej</label>
+      </div>
+      <div data-mm="corners" class="mform" hidden>
+        <div><label class="small" for="mA">Narożnik 1 (np. SW)</label><input type="text" id="mA" placeholder="34U CA 93 78" autocomplete="off"></div>
+        <div><label class="small" for="mB">Narożnik 2 (np. NE)</label><input type="text" id="mB" placeholder="34U CA 97 82" autocomplete="off"></div>
+        <div class="hint">Kolejność narożników nie ma znaczenia. Przy dokładności kwadratu (np. 4 cyfry = 1 km) rejon obejmuje cały wskazany kwadrat.</div>
+      </div>
+      <div data-mm="squares" class="mform" hidden>
+        <div><label class="small" for="mSq">Kwadraty siatki</label><textarea id="mSq" rows="3" placeholder="95 80, 96 80, 95 81
+CA 93 78 – CA 97 82"></textarea></div>
+        <div class="hint">Oddziel przecinkami lub nowymi liniami. 4 cyfry = kwadrat 1 km, 2 cyfry = 10 km, 6 cyfr = 100 m. Zakres „A – B” to prostokąt od kwadratu A do B. Rejon oceny obejmuje wszystkie podane kwadraty.</div>
+      </div>
+      <div class="mout" id="mOut">—</div>
+      <div class="row"><button class="btn primary" id="mGo" disabled>Oceń ten rejon</button><button class="btn" id="mShow" disabled>Pokaż na mapie</button></div>
     </div>
   </div>
 </div>
@@ -1111,7 +1176,8 @@ const HELP=`
 <h3>Krok po kroku</h3>
 <ol>
 <li><b>Znajdź rejon</b>: wpisz miejscowość w wyszukiwarkę nad mapą albo przybliż mapę ręcznie.</li>
-<li><b>Zaznacz rejon</b>: kliknij <i>Zaznacz rejon</i> <kbd>R</kbd> i przeciągnij prostokąt (od 0,2 do 150 km²).</li>
+<li><b>Zaznacz rejon</b>: kliknij <i>Zaznacz rejon</i> <kbd>R</kbd> i przeciągnij prostokąt (od 0,2 do 400 km²) albo wybierz gotową wielkość (1, 2, 5, 10, 20 km) i kliknij środek rejonu – kwadrat wyrówna się do siatki kilometrowej MGRS.</li>
+<li><b>Rejon z MGRS</b>: przycisk <i>MGRS</i> otwiera panel, w którym podajesz środek i wymiar, dwa narożniki albo listę kwadratów siatki (np. <code>95 80, 96 80</code> lub zakres <code>CA 93 78 – CA 97 82</code>). Podgląd pokazuje dokładny prostokąt UTM i jego powierzchnię.</li>
 <li><b>Poczekaj kilka sekund</b>. Narzędzie pobierze model terenu i dane OpenStreetMap, a potem samo przygotuje ocenę OCOKA: wzgórza dominujące, martwe pola, przejezdność, przeszkody, lasy, drogi i mosty. Wnioski oznaczone [AUTO] trafią do kategorii, a obiekty „auto” na mapę.</li>
 <li><b>Popraw i uzupełnij</b> wynik. Pasek nad mapą pozwala dorysować własne obiekty:</li>
 <li><b>Wybierz kategorię</b> na pasku nad mapą (klawisze <kbd>1</kbd>–<kbd>5</kbd>).</li>
@@ -1150,6 +1216,10 @@ const HELP=`
 <li><i>Popraw MCOO</i> <kbd>M</kbd> to pędzel do ręcznej korekty klasyfikacji terenu: wybierz klasę i rozmiar, maluj z wciśniętym przyciskiem myszy.</li>
 <li><kbd>Ctrl</kbd>+<kbd>Z</kbd> cofa ostatnią zmianę, <kbd>Ctrl</kbd>+<kbd>Y</kbd> ją ponawia (także przyciski ↶ ↷ nad mapą). Cofnąć można nawet <i>Wyczyść</i>.</li>
 </ol>
+<h3>Wiarygodność oceny</h3>
+<p>Okno oceny i raport zawierają sekcję <i>Wiarygodność wyniku</i>: dla każdego elementu (rzeźba, pokrycie terenu, widoczność, MCOO, kierunki podejścia, infrastruktura) podają źródło danych, ich datę, rozdzielczość, przyjęte kryteria i ograniczenia oraz ocenę: wysoka, średnia, niska. Siatka analizy zagęszcza się automatycznie (co ok. 75 m), a widoczność domyślnie uwzględnia las i zabudowę (parametry w zakładce <i>Mapa i teren</i>).</p>
+<h3>Mapa terenu</h3>
+<p>Przy ocenie rejonu narzędzie rysuje wektorową mapę terenu z OpenStreetMap: rzeki, cieki i rowy, jeziora i mokradła, lasy, zarośla i sady, drogi według klas, drogi gruntowe, koleje, zabudowę, urwiska, skarpy, nasypy i wyrobiska. Każdą grupę włączasz osobno w nakładkach; trafiają też jako osobne warstwy do PDF. Dodatkowo dostępne są nakładki hydrografii i komunikacji Esri.</p>
 <h3>Okno oceny i raport</h3>
 <p>Okno z wynikiem oceny zamykasz przyciskiem <i>Zamknij</i>, a otwierasz ponownie przyciskiem <i>Ocena</i> nad mapą. Pokazuje bieżące wnioski, także po Twoich poprawkach.</p>
 <p><i>Raport</i> (nad mapą lub w stopce panelu) otwiera edytor: treść raportu z mapą, wnioskami i tabelami możesz dowolnie poprawiać, a potem pobrać jako <b>DOCX</b> (edytowalny w Wordzie i LibreOffice), <b>PDF z warstwami</b> (mapa na pierwszej stronie, warstwy włączane w panelu „Warstwy” czytnika, np. Adobe Acrobat) albo Markdown. Opcja <i>Kadr: rejon oceny</i> dopasowuje mapę do zaznaczonego rejonu. Generator PDF pobiera przy pierwszym użyciu bibliotekę i czcionkę z polskimi znakami, więc wymaga internetu.</p>
@@ -1293,7 +1363,7 @@ const BASEGROUPS=[
  ['Zdjęcia lotnicze i satelitarne',['Ortofotomapa – Geoportal (PL)','Ortofotomapa wysokiej rozdzielczości – Geoportal (PL)','Zdjęcia satelitarne – Esri','Sentinel-2 bez chmur (EOX)']],
  ['Polska – Geoportal (GUGiK)',['Mapa topograficzna – Geoportal (PL)','BDOT10k – Geoportal (PL)']],
  ['Wojskowe i historyczne',['Radzieckie mapy sztabowe (Genshtab)','Esri cieniowanie rzeźby']],
- ['Inne',['Tylko rzeźba terenu (bez podkładu)']],
+ ['Do analizy terenu',['Mapa terenowa OSM – bez podkładu (do wydruku)','Tylko rzeźba terenu (bez podkładu)']],
 ];
 const BASEINFO={
  'Radzieckie mapy sztabowe (Genshtab)':'Radzieckie mapy topograficzne Sztabu Generalnego (1:50 000–1:1 000 000, stan sprzed 1990 r.), serwowane przez nakarte.me (AtloMaps). Serwis zewnętrzny – może nie odpowiadać.',
@@ -1301,6 +1371,7 @@ const BASEINFO={
  'BDOT10k – Geoportal (PL)':'Baza Danych Obiektów Topograficznych 1:10 000 (GUGiK, WMS).',
  'Sentinel-2 bez chmur (EOX)':'Mozaika Sentinel-2 cloudless 2020 (EOX, licencja CC BY-NC-SA 4.0 – do użytku niekomercyjnego).',
  'OSM Humanitarian (infrastruktura)':'Styl humanitarny OSM – wyraźnie pokazuje obiekty infrastruktury i usług.',
+ 'Mapa terenowa OSM – bez podkładu (do wydruku)':'Białe tło: widać tylko mapę terenu z OSM (wody, lasy, drogi, koleje, zabudowa), rzeźbę i grafikę OCOKA. Czytelne na wydruku.',
 };
 const BASES={
  'OpenTopoMap – mapa topograficzna':L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'}),
@@ -1319,6 +1390,7 @@ const BASES={
  'Radzieckie mapy sztabowe (Genshtab)':L.tileLayer('https://tiles.nakarte.me/topomapper/{z}/{x}/{y}',{maxZoom:17,maxNativeZoom:13,attribution:'Mapy Sztabu Generalnego ZSRR © AtloMaps / nakarte.me'}),
  'Esri cieniowanie rzeźby':L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',{maxZoom:17,maxNativeZoom:13,attribution:'Esri'}),
  'Tylko rzeźba terenu (bez podkładu)':L.layerGroup(),
+ 'Mapa terenowa OSM – bez podkładu (do wydruku)':L.layerGroup(),
 };
 const GUGIK=L.tileLayer.wms('https://mapy.geoportal.gov.pl/wss/service/PZGIK/NMT/GRID1/WMS/ShadedRelief',{layers:'Raster',format:'image/png',transparent:true,opacity:.45,maxZoom:20,attribution:'NMT © GUGiK'});
 
@@ -1469,16 +1541,19 @@ function updateStatus(){
     s.querySelector('[data-done]').onclick=stopModes;return;
   }
   const tap=COARSE?'Dotknij':'Kliknij',np=drawState?drawState.pts.length:0;
-  s.innerHTML=mode==='auto'?`<span>${COARSE?'Przeciągnij palcem':'Przeciągnij myszą'} prostokąt rejonu (0,2–150 km²) albo oceń widoczny kadr</span><button data-frame>Oceń widoczny kadr</button><button>Anuluj</button>`
+  s.innerHTML=mode==='auto'?`<span>${autoSize?`${tap} środek rejonu ${autoSize} × ${autoSize} km${autoSnap?' (wyrównany do siatki 1 km)':''}`:`${COARSE?'Przeciągnij palcem':'Przeciągnij myszą'} prostokąt rejonu (0,2–400 km²)`}</span><div class="seg">${[0,1,2,5,10,20].map(v=>`<button data-asz="${v}" aria-pressed="${autoSize===v}">${v?v+' km':'dowolny'}</button>`).join('')}</div>${autoSize?`<label><input type="checkbox" id="aSnap" ${autoSnap?'checked':''}> siatka</label>`:''}<button data-frame>Oceń widoczny kadr</button><button data-mgrs>MGRS…</button><button>Anuluj</button>`
     :mode==='los'
     ?`<span>Linia widoczności z „${esc(losFrom.feature.properties.name)}”: ${tap.toLowerCase()} cel na mapie</span><button>Anuluj</button>`
     :`<span>${active==='E'&&mode==='marker'?`${tap} mapę, aby nanieść: ${esc(UT[lastUnit.utype])} ${lastUnit.side==='własne'?'(własne)':'przeciwnika'}`
       :mode==='marker'?`${tap} mapę, aby postawić punkt · ${active==='E'?'Przeciwnik':c.l+' – '+c.name}`
       :`${tap} kolejne punkty ${mode==='polyline'?'linii':'obszaru'} · ${active==='E'?'Przeciwnik':c.l} · punktów: ${np}`}</span>${mode!=='marker'?`<button data-undo ${np?'':'disabled'}>Cofnij punkt</button><button data-fin ${np>=(mode==='polygon'?3:2)?'':'disabled'}>Zakończ</button>`:''}<button>Anuluj</button>`;
+  const as=$('aSnap');if(as)as.onchange=()=>{autoSnap=as.checked;updateStatus()};
   s.querySelectorAll('button').forEach(b=>b.onclick=()=>{
     if(b.hasAttribute('data-fin')){if(drawState)finishDraw();return}
     if(b.hasAttribute('data-undo')){if(drawState){drawState.pts.pop();redrawTemp();updateStatus()}return}
     if(b.hasAttribute('data-frame')){autoFrame();return}
+    if(b.hasAttribute('data-asz')){autoSize=+b.dataset.asz;try{localStorage.setItem('ocoka-asz',autoSize)}catch(e){}startAuto();return}
+    if(b.hasAttribute('data-mgrs')){openMgrsDialog();return}
     stopModes();
   });
 }
@@ -1841,6 +1916,197 @@ function redo(){if(hi>=hist.length-1)return;hi++;restore(hist[hi]);toast('Ponowi
 $('bUndo').onclick=undo;$('bRedo').onclick=redo;
 $('bBrush').onclick=()=>mode==='brush'?stopModes():startBrush();
 
+// ================= Mapa terenu z OpenStreetMap (warstwa wektorowa) =================
+map.createPane('terrP');map.getPane('terrP').style.zIndex=320;map.getPane('terrP').style.pointerEvents='none';
+const terrR=L.canvas({pane:'terrP',padding:.4});
+const TH={
+  built:{n:'zabudowa',g:new L.LayerGroup()},
+  veg:{n:'lasy i roślinność',g:new L.LayerGroup()},
+  hydro:{n:'wody: rzeki, cieki, jeziora, mokradła',g:new L.LayerGroup()},
+  rail:{n:'koleje',g:new L.LayerGroup()},
+  road:{n:'drogi',g:new L.LayerGroup()},
+  obs:{n:'skarpy, urwiska, nasypy',g:new L.LayerGroup()},
+};
+const THS={ // style warstw
+  forest:{k:'veg',poly:1,fillColor:'#8bc28b',fillOpacity:.55,color:'#4c8a4c',weight:.8,opacity:.7},
+  scrub:{k:'veg',poly:1,fillColor:'#c8df9f',fillOpacity:.55,color:'#8fb06a',weight:.6,opacity:.6},
+  orchard:{k:'veg',poly:1,fillColor:'#dfeabf',fillOpacity:.6,color:'#9bb36b',weight:.8,dashArray:'3 3'},
+  quarry:{k:'obs',poly:1,fillColor:'#cdbca7',fillOpacity:.6,color:'#8d6e63',weight:1.2},
+  built:{k:'built',poly:1,fillColor:'#b5aea7',fillOpacity:.5,color:'#8c857e',weight:.7,opacity:.7},
+  water:{k:'hydro',poly:1,fillColor:'#7fb6e8',fillOpacity:.85,color:'#3d7fc4',weight:.9},
+  wetland:{k:'hydro',poly:1,fillColor:'#a9cdea',fillOpacity:.4,color:'#3d7fc4',weight:1,dashArray:'3 3'},
+  river:{k:'hydro',color:'#2f6fbf',weight:3.4},canal:{k:'hydro',color:'#2f6fbf',weight:2.6},
+  stream:{k:'hydro',color:'#3d7fc4',weight:1.7},ditch:{k:'hydro',color:'#5d97d6',weight:1,dashArray:'4 3'},
+  motorway:{k:'road',color:'#c62828',weight:5},trunk:{k:'road',color:'#e65100',weight:4.5},primary:{k:'road',color:'#ef6c00',weight:4},
+  secondary:{k:'road',color:'#f2a900',weight:3.4},tertiary:{k:'road',color:'#e8c400',weight:2.8},unclassified:{k:'road',color:'#8f8f8f',weight:2},
+  track:{k:'road',color:'#8d6e63',weight:1.6,dashArray:'5 4'},
+  rail:{k:'rail',color:'#212121',weight:3.2},
+  cliff:{k:'obs',color:'#6d4c41',weight:3,dashArray:'2 3'},embankment:{k:'obs',color:'#8d6e63',weight:2.2,dashArray:'1 4'},
+};
+const THORDER=['built','forest','scrub','orchard','quarry','wetland','water','ditch','stream','canal','river','rail','track','unclassified','tertiary','secondary','primary','trunk','motorway','cliff','embankment'];
+let theme=null; // {b:[[s,w],[n,e]], t:{forest:[[ [lat,lng],...],...],...}, osm:'data', counts}
+function themeClass(t){
+  if(t.natural==='wood'||t.landuse==='forest')return 'forest';
+  if(t.natural==='scrub'||t.natural==='heath')return 'scrub';
+  if(t.landuse==='orchard'||t.landuse==='vineyard')return 'orchard';
+  if(t.landuse==='quarry')return 'quarry';
+  if(['residential','industrial','commercial','retail'].includes(t.landuse))return 'built';
+  if(t.natural==='water')return 'water';if(t.natural==='wetland')return 'wetland';
+  if(t.waterway==='river')return 'river';if(t.waterway==='canal')return 'canal';if(t.waterway==='stream')return 'stream';
+  if(t.waterway==='ditch'||t.waterway==='drain')return 'ditch';
+  if(t.highway&&THS[t.highway])return t.highway;
+  if(t.railway==='rail')return 'rail';
+  if(t.natural==='cliff')return 'cliff';if(t.man_made==='embankment')return 'embankment';
+  return null;
+}
+const r5=x=>Math.round(x*1e5)/1e5;
+function parseTheme(d,b){
+  const t={},cnt={};
+  for(const el of d.elements||[]){
+    const tg=el.tags||{},cls=themeClass(tg);if(!cls)continue;
+    const st=THS[cls];
+    let parts=[];
+    if(el.type==='way'&&el.geometry)parts=[toLL(el.geometry)];
+    else if(el.type==='relation'&&el.members)parts=el.members.filter(m=>m.type==='way'&&m.geometry&&m.role!=='inner').map(m=>toLL(m.geometry));
+    for(let p of parts){
+      if(st.poly){if(p.length<4)continue;if(p[0].equals(p[p.length-1]))p=p.slice(0,-1);const c=clipPoly(p,b);if(c.length<3)continue;(t[cls]=t[cls]||[]).push(c.map(q=>[r5(q.lat),r5(q.lng)]))}
+      else{const {runs}=clipRuns(p,b);if(!runs.length)continue;runs.forEach(r=>(t[cls]=t[cls]||[]).push(r.map(q=>[r5(q.lat),r5(q.lng)])))}
+      cnt[cls]=(cnt[cls]||0)+1;
+    }
+  }
+  return {b:[[b.getSouth(),b.getWest()],[b.getNorth(),b.getEast()]],t,counts:cnt,osm:(d.osm3s&&d.osm3s.timestamp_osm_base)||'',remark:d.remark||''};
+}
+function renderTheme(){
+  Object.values(TH).forEach(x=>x.g.clearLayers());
+  if(!theme)return updThemeInfo();
+  for(const cls of THORDER){
+    const arr=theme.t[cls];if(!arr)continue;const st=THS[cls],grp=TH[st.k].g;
+    const o={renderer:terrR,interactive:false,color:st.color,weight:st.weight,opacity:st.opacity??1,dashArray:st.dashArray||null,lineCap:'round',lineJoin:'round'};
+    if(st.poly)arr.forEach(r=>grp.addLayer(L.polygon(r,{...o,fill:true,fillColor:st.fillColor,fillOpacity:st.fillOpacity})));
+    else arr.forEach(r=>grp.addLayer(L.polyline(r,{...o,fill:false})));
+    if(cls==='rail')arr.forEach(r=>grp.addLayer(L.polyline(r,{...o,color:'#ffffff',weight:1.6,dashArray:'7 7',lineCap:'butt'})));
+  }
+  updThemeInfo();
+}
+function themeKm(cls){if(!theme||!theme.t[cls])return 0;let s=0;theme.t[cls].forEach(r=>{for(let i=1;i<r.length;i++)s+=L.latLng(r[i-1]).distanceTo(L.latLng(r[i]))});return s/1000}
+function updThemeInfo(){
+  const el=$('thInfo');if(!el)return;
+  if(!theme){el.textContent='Mapa terenu nie jest wczytana. Powstaje automatycznie przy ocenie rejonu albo przyciskiem poniżej.';return}
+  const c=theme.counts,f=k=>c[k]||0;
+  el.textContent=`Wczytano: lasy ${f('forest')}, wody stojące ${f('water')}, mokradła ${f('wetland')}, rzeki i kanały ${(themeKm('river')+themeKm('canal')).toFixed(1)} km, cieki ${(themeKm('stream')+themeKm('ditch')).toFixed(1)} km, drogi ${['motorway','trunk','primary','secondary','tertiary','unclassified'].reduce((s,k)=>s+themeKm(k),0).toFixed(1)} km, drogi gruntowe ${themeKm('track').toFixed(1)} km, koleje ${themeKm('rail').toFixed(1)} km, skarpy i nasypy ${(themeKm('cliff')+themeKm('embankment')).toFixed(1)} km. Stan danych OSM: ${theme.osm?new Date(theme.osm).toLocaleString('pl-PL'):'nieznany'}.${theme.remark?' Uwaga serwera: '+theme.remark:''}`;
+}
+function saveTheme(){try{if(theme)localStorage.setItem('ocoka-theme',JSON.stringify(theme));else localStorage.removeItem('ocoka-theme')}catch(e){}}
+function setTheme(th){theme=th;renderTheme();saveTheme();Object.keys(TH).forEach(k=>{const cb=$('ov-th_'+k);if(cb&&th)setOver('th_'+k,cb.checked)})}
+async function loadThemeFor(b){
+  const {km2}=kmDims(b);if(km2>400){toast('Obszar jest za duży (maks. 400 km²). Przybliż mapę albo zaznacz rejon.');return}
+  $('thLoad').disabled=true;$('thLoad').textContent='Pobieram dane OSM…';
+  try{setTheme(parseTheme(await overpass(b),b));toast('Wczytano mapę terenu z OpenStreetMap')}
+  catch(e){toast('Serwer OpenStreetMap (Overpass) nie odpowiedział. Spróbuj ponownie za chwilę.')}
+  $('thLoad').disabled=false;$('thLoad').textContent='Wczytaj mapę terenu dla rejonu / widoku';
+}
+
+// ================= Rejon w układzie MGRS / UTM =================
+const LET_COL=['ABCDEFGH','JKLMNPQR','STUVWXYZ'],LET_ROW='ABCDEFGHJKLMNPQRSTUV',BANDS='CDEFGHJKLMNPQRSTUVWX';
+function gzdOf(ll){const u=toUTM(ll.lat,ll.lng),m=mgrs(ll.lat,ll.lng).split(' ');return {gzd:m[0],sq:m[1],zone:u.zone}}
+function mgrsRef(str,def){
+  const s=String(str||'').toUpperCase().replace(/\s+/g,'');if(!s)return null;
+  const m=s.match(/^(\d{1,2}[C-HJ-NP-X])?([A-HJ-NP-Z][A-HJ-NP-V])?(\d*)$/);if(!m)return null;
+  const gzd=m[1]||(def&&def.gzd),sq=m[2]||(def&&def.sq),dg=m[3]||'';
+  if(!gzd||!sq||dg.length%2||dg.length>10)return null;
+  const zone=+gzd.slice(0,-1),band=gzd.slice(-1);if(zone<1||zone>60)return null;
+  const half=dg.length/2,size=10**(5-half),de=half?+dg.slice(0,half)*size:0,dn=half?+dg.slice(half)*size:0;
+  const col=LET_COL[(zone-1)%3].indexOf(sq[0]);if(col<0)return null;
+  let row=LET_ROW.indexOf(sq[1]);if(zone%2===0)row=(row-5+20)%20;
+  const bandLat=-80+8*BANDS.indexOf(band),south=bandLat<0,minN=toUTM(bandLat,(zone-1)*6-177,zone).y-1000;
+  let N=row*1e5+dn;while(N+size<minN)N+=2e6;
+  return {zone,south,E:(col+1)*1e5+de,N,size,gzd,sq,label:`${gzd} ${sq}${half?' '+dg.slice(0,half)+' '+dg.slice(half):''}`};
+}
+function utmRect(zone,south,E0,N0,E1,N1){
+  const ring=[],k=8;
+  for(let i=0;i<=k;i++)ring.push(fromUTM(zone,E0+(E1-E0)*i/k,N0,south));
+  for(let i=1;i<=k;i++)ring.push(fromUTM(zone,E1,N0+(N1-N0)*i/k,south));
+  for(let i=1;i<=k;i++)ring.push(fromUTM(zone,E1-(E1-E0)*i/k,N1,south));
+  for(let i=1;i<k;i++)ring.push(fromUTM(zone,E0,N1-(N1-N0)*i/k,south));
+  return {zone,south,E0,N0,E1,N1,ring,bounds:L.latLngBounds(ring),w:E1-E0,h:N1-N0};
+}
+const fmtUTMpt=(zone,south,E,N)=>{const ll=fromUTM(zone,E+.01,N+.01,south);return mgrs(ll.lat,ll.lng)};
+function rectDesc(r){return `${fmtUTMpt(r.zone,r.south,r.E0,r.N0)} (SW) – ${fmtUTMpt(r.zone,r.south,r.E1-1,r.N1-1)} (NE), ${(r.w/1000).toLocaleString('pl-PL',{maximumFractionDigits:2})} × ${(r.h/1000).toLocaleString('pl-PL',{maximumFractionDigits:2})} km`}
+function rectAround(ll,wM,hM,snap){
+  const u=toUTM(ll.lat,ll.lng);let E0=u.x-wM/2,N0=u.y-hM/2;
+  if(snap){E0=Math.round(E0/1000)*1000;N0=Math.round(N0/1000)*1000}
+  return utmRect(u.zone,ll.lat<0,E0,N0,E0+wM,N0+hM);
+}
+const mgrsPrev=new L.LayerGroup().addTo(map);
+let mgrsRes=null;
+function mgrsCompute(){
+  const md=document.querySelector('input[name=mMode]:checked').value,def={gzd:$('mGzd').value.toUpperCase().replace(/\s+/g,'').match(/^\d{1,2}[C-HJ-NP-X]/)?.[0],sq:$('mGzd').value.toUpperCase().replace(/\s+/g,'').replace(/^\d{1,2}[C-HJ-NP-X]/,'').slice(0,2)||undefined};
+  let rect=null,parts=[],err='';
+  try{
+    if(md==='corners'){
+      const a=mgrsRef($('mA').value,def),b=mgrsRef($('mB').value,def);
+      if(!a||!b)throw 'Nie rozpoznano jednego z narożników. Przykład: 34U CA 9400 7900.';
+      if(a.zone!==b.zone)throw 'Narożniki leżą w różnych strefach UTM. Podaj oba w jednej strefie.';
+      rect=utmRect(a.zone,a.south,Math.min(a.E,b.E),Math.min(a.N,b.N),Math.max(a.E+a.size,b.E+b.size),Math.max(a.N+a.size,b.N+b.size));
+    }else if(md==='center'){
+      const c=mgrsRef($('mC').value,def);if(!c)throw 'Nie rozpoznano środka. Przykład: 34U CA 955 805.';
+      const W=(+$('mW').value||0)*1000,H=(+($('mH').value||$('mW').value)||0)*1000;if(W<=0||H<=0)throw 'Podaj wymiary rejonu w km.';
+      let E0=c.E+c.size/2-W/2,N0=c.N+c.size/2-H/2;if($('mSnap').checked){E0=Math.round(E0/1000)*1000;N0=Math.round(N0/1000)*1000}
+      rect=utmRect(c.zone,c.south,E0,N0,E0+W,N0+H);
+    }else{
+      const items=$('mSq').value.split(/[,;\n]+/).map(x=>x.trim()).filter(Boolean);if(!items.length)throw 'Wpisz co najmniej jeden kwadrat, np. 34U CA 95 80.';
+      let zone=null,south=false,E0=Infinity,N0=Infinity,E1=-Infinity,N1=-Infinity;
+      for(const it of items){
+        const rg=it.split(/\s*[–—-]\s*(?=\S)/);const refs=rg.map(x=>mgrsRef(x,def));
+        if(refs.some(r=>!r))throw `Nie rozpoznano: „${it}”.`;
+        refs.forEach(r=>{if(zone!==null&&r.zone!==zone)throw 'Kwadraty leżą w różnych strefach UTM.';zone=r.zone;south=r.south;
+          E0=Math.min(E0,r.E);N0=Math.min(N0,r.N);E1=Math.max(E1,r.E+r.size);N1=Math.max(N1,r.N+r.size)});
+        if(refs.length===1)parts.push(utmRect(refs[0].zone,refs[0].south,refs[0].E,refs[0].N,refs[0].E+refs[0].size,refs[0].N+refs[0].size));
+      }
+      rect=utmRect(zone,south,E0,N0,E1,N1);
+    }
+  }catch(e){err=typeof e==='string'?e:'Błędne dane.'}
+  mgrsPrev.clearLayers();mgrsRes=null;
+  if(err||!rect){$('mOut').innerHTML=`<span style="color:var(--bad)">${esc(err||'Uzupełnij dane.')}</span>`;$('mGo').disabled=true;$('mShow').disabled=true;return}
+  const km2=rect.w*rect.h/1e6,ok=km2>=0.2&&km2<=400;
+  $('mOut').innerHTML=`<b>${esc(rectDesc(rect))}</b><br>Powierzchnia ${km2.toLocaleString('pl-PL',{maximumFractionDigits:2})} km²${ok?'':' – <span style="color:var(--bad)">dozwolone 0,2–400 km²</span>'}${parts.length>1?` · kwadratów: ${parts.length}`:''}`;
+  parts.forEach(p=>mgrsPrev.addLayer(L.polygon(p.ring,{color:'#1f4fbf',weight:1,dashArray:'3 3',fillOpacity:.06,interactive:false})));
+  mgrsPrev.addLayer(L.polygon(rect.ring,{color:'#1f4fbf',weight:2.5,dashArray:'8 5',fill:false,interactive:false}));
+  mgrsRes={rect,km2};$('mGo').disabled=!ok;$('mShow').disabled=false;
+}
+function openMgrsDialog(){
+  stopModes();const m=$('mmodal');m.hidden=false;
+  const g=gzdOf(map.getCenter());if(!$('mGzd').value)$('mGzd').value=`${g.gzd} ${g.sq}`;
+  mgrsCompute();
+}
+function initMgrsDialog(){
+  ['mA','mB','mC','mW','mH','mSq','mGzd'].forEach(id=>$(id).addEventListener('input',mgrsCompute));
+  $('mSnap').onchange=mgrsCompute;
+  document.querySelectorAll('input[name=mMode]').forEach(r=>r.onchange=()=>{document.querySelectorAll('[data-mm]').forEach(d=>d.hidden=d.dataset.mm!==document.querySelector('input[name=mMode]:checked').value);mgrsCompute()});
+  document.querySelectorAll('[data-msz]').forEach(b=>b.onclick=()=>{$('mW').value=b.dataset.msz;$('mH').value=b.dataset.msz;mgrsCompute()});
+  $('mX').onclick=()=>{$('mmodal').hidden=true;mgrsPrev.clearLayers()};
+  $('mShow').onclick=()=>{if(!mgrsRes)return;$('mmodal').hidden=true;map.fitBounds(mgrsRes.rect.bounds,{padding:[40,40]});toast('Podgląd rejonu na mapie. Otwórz panel MGRS ponownie, aby uruchomić ocenę.')};
+  $('mGo').onclick=()=>{if(!mgrsRes)return;$('mmodal').hidden=true;const r=mgrsRes.rect;mgrsPrev.clearLayers();runAuto(r.bounds,{ring:r.ring,desc:'MGRS '+rectDesc(r),km2:r.w*r.h/1e6})};
+  $('mFromView').onclick=()=>{const g=gzdOf(map.getCenter());$('mGzd').value=`${g.gzd} ${g.sq}`;$('mC').value=mgrs(map.getCenter().lat,map.getCenter().lng);mgrsCompute()};
+}
+
+// ================= Wiarygodność wyniku =================
+const CONF={hi:['wysoka','var(--ok)'],mid:['średnia','#b26a00'],lo:['niska','var(--bad)']};
+function reliability(q){
+  if(!q)return [];
+  const osmOk=!q.osmErr,demOk=q.demFail<0.02,rows=[];
+  rows.push(['Rzeźba i nachylenia',demOk?'hi':'mid',`Model terenu AWS Terrain Tiles (SRTM / EU-DEM, ok. 25–30 m), próbkowany w siatce ${q.n}×${q.n} co ok. ${Math.round(q.cell)} m. ${demOk?'Pobrano komplet danych.':`Brakowało ${pct(q.demFail)} próbek – uzupełniono sąsiednimi.`} Drobne formy (rowy, skarpy < 30 m) mogą być niewidoczne.`]);
+  rows.push(['Pokrycie terenu (lasy, wody, zabudowa)',osmOk?'mid':'lo',osmOk?`OpenStreetMap, stan danych: ${q.osmTime?new Date(q.osmTime).toLocaleDateString('pl-PL'):'nieznany'}${q.osmRemark?' (serwer zgłosił: '+q.osmRemark+')':''}. Kompletność zależy od mapowania rejonu; w Polsce lasy i wody są zwykle dobrze odwzorowane.`:'Brak danych OSM – wnioski oparte tylko na rzeźbie.']);
+  rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`]);
+  rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
+  rows.push(['Kierunki podejścia (AA)','lo','Model najmniejszego oporu po klasach MCOO z preferencją dróg; wskazuje kandydatów w dwóch umownych kierunkach (S→N, W→E). Wymagają oceny analityka i ukierunkowania względem przeciwnika.']);
+  rows.push(['Infrastruktura',q.infErr?'lo':'mid',q.infErr?'Brak danych o infrastrukturze (serwer niedostępny).':'OpenStreetMap: obecność obiektu jest wiarygodna, brak obiektu nie oznacza, że go nie ma.']);
+  return rows;
+}
+function reliabilityHTML(q){
+  const rows=reliability(q);if(!rows.length)return '';
+  return `<details class="rel"><summary>Wiarygodność wyniku i źródła danych</summary><table>${rows.map(([a,c,t])=>`<tr><td>${esc(a)}</td><td><span class="cf" style="--cc:${CONF[c][1]}">${CONF[c][0]}</span></td><td>${esc(t)}</td></tr>`).join('')}</table></details>`;
+}
+
 // ================= Współrzędne: UTM/MGRS ⇄ geograficzne =================
 function fromUTM(zone,E,N,south){
   const a=6378137,f=1/298.257223563,k0=.9996,e2=f*(2-f),ep2=e2/(1-e2),e1=(1-Math.sqrt(1-e2))/(1+Math.sqrt(1-e2));
@@ -1936,9 +2202,17 @@ const OVER={
   rail:{n:'Koleje i infrastruktura kolejowa (OpenRailwayMap)',layer:L.tileLayer('https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png',{maxZoom:19,subdomains:'abc',attribution:'© OpenRailwayMap (CC-BY-SA)'})},
   trails:{n:'Szlaki turystyczne (Waymarked Trails)',layer:L.tileLayer('https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© waymarkedtrails.org'})},
   infra:{n:'Infrastruktura rozpoznana automatycznie',pane:true},
+  th_hydro:{n:'Mapa terenu: wody (rzeki, cieki, jeziora, mokradła)',layer:TH.hydro.g,th:1},
+  th_veg:{n:'Mapa terenu: lasy i roślinność',layer:TH.veg.g,th:1},
+  th_road:{n:'Mapa terenu: drogi',layer:TH.road.g,th:1},
+  th_rail:{n:'Mapa terenu: koleje',layer:TH.rail.g,th:1},
+  th_built:{n:'Mapa terenu: zabudowa',layer:TH.built.g,th:1},
+  th_obs:{n:'Mapa terenu: skarpy, urwiska, nasypy, wyrobiska',layer:TH.obs.g,th:1},
+  ehydro:{n:'Hydrografia (Esri World Hydro)',layer:L.tileLayer('https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Esri_Hydro_Reference_Overlay/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,maxNativeZoom:16,attribution:'Esri Hydro Reference'})},
+  etrans:{n:'Komunikacja (Esri World Transportation)',layer:L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Esri'})},
 };
 map.createPane('overP');map.getPane('overP').style.zIndex=340;
-Object.values(OVER).forEach(o=>{if(o.layer&&o.layer!==gridL){o.layer.options.pane='overP'}});
+Object.values(OVER).forEach(o=>{if(o.layer&&o.layer!==gridL&&!o.th){o.layer.options.pane='overP'}});
 function setOver(k,on){
   const o=OVER[k];if(!o)return;
   if(o.pane){['infraP','infraM'].forEach(p=>map.getPane(p).style.display=on?'':'none')}
@@ -1949,8 +2223,9 @@ function overState(){return Object.keys(OVER).filter(k=>{const cb=$('ov-'+k);ret
 (function(){
   const box=$('overList');
   Object.entries(OVER).forEach(([k,o])=>{const l=document.createElement('label');l.className='check';
-    l.innerHTML=`<input type="checkbox" id="ov-${k}"${k==='infra'?' checked':''}> ${o.name||o.n}`;box.appendChild(l);
+    l.innerHTML=`<input type="checkbox" id="ov-${k}"${k==='infra'||o.th?' checked':''}> ${o.name||o.n}`;box.appendChild(l);
     l.querySelector('input').onchange=e=>{setOver(k,e.target.checked);save()}});
+  Object.keys(OVER).filter(k=>OVER[k].th).forEach(k=>setOver(k,true));
 })();
 
 // ================= Infrastruktura (OSM) =================
@@ -2276,8 +2551,12 @@ async function snapMap(fit){
     if(map.hasLayer(relief)){ctx.globalAlpha=relief.options.opacity;await drawTiles(ctx,relief,S,cR,warn,'Rzeźba');ctx.globalAlpha=1}
     if(map.hasLayer(GUGIK)){ctx.globalAlpha=GUGIK.options.opacity;await drawTiles(ctx,GUGIK,S,cR,warn,'Cieniowanie GUGiK');ctx.globalAlpha=1}}
   // 3. nakładki rastrowe
-  const ras=Object.entries(OVER).filter(([k,o])=>o.layer&&o.layer!==gridL&&map.hasLayer(o.layer));
+  const ras=Object.entries(OVER).filter(([k,o])=>o.layer&&o.layer!==gridL&&!o.th&&o.layer._tiles&&map.hasLayer(o.layer));
   if(ras.length){const ctx=mk('Nakładki',false);for(const [k,o] of ras)await drawTiles(ctx,o.layer,S,cR,warn,o.n)}
+  // 3b. mapa terenu OSM
+  for(const [k,label] of [['built','Zabudowa (OSM)'],['veg','Lasy i roślinność (OSM)'],['hydro','Hydrografia (OSM)'],['rail','Koleje (OSM)'],['road','Drogi (OSM)'],['obs','Skarpy, nasypy, wyrobiska (OSM)']]){
+    if(map.hasLayer(TH[k].g)&&TH[k].g.getLayers().length){const ctx=mk(label,false);await drawVec(ctx,TH[k].g.getLayers(),S)}
+  }
   // 4. MCOO
   if((MC&&map.hasLayer(mcoo))||(ovSlope&&map.hasLayer(ovSlope))){const ctx=mk('MCOO, martwe pola, nachylenie',false);
     if(ovSlope&&map.hasLayer(ovSlope))await drawVec(ctx,[ovSlope],S);
@@ -2314,7 +2593,7 @@ async function buildReportHTML(snap){
   const d=new Date(),parts=[];
   parts.push(`<h1>Analiza terenu OCOKA – ${escH(areaEl.value||'rejon bez nazwy')}</h1>`);
   const meta=[`Data: ${d.toLocaleString('pl-PL')}`,`Podkład: ${baseSel.value}`];
-  if(autoBox){const nw=autoBox.getNorthWest(),se=autoBox.getSouthEast();meta.push(`Rejon oceny: ${mgrs(nw.lat,nw.lng)} – ${mgrs(se.lat,se.lng)}`)}
+  if(autoBox)meta.push(`Rejon oceny: ${autoDesc||mgrs(autoBox.getSouth(),autoBox.getWest())+' – '+mgrs(autoBox.getNorth(),autoBox.getEast())}`);
   meta.push('Źródła: model terenu AWS Terrain Tiles (~30 m), OpenStreetMap, opracowanie własne');
   parts.push(`<p class="meta">${meta.map(escH).join('<br>')}</p>`);
   if(snap){
@@ -2344,6 +2623,13 @@ async function buildReportHTML(snap){
     for(const l of ls){const p=l.feature.properties,a=anchor(l);let h='—';try{h=String(Math.round(await elevAt(a,13)))}catch(e){}
       rows.push([p.name||'—',kind(l),mgrs(a.lat,a.lng),h,[measure(l),+p.range>0?`zasięg ${p.range} m`:''].filter(Boolean).join(', ')||'—',cl(p.note)])}
     parts.push(tableHTML(['Obiekt','Typ','MGRS','Wys. [m]','Wymiar','Opis'],rows));
+  }
+  if(lastSum&&lastSum.q){
+    const rows=reliability(lastSum.q);
+    parts.push(`<h2>Metodyka i wiarygodność</h2><p>Ocena powstała automatycznie z danych otwartych i wymaga weryfikacji. Poniżej źródła, parametry i ograniczenia każdego elementu.</p>`);
+    parts.push(tableHTML(['Element','Wiarygodność','Źródło, metoda i ograniczenia'],rows.map(([a,c,t])=>[a,CONF[c][0],t])));
+    const q=lastSum.q;
+    parts.push(`<p>Parametry: siatka ${q.n}×${q.n} (ok. ${Math.round(q.cell)} m), obserwator ${q.hO} m, cel ${q.hT} m${q.dsm?`, las ${q.hF} m, zabudowa ${q.hB} m`:', bez pokrycia terenu'}; data oceny ${new Date(lastSum.date).toLocaleString('pl-PL')}.</p>`);
   }
   parts.push(`<p class="meta">Opracowano w OCOKA Planer. Wnioski oznaczone jako automatyczne wymagają weryfikacji na mapie, ortofotomapie i w terenie.</p>`);
   return parts.join('\n');
@@ -2671,9 +2957,20 @@ const OVERPASS=['https://overpass-api.de/api/interpreter','https://overpass.kumi
 L.drawLocal.draw.handlers.rectangle.tooltip.start='Przeciągnij myszą, aby zaznaczyć rejon oceny.';
 L.drawLocal.draw.handlers.simpleshape.tooltip.end='Puść przycisk myszy, aby zakończyć.';
 
+let autoSize=0,autoSnap=true;try{autoSize=+(localStorage.getItem('ocoka-asz')||0)||0}catch(e){}
 function startAuto(){
   stopModes();closeEditor();mode='auto';showWelcome(false);
-  const box=map.getContainer();box.classList.add('drawing');box.style.cursor='crosshair';
+  const box=map.getContainer();
+  if(autoSize){
+    let prev=null;const sz=autoSize*1000;box.style.cursor='crosshair';box.classList.add('drawing');
+    const mv=e=>{const r=rectAround(e.latlng,sz,sz,autoSnap);if(!prev)prev=L.polygon(r.ring,{color:css('--ink'),weight:2,dashArray:'6 4',fill:false,interactive:false}).addTo(map);else prev.setLatLngs(r.ring)};
+    const ck=e=>{const r=rectAround(e.latlng,sz,sz,autoSnap);stopModes();runAuto(r.bounds,{ring:r.ring,desc:'MGRS '+rectDesc(r),km2:r.w*r.h/1e6})};
+    map.on('mousemove',mv);map.on('click',ck);
+    modeCleanup=()=>{map.off('mousemove',mv);map.off('click',ck);if(prev)map.removeLayer(prev);box.classList.remove('drawing');
+      setTimeout(()=>{if(!autoBox&&!drawn.getLayers().length&&!mode)showWelcome(true)},50)};
+    updateStatus();return;
+  }
+  box.classList.add('drawing');box.style.cursor='crosshair';
   map.dragging.disable();map.touchZoom.disable();map.boxZoom.disable();
   let a=null,rect=null;
   const dn=ev=>{if(!ev.isPrimary||ev.button>0||ev.target.closest('.leaflet-control,.status,.dlegend,.welcome'))return;a=map.mouseEventToLatLng(ev);ev.preventDefault()};
@@ -2691,16 +2988,20 @@ function autoFrame(){
   const sz=map.getSize(),ins=narrow()?.06:.1;
   let b=L.latLngBounds(map.containerPointToLatLng([sz.x*ins,sz.y*ins]),map.containerPointToLatLng([sz.x*(1-ins),sz.y*(1-ins)]));
   const d=kmDims(b);
-  if(d.km2>140){
-    const f=Math.sqrt(140/d.km2),c=b.getCenter(),hl=(b.getNorth()-b.getSouth())*f/2,hg=(b.getEast()-b.getWest())*f/2;
+  if(d.km2>380){
+    const f=Math.sqrt(380/d.km2),c=b.getCenter(),hl=(b.getNorth()-b.getSouth())*f/2,hg=(b.getEast()-b.getWest())*f/2;
     b=L.latLngBounds([c.lat-hl,c.lng-hg],[c.lat+hl,c.lng+hg]);
-    toast('Kadr był za duży: oceniam środkowy fragment ok. 140 km².');
+    toast('Kadr był za duży: oceniam środkowy fragment ok. 380 km².');
   }
   stopModes();runAuto(b);
 }
-function setAutoBox(b){
-  autoBox=b;autoBoxLayer.clearLayers();
-  if(b)autoBoxLayer.addLayer(L.rectangle(b,{color:css('--ink'),weight:2,dashArray:'6 4',fill:false,interactive:false}));
+let autoRing=null,autoDesc='';
+function setAutoBox(b,ring,desc){
+  autoBox=b;autoRing=b&&ring?ring.map(p=>L.latLng(p.lat??p[0],p.lng??p[1])):null;autoDesc=b?(desc||autoDesc||''):'';autoBoxLayer.clearLayers();
+  if(!b)return;
+  if(autoRing){autoBoxLayer.addLayer(L.polygon(autoRing,{color:css('--ink'),weight:2.2,dashArray:'7 4',fill:false,interactive:false}));
+    autoBoxLayer.addLayer(L.rectangle(b,{color:css('--ink'),weight:.8,opacity:.4,dashArray:'2 4',fill:false,interactive:false}))}
+  else autoBoxLayer.addLayer(L.rectangle(b,{color:css('--ink'),weight:2,dashArray:'6 4',fill:false,interactive:false}));
 }
 const kmDims=b=>{
   const c=b.getCenter();
@@ -2709,25 +3010,29 @@ const kmDims=b=>{
   return {w,h,km2:w*h/1e6};
 };
 
-async function runAuto(b){
+async function runAuto(b,opt={}){
   const {w,h,km2}=kmDims(b);
   if(km2<0.2){toast('Rejon jest za mały. Zaznacz co najmniej 0,2 km².');return}
-  if(km2>150){toast(`Rejon ma ${Math.round(km2)} km². Zaznacz mniejszy (maks. 150 km²).`);return}
-  setAutoBox(b);showWelcome(false);
+  if(km2>400){toast(`Rejon ma ${Math.round(km2)} km². Zaznacz mniejszy (maks. 400 km², np. 20 × 20 km).`);return}
+  setAutoBox(b,opt.ring,opt.desc||`${mgrs(b.getSouth(),b.getWest())} (SW) – ${mgrs(b.getNorth(),b.getEast())} (NE), ${(w/1000).toFixed(1)} × ${(h/1000).toFixed(1)} km`);showWelcome(false);
   if(!areaEl.value.trim())nameArea(b.getCenter());
   const step=t=>openProfile('Ocena rejonu',`<span>${t}</span>`,'');
   try{
-    step('Krok 1 z 3: pobieram model terenu…');
-    const g=await demGrid(b,64,w,h);
+    const n=Math.max(64,Math.min(161,Math.round(Math.max(w,h)/75)+1));
+    step(`Krok 1 z 3: pobieram model terenu (siatka ${n}×${n}, co ok. ${Math.round(Math.max(w,h)/(n-1))} m)…`+(km2>150?' Duży rejon – to potrwa dłużej.':''));
+    const g=await demGrid(b,n,w,h);
     step('Krok 2 z 3: pobieram dane OpenStreetMap (lasy, wody, drogi, zabudowa)…');
     let osm=null,osmErr=false,inf=null;
     const pInf=overpassInfra(b);pInf.catch(()=>{});
-    try{osm=parseOSM(await overpass(b),b,g)}catch(e){osmErr=true}
+    let osmRaw=null;
+    try{osmRaw=await overpass(b);osm=parseOSM(osmRaw,b,g)}catch(e){osmErr=true}
+    if(osmRaw)try{setTheme(parseTheme(osmRaw,b))}catch(e){console.error(e)}
     step('Krok 2 z 3: rozpoznaję obiekty infrastruktury…');
     try{inf=await pInf}catch(e){inf=null}
     step('Krok 3 z 3: liczę nachylenia i widoczność…');
     await new Promise(r=>setTimeout(r,30));
-    const t=analyzeTerrain(g);
+    const dsm=$('pDsm').checked&&!!osm,hF=+$('pHF').value||0,hB=+$('pHB').value||0;
+    const t=analyzeTerrain(g,dsm?{forest:osm.forestMask,built:osm.builtMask,hF,hB}:null);
     const res=buildResults(b,g,t,osm,km2);
     res.NI=inf?null:'Nie udało się pobrać danych o infrastrukturze (serwer Overpass niedostępny).';
     if(inf){
@@ -2736,7 +3041,11 @@ async function runAuto(b){
       res.NI=infraNotes(pinf,res.N);res.infCount=pinf.items.length;
     }
     applyAuto(res,b,g,t);
-    lastSum={km2,mn:t.mn,mx:t.mx,forest:osm?osm.forestShare:null,union:t.union,mU:t.mU,mR:t.mR,mS:t.mS,objs:res.F.length,inf:res.infCount||0,NI:res.NI||'',osmErr,date:new Date().toISOString()};
+    const q={n,cell:g.cell,z:g.z,demFail:g.fails,osmErr,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
+    if(dsm)res.N.O.push(`Widoczność obliczono z uwzględnieniem lasu (${hF} m) i zabudowy (${hB} m); punkty obserwacyjne wybrano poza lasem i zabudową.`);
+    else res.N.O.push('Widoczność obliczono po gołym terenie (bez lasu i zabudowy) – rzeczywiste martwe pola są większe.');
+    {const own=notes.O.split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim();notes.O='[AUTO] '+res.N.O.join(' ')+(own?'\n'+own:'');render()}
+    lastSum={km2:opt.km2||km2,mn:t.mn,mx:t.mx,forest:osm?osm.forestShare:null,open:osm?osm.openShare:null,union:t.union,mU:t.mU,mR:t.mR,mS:t.mS,objs:res.F.length,inf:res.infCount||0,NI:res.NI||'',osmErr,desc:autoDesc,q,date:new Date().toISOString()};
     updOcenaBtn();save();
     showAutoPanel(lastSum);showManual(true);orientAA(true);
   }catch(e){
@@ -2755,13 +3064,15 @@ async function demGrid(b,n,wM,hM){
     pts.push(L.latLng(b.getNorth()-(b.getNorth()-b.getSouth())*j/(n-1),b.getWest()+(b.getEast()-b.getWest())*i/(n-1)));
   const r=await Promise.allSettled(pts.map(p=>elevAt(p,z)));
   if(r.filter(x=>x.status==='fulfilled').length<r.length*.9)throw new Error('dem');
-  const h=new Float32Array(n*n);let last=0;
-  r.forEach((x,i)=>{h[i]=x.status==='fulfilled'?(last=x.value):last});
-  return {n,h,pts,dx:wM/(n-1),dy:hM/(n-1)};
+  const h=new Float32Array(n*n);let last=0,fails=0;
+  r.forEach((x,i)=>{if(x.status==='fulfilled'&&x.value>-1000&&isFinite(x.value))h[i]=last=x.value;else{h[i]=last;fails++}});
+  return {n,h,pts,dx:wM/(n-1),dy:hM/(n-1),z,fails:fails/(n*n),cell};
 }
 
-function analyzeTerrain(g){
+function analyzeTerrain(g,cover){
   const {n,h,dx,dy}=g,H=(i,j)=>h[j*n+i],N2=n*n;
+  const hs=new Float32Array(N2);for(let k=0;k<N2;k++)hs[k]=h[k]+(cover?(cover.forest[k]?cover.hF:cover.built[k]?cover.hB:0):0);
+  const HS=(i,j)=>hs[j*n+i];
   const slope=new Float32Array(N2);let go=0,slow=0,nogo=0,steep=0,mn=Infinity,mx=-Infinity,sum=0;
   for(let j=0;j<n;j++)for(let i=0;i<n;i++){
     const i0=Math.max(0,i-1),i1=Math.min(n-1,i+1),j0=Math.max(0,j-1),j1=Math.min(n-1,j+1);
@@ -2783,14 +3094,16 @@ function analyzeTerrain(g){
     const tpi=v-s/c;
     if(isMax&&tpi>2)cands.push({i,j,h:v,tpi});
   }
-  cands.sort((a,b)=>(b.h+2*b.tpi)-(a.h+2*a.tpi));
+  const inCov=c=>cover&&(cover.forest[c.j*n+c.i]||cover.built[c.j*n+c.i]);
+  const anyOpen=cands.some(c=>!inCov(c));
+  cands.sort((a,b)=>(b.h+2*b.tpi-(anyOpen&&inCov(b)?1e4:0))-(a.h+2*a.tpi-(anyOpen&&inCov(a)?1e4:0)));
   const peaks=[];
   for(const c of cands){if(peaks.every(p=>Math.hypot(p.i-c.i,p.j-c.j)>n/5))peaks.push(c);if(peaks.length===3)break}
   if(!peaks.length){let k=0;for(let q=1;q<N2;q++)if(h[q]>h[k])k=q;peaks.push({i:k%n,j:Math.floor(k/n),h:h[k],tpi:0})}
   // widoczność z wzniesień (po gołym terenie)
   const hO=+$('hObs').value||2,hT=+$('hTgt').value||1.5,Rk=6371000/(1-.13),drop=d=>d*d/(2*Rk);
   const bil=(x,y)=>{const x0=Math.floor(x),y0=Math.floor(y),x1=Math.min(n-1,x0+1),y1=Math.min(n-1,y0+1),fx=x-x0,fy=y-y0;
-    return H(x0,y0)*(1-fx)*(1-fy)+H(x1,y0)*fx*(1-fy)+H(x0,y1)*(1-fx)*fy+H(x1,y1)*fx*fy};
+    return HS(x0,y0)*(1-fx)*(1-fy)+HS(x1,y0)*fx*(1-fy)+HS(x0,y1)*(1-fx)*fy+HS(x1,y1)*fx*fy};
   const vis=new Uint8Array(N2);
   peaks.forEach((p,pi)=>{
     const eye=p.h+hO;let cnt=0;
@@ -2811,7 +3124,9 @@ function analyzeTerrain(g){
 // ---- OpenStreetMap (Overpass API) ----
 async function overpass(b){
   const bb=`${b.getSouth().toFixed(5)},${b.getWest().toFixed(5)},${b.getNorth().toFixed(5)},${b.getEast().toFixed(5)}`;
-  const q=`[out:json][timeout:60];(
+  const q=`[out:json][timeout:90];(
+way["natural"~"^(scrub|heath|cliff)$"](${bb});way["landuse"~"^(orchard|vineyard|quarry)$"](${bb});way["man_made"="embankment"](${bb});
+way["waterway"~"^(ditch|drain)$"](${bb});relation["natural"="wetland"](${bb});
 way["natural"="wood"](${bb});way["landuse"="forest"](${bb});relation["natural"="wood"](${bb});relation["landuse"="forest"](${bb});
 way["natural"="water"](${bb});relation["natural"="water"](${bb});way["natural"="wetland"](${bb});
 way["waterway"~"^(river|canal|stream)$"](${bb});
@@ -2845,16 +3160,21 @@ function clipPoly(ring,b){
   }
   return pts;
 }
+function clipSeg(a,c,b){ // Liang–Barsky w układzie lat/lng
+  const x0=a.lng,y0=a.lat,dx=c.lng-a.lng,dy=c.lat-a.lat;let t0=0,t1=1;
+  const P=[-dx,dx,-dy,dy],Q=[x0-b.getWest(),b.getEast()-x0,y0-b.getSouth(),b.getNorth()-y0];
+  for(let k=0;k<4;k++){if(P[k]===0){if(Q[k]<0)return null}else{const r=Q[k]/P[k];if(P[k]<0){if(r>t1)return null;if(r>t0)t0=r}else{if(r<t0)return null;if(r<t1)t1=r}}}
+  return [t0===0?a:L.latLng(y0+dy*t0,x0+dx*t0),t1===1?c:L.latLng(y0+dy*t1,x0+dx*t1),t0===0,t1===1];
+}
 function clipRuns(lls,b){
-  const runs=[];let cur=[],len=0;
+  const runs=[];let cur=null,len=0;
   for(let i=1;i<lls.length;i++){
-    const a=lls[i-1],c=lls[i];
-    if(b.contains(a)||b.contains(c)){
-      if(!cur.length)cur.push(a);cur.push(c);
-      if(b.contains(L.latLng((a.lat+c.lat)/2,(a.lng+c.lng)/2)))len+=a.distanceTo(c);
-    }else if(cur.length){runs.push(cur);cur=[]}
+    const r=clipSeg(lls[i-1],lls[i],b);
+    if(!r){cur=null;continue}
+    const [p,q,startIn]=r;len+=p.distanceTo(q);
+    if(cur&&startIn)cur.push(q);else{cur=[p,q];runs.push(cur)}
+    if(!r[3])cur=null;
   }
-  if(cur.length)runs.push(cur);
   return {runs,len};
 }
 const runLen=r=>{let d=0;for(let i=1;i<r.length;i++)d+=r[i-1].distanceTo(r[i]);return d};
@@ -2865,10 +3185,13 @@ function parseOSM(d,b,g){
   const n=g.n,S=b.getSouth(),N=b.getNorth(),W=b.getWest(),E=b.getEast();
   const o={forests:[],waters:[],wets:[],forestMask:new Uint8Array(N2),waterMask:new Uint8Array(N2),
     wetMask:new Uint8Array(N2),builtMask:new Uint8Array(N2),roadMask:new Uint8Array(N2),riverMask:new Uint8Array(N2),
+    scrubMask:new Uint8Array(N2),orchMask:new Uint8Array(N2),quarryMask:new Uint8Array(N2),cliffMask:new Uint8Array(N2),embMask:new Uint8Array(N2),cliffKm:0,embKm:0,quarries:0,
     lines:{river:{},canal:{},stream:{}},roads:{},rail:{},bridges:[],minorKm:0,trackKm:0,buildings:0};
   const polyCells=(ring,mask)=>{
     const bb=L.latLngBounds(ring);let cnt=0;
-    for(let k=0;k<N2;k++){const p=g.pts[k];if(bb.contains(p)&&pip(p,ring)){cnt++;if(mask)mask[k]=1}}
+    const i0=Math.max(0,Math.floor((bb.getWest()-W)/(E-W)*(n-1))),i1=Math.min(n-1,Math.ceil((bb.getEast()-W)/(E-W)*(n-1)));
+    const j0=Math.max(0,Math.floor((N-bb.getNorth())/(N-S)*(n-1))),j1=Math.min(n-1,Math.ceil((N-bb.getSouth())/(N-S)*(n-1)));
+    for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++){const k=j*n+i,p=g.pts[k];if(pip(p,ring)){cnt++;if(mask)mask[k]=1}}
     return cnt;
   };
   const mark=(runs,mask)=>runs.forEach(r=>{for(let i=1;i<r.length;i++){const a=r[i-1],c=r[i],st=Math.max(1,Math.ceil(a.distanceTo(c)/(Math.min(g.dx,g.dy)/2)));
@@ -2882,6 +3205,17 @@ function parseOSM(d,b,g){
     let rings=[];
     if(el.type==='way'&&el.geometry)rings=[toLL(el.geometry)];
     else if(el.type==='relation'&&el.members)rings=el.members.filter(m=>m.type==='way'&&m.geometry&&m.role!=='inner').map(m=>toLL(m.geometry));
+    if(t.natural==='scrub'||t.natural==='heath'||t.landuse==='orchard'||t.landuse==='vineyard'||t.landuse==='quarry'){
+      const mk=t.landuse==='quarry'?o.quarryMask:(t.natural==='scrub'||t.natural==='heath')?o.scrubMask:o.orchMask;
+      for(let r of rings){if(r.length<4)continue;const c=clipPoly(r,b);if(c.length>=3&&polyCells(c,mk)&&t.landuse==='quarry')o.quarries++}
+      continue;
+    }
+    if(t.natural==='cliff'||t.man_made==='embankment'){
+      if(!el.geometry)continue;const {runs,len}=clipRuns(toLL(el.geometry),b);
+      if(t.natural==='cliff'){mark(runs,o.cliffMask);o.cliffKm+=len/1000}else{mark(runs,o.embMask);o.embKm+=len/1000}
+      continue;
+    }
+    if(t.waterway==='ditch'||t.waterway==='drain')continue;
     if(['residential','industrial','commercial','retail'].includes(t.landuse)){
       for(let r of rings){if(r.length<4)continue;const c=clipPoly(r,b);if(c.length>=3)polyCells(c,o.builtMask)}
       continue;
@@ -2927,6 +3261,10 @@ function parseOSM(d,b,g){
   o.bridges=br;
   let fc=0,wc=0;for(let k=0;k<N2;k++){fc+=o.forestMask[k];wc+=o.waterMask[k]}
   o.forestShare=fc/N2;o.waterShare=wc/N2;
+  let sc=0,oc=0,bc=0,open=0;for(let k=0;k<N2;k++){sc+=o.scrubMask[k];oc+=o.orchMask[k];bc+=o.builtMask[k];
+    if(!o.forestMask[k]&&!o.waterMask[k]&&!o.wetMask[k]&&!o.builtMask[k]&&!o.scrubMask[k]&&!o.orchMask[k]&&!o.quarryMask[k])open++}
+  o.scrubShare=sc/N2;o.orchShare=oc/N2;o.builtShare=bc/N2;o.openShare=open/N2;
+  o.osmTime=(d.osm3s&&d.osm3s.timestamp_osm_base)||'';o.remark=d.remark||'';
   return o;
 }
 
@@ -2963,7 +3301,7 @@ function buildResults(b,g,t,o,km2){
   const mob=new Uint8Array(N2);let mU=0,mR=0,mS=0;
   for(let k=0;k<N2;k++){
     const s=t.slope[k];let c=s>=45?2:s>=30?1:0;
-    if(o){if(o.waterMask[k]||o.wetMask[k]||o.riverMask[k])c=2;else if(o.forestMask[k]||o.builtMask[k])c=Math.max(c,1)}
+    if(o){if(o.waterMask[k]||o.wetMask[k]||o.riverMask[k]||o.quarryMask[k]||o.cliffMask[k])c=2;else if(o.forestMask[k]||o.builtMask[k]||o.orchMask[k]||o.embMask[k])c=Math.max(c,1)}
     mob[k]=c;c===0?mU++:c===1?mR++:mS++;
   }
   t.mob=mob;t.mU=mU/N2;t.mR=mR/N2;t.mS=mS/N2;
@@ -3006,6 +3344,9 @@ function buildResults(b,g,t,o,km2){
   N.K.push(`Wzgórze ${Math.round(best.h)} m (${mgrs(llOf(best).lat,llOf(best).lng)}) daje najlepszą obserwację rejonu.`);
 
   if(o){
+    N.O.push(`Teren otwarty (bez lasu, zarośli, sadów, zabudowy i wód): ok. ${pct(o.openShare)} rejonu – dobre pola obserwacji i ostrzału, a zarazem brak ukrycia.`);
+    if(o.scrubShare>0.01||o.orchShare>0.01)N.C.push(`Zarośla: ${pct(o.scrubShare)}, sady i winnice: ${pct(o.orchShare)} rejonu – ukrycie przed obserwacją naziemną, słaba osłona przed ogniem.`);
+    if(o.cliffKm>0.05||o.embKm>0.05||o.quarries)N.Ob.push(`Przeszkody terenowe z OSM: urwiska i skarpy ${o.cliffKm.toFixed(1)} km, nasypy ${o.embKm.toFixed(1)} km${o.quarries?`, wyrobiska: ${o.quarries}`:''}.`);
     if(o.forestShare>0.01){
       const fs=[...o.forests].sort((a,c)=>c.area-a.area);
       N.O.push(`Lasy (${pct(o.forestShare)} rejonu) ograniczają obserwację i pola ostrzału.`);
@@ -3076,7 +3417,7 @@ function applyAuto(res,b,g,t){
 
 function showAutoPanel(sum){
   const S=sum;
-  const stats=`<span>Powierzchnia <b>${S.km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(S.mn)}–${Math.round(S.mx)} m</b></span><span>Lasy <b>${S.forest==null?'—':pct(S.forest)}</b></span><span>Widoczność z wzgórz <b>${pct(S.union)}</b></span><span>MCOO U/R/SR <b>${pct(S.mU)} / ${pct(S.mR)} / ${pct(S.mS)}</b></span><span>Obiekty auto <b>${S.objs}</b></span><span>Infrastruktura <b>${S.inf}</b></span>`;
+  const stats=`<span>Powierzchnia <b>${S.km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(S.mn)}–${Math.round(S.mx)} m</b></span><span>Lasy <b>${S.forest==null?'—':pct(S.forest)}</b></span>${S.open!=null?`<span>Teren otwarty <b>${pct(S.open)}</b></span>`:''}<span>Widoczność z wzgórz <b>${pct(S.union)}</b></span><span>MCOO U/R/SR <b>${pct(S.mU)} / ${pct(S.mR)} / ${pct(S.mS)}</b></span><span>Obiekty auto <b>${S.objs}</b></span><span>Infrastruktura <b>${S.inf}</b></span>`;
   const txt=k=>esc(stripAuto(notes[k])||'—').replace(/\n/g,'<br>');
   const enN=drawn.getLayers().filter(l=>l.feature.properties.cat==='E').length;
   const body=`
@@ -3096,6 +3437,8 @@ function showAutoPanel(sum){
       <div class="ri" style="--c:var(--I)"><div class="letter">I</div><div><b>Infrastruktura</b><div>${txt('I')}</div></div></div>
       ${enN||notes.E.trim()?`<div class="ri" style="--c:var(--E)"><div class="letter" style="background:none">${diamondMini().replace(/20/g,'26')}</div><div><b>Przeciwnik</b><div>${enN} naniesionych obiektów. ${esc(notes.E.trim())}</div></div></div>`:''}
     </div>
+    ${S.desc?`<div class="hint">Rejon: ${esc(S.desc)}</div>`:''}
+    ${reliabilityHTML(S.q)}
     <div class="row"><button class="btn sm primary" id="aEdit">Edytuj wnioski</button><button class="btn sm primary" id="aRep">Raport DOCX / PDF</button><button class="btn sm" id="aAgain">Oceń inny rejon</button><button class="btn sm" id="aDel">Usuń wyniki automatyczne</button></div>
     <div class="hint">Okno pokazuje aktualne wnioski, także po Twoich poprawkach. Zamknij je, a otworzysz ponownie przyciskiem „Ocena” nad mapą. Wynik automatyczny jest wersją roboczą: zweryfikuj go na mapie, ortofotomapie i w terenie.</div>`;
   openProfile('Ocena rejonu – wynik',stats,body);
@@ -3272,7 +3615,7 @@ const areaEl=$('area');areaEl.oninput=()=>save();
 function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
-    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,
+    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,
     mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
@@ -3288,8 +3631,10 @@ function load(fc,opt={}){
     applyRelief();closeEditor();
     if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;
   }
-  setAutoBox(m.autoBox?L.latLngBounds(m.autoBox):null);
+  setAutoBox(m.autoBox?L.latLngBounds(m.autoBox):null,m.autoRing||null,m.autoDesc||'');
   lastSum=m.sum||null;updOcenaBtn();selectObj(null);
+  if(!opt.keepView){let th=null;try{th=JSON.parse(localStorage.getItem('ocoka-theme')||'null')}catch(e){}
+    if(th&&m.autoBox&&Math.abs(th.b[0][0]-m.autoBox[0][0])<1e-6&&Math.abs(th.b[1][1]-m.autoBox[1][1])<1e-6){theme=th;renderTheme()}else if(!m.autoBox){theme=null;renderTheme()}}
   doct=m.doct!==false;$('bDoct').setAttribute('aria-pressed',doct);doct?mcoo.addTo(map):map.removeLayer(mcoo);
   const mc=m.mc;setMC(mc&&mc.mob&&mc.mob.length===mc.n*mc.n?{b:L.latLngBounds(mc.b),n:mc.n,mob:Uint8Array.from(mc.mob,Number),dead:Uint8Array.from(mc.dead,Number),showMob:mc.showMob!==false,showDead:mc.showDead!==false,stats:mc.stats}:null);
   if(!opt.keepView&&Array.isArray(m.over))Object.keys(OVER).forEach(k=>setOver(k,m.over.includes(k)));
@@ -3367,7 +3712,7 @@ $('bClear').onclick=()=>{
   const b=$('bClear');
   if(!clearArmed){clearArmed=true;b.textContent='Na pewno? Kliknij ponownie';setTimeout(()=>{clearArmed=false;b.textContent='Wyczyść'},3000);return}
   clearArmed=false;b.textContent='Wyczyść';
-  const keep=toGeoJSON().ocoka;load({type:'FeatureCollection',features:[],ocoka:{base:keep.base,relief:keep.relief,hObs:keep.hObs,hTgt:keep.hTgt}});clearAuto();try{localStorage.removeItem('ocoka-v2')}catch(e){}$('profile').hidden=true;showWelcome(true);showManual(false);histPush();toast('Wyczyszczono analizę. Ctrl+Z przywraca.');
+  const keep=toGeoJSON().ocoka;load({type:'FeatureCollection',features:[],ocoka:{base:keep.base,relief:keep.relief,hObs:keep.hObs,hTgt:keep.hTgt}});clearAuto();setTheme(null);try{localStorage.removeItem('ocoka-v2')}catch(e){}$('profile').hidden=true;showWelcome(true);showManual(false);histPush();toast('Wyczyszczono analizę. Ctrl+Z przywraca.');
 };
 
 // ================= Pomoc =================
@@ -3378,7 +3723,7 @@ modal.onclick=e=>{if(e.target===modal)$('mClose').onclick()};
 
 // ================= Skróty klawiszowe =================
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){if(!modal.hidden){$('mClose').onclick();return}if(!$('cmodal').hidden){$('cmodal').hidden=true;return}if(!$('rmodal').hidden){$('rmodal').hidden=true;return}if((!$('sheet').hidden||map._popup)&&!mode){closeEditor();return}stopModes();return}
+  if(e.key==='Escape'){if(!modal.hidden){$('mClose').onclick();return}if(!$('cmodal').hidden){$('cmodal').hidden=true;return}if(!$('mmodal').hidden){$('mX').onclick();return}if(!$('rmodal').hidden){$('rmodal').hidden=true;return}if((!$('sheet').hidden||map._popup)&&!mode){closeEditor();return}stopModes();return}
   if(e.key==='Enter'&&drawState&&drawState.type!=='marker'&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)){finishDraw();return}
   if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;
   if((e.ctrlKey||e.metaKey)&&!e.altKey){const k=e.key.toLowerCase();
@@ -3405,7 +3750,9 @@ if(saved&&saved.features&&saved.features.length){
   $('wRestore').textContent=`Przywróć poprzednią analizę${saved.ocoka&&saved.ocoka.area?': '+saved.ocoka.area:''}`;
   $('wRestore').onclick=()=>{load(saved);showWelcome(false);showManual(true);save();toast('Przywrócono poprzednią analizę')};
 }
-initCoordDialog();initReport();updEditBtns();updOcenaBtn();
+initCoordDialog();initReport();initMgrsDialog();updEditBtns();updOcenaBtn();updThemeInfo();
+$('bMgrs').onclick=openMgrsDialog;$('wMgrs').onclick=()=>{showWelcome(false);openMgrsDialog()};
+$('thLoad').onclick=()=>loadThemeFor(autoBox||map.getBounds());
 histPush();
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{drawn.eachLayer(styleLayer);decorate();render();renderCatBar()});
 </script>
