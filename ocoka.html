@@ -854,6 +854,15 @@ textarea{resize:vertical;min-height:56px}
 .mout{background:var(--bg);border-radius:6px;padding:8px 10px;font:12.5px/1.5 var(--f-mono)}
 .szs{display:flex;flex-wrap:wrap;gap:4px}
 .szs button{padding:4px 9px}
+.wxcur{display:grid;gap:2px;background:var(--bg);border-radius:6px;padding:8px 10px;font-size:13px}
+.wxcur b{font:700 26px/1 var(--f-disp)}
+.wximp{display:grid;gap:5px}
+.wxi{font-size:12.5px;padding:6px 8px;border-radius:5px;border-left:4px solid var(--c2,#888);background:var(--bg)}
+.wx-ok{--c2:var(--ok)}.wx-warn{--c2:#e0a100}.wx-bad{--c2:var(--bad)}
+.wxt{border-collapse:collapse;width:100%;font-size:12px;font-variant-numeric:tabular-nums}
+.wxt th,.wxt td{border-top:1px solid var(--line);padding:3px 4px;text-align:left}
+#wxWindy iframe{width:100%;height:360px;border:1px solid var(--line);border-radius:6px}
+.rstale{margin:8px 18px 0;padding:8px 10px;border-radius:6px;background:color-mix(in srgb,var(--bad) 12%,var(--panel));font-size:13px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .chip.arm{background:var(--bad)!important;color:#fff}
 .rbox{max-width:920px!important;display:flex;flex-direction:column}
 .rtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
@@ -922,6 +931,7 @@ textarea{resize:vertical;min-height:56px}
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="analiza" aria-selected="true">Analiza</button>
       <button class="tab" role="tab" data-tab="teren" aria-selected="false">Mapa i teren</button>
+      <button class="tab" role="tab" data-tab="pogoda" aria-selected="false">Pogoda</button>
       <button class="tab" role="tab" data-tab="pomoc" aria-selected="false">Instrukcja</button>
     </div>
 
@@ -963,6 +973,9 @@ textarea{resize:vertical;min-height:56px}
       </div>
       <div class="section">
         <h3>Parametry analizy</h3>
+        <label class="small" for="pDem">Model wysokościowy</label>
+        <select id="pDem"><option value="terrarium">AWS Terrain Tiles – SRTM / EU-DEM (model terenu)</option><option value="cop">Copernicus GLO-30 – model powierzchni (DSM) do widoczności</option></select>
+        <div class="hint">Copernicus GLO-30 (30 m, cały świat, także Białoruś) zawiera rzeczywistą wysokość lasu i zabudowy, więc daje dokładniejsze martwe pola. Nachylenia i MCOO nadal liczone są z modelu terenu. Jeśli Copernicus będzie niedostępny, narzędzie wróci do SRTM i zaznaczy to w ocenie wiarygodności.</div>
         <label class="check"><input type="checkbox" id="pDsm" checked> Uwzględnij las i zabudowę w widoczności</label>
         <div class="row" style="flex-wrap:nowrap">
           <div style="flex:1"><label class="small" for="pHF">Wysokość lasu (m)</label><input type="number" id="pHF" value="20" min="0" max="50" step="1"></div>
@@ -988,8 +1001,38 @@ textarea{resize:vertical;min-height:56px}
         </div>
         <div class="hint">Kliknięcie kopiuje współrzędne środka mapy. Wklej je w wyszukiwarkę serwisu (OpenTopoMap otwiera się od razu we właściwym miejscu).</div>
       </div>
+      <div class="section">
+        <h3>Białoruś – mapy i dane wysokościowe</h3>
+        <div class="links" id="byLinks"></div>
+        <div class="hint">Yandex, mapa katastralna (maps.nca.by), floodmap.net, topographic-map.com i EarthExplorer nie udostępniają kafli do użycia w innych aplikacjach, a regulamin Yandex wprost tego zabrania. Dlatego otwierają się w nowej karcie, Yandex i Copernicus Browser w miejscu środka mapy. W samym narzędziu dla Białorusi najdokładniejsze są: radzieckie mapy sztabowe (1:50 000–1:200 000), OpenTopoMap, zdjęcia Esri i Sentinel-2 oraz model terenu Copernicus GLO-30 (Parametry analizy). Warstwy Geoportalu (PL) nie obejmują Białorusi.</div>
+      </div>
     </div>
 
+    <div class="pane" id="p-pogoda" hidden>
+      <div class="section">
+        <h3>Pogoda dla rejonu (OCOKA-W)</h3>
+        <div class="hint" id="wxLoc">—</div>
+        <div class="row"><button class="btn sm primary" id="wxGo">Pobierz prognozę</button><button class="btn sm" id="wxMap">Użyj środka mapy</button></div>
+        <div id="wxOut" class="mform"></div>
+        <label class="check"><input type="checkbox" id="wxRep" checked> Dołącz warunki meteorologiczne do raportu</label>
+      </div>
+      <div class="section">
+        <h3>Radar opadów na mapie</h3>
+        <label class="check"><input type="checkbox" id="ov-radar"> Pokaż ostatni obraz radarowy (RainViewer)</label>
+        <div class="hint" id="radarInfo">Obraz z ostatnich minut, odświeżany przy każdym włączeniu. Rozdzielczość radaru jest niska (do skali ok. 1:4 000 000).</div>
+      </div>
+      <div class="section">
+        <h3>Windy – mapa pogody</h3>
+        <div class="row" style="flex-wrap:nowrap"><select id="wxLayer"><option value="wind">Wiatr</option><option value="rain">Opady i burze</option><option value="clouds">Zachmurzenie</option><option value="temp">Temperatura</option><option value="visibility">Widoczność</option></select><button class="btn sm" id="wxWindyGo">Pokaż</button></div>
+        <div id="wxWindy"></div>
+      </div>
+      <div class="section">
+        <h3>Serwisy pogodowe</h3>
+        <div class="links" id="wxLinks"></div>
+        <div class="hint">Windy, Meteoblue i RainViewer otwierają się dla środka rejonu oceny. Pozostałe serwisy otwierają stronę główną.</div>
+      </div>
+      <div class="section"><div class="hint">Prognoza: Open-Meteo (CC BY 4.0, bezpłatnie do użytku niekomercyjnego). Radar: RainViewer (do użytku osobistego i edukacyjnego). Mapa: Windy.com.</div></div>
+    </div>
     <div class="pane" id="p-pomoc" hidden><div class="help" id="helpPane"></div></div>
 
     <div class="foot">
@@ -1074,6 +1117,7 @@ textarea{resize:vertical;min-height:56px}
     </div>
     <div class="rscroll">
       <p class="hint" style="padding:8px 18px 0;margin:0">Kliknij w tekst raportu, aby go edytować: zmieniaj wnioski, dopisuj akapity, poprawiaj tabele. Pliki DOCX i PDF powstają z tej treści. PDF ma mapę z osobnymi warstwami (podkład, rzeźba, MCOO, siatka, infrastruktura, OCOKA, przeciwnik), które włączasz i wyłączasz w czytniku PDF.</p>
+      <div class="rstale" id="rStale" hidden>Analiza zmieniła się od czasu utworzenia tego raportu (inny rejon, obiekty lub wnioski). <button class="btn sm primary" id="rStaleGo">Utwórz raport od nowa</button><span class="hint">Twoje zmiany w tekście zostaną zastąpione.</span></div>
       <div class="rwarn" id="rWarn"></div>
       <div class="rdoc" id="rDoc" contenteditable="true" spellcheck="true" lang="pl"></div>
     </div>
@@ -1223,9 +1267,13 @@ const HELP=`
 <p>Okno oceny i raport zawierają sekcję <i>Wiarygodność wyniku</i>: dla każdego elementu (rzeźba, pokrycie terenu, widoczność, MCOO, kierunki podejścia, infrastruktura) podają źródło danych, ich datę, rozdzielczość, przyjęte kryteria i ograniczenia oraz ocenę: wysoka, średnia, niska. Siatka analizy zagęszcza się automatycznie (co ok. 75 m), a widoczność domyślnie uwzględnia las i zabudowę (parametry w zakładce <i>Mapa i teren</i>).</p>
 <h3>Mapa terenu</h3>
 <p>Przy ocenie rejonu narzędzie rysuje wektorową mapę terenu z OpenStreetMap: rzeki, cieki i rowy, jeziora i mokradła, lasy, zarośla i sady, drogi według klas, drogi gruntowe, koleje, zabudowę, urwiska, skarpy, nasypy i wyrobiska. Każdą grupę włączasz osobno w nakładkach; trafiają też jako osobne warstwy do PDF. Dodatkowo dostępne są nakładki hydrografii i komunikacji Esri.</p>
+<h3>Pogoda (OCOKA-W)</h3>
+<p>Zakładka <i>Pogoda</i> pobiera prognozę dla środka rejonu oceny (Open-Meteo) i ocenia jej wpływ na działania: opady z ostatnich 72 h a przejezdność, zamarznięty grunt, pokrywa śnieżna, widoczność (mgła), porywy wiatru a loty BSP, godziny wschodu i zachodu oraz faza Księżyca. Progi są orientacyjne. Możesz włączyć radar opadów na mapie (RainViewer), otworzyć mapę Windy w panelu i przejść do serwisów: Windy, Meteoblue, RainViewer, Sat24, IMGW, Meteo.pl, Belgidromet (pogoda.by), Gismeteo i MeteoX. Warunki trafiają do raportu jako sekcja „W”.</p>
+<h3>Białoruś</h3>
+<p>Dla Białorusi najdokładniejsze podkłady w narzędziu to radzieckie mapy sztabowe, OpenTopoMap oraz zdjęcia Esri i Sentinel-2. W <i>Parametrach analizy</i> wybierz model <b>Copernicus GLO-30</b> – zawiera rzeczywistą wysokość lasu i zabudowy, więc martwe pola są dokładniejsze. Yandex Mapy, mapa katastralna (maps.nca.by), floodmap.net, topographic-map.com, EarthExplorer i Copernicus Browser otwierasz z sekcji <i>Białoruś</i> w zakładce <i>Mapa i teren</i>.</p>
 <h3>Okno oceny i raport</h3>
 <p>Okno z wynikiem oceny zamykasz przyciskiem <i>Zamknij</i>, a otwierasz ponownie przyciskiem <i>Ocena</i> nad mapą. Pokazuje bieżące wnioski, także po Twoich poprawkach.</p>
-<p><i>Raport</i> (nad mapą lub w stopce panelu) otwiera edytor: treść raportu z mapą, wnioskami i tabelami możesz dowolnie poprawiać, a potem pobrać jako <b>DOCX</b> (edytowalny w Wordzie i LibreOffice), <b>PDF z warstwami</b> (mapa na pierwszej stronie, warstwy włączane w panelu „Warstwy” czytnika, np. Adobe Acrobat) albo Markdown. Opcja <i>Kadr: rejon oceny</i> dopasowuje mapę do zaznaczonego rejonu. Generator PDF pobiera przy pierwszym użyciu bibliotekę i czcionkę z polskimi znakami, więc wymaga internetu.</p>
+<p><i>Raport</i> (nad mapą lub w stopce panelu) otwiera edytor. Raport tworzy się od nowa, gdy zmieni się rejon, obiekty lub wnioski; jeśli wcześniej edytowałeś jego tekst, narzędzie zapyta przed zastąpieniem zmian. Edytor: treść raportu z mapą, wnioskami i tabelami możesz dowolnie poprawiać, a potem pobrać jako <b>DOCX</b> (edytowalny w Wordzie i LibreOffice), <b>PDF z warstwami</b> (mapa na pierwszej stronie, warstwy włączane w panelu „Warstwy” czytnika, np. Adobe Acrobat) albo Markdown. Opcja <i>Kadr: rejon oceny</i> dopasowuje mapę do zaznaczonego rejonu. Generator PDF pobiera przy pierwszym użyciu bibliotekę i czcionkę z polskimi znakami, więc wymaga internetu.</p>
 <h3>Podkłady i nakładki</h3>
 <p>W zakładce <i>Mapa i teren</i> wybierasz podkład z grup: topograficzne, zdjęcia lotnicze i satelitarne, Geoportal (mapa topograficzna, BDOT10k, ortofotomapa), wojskowe i historyczne (radzieckie mapy sztabowe). Nakładki: siatka MGRS, granice administracyjne, BDOT10k, koleje, szlaki i warstwa infrastruktury. Aktualne mapy wojskowe (np. WCG) nie są publicznie udostępniane, dlatego ich tu nie ma.</p>
 <h3>Rozpoznawanie infrastruktury</h3>
@@ -2099,7 +2147,8 @@ function reliability(q){
   const osmOk=!q.osmErr,demOk=q.demFail<0.02,rows=[];
   rows.push(['Rzeźba i nachylenia',demOk?'hi':'mid',`Model terenu AWS Terrain Tiles (SRTM / EU-DEM, ok. 25–30 m), próbkowany w siatce ${q.n}×${q.n} co ok. ${Math.round(q.cell)} m. ${demOk?'Pobrano komplet danych.':`Brakowało ${pct(q.demFail)} próbek – uzupełniono sąsiednimi.`} Drobne formy (rowy, skarpy < 30 m) mogą być niewidoczne.`]);
   rows.push(['Pokrycie terenu (lasy, wody, zabudowa)',osmOk?'mid':'lo',osmOk?`OpenStreetMap, stan danych: ${q.osmTime?new Date(q.osmTime).toLocaleDateString('pl-PL'):'nieznany'}${q.osmRemark?' (serwer zgłosił: '+q.osmRemark+')':''}. Kompletność zależy od mapowania rejonu; w Polsce lasy i wody są zwykle dobrze odwzorowane.`:'Brak danych OSM – wnioski oparte tylko na rzeźbie.']);
-  rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`]);
+  if(q.demSrc==='cop')rows.push(['Widoczność i martwe pola','mid',`Linie widoczności liczone na modelu powierzchni Copernicus GLO-30 (DSM, 30 m, dane radarowe z lat 2011–2015), który zawiera rzeczywistą wysokość lasu i zabudowy; obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję. Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.`]);
+  else rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',(q.demSrc==='cop-failed'?'Model Copernicus był niedostępny – użyto SRTM. ':'')+(q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`)]);
   rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
   rows.push(['Kierunki podejścia (AA)','lo','Model najmniejszego oporu po klasach MCOO z preferencją dróg; wskazuje kandydatów w dwóch umownych kierunkach (S→N, W→E). Wymagają oceny analityka i ukierunkowania względem przeciwnika.']);
   rows.push(['Infrastruktura',q.infErr?'lo':'mid',q.infErr?'Brak danych o infrastrukturze (serwer niedostępny).':'OpenStreetMap: obecność obiektu jest wiarygodna, brak obiektu nie oznacza, że go nie ma.']);
@@ -2624,6 +2673,7 @@ async function buildReportHTML(snap){
   }
   if(lastSum){const s=lastSum;
     parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'—':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}; MCOO: teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}.</p>`)}
+  parts.push(wxReportHTML());
   const cl=t=>(t||'—').replace(/\n/g,' ');
   const en=drawn.getLayers().filter(l=>l.feature.properties.cat==='E');
   if(en.length||notes.E.trim()){
@@ -2656,9 +2706,14 @@ async function buildReportHTML(snap){
   parts.push(`<p class="meta">Opracowano w OCOKA Planer. Wnioski oznaczone jako automatyczne wymagają weryfikacji na mapie, ortofotomapie i w terenie.</p>`);
   return parts.join('\n');
 }
+let rSig='',rEdited=false;
+function repSig(){return JSON.stringify([areaEl.value,autoDesc,lastSum&&lastSum.date,hi,drawn.getLayers().length,wxState&&wxState.time,wxState&&$('wxRep').checked])}
 async function openReport(regen){
-  const m=$('rmodal');m.hidden=false;
-  if($('rDoc').innerHTML.trim()&&!regen&&rSnap)return;
+  const m=$('rmodal');m.hidden=false;$('rStale').hidden=true;
+  if(!regen&&$('rDoc').innerHTML.trim()&&rSnap){
+    if(repSig()===rSig)return;
+    if(rEdited){$('rStale').hidden=false;return}
+  }
   if(rBusy)return;rBusy=true;
   $('rDoc').innerHTML='<p class="meta">Przygotowuję mapę i treść raportu…</p>';
   try{
@@ -2667,6 +2722,7 @@ async function openReport(regen){
     m.style.visibility='';
     $('rDoc').innerHTML=await buildReportHTML(rSnap);
     $('rWarn').textContent=rSnap.warn.length?'Uwaga: '+rSnap.warn.join(' '):'';
+    rSig=repSig();rEdited=false;
   }catch(e){console.error(e);m.style.visibility='';$('rDoc').innerHTML='<p>Nie udało się przygotować raportu.</p>'}
   rBusy=false;
 }
@@ -2877,6 +2933,8 @@ function mdFromDoc(){
 }
 function initReport(){
   $('rX').onclick=()=>{$('rmodal').hidden=true};
+  $('rDoc').addEventListener('input',()=>{rEdited=true});
+  $('rStaleGo').onclick=()=>openReport(true);
   $('rmodal').onclick=e=>{if(e.target===$('rmodal'))$('rmodal').hidden=true};
   let regenArm=0;
   $('rRegen').onclick=()=>{if(Date.now()-regenArm>3000){regenArm=Date.now();toast('Odświeżenie zastąpi Twoje zmiany w raporcie. Kliknij jeszcze raz, aby potwierdzić.');return}regenArm=0;openReport(true)};
@@ -2887,6 +2945,139 @@ function initReport(){
   $('rMd').onclick=()=>{download(`${slug()}-${stamp()}.md`,mdFromDoc(),'text/markdown');toast('Pobrano Markdown')};
 }
 
+// ================= Pogoda (OCOKA-W) =================
+let wxState=null; // {lat,lng,time,cur,impacts:[[poziom,tekst]],lines:[...]}
+const WMO={0:'bezchmurnie',1:'przeważnie pogodnie',2:'częściowe zachmurzenie',3:'pochmurno',45:'mgła',48:'mgła osadzająca szadź',51:'słaba mżawka',53:'mżawka',55:'gęsta mżawka',56:'marznąca mżawka',57:'marznąca mżawka',61:'słaby deszcz',63:'deszcz',65:'silny deszcz',66:'marznący deszcz',67:'marznący deszcz',71:'słaby śnieg',73:'śnieg',75:'silny śnieg',77:'ziarna śniegu',80:'przelotny deszcz',81:'przelotny deszcz',82:'ulewa',85:'przelotny śnieg',86:'silny przelotny śnieg',95:'burza',96:'burza z gradem',99:'burza z gradem'};
+const DIR16=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+const dirTxt=d=>d==null?'—':DIR16[Math.round(d/22.5)%16];
+function moonPhase(date){
+  const syn=29.530588853,ref=Date.UTC(2000,0,6,18,14),age=(((date-ref)/864e5)%syn+syn)%syn,illum=(1-Math.cos(2*Math.PI*age/syn))/2;
+  const name=age<1.85?'nów':age<5.54?'młody księżyc (sierp)':age<9.23?'pierwsza kwadra':age<12.92?'przybywający (garb)':age<16.61?'pełnia':age<20.30?'ubywający (garb)':age<23.99?'ostatnia kwadra':age<27.68?'stary księżyc (sierp)':'nów';
+  return {age,illum,name};
+}
+function wxPoint(){return autoBox?autoBox.getCenter():map.getCenter()}
+function updWxLoc(){const p=wxState?L.latLng(wxState.lat,wxState.lng):wxPoint();$('wxLoc').textContent=`Punkt: ${mgrs(p.lat,p.lng)} (${p.lat.toFixed(4)}, ${p.lng.toFixed(4)})${autoBox&&!wxState?' – środek rejonu oceny':''}`}
+async function fetchWx(ll){
+  const u=`https://api.open-meteo.com/v1/forecast?latitude=${ll.lat.toFixed(4)}&longitude=${ll.lng.toFixed(4)}`
+   +`&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility`
+   +`&hourly=temperature_2m,precipitation,precipitation_probability,cloud_cover,visibility,wind_speed_10m,wind_gusts_10m,wind_direction_10m,soil_temperature_0cm,snow_depth,weather_code`
+   +`&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_gusts_10m_max,sunrise,sunset,daylight_duration`
+   +`&past_days=3&forecast_days=7&wind_speed_unit=ms&timezone=auto`;
+  const r=await fetch(u);if(!r.ok)throw new Error('wx '+r.status);return r.json();
+}
+function analyzeWx(d){
+  const H=d.hourly,now=Date.now(),t=H.time.map(x=>new Date(x).getTime());
+  const idxNow=Math.max(0,t.findIndex(x=>x>=now-36e5));
+  const past=(h)=>{let s=0;for(let i=0;i<t.length;i++)if(t[i]<now&&t[i]>=now-h*36e5)s+=H.precipitation[i]||0;return s};
+  const next=(arr,h,fn)=>{const v=[];for(let i=idxNow;i<t.length&&t[i]<now+h*36e5;i++)if(arr[i]!=null)v.push(arr[i]);return fn(v)};
+  const max=v=>v.length?Math.max(...v):null,min=v=>v.length?Math.min(...v):null,sum=v=>v.reduce((a,b)=>a+b,0);
+  const p72=past(72),n48=next(H.precipitation,48,sum),gust24=next(H.wind_gusts_10m,24,max),vis24=next(H.visibility,24,min),snow=H.snow_depth[idxNow]||0;
+  let frozenH=0;for(let i=idxNow;i>=0&&t[i]>=now-72*36e5;i--){if(H.soil_temperature_0cm[i]!=null&&H.soil_temperature_0cm[i]<0)frozenH++;else break}
+  const imp=[];
+  imp.push(p72>40?['bad',`Opady z ostatnich 72 h: ${p72.toFixed(1)} mm – grunt silnie nasycony, przejezdność poza drogami wyraźnie obniżona.`]:p72>15?['warn',`Opady z ostatnich 72 h: ${p72.toFixed(1)} mm – grunt wilgotny, przejezdność poza drogami może być obniżona.`]:['ok',`Opady z ostatnich 72 h: ${p72.toFixed(1)} mm – bez istotnego wpływu na grunt.`]);
+  if(n48>10)imp.push(['warn',`Prognozowane opady w ciągu 48 h: ${n48.toFixed(1)} mm.`]);
+  if(frozenH>=24)imp.push(['ok',`Gleba zamarznięta od co najmniej ${frozenH} h (temperatura powierzchni < 0°C) – możliwa poprawa przejezdności pól i terenów podmokłych; sprawdź grubość przemarznięcia.`]);
+  if(snow>0.05)imp.push([snow>0.3?'bad':'warn',`Pokrywa śnieżna ok. ${Math.round(snow*100)} cm – ${snow>0.3?'ruch pieszy i pojazdów kołowych mocno utrudniony':'ruch utrudniony'}; ślady na śniegu ujawniają ruch.`]);
+  if(vis24!=null)imp.push(vis24<1000?['bad',`Widoczność w ciągu 24 h spada do ${Math.round(vis24)} m (mgła) – obserwacja i pola ostrzału silnie ograniczone, lepsze ukrycie.`]:vis24<5000?['warn',`Minimalna widoczność w ciągu 24 h: ${(vis24/1000).toFixed(1)} km – obserwacja ograniczona.`]:['ok',`Widoczność w ciągu 24 h co najmniej ${(vis24/1000).toFixed(0)} km.`]);
+  if(gust24!=null)imp.push(gust24>15?['bad',`Porywy wiatru do ${gust24.toFixed(0)} m/s – loty małych BSP praktycznie niemożliwe.`]:gust24>10?['warn',`Porywy wiatru do ${gust24.toFixed(0)} m/s – loty małych BSP utrudnione.`]:['ok',`Porywy wiatru do ${gust24.toFixed(0)} m/s – dobre warunki dla BSP.`]);
+  const D=d.daily,iToday=Math.max(0,D.time.findIndex(x=>x===new Date().toISOString().slice(0,10)));
+  const sr=D.sunrise[iToday],ss=D.sunset[iToday],mp=moonPhase(new Date());
+  const hm=s=>s?s.slice(11,16):'—';
+  imp.push([mp.illum<0.25?'warn':'ok',`Światło: wschód ${hm(sr)}, zachód ${hm(ss)} (czas lokalny), dzień ${(D.daylight_duration[iToday]/3600).toFixed(1)} h. Księżyc: ${mp.name}, oświetlenie ${Math.round(mp.illum*100)}% – ${mp.illum<0.25?'ciemne noce, sprzyjają skrytym działaniom':'noce jaśniejsze, łatwiejsza obserwacja nocna'}.`]);
+  return {p72,n48,gust24,vis24,snow,frozenH,imp,iToday};
+}
+function renderWx(){
+  const o=$('wxOut');if(!wxState){o.innerHTML='';return}
+  const d=wxState.raw,c=d.current,a=wxState.a;
+  const cur=`<div class="wxcur"><b>${Math.round(c.temperature_2m)}°C</b><span>${WMO[c.weather_code]||'—'}</span><span>wiatr ${c.wind_speed_10m.toFixed(1)} m/s z ${dirTxt(c.wind_direction_10m)}, porywy ${c.wind_gusts_10m.toFixed(0)} m/s</span><span>zachmurzenie ${c.cloud_cover}%, widoczność ${c.visibility!=null?(c.visibility/1000).toFixed(1)+' km':'—'}, wilgotność ${c.relative_humidity_2m}%</span></div>`;
+  const D=d.daily,rows=D.time.map((t,i)=>i<a.iToday?'':`<tr><td>${new Date(t+'T12:00').toLocaleDateString('pl-PL',{weekday:'short',day:'numeric',month:'numeric'})}</td><td>${WMO[D.weather_code[i]]||'—'}</td><td>${Math.round(D.temperature_2m_min[i])}…${Math.round(D.temperature_2m_max[i])}°</td><td>${D.precipitation_sum[i].toFixed(1)} mm</td><td>${Math.round(D.wind_gusts_10m_max[i])} m/s</td></tr>`).join('');
+  o.innerHTML=`${cur}<div class="wximp">${a.imp.map(([l,t])=>`<div class="wxi wx-${l}">${esc(t)}</div>`).join('')}</div>
+  <table class="wxt"><thead><tr><th>Dzień</th><th>Pogoda</th><th>Temp.</th><th>Opad</th><th>Porywy</th></tr></thead><tbody>${rows}</tbody></table>
+  <div class="hint">Prognoza Open-Meteo (model wybierany automatycznie), pobrana ${new Date(wxState.time).toLocaleString('pl-PL')} dla ${mgrs(wxState.lat,wxState.lng)}. Progi wpływu na działania są orientacyjne.</div>`;
+}
+async function loadWx(ll){
+  const b=$('wxGo');b.disabled=true;b.textContent='Pobieram…';
+  try{const raw=await fetchWx(ll);wxState={lat:ll.lat,lng:ll.lng,time:new Date().toISOString(),raw,a:analyzeWx(raw)};renderWx();updWxLoc();save()}
+  catch(e){console.error(e);$('wxOut').innerHTML='<div class="wxi wx-bad">Nie udało się pobrać prognozy (Open-Meteo). Sprawdź połączenie i spróbuj ponownie.</div>'}
+  b.disabled=false;b.textContent='Pobierz prognozę';
+}
+function wxReportHTML(){
+  if(!wxState||!$('wxRep').checked)return '';
+  const c=wxState.raw.current;
+  return `<h2>W – Warunki meteorologiczne</h2><p>Stan na ${new Date(wxState.time).toLocaleString('pl-PL')} dla ${mgrs(wxState.lat,wxState.lng)}: ${Math.round(c.temperature_2m)}°C, ${WMO[c.weather_code]||'—'}, wiatr ${c.wind_speed_10m.toFixed(1)} m/s z ${dirTxt(c.wind_direction_10m)} (porywy ${c.wind_gusts_10m.toFixed(0)} m/s), zachmurzenie ${c.cloud_cover}%, widoczność ${c.visibility!=null?(c.visibility/1000).toFixed(1)+' km':'—'}.</p>`
+   +tableHTML(['Wpływ na działania','Ocena'],wxState.a.imp.map(([l,t])=>[t,{ok:'korzystny',warn:'ograniczający',bad:'utrudniający'}[l]]))
+   +`<p class="meta">Źródło: Open-Meteo (CC BY 4.0). Progi oceny są orientacyjne i wymagają weryfikacji z aktualnym komunikatem meteorologicznym.</p>`;
+}
+// --- radar opadów (RainViewer) ---
+const radarL=L.tileLayer('',{maxZoom:19,maxNativeZoom:7,opacity:.65,attribution:'Radar: <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a>'});
+let radarTime=null;
+async function refreshRadar(){
+  try{const r=await fetch('https://api.rainviewer.com/public/weather-maps.json');const j=await r.json();const fr=j.radar&&j.radar.past&&j.radar.past[j.radar.past.length-1];
+    if(!fr)throw 0;radarTime=fr.time*1000;radarL.setUrl(`${j.host}${fr.path}/256/{z}/{x}/{y}/2/1_1.png`);
+    const el=$('radarInfo');if(el)el.textContent=`Obraz radarowy z ${new Date(radarTime).toLocaleString('pl-PL')}. Dane RainViewer – do użytku osobistego i edukacyjnego.`}
+  catch(e){const el=$('radarInfo');if(el)el.textContent='Nie udało się pobrać obrazu radarowego (RainViewer).';toast('Radar opadów niedostępny.')}
+}
+// --- Windy ---
+function windyUrl(ll,ov){return `https://embed.windy.com/embed2.html?lat=${ll.lat.toFixed(3)}&lon=${ll.lng.toFixed(3)}&detailLat=${ll.lat.toFixed(3)}&detailLon=${ll.lng.toFixed(3)}&width=650&height=450&zoom=8&level=surface&overlay=${ov}&product=ecmwf&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=m%2Fs&metricTemp=%C2%B0C&radarRange=-1`}
+function showWindy(){const ll=wxPoint();$('wxWindy').innerHTML=`<iframe title="Windy – mapa pogody" src="${windyUrl(ll,$('wxLayer').value)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`}
+// --- linki do serwisów ---
+const WXLINKS=[
+  ['Windy.com',ll=>`https://www.windy.com/?${ll.lat.toFixed(3)},${ll.lng.toFixed(3)},9`],
+  ['Meteoblue – radar i mapy',ll=>`https://www.meteoblue.com/pl/pogoda/mapy/#coords=8/${ll.lat.toFixed(3)}/${ll.lng.toFixed(3)}&map=radar~radar~none~none~none`],
+  ['RainViewer',ll=>`https://www.rainviewer.com/map.html?loc=${ll.lat.toFixed(4)},${ll.lng.toFixed(4)},9&oFa=0&oC=1&oU=0&oCS=1&oF=0&oAP=1&c=3&o=83&lm=1&layer=radar&sm=1&sn=1`],
+  ['Sat24 – zdjęcia satelitarne',()=>'https://www.sat24.com/pl-pl/continent/eu'],
+  ['IMGW – meteo.imgw.pl',()=>'https://meteo.imgw.pl/'],
+  ['Meteo.pl (ICM, model UM)',()=>'https://www.meteo.pl/'],
+  ['Belgidromet – pogoda.by',()=>'http://pogoda.by/'],
+  ['Gismeteo – gismeteo.by',()=>'https://www.gismeteo.by/'],
+  ['MeteoX – radar',()=>'https://www.meteox.com/'],
+];
+const BYLINKS=[
+  ['Publiczna mapa katastralna RB (maps.nca.by)',()=>'https://maps.nca.by/'],
+  ['Yandex Mapy – mapa',ll=>`https://yandex.by/maps/?ll=${ll.lng.toFixed(5)},${ll.lat.toFixed(5)}&z=${Math.min(19,map.getZoom())}&l=map`],
+  ['Yandex Mapy – satelita',ll=>`https://yandex.by/maps/?ll=${ll.lng.toFixed(5)},${ll.lat.toFixed(5)}&z=${Math.min(19,map.getZoom())}&l=sat`],
+  ['Yandex Mapy – hybryda',ll=>`https://yandex.by/maps/?ll=${ll.lng.toFixed(5)},${ll.lat.toFixed(5)}&z=${Math.min(19,map.getZoom())}&l=sat%2Cskl`],
+  ['floodmap.net – mapa wysokości Białorusi',()=>'https://www.floodmap.net/elevation/CountryElevationMap/?ct=BY'],
+  ['topographic-map.com – Białoruś',()=>'https://en-gb.topographic-map.com/map-3mnx/Belarus/'],
+  ['Copernicus Browser (DEM, Sentinel)',ll=>`https://browser.dataspace.copernicus.eu/?zoom=${Math.min(16,map.getZoom())}&lat=${ll.lat.toFixed(5)}&lng=${ll.lng.toFixed(5)}`],
+  ['USGS EarthExplorer (SRTM, Landsat)',()=>'https://earthexplorer.usgs.gov/'],
+  ['OpenTopography – Copernicus GLO-30',()=>'https://portal.opentopography.org/raster?opentopoID=OTSDEM.032021.4326.3'],
+];
+function buildLinks(boxId,list){
+  const box=$(boxId);box.innerHTML='';
+  list.forEach(([n,fn])=>{const a=document.createElement('a');a.className='btn';a.target='_blank';a.rel='noopener';a.textContent=n;a.href=fn(map.getCenter());
+    a.addEventListener('pointerdown',()=>{a.href=fn(autoBox&&boxId==='wxLinks'?autoBox.getCenter():map.getCenter())});
+    a.addEventListener('focus',()=>{a.href=fn(map.getCenter())});box.appendChild(a)});
+}
+
+// ================= Copernicus GLO-30 (AWS, Cloud Optimized GeoTIFF) =================
+const COP_BASE='https://copernicus-dem-30m.s3.amazonaws.com/';
+const GEOTIFF_URL='https://cdn.jsdelivr.net/npm/geotiff@2.1.3/dist-browser/geotiff.js';
+function copName(lat,lon){const la=Math.floor(lat),lo=Math.floor(lon);
+  const n=`Copernicus_DSM_COG_10_${la>=0?'N':'S'}${String(Math.abs(la)).padStart(2,'0')}_00_${lo>=0?'E':'W'}${String(Math.abs(lo)).padStart(3,'0')}_00_DEM`;return `${COP_BASE}${n}/${n}.tif`}
+async function copSurface(b,pts){
+  if(!window.GeoTIFF)await loadScript(GEOTIFF_URL);
+  const tiles=[];
+  for(let la=Math.floor(b.getSouth());la<=Math.floor(b.getNorth()-1e-9);la++)for(let lo=Math.floor(b.getWest());lo<=Math.floor(b.getEast()-1e-9);lo++){
+    const tif=await GeoTIFF.fromUrl(copName(la+.5,lo+.5),{allowFullFile:true});const img=await tif.getImage();
+    const [minX,minY,maxX,maxY]=img.getBoundingBox(),W=img.getWidth(),Hh=img.getHeight(),rx=(maxX-minX)/W,ry=(maxY-minY)/Hh;
+    const x0=Math.max(0,Math.floor((Math.max(b.getWest(),minX)-minX)/rx)-1),x1=Math.min(W,Math.ceil((Math.min(b.getEast(),maxX)-minX)/rx)+1);
+    const y0=Math.max(0,Math.floor((maxY-Math.min(b.getNorth(),maxY))/ry)-1),y1=Math.min(Hh,Math.ceil((maxY-Math.max(b.getSouth(),minY))/ry)+1);
+    const data=await img.readRasters({window:[x0,y0,x1,y1],samples:[0],interleave:true});
+    tiles.push({minX,maxY,rx,ry,x0,y0,w:x1-x0,h:y1-y0,data});
+  }
+  const sample=ll=>{for(const t of tiles){const fx=(ll.lng-t.minX)/t.rx-.5-t.x0,fy=(t.maxY-ll.lat)/t.ry-.5-t.y0;
+      if(fx<-1||fy<-1||fx>t.w||fy>t.h)continue;
+      const xa=Math.max(0,Math.min(t.w-1,Math.floor(fx))),ya=Math.max(0,Math.min(t.h-1,Math.floor(fy))),xb=Math.min(t.w-1,xa+1),yb=Math.min(t.h-1,ya+1),ax=Math.min(1,Math.max(0,fx-xa)),ay=Math.min(1,Math.max(0,fy-ya)),D=t.data;
+      return D[ya*t.w+xa]*(1-ax)*(1-ay)+D[ya*t.w+xb]*ax*(1-ay)+D[yb*t.w+xa]*(1-ax)*ay+D[yb*t.w+xb]*ax*ay}
+    return NaN};
+  const out=new Float32Array(pts.length);let bad=0;
+  pts.forEach((p,i)=>{const v=sample(p);if(isFinite(v)&&v>-500)out[i]=v;else{out[i]=NaN;bad++}});
+  if(bad>pts.length*.1)throw new Error('cop coverage');
+  return out;
+}
+
+OVER.radar={n:'Radar opadów (RainViewer)',layer:radarL,on:refreshRadar};radarL.options.pane='overP';
 // ================= Profil i linia widoczności =================
 function samplePath(lls,N=200){
   const seg=[],cum=[0];
@@ -3055,8 +3246,15 @@ async function runAuto(b,opt={}){
     try{inf=await pInf}catch(e){inf=null}
     step('Krok 3 z 3: liczę nachylenia i widoczność…');
     await new Promise(r=>setTimeout(r,30));
-    const dsm=$('pDsm').checked&&!!osm,hF=+$('pHF').value||0,hB=+$('pHB').value||0;
-    const t=analyzeTerrain(g,dsm?{forest:osm.forestMask,built:osm.builtMask,hF,hB}:null);
+    let dsm=$('pDsm').checked&&!!osm,hF=+$('pHF').value||0,hB=+$('pHB').value||0,surf=null,demSrc='terrarium';
+    if($('pDem').value==='cop'){
+      step('Krok 3 z 3: pobieram model powierzchni Copernicus GLO-30…');
+      try{surf=await copSurface(b,g.pts);demSrc='cop'}catch(e){console.error(e);demSrc='cop-failed';toast('Copernicus GLO-30 jest niedostępny – używam SRTM.')}
+      step('Krok 3 z 3: liczę nachylenia i widoczność…');await new Promise(r=>setTimeout(r,30));
+    }
+    const cover=surf?{surf,forest:osm?osm.forestMask:null,built:osm?osm.builtMask:null}:dsm?{forest:osm.forestMask,built:osm.builtMask,hF,hB}:null;
+    if(surf)dsm=true;
+    const t=analyzeTerrain(g,cover);
     const res=buildResults(b,g,t,osm,km2);
     res.NI=inf?null:'Nie udało się pobrać danych o infrastrukturze (serwer Overpass niedostępny).';
     if(inf){
@@ -3065,8 +3263,9 @@ async function runAuto(b,opt={}){
       res.NI=infraNotes(pinf,res.N);res.infCount=pinf.items.length;
     }
     applyAuto(res,b,g,t);
-    const q={n,cell:g.cell,z:g.z,demFail:g.fails,osmErr,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
-    if(dsm)res.N.O.push(`Widoczność obliczono z uwzględnieniem lasu (${hF} m) i zabudowy (${hB} m); punkty obserwacyjne wybrano poza lasem i zabudową.`);
+    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,osmErr,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
+    if(surf)res.N.O.push('Widoczność obliczono na modelu powierzchni Copernicus GLO-30 (rzeczywista wysokość lasu i zabudowy); punkty obserwacyjne wybrano poza lasem i zabudową.');
+    else if(dsm)res.N.O.push(`Widoczność obliczono z uwzględnieniem lasu (${hF} m) i zabudowy (${hB} m); punkty obserwacyjne wybrano poza lasem i zabudową.`);
     else res.N.O.push('Widoczność obliczono po gołym terenie (bez lasu i zabudowy) – rzeczywiste martwe pola są większe.');
     {const own=notes.O.split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim();notes.O='[AUTO] '+res.N.O.join(' ')+(own?'\n'+own:'');render()}
     lastSum={km2:opt.km2||km2,mn:t.mn,mx:t.mx,forest:osm?osm.forestShare:null,open:osm?osm.openShare:null,union:t.union,mU:t.mU,mR:t.mR,mS:t.mS,objs:res.F.length,inf:res.infCount||0,NI:res.NI||'',osmErr,desc:autoDesc,q,date:new Date().toISOString()};
@@ -3096,7 +3295,8 @@ async function demGrid(b,n,wM,hM){
 function analyzeTerrain(g,cover){
   const {n,h,dx,dy}=g,H=(i,j)=>h[j*n+i],N2=n*n,ins=g.inside||new Uint8Array(N2).fill(1);
   let NI=0;for(let k=0;k<N2;k++)NI+=ins[k];NI=NI||1;
-  const hs=new Float32Array(N2);for(let k=0;k<N2;k++)hs[k]=h[k]+(cover?(cover.forest[k]?cover.hF:cover.built[k]?cover.hB:0):0);
+  const hs=new Float32Array(N2);
+  for(let k=0;k<N2;k++)hs[k]=cover&&cover.surf?(isFinite(cover.surf[k])?Math.max(cover.surf[k],h[k]):h[k]):h[k]+(cover&&cover.forest?(cover.forest[k]?cover.hF:cover.built[k]?cover.hB:0):0);
   const HS=(i,j)=>hs[j*n+i];
   const slope=new Float32Array(N2);let go=0,slow=0,nogo=0,steep=0,mn=Infinity,mx=-Infinity,sum=0;
   for(let j=0;j<n;j++)for(let i=0;i<n;i++){
@@ -3121,7 +3321,7 @@ function analyzeTerrain(g,cover){
     const tpi=v-s/c;
     if(isMax&&tpi>1)cands.push({i,j,h:v,tpi});
   }
-  const inCov=c=>cover&&(cover.forest[c.j*n+c.i]||cover.built[c.j*n+c.i]);
+  const inCov=c=>cover&&cover.forest&&(cover.forest[c.j*n+c.i]||cover.built[c.j*n+c.i]);
   const anyOpen=cands.some(c=>!inCov(c));
   cands.sort((a,b)=>(b.h+2*b.tpi-(anyOpen&&inCov(b)?1e4:0))-(a.h+2*a.tpi-(anyOpen&&inCov(a)?1e4:0)));
   const pool=[];
@@ -3131,7 +3331,7 @@ function analyzeTerrain(g,cover){
   const hO=+$('hObs').value||2,hT=+$('hTgt').value||1.5,Rk=6371000/(1-.13),drop=d=>d*d/(2*Rk);
   const bil=(x,y)=>{const x0=Math.floor(x),y0=Math.floor(y),x1=Math.min(n-1,x0+1),y1=Math.min(n-1,y0+1),fx=x-x0,fy=y-y0;
     return HS(x0,y0)*(1-fx)*(1-fy)+HS(x1,y0)*fx*(1-fy)+HS(x0,y1)*(1-fx)*fy+HS(x1,y1)*fx*fy};
-  const viewOf=p=>{const v=new Uint8Array(N2),eye=p.h+hO;let cnt=0;
+  const viewOf=p=>{const v=new Uint8Array(N2),eye=Math.max(p.h,cover&&cover.surf?hs[p.j*n+p.i]:p.h)+hO;let cnt=0;
     for(let j=0;j<n;j++)for(let i=0;i<n;i++){const k=j*n+i;
       if(i===p.i&&j===p.j){v[k]=1;cnt+=ins[k];continue}
       const di=i-p.i,dj=j-p.j,steps=Math.max(Math.abs(di),Math.abs(dj)),D=Math.hypot(di*dx,dj*dy);let maxA=-Infinity;
@@ -3650,7 +3850,8 @@ function render(){
 }
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
-  ['analiza','teren','pomoc'].forEach(n=>$('p-'+n).hidden=n!==t.dataset.tab);
+  ['analiza','teren','pogoda','pomoc'].forEach(n=>$('p-'+n).hidden=n!==t.dataset.tab);
+  if(t.dataset.tab==='pogoda')updWxLoc();
 });
 
 // ================= Zapis, raport, import =================
@@ -3658,7 +3859,7 @@ const areaEl=$('area');areaEl.oninput=()=>{areaAuto=false;save()};
 function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
-    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,
+    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,wx:wxState?{lat:wxState.lat,lng:wxState.lng,time:wxState.time,raw:wxState.raw}:null,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,
     mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),inside:MC.inside?Array.from(MC.inside).join(''):null,showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
@@ -3677,6 +3878,7 @@ function load(fc,opt={}){
   }
   setAutoBox(m.autoBox?L.latLngBounds(m.autoBox):null,m.autoRing||null,m.autoDesc||'');
   lastSum=m.sum||null;updOcenaBtn();selectObj(null);
+  if(!opt.keepView){wxState=m.wx&&m.wx.raw?{...m.wx,a:analyzeWx(m.wx.raw)}:null;renderWx();$('rDoc').innerHTML='';rSnap=null}
   if(!opt.keepView){let th=null;try{th=JSON.parse(localStorage.getItem('ocoka-theme')||'null')}catch(e){}
     if(th&&m.autoBox&&Math.abs(th.b[0][0]-m.autoBox[0][0])<1e-6&&Math.abs(th.b[1][1]-m.autoBox[1][1])<1e-6){theme=th;renderTheme()}else if(!m.autoBox){theme=null;renderTheme()}}
   doct=m.doct!==false;$('bDoct').setAttribute('aria-pressed',doct);doct?mcoo.addTo(map):map.removeLayer(mcoo);
@@ -3798,7 +4000,13 @@ if(saved&&saved.features&&saved.features.length){
 (function(){const box=$('igList');Object.entries(IG).forEach(([g,[c,n]])=>{const l=document.createElement('label');l.className='check';
   l.innerHTML=`<input type="checkbox" id="ig-${g}"> <span class="iico" style="background:${c};width:16px;height:16px;font-size:8px;display:inline-grid"></span> ${n}`;box.appendChild(l);
   l.querySelector('input').onchange=e=>{e.target.checked?igHide.delete(g):igHide.add(g);applyIgHide();save()}});applyIgHide()})();
-initCoordDialog();initReport();initMgrsDialog();updEditBtns();updOcenaBtn();updThemeInfo();
+initCoordDialog();initReport();initMgrsDialog();
+buildLinks('wxLinks',WXLINKS);buildLinks('byLinks',BYLINKS);
+map.on('moveend',()=>{[['wxLinks',WXLINKS],['byLinks',BYLINKS]].forEach(([id,list])=>{const as=$(id).querySelectorAll('a');list.forEach(([n,fn],i)=>{if(as[i])as[i].href=fn(id==='wxLinks'?wxPoint():map.getCenter())})})});
+$('wxGo').onclick=()=>loadWx(wxPoint());
+$('wxMap').onclick=()=>{loadWx(map.getCenter())};
+$('wxWindyGo').onclick=showWindy;$('wxLayer').onchange=()=>{if($('wxWindy').innerHTML)showWindy()};
+$('ov-radar').onchange=e=>{setOver('radar',e.target.checked);save()};updEditBtns();updOcenaBtn();updThemeInfo();
 $('bMgrs').onclick=openMgrsDialog;$('wMgrs').onclick=()=>{showWelcome(false);openMgrsDialog()};
 $('thLoad').onclick=()=>loadThemeFor(autoBox||map.getBounds());
 histPush();
