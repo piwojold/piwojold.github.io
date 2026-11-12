@@ -863,6 +863,23 @@ textarea{resize:vertical;min-height:56px}
 .wxt th,.wxt td{border-top:1px solid var(--line);padding:3px 4px;text-align:left}
 #wxWindy iframe{width:100%;height:360px;border:1px solid var(--line);border-radius:6px}
 .rstale{margin:8px 18px 0;padding:8px 10px;border-radius:6px;background:color-mix(in srgb,var(--bad) 12%,var(--panel));font-size:13px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.wxmx{overflow-x:auto;border:1px solid var(--line);border-radius:6px}
+.wxm{border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums;min-width:100%}
+.wxm th,.wxm td{border:1px solid var(--line);padding:3px 4px;text-align:center;white-space:nowrap}
+.wxm tbody th{text-align:left;white-space:normal;min-width:120px;font-weight:600;background:var(--panel);position:sticky;left:0}
+.wxm thead th{background:var(--bg);font-weight:600}
+.wxm thead th.nt{background:color-mix(in srgb,#3949ab 18%,var(--bg))}
+.wxm td{font:700 12px var(--f-mono);cursor:default;min-width:26px}
+.wxm td[data-r]{cursor:pointer}
+.wxm td.tl{text-align:left;white-space:normal;font:12px var(--f-body)}
+.lv-F{background:#c8e6c9;color:#1b5e20}.lv-M{background:#ffe082;color:#6d4c00}.lv-U{background:#ef9a9a;color:#7f0000}
+.wxleg{font-size:12px;display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.wxleg span,.pill{font:700 11px var(--f-mono);padding:1px 6px;border-radius:3px}
+.wxwhy{font-size:12.5px;background:var(--bg);border-radius:5px;padding:6px 8px;min-height:2.6em}
+.wxthg{display:grid;gap:4px;margin-bottom:8px}
+.wxthr{display:grid;grid-template-columns:minmax(0,1fr) 76px 42px;gap:6px;align-items:center;font-size:12.5px}
+.wxthr input{padding:4px 6px}
+.wbox{max-width:1100px!important}
 .chip.arm{background:var(--bad)!important;color:#fff}
 .rbox{max-width:920px!important;display:flex;flex-direction:column}
 .rtools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:10px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
@@ -1017,6 +1034,13 @@ textarea{resize:vertical;min-height:56px}
         <label class="check"><input type="checkbox" id="wxRep" checked> Dołącz warunki meteorologiczne do raportu</label>
       </div>
       <div class="section">
+        <h3>Wpływ pogody na działania (IPB)</h3>
+        <div class="hint">Macierz na 72 h w blokach 6-godzinnych: jak pogoda wpływa na systemy i działania – własne i przeciwnika. Kliknij komórkę, aby zobaczyć uzasadnienie.</div>
+        <div id="wxMx" class="mform"></div>
+        <div class="row"><button class="btn sm" id="wxWide">Powiększ macierz</button></div>
+        <details><summary class="small" style="cursor:pointer">Progi oceny (edytowalne)</summary><div class="hint" style="margin:6px 0">Wartości domyślne są orientacyjne i ogólne. Dostosuj je do posiadanego sprzętu (typ BSP, śmigłowca, termowizji) i własnych procedur.</div><div id="wxTh"></div></details>
+      </div>
+      <div class="section">
         <h3>Radar opadów na mapie</h3>
         <label class="check"><input type="checkbox" id="ov-radar"> Pokaż ostatni obraz radarowy (RainViewer)</label>
         <div class="hint" id="radarInfo">Obraz z ostatnich minut, odświeżany przy każdym włączeniu. Rozdzielczość radaru jest niska (do skali ok. 1:4 000 000).</div>
@@ -1121,6 +1145,12 @@ textarea{resize:vertical;min-height:56px}
       <div class="rwarn" id="rWarn"></div>
       <div class="rdoc" id="rDoc" contenteditable="true" spellcheck="true" lang="pl"></div>
     </div>
+  </div>
+</div>
+<div class="modal" id="wmodal" hidden>
+  <div class="box wbox" role="dialog" aria-modal="true" aria-labelledby="wmTitle">
+    <div class="mh"><h2 id="wmTitle">Wpływ pogody na działania – 72 h</h2><button class="btn sm" id="wmX">Zamknij</button></div>
+    <div class="help" id="wmBody"></div>
   </div>
 </div>
 <div class="modal" id="mmodal" hidden>
@@ -1269,6 +1299,7 @@ const HELP=`
 <p>Przy ocenie rejonu narzędzie rysuje wektorową mapę terenu z OpenStreetMap: rzeki, cieki i rowy, jeziora i mokradła, lasy, zarośla i sady, drogi według klas, drogi gruntowe, koleje, zabudowę, urwiska, skarpy, nasypy i wyrobiska. Każdą grupę włączasz osobno w nakładkach; trafiają też jako osobne warstwy do PDF. Dodatkowo dostępne są nakładki hydrografii i komunikacji Esri.</p>
 <h3>Pogoda (OCOKA-W)</h3>
 <p>Zakładka <i>Pogoda</i> pobiera prognozę dla środka rejonu oceny (Open-Meteo) i ocenia jej wpływ na działania: opady z ostatnich 72 h a przejezdność, zamarznięty grunt, pokrywa śnieżna, widoczność (mgła), porywy wiatru a loty BSP, godziny wschodu i zachodu oraz faza Księżyca. Progi są orientacyjne. Możesz włączyć radar opadów na mapie (RainViewer), otworzyć mapę Windy w panelu i przejść do serwisów: Windy, Meteoblue, RainViewer, Sat24, IMGW, Meteo.pl, Belgidromet (pogoda.by), Gismeteo i MeteoX. Warunki trafiają do raportu jako sekcja „W”.</p>
+<p><b>Wpływ pogody na działania (macierz IPB)</b>: tabela na 72 h w blokach 6-godzinnych ocenia jako korzystne (K), ograniczające (O) lub niekorzystne (N) warunki dla: śmigłowców, lotnictwa, małych BSP, obserwacji wzrokowej, termowizji, artylerii (ogień obserwowany), przejezdności pojazdów kołowych i gąsienicowych, żołnierzy, łączności, zasłon dymnych i skażeń oraz desantu. Kliknięcie komórki pokazuje przyczynę oceny. Pod macierzą są wnioski dla własnych wojsk i przeciwnika, np. okna bez BSP, okresy słabego kontrastu termicznego, kanalizowanie ruchu przez rozmokły grunt, kierunek dryfu dymów i skażeń. Progi są orientacyjne i można je zmienić w sekcji „Progi oceny”. Podstawa chmur jest szacowana z różnicy temperatury i punktu rosy, więc ma charakter przybliżony.</p>
 <h3>Białoruś</h3>
 <p>Dla Białorusi najdokładniejsze podkłady w narzędziu to radzieckie mapy sztabowe, OpenTopoMap oraz zdjęcia Esri i Sentinel-2. W <i>Parametrach analizy</i> wybierz model <b>Copernicus GLO-30</b> – zawiera rzeczywistą wysokość lasu i zabudowy, więc martwe pola są dokładniejsze. Yandex Mapy, mapa katastralna (maps.nca.by), floodmap.net, topographic-map.com, EarthExplorer i Copernicus Browser otwierasz z sekcji <i>Białoruś</i> w zakładce <i>Mapa i teren</i>.</p>
 <h3>Okno oceny i raport</h3>
@@ -2707,7 +2738,7 @@ async function buildReportHTML(snap){
   return parts.join('\n');
 }
 let rSig='',rEdited=false;
-function repSig(){return JSON.stringify([areaEl.value,autoDesc,lastSum&&lastSum.date,hi,drawn.getLayers().length,wxState&&wxState.time,wxState&&$('wxRep').checked])}
+function repSig(){return JSON.stringify([areaEl.value,autoDesc,lastSum&&lastSum.date,hi,drawn.getLayers().length,wxState&&wxState.time,wxState&&$('wxRep').checked,WXT])}
 async function openReport(regen){
   const m=$('rmodal');m.hidden=false;$('rStale').hidden=true;
   if(!regen&&$('rDoc').innerHTML.trim()&&rSnap){
@@ -2760,12 +2791,13 @@ function docxRuns(node,fmt={}){
 const para=(runs,style,extra='')=>`<w:p><w:pPr>${style?`<w:pStyle w:val="${style}"/>`:''}${extra}</w:pPr>${runs}</w:p>`;
 function docxTable(tb){
   const rows=[...tb.querySelectorAll('tr')];if(!rows.length)return '';
-  const ncol=Math.max(...rows.map(r=>r.children.length)),tw=9638,cw=Math.floor(tw/ncol);
+  const ncol=Math.max(...rows.map(r=>r.children.length)),tw=9638,isWx=!!tb.querySelector('[data-wx]'),W0=isWx?2300:Math.floor(tw/ncol),cwR=isWx?Math.floor((tw-W0)/(ncol-1)):W0,cwOf=i=>i===0?W0:cwR;
   const brd='<w:tblBorders>'+['top','left','bottom','right','insideH','insideV'].map(s=>`<w:${s} w:val="single" w:sz="4" w:space="0" w:color="9AA597"/>`).join('')+'</w:tblBorders>';
-  let x=`<w:tbl><w:tblPr><w:tblW w:w="${tw}" w:type="dxa"/>${brd}<w:tblLayout w:type="autofit"/><w:tblCellMar><w:left w:w="70" w:type="dxa"/><w:right w:w="70" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${'<w:gridCol w:w="'+cw+'"/>'.repeat(ncol)}</w:tblGrid>`;
+  let x=`<w:tbl><w:tblPr><w:tblW w:w="${tw}" w:type="dxa"/>${brd}<w:tblLayout w:type="autofit"/><w:tblCellMar><w:left w:w="70" w:type="dxa"/><w:right w:w="70" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${Array.from({length:ncol},(_,i)=>'<w:gridCol w:w="'+cwOf(i)+'"/>').join('')}</w:tblGrid>`;
   rows.forEach((r,ri)=>{const head=r.closest('thead')||[...r.children].every(c=>c.tagName==='TH');
-    x+=`<w:tr>${head?'<w:trPr><w:tblHeader/></w:trPr>':''}`;
-    [...r.children].forEach(c=>{x+=`<w:tc><w:tcPr><w:tcW w:w="${cw}" w:type="dxa"/>${head?'<w:shd w:val="clear" w:color="auto" w:fill="E3E8DF"/>':''}</w:tcPr>${para(docxRuns(c,{b:head,sz:17}),'',`<w:spacing w:before="20" w:after="20"/>`)}</w:tc>`});
+    x+=`<w:tr><w:trPr><w:cantSplit/>${head?'<w:tblHeader/>':''}</w:trPr>`;
+    [...r.children].forEach((c,ci)=>{const cw=cwOf(ci);const wx=c.dataset&&c.dataset.wx,fill=head?'E3E8DF':wx?{F:'C8E6C9',M:'FFE082',U:'EF9A9A'}[wx]:'';
+      x+=`<w:tc><w:tcPr><w:tcW w:w="${cw}" w:type="dxa"/>${fill?`<w:shd w:val="clear" w:color="auto" w:fill="${fill}"/>`:''}</w:tcPr>${para(docxRuns(c,{b:head||!!wx,sz:wx?16:17}),'',`<w:spacing w:before="20" w:after="20"/>${wx?'<w:jc w:val="center"/>':''}`)}</w:tc>`});
     x+='</w:tr>'});
   return x+'</w:tbl>'+para('');
 }
@@ -2882,7 +2914,7 @@ async function buildPdf(){
   const drawLines=(lines,size,x,lh,color)=>{lines.forEach(ln=>{ensure(lh);let cx=x;merge(ln).forEach(seg=>{page.drawText(seg.t,{x:cx,y:y-size,size,font:seg.f,color});cx+=seg.f.widthOfTextAtSize(seg.t,size)});y-=lh})};
   const block=(node,size,gapB,gapA,color=ink,bold=false)=>{const lines=wrapRuns(runsOf(node,bold),size,TW);y-=gapB;drawLines(lines,size,M,size*1.38,color);y-=gapA};
   const table=tb=>{
-    const rows=[...tb.querySelectorAll('tr')].map(r=>({head:!!r.closest('thead')||[...r.children].every(c=>c.tagName==='TH'),cells:[...r.children].map(c=>runsOf(c,c.tagName==='TH'))}));
+    const rows=[...tb.querySelectorAll('tr')].map(r=>({head:!!r.closest('thead')||[...r.children].every(c=>c.tagName==='TH'),wx:[...r.children].map(c=>c.dataset?c.dataset.wx:null),cells:[...r.children].map(c=>runsOf(c,c.tagName==='TH'))}));
     if(!rows.length)return;
     const n=Math.max(...rows.map(r=>r.cells.length)),fs=7.6,pad=3,lh=fs*1.3;
     const cellW=(c,fn)=>c?fn(c):0;
@@ -2894,7 +2926,9 @@ async function buildPdf(){
     const head=rows.find(r=>r.head);const headL=head?layout(head):null;
     const drawRow=(r,L2)=>{let x=M;
       if(r.head)page.drawRectangle({x:M,y:y-L2.h,width:TW,height:L2.h,color:rgb(.89,.91,.87)});
-      L2.ls.forEach((ls,i)=>{let yy=y-pad;ls.forEach(ln=>{let cx=x+pad;merge(ln).forEach(seg=>{page.drawText(seg.t,{x:cx,y:yy-fs,size:fs,font:seg.f,color:ink});cx+=seg.f.widthOfTextAtSize(seg.t,fs)});yy-=lh});
+      L2.ls.forEach((ls,i)=>{const wc=r.wx&&r.wx[i]&&{F:rgb(.78,.9,.79),M:rgb(1,.88,.51),U:rgb(.94,.6,.6)}[r.wx[i]];
+        if(wc)page.drawRectangle({x,y:y-L2.h,width:cw[i],height:L2.h,color:wc});
+        let yy=y-pad;ls.forEach(ln=>{let cx=x+pad;merge(ln).forEach(seg=>{page.drawText(seg.t,{x:cx,y:yy-fs,size:fs,font:seg.f,color:ink});cx+=seg.f.widthOfTextAtSize(seg.t,fs)});yy-=lh});
         page.drawRectangle({x,y:y-L2.h,width:cw[i],height:L2.h,borderColor:line,borderWidth:.5});x+=cw[i]});
       y-=L2.h};
     y-=4;
@@ -2909,7 +2943,7 @@ async function buildPdf(){
     if(tg==='H1')block(n,17,0,8,acc,true);
     else if(tg==='H2'){ensure(60);block(n,12.5,12,2,acc,true);page.drawLine({start:{x:M,y:y+2},end:{x:PW-M,y:y+2},thickness:.6,color:line});y-=6}
     else if(tg==='H3')block(n,11,8,2,ink,true);
-    else if(tg==='TABLE')table(n);
+    else if(tg==='TABLE'||(tg==='DIV'&&n.querySelector(':scope>table')))table(tg==='TABLE'?n:n.querySelector(':scope>table'));
     else if(tg==='FIGURE'){const cap=n.querySelector('figcaption');ensure(30);
       if(hasMap){const t=document.createElement('p');t.textContent='Mapa rejonu z warstwami: strona 1. '+(cap?cap.textContent:'');block(t,8.5,2,8,muted)}}
     else if(tg==='UL'||tg==='OL')[...n.children].forEach((li,i)=>{const p=document.createElement('p');p.innerHTML=(tg==='OL'?(i+1)+'. ':'• ')+li.innerHTML;block(p,9.5,0,2)});
@@ -2925,7 +2959,7 @@ function mdFromDoc(){
   const out=[],txt=n=>n.textContent.replace(/\s+/g,' ').trim();
   [...$('rDoc').children].forEach(n=>{const tg=n.tagName;
     if(tg==='H1')out.push('# '+txt(n));else if(tg==='H2')out.push('## '+txt(n));else if(tg==='H3')out.push('### '+txt(n));
-    else if(tg==='TABLE'){const rows=[...n.querySelectorAll('tr')].map(r=>[...r.children].map(c=>txt(c).replace(/\|/g,'/')));if(rows.length){out.push('| '+rows[0].join(' | ')+' |','|'+rows[0].map(()=>'---').join('|')+'|',...rows.slice(1).map(r=>'| '+r.join(' | ')+' |'))}}
+    else if(tg==='TABLE'||(tg==='DIV'&&n.querySelector(':scope>table'))){const rows=[...n.querySelectorAll('tr')].map(r=>[...r.children].map(c=>txt(c).replace(/\|/g,'/')));if(rows.length){out.push('| '+rows[0].join(' | ')+' |','|'+rows[0].map(()=>'---').join('|')+'|',...rows.slice(1).map(r=>'| '+r.join(' | ')+' |'))}}
     else if(tg==='FIGURE'){const c=n.querySelector('figcaption');out.push('_'+(c?txt(c):'Mapa')+'_')}
     else if(n.textContent.trim())out.push(n.innerHTML.replace(/<br\s*\/?>/g,'  \n').replace(/<\/?(b|strong)>/g,'**').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').trim());
     out.push('')});
@@ -2960,13 +2994,13 @@ function updWxLoc(){const p=wxState?L.latLng(wxState.lat,wxState.lng):wxPoint();
 async function fetchWx(ll){
   const u=`https://api.open-meteo.com/v1/forecast?latitude=${ll.lat.toFixed(4)}&longitude=${ll.lng.toFixed(4)}`
    +`&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility`
-   +`&hourly=temperature_2m,precipitation,precipitation_probability,cloud_cover,visibility,wind_speed_10m,wind_gusts_10m,wind_direction_10m,soil_temperature_0cm,snow_depth,weather_code`
+   +`&hourly=temperature_2m,dew_point_2m,apparent_temperature,precipitation,precipitation_probability,snowfall,cloud_cover,cloud_cover_low,visibility,wind_speed_10m,wind_gusts_10m,wind_direction_10m,wind_speed_120m,soil_temperature_0cm,soil_moisture_0_to_1cm,snow_depth,weather_code,cape,is_day`
    +`&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_gusts_10m_max,sunrise,sunset,daylight_duration`
    +`&past_days=3&forecast_days=7&wind_speed_unit=ms&timezone=auto`;
   const r=await fetch(u);if(!r.ok)throw new Error('wx '+r.status);return r.json();
 }
 function analyzeWx(d){
-  const H=d.hourly,now=Date.now(),t=H.time.map(x=>new Date(x).getTime());
+  const H=d.hourly,now=Date.now(),off=(d.utc_offset_seconds||0)*1000,t=H.time.map(x=>{const [D,T]=x.split('T'),[y,m,dd]=D.split('-').map(Number),[hh,mm]=T.split(':').map(Number);return Date.UTC(y,m-1,dd,hh,mm)-off});
   const idxNow=Math.max(0,t.findIndex(x=>x>=now-36e5));
   const past=(h)=>{let s=0;for(let i=0;i<t.length;i++)if(t[i]<now&&t[i]>=now-h*36e5)s+=H.precipitation[i]||0;return s};
   const next=(arr,h,fn)=>{const v=[];for(let i=idxNow;i<t.length&&t[i]<now+h*36e5;i++)if(arr[i]!=null)v.push(arr[i]);return fn(v)};
@@ -2987,7 +3021,7 @@ function analyzeWx(d){
   return {p72,n48,gust24,vis24,snow,frozenH,imp,iToday};
 }
 function renderWx(){
-  const o=$('wxOut');if(!wxState){o.innerHTML='';return}
+  const o=$('wxOut');renderWxMatrix();if(!wxState){o.innerHTML='';return}
   const d=wxState.raw,c=d.current,a=wxState.a;
   const cur=`<div class="wxcur"><b>${Math.round(c.temperature_2m)}°C</b><span>${WMO[c.weather_code]||'—'}</span><span>wiatr ${c.wind_speed_10m.toFixed(1)} m/s z ${dirTxt(c.wind_direction_10m)}, porywy ${c.wind_gusts_10m.toFixed(0)} m/s</span><span>zachmurzenie ${c.cloud_cover}%, widoczność ${c.visibility!=null?(c.visibility/1000).toFixed(1)+' km':'—'}, wilgotność ${c.relative_humidity_2m}%</span></div>`;
   const D=d.daily,rows=D.time.map((t,i)=>i<a.iToday?'':`<tr><td>${new Date(t+'T12:00').toLocaleDateString('pl-PL',{weekday:'short',day:'numeric',month:'numeric'})}</td><td>${WMO[D.weather_code[i]]||'—'}</td><td>${Math.round(D.temperature_2m_min[i])}…${Math.round(D.temperature_2m_max[i])}°</td><td>${D.precipitation_sum[i].toFixed(1)} mm</td><td>${Math.round(D.wind_gusts_10m_max[i])} m/s</td></tr>`).join('');
@@ -3006,8 +3040,168 @@ function wxReportHTML(){
   const c=wxState.raw.current;
   return `<h2>W – Warunki meteorologiczne</h2><p>Stan na ${new Date(wxState.time).toLocaleString('pl-PL')} dla ${mgrs(wxState.lat,wxState.lng)}: ${Math.round(c.temperature_2m)}°C, ${WMO[c.weather_code]||'—'}, wiatr ${c.wind_speed_10m.toFixed(1)} m/s z ${dirTxt(c.wind_direction_10m)} (porywy ${c.wind_gusts_10m.toFixed(0)} m/s), zachmurzenie ${c.cloud_cover}%, widoczność ${c.visibility!=null?(c.visibility/1000).toFixed(1)+' km':'—'}.</p>`
    +tableHTML(['Wpływ na działania','Ocena'],wxState.a.imp.map(([l,t])=>[t,{ok:'korzystny',warn:'ograniczający',bad:'utrudniający'}[l]]))
+   +wxMatrixReportHTML()
    +`<p class="meta">Źródło: Open-Meteo (CC BY 4.0). Progi oceny są orientacyjne i wymagają weryfikacji z aktualnym komunikatem meteorologicznym.</p>`;
 }
+// ================= Macierz wpływu pogody na działania (IPB – Weather Effects Matrix) =================
+const WXT_DEF={visHeliU:1500,visHeliM:5000,baseHeliU:150,baseHeliM:300,gustHeliU:18,gustHeliM:12,
+  visAirU:3000,visAirM:8000,baseAirU:300,baseAirM:1000,
+  gustUavU:15,gustUavM:10,w120UavU:18,w120UavM:12,prUavU:2,tUavM:-10,
+  visObsU:1000,visObsM:4000,dtIrM:1.5,visIrU:500,prIrU:4,
+  visArtU:500,visArtM:2000,windArtM:15,
+  p72WhU:40,p72WhM:15,p72TrU:60,p72TrM:25,snowWhU:30,snowWhM:10,snowTrU:50,snowTrM:25,
+  appColdU:-15,appColdM:-5,appHotU:32,appHotM:27,
+  windParaU:7,windParaM:5,smokeLo:1.5,smokeHi:7,smokeU:10};
+let WXT={...WXT_DEF};
+const WXT_UI=[
+  ['Śmigłowce',[['visHeliU','widzialność – niekorzystne poniżej','m'],['visHeliM','widzialność – ograniczające poniżej','m'],['baseHeliU','podstawa chmur – niekorzystne poniżej','m'],['baseHeliM','podstawa chmur – ograniczające poniżej','m'],['gustHeliU','porywy – niekorzystne powyżej','m/s'],['gustHeliM','porywy – ograniczające powyżej','m/s']]],
+  ['Lotnictwo (samoloty)',[['visAirU','widzialność – niekorzystne poniżej','m'],['visAirM','widzialność – ograniczające poniżej','m'],['baseAirU','podstawa chmur – niekorzystne poniżej','m'],['baseAirM','podstawa chmur – ograniczające poniżej','m']]],
+  ['BSP (małe)',[['gustUavU','porywy – niekorzystne powyżej','m/s'],['gustUavM','porywy – ograniczające powyżej','m/s'],['w120UavU','wiatr na 120 m – niekorzystne powyżej','m/s'],['w120UavM','wiatr na 120 m – ograniczające powyżej','m/s'],['prUavU','opad – niekorzystne powyżej','mm/h'],['tUavM','temperatura – ograniczające poniżej','°C']]],
+  ['Obserwacja i termowizja',[['visObsU','obserwacja – niekorzystne poniżej','m'],['visObsM','obserwacja – ograniczające poniżej','m'],['dtIrM','kontrast termiczny – ograniczające poniżej','°C'],['visIrU','termowizja – niekorzystne poniżej (mgła)','m'],['prIrU','termowizja – niekorzystne przy opadzie powyżej','mm/h']]],
+  ['Artyleria (ogień obserwowany)',[['visArtU','widzialność – niekorzystne poniżej','m'],['visArtM','widzialność – ograniczające poniżej','m'],['windArtM','wiatr – ograniczające powyżej','m/s']]],
+  ['Przejezdność',[['p72WhM','kołowe: opad 72 h – ograniczające powyżej','mm'],['p72WhU','kołowe: opad 72 h – niekorzystne powyżej','mm'],['p72TrM','gąsienicowe: opad 72 h – ograniczające powyżej','mm'],['p72TrU','gąsienicowe: opad 72 h – niekorzystne powyżej','mm'],['snowWhM','kołowe: śnieg – ograniczające powyżej','cm'],['snowWhU','kołowe: śnieg – niekorzystne powyżej','cm'],['snowTrM','gąsienicowe: śnieg – ograniczające powyżej','cm'],['snowTrU','gąsienicowe: śnieg – niekorzystne powyżej','cm']]],
+  ['Żołnierze',[['appColdM','temp. odczuwalna – ograniczające poniżej','°C'],['appColdU','temp. odczuwalna – niekorzystne poniżej','°C'],['appHotM','temp. odczuwalna – ograniczające powyżej','°C'],['appHotU','temp. odczuwalna – niekorzystne powyżej','°C']]],
+  ['Desant i zasłony dymne',[['windParaM','desant: wiatr – ograniczające powyżej','m/s'],['windParaU','desant: wiatr – niekorzystne powyżej','m/s'],['smokeLo','dymy: wiatr – za słaby poniżej','m/s'],['smokeHi','dymy: wiatr – ograniczające powyżej','m/s'],['smokeU','dymy: wiatr – niekorzystne powyżej','m/s']]],
+];
+const LV=['F','M','U'],LVN={F:'korzystne',M:'ograniczające',U:'niekorzystne'},LVS={F:'K',M:'O',U:'N'};
+const FREEZ=[56,57,66,67],THUN=[95,96,99],FOG=[45,48];
+function hoursFromWx(d){
+  const H=d.hourly,off=(d.utc_offset_seconds||0)*1000,n=H.time.length,g=(k,i)=>H[k]?H[k][i]:null;
+  const ep=s=>{const [D,T]=s.split('T'),[y,m,dd]=D.split('-').map(Number),[hh,mm]=T.split(':').map(Number);return Date.UTC(y,m-1,dd,hh,mm)-off};
+  const hrs=[];
+  for(let i=0;i<n;i++){
+    const temp=g('temperature_2m',i),td=g('dew_point_2m',i),ccl=g('cloud_cover_low',i);
+    let p72=0;for(let j=Math.max(0,i-72);j<i;j++)p72+=g('precipitation',j)||0;
+    let fz=0;for(let j=i;j>=0&&i-j<24;j--){const st=g('soil_temperature_0cm',j);if(st!=null&&st<-1)fz++;else break}
+    hrs.push({s:H.time[i],t:ep(H.time[i]),vis:g('visibility',i),cc:g('cloud_cover',i),ccl,base:(ccl!=null&&ccl>=50&&temp!=null&&td!=null)?Math.max(0,(temp-td)*125):null,
+      wind:g('wind_speed_10m',i),gust:g('wind_gusts_10m',i),w120:g('wind_speed_120m',i),dir:g('wind_direction_10m',i),temp,td,app:g('apparent_temperature',i),
+      pr:g('precipitation',i)||0,snowf:g('snowfall',i)||0,code:g('weather_code',i),cape:g('cape',i),isDay:g('is_day',i),soilT:g('soil_temperature_0cm',i),
+      snowD:g('snow_depth',i)||0,p72,frozen:fz>=24});
+  }
+  return hrs;
+}
+const worse=(a,b)=>LV.indexOf(a)>=LV.indexOf(b)?a:b;
+function rate(rules){let lv='F';const why=[];rules.forEach(([cond,l,txt])=>{if(cond){lv=worse(lv,l);why.push(`${LVS[l]}: ${txt}`)}});return [lv,why]}
+const fmtV=v=>v==null?'—':v>=1000?(v/1000).toFixed(1)+' km':Math.round(v)+' m';
+const WXROWS=[
+  {k:'heli',n:'Śmigłowce',f:(h,T)=>rate([[h.vis!=null&&h.vis<T.visHeliU,'U',`widzialność ${fmtV(h.vis)}`],[h.vis!=null&&h.vis>=T.visHeliU&&h.vis<T.visHeliM,'M',`widzialność ${fmtV(h.vis)}`],
+    [h.base!=null&&h.base<T.baseHeliU,'U',`podstawa chmur ok. ${Math.round(h.base)} m`],[h.base!=null&&h.base>=T.baseHeliU&&h.base<T.baseHeliM,'M',`podstawa chmur ok. ${Math.round(h.base)} m`],
+    [h.gust>T.gustHeliU,'U',`porywy ${h.gust?.toFixed(0)} m/s`],[h.gust>T.gustHeliM&&h.gust<=T.gustHeliU,'M',`porywy ${h.gust?.toFixed(0)} m/s`],
+    [THUN.includes(h.code),'U','burza'],[FREEZ.includes(h.code),'U','opad marznący – oblodzenie'],[h.snowf>1,'M','opad śniegu']])},
+  {k:'air',n:'Lotnictwo (samoloty, CAS)',f:(h,T)=>rate([[h.vis!=null&&h.vis<T.visAirU,'U',`widzialność ${fmtV(h.vis)}`],[h.vis!=null&&h.vis>=T.visAirU&&h.vis<T.visAirM,'M',`widzialność ${fmtV(h.vis)}`],
+    [h.base!=null&&h.base<T.baseAirU,'U',`podstawa chmur ok. ${Math.round(h.base)} m`],[h.base!=null&&h.base>=T.baseAirU&&h.base<T.baseAirM,'M',`podstawa chmur ok. ${Math.round(h.base)} m`],
+    [h.cc>85&&h.base==null,'M',`zachmurzenie ${h.cc}%`],[THUN.includes(h.code),'U','burza'],[FREEZ.includes(h.code),'U','opad marznący']])},
+  {k:'uav',n:'BSP (małe, do 25 kg)',f:(h,T)=>rate([[h.gust>T.gustUavU,'U',`porywy ${h.gust?.toFixed(0)} m/s`],[h.gust>T.gustUavM&&h.gust<=T.gustUavU,'M',`porywy ${h.gust?.toFixed(0)} m/s`],
+    [h.w120!=null&&h.w120>T.w120UavU,'U',`wiatr na 120 m ${h.w120.toFixed(0)} m/s`],[h.w120!=null&&h.w120>T.w120UavM&&h.w120<=T.w120UavU,'M',`wiatr na 120 m ${h.w120.toFixed(0)} m/s`],
+    [h.pr>T.prUavU,'U',`opad ${h.pr.toFixed(1)} mm/h`],[h.pr>0.2&&h.pr<=T.prUavU,'M',`opad ${h.pr.toFixed(1)} mm/h`],[FREEZ.includes(h.code),'U','opad marznący – oblodzenie'],
+    [THUN.includes(h.code),'U','burza'],[h.temp!=null&&h.temp<T.tUavM,'M',`temperatura ${Math.round(h.temp)}°C – krótszy czas pracy baterii`],[h.vis!=null&&h.vis<1000,'M',`widzialność ${fmtV(h.vis)} – głowica EO bezużyteczna`]])},
+  {k:'obs',n:'Obserwacja wzrokowa / optoelektronika dzienna',f:(h,T,ctx)=>rate([[h.vis!=null&&h.vis<T.visObsU,'U',`widzialność ${fmtV(h.vis)}`],[h.vis!=null&&h.vis>=T.visObsU&&h.vis<T.visObsM,'M',`widzialność ${fmtV(h.vis)}`],
+    [h.isDay===0&&ctx.moon<0.25,'U',`noc, Księżyc ${Math.round(ctx.moon*100)}%`],[h.isDay===0&&ctx.moon>=0.25,'M',`noc, Księżyc ${Math.round(ctx.moon*100)}%`],[h.pr>4,'M',`silny opad ${h.pr.toFixed(1)} mm/h`]])},
+  {k:'ir',n:'Termowizja (IR)',f:(h,T)=>rate([[h.vis!=null&&h.vis<T.visIrU,'U',`mgła, widzialność ${fmtV(h.vis)}`],[h.pr>T.prIrU,'U',`silny opad ${h.pr.toFixed(1)} mm/h`],
+    [h.pr>1&&h.pr<=T.prIrU,'M',`opad ${h.pr.toFixed(1)} mm/h`],[h.soilT!=null&&h.temp!=null&&Math.abs(h.soilT-h.temp)<T.dtIrM,'M',`mały kontrast termiczny (grunt ${h.soilT.toFixed(1)}°C, powietrze ${h.temp.toFixed(1)}°C)`],
+    [h.td!=null&&h.temp!=null&&h.temp-h.td<1&&h.vis!=null&&h.vis<3000,'M','wysoka wilgotność, zamglenie']])},
+  {k:'art',n:'Artyleria – ogień obserwowany',f:(h,T)=>rate([[h.vis!=null&&h.vis<T.visArtU,'U',`widzialność ${fmtV(h.vis)} – brak obserwacji celu`],[h.vis!=null&&h.vis>=T.visArtU&&h.vis<T.visArtM,'M',`widzialność ${fmtV(h.vis)}`],
+    [h.gust>T.windArtM,'M',`silny wiatr ${h.gust?.toFixed(0)} m/s – potrzebna aktualna depesza meteo`]])},
+  {k:'wh',n:'Przejezdność – pojazdy kołowe',f:(h,T)=>{const fr=h.frozen&&h.snowD*100<T.snowWhM;return rate([
+    [!fr&&h.p72>T.p72WhU,'U',`opad 72 h ${h.p72.toFixed(0)} mm – grunt rozmokły`],[!fr&&h.p72>T.p72WhM&&h.p72<=T.p72WhU,'M',`opad 72 h ${h.p72.toFixed(0)} mm`],
+    [h.snowD*100>T.snowWhU,'U',`śnieg ${Math.round(h.snowD*100)} cm`],[h.snowD*100>T.snowWhM&&h.snowD*100<=T.snowWhU,'M',`śnieg ${Math.round(h.snowD*100)} cm`],
+    [FREEZ.includes(h.code),'U','gołoledź'],[fr&&h.p72>T.p72WhM,'F','grunt przemarznięty – mimo opadów nośny']])}},
+  {k:'tr',n:'Przejezdność – pojazdy gąsienicowe',f:(h,T)=>{const fr=h.frozen&&h.snowD*100<T.snowTrM;return rate([
+    [!fr&&h.p72>T.p72TrU,'U',`opad 72 h ${h.p72.toFixed(0)} mm – grunt rozmokły`],[!fr&&h.p72>T.p72TrM&&h.p72<=T.p72TrU,'M',`opad 72 h ${h.p72.toFixed(0)} mm`],
+    [h.snowD*100>T.snowTrU,'U',`śnieg ${Math.round(h.snowD*100)} cm`],[h.snowD*100>T.snowTrM&&h.snowD*100<=T.snowTrU,'M',`śnieg ${Math.round(h.snowD*100)} cm`],
+    [fr&&h.p72>T.p72TrM,'F','grunt przemarznięty – nośny']])}},
+  {k:'inf',n:'Żołnierze (warunki biometeorologiczne)',f:(h,T)=>{const a=h.app??h.temp;return rate([
+    [a!=null&&a<T.appColdU,'U',`temp. odczuwalna ${Math.round(a)}°C – ryzyko odmrożeń`],[a!=null&&a>=T.appColdU&&a<T.appColdM,'M',`temp. odczuwalna ${Math.round(a)}°C – wychłodzenie`],
+    [a!=null&&a>T.appHotU,'U',`temp. odczuwalna ${Math.round(a)}°C – udar cieplny`],[a!=null&&a>T.appHotM&&a<=T.appHotU,'M',`temp. odczuwalna ${Math.round(a)}°C`],
+    [h.pr>4,'M','silny opad'],[THUN.includes(h.code),'M','burza – wyładowania']])}},
+  {k:'com',n:'Łączność radiowa i elektronika',f:h=>rate([[THUN.includes(h.code),'M','burza – zakłócenia atmosferyczne, zagrożenie wyładowaniami'],[h.cape!=null&&h.cape>1500,'M',`wysoka chwiejność (CAPE ${Math.round(h.cape)}) – możliwe burze`]])},
+  {k:'smoke',n:'Zasłony dymne / skażenia (CBRN)',f:(h,T)=>rate([[h.wind!=null&&h.wind<T.smokeLo,'M',`wiatr ${h.wind.toFixed(1)} m/s – dym i skażenia zalegają`],[h.wind>T.smokeHi&&h.wind<=T.smokeU,'M',`wiatr ${h.wind.toFixed(1)} m/s – szybkie rozwiewanie`],
+    [h.wind>T.smokeU,'U',`wiatr ${h.wind.toFixed(1)} m/s`],[h.pr>4,'M','silny opad wymywa dym']])},
+  {k:'para',n:'Desant spadochronowy / zrzuty',f:(h,T)=>rate([[h.wind>T.windParaU||h.gust>T.windParaU*1.6,'U',`wiatr ${h.wind?.toFixed(1)} m/s, porywy ${h.gust?.toFixed(0)} m/s`],[(h.wind>T.windParaM&&h.wind<=T.windParaU),'M',`wiatr ${h.wind?.toFixed(1)} m/s`],
+    [h.vis!=null&&h.vis<1500,'M',`widzialność ${fmtV(h.vis)}`],[THUN.includes(h.code),'U','burza']])},
+];
+function buildWxMatrix(d){
+  const hrs=hoursFromWx(d),off=(d.utc_offset_seconds||0)*1000,now=Date.now(),ctx={moon:moonPhase(new Date()).illum};
+  const loc=t=>new Date(t+off); // czas lokalny rejonu (pola UTC)
+  const startLoc=loc(now),blockStart=Date.UTC(startLoc.getUTCFullYear(),startLoc.getUTCMonth(),startLoc.getUTCDate(),Math.floor(startLoc.getUTCHours()/6)*6)-off;
+  const cols=[];
+  for(let b=0;b<12;b++){
+    const t0=blockStart+b*6*36e5,t1=t0+6*36e5,hs=hrs.filter(h=>h.t>=t0&&h.t<t1);if(!hs.length)continue;
+    const L0=loc(t0),L1=loc(t1),night=hs.filter(h=>h.isDay===0).length>hs.length/2,dn=x=>['nd','pn','wt','śr','cz','pt','sb'][x.getUTCDay()],hh=x=>String(x.getUTCHours()).padStart(2,'0');
+    cols.push({t0,label:`${dn(L0)} ${hh(L0)}–${hh(L1)}`,st:`${dn(L0)} ${hh(L0)}`,en:`${dn(L1)} ${hh(L1)}`,night,hs});
+  }
+  const CRIT=/burza|marznący|gołoledź|oblodzenie/;
+  const rows=WXROWS.map(r=>({k:r.k,n:r.n,cells:cols.map(c=>{
+    const res=c.hs.map(h=>r.f(h,WXT,ctx)),cnt={F:0,M:0,U:0};res.forEach(([l])=>cnt[l]++);
+    const crit=res.some(([l,w])=>l==='U'&&w.some(x=>CRIT.test(x)));
+    let lv=crit||cnt.U>=2?'U':(cnt.M+cnt.U)>=2?'M':'F';
+    const why=new Set();res.forEach(([l,w])=>{if(LV.indexOf(l)>=LV.indexOf(lv)||l===lv)w.forEach(x=>{if(x[0]!=='K'||lv==='F')why.add(x)})});
+    const part=lv!=='F'&&(lv==='U'?cnt.U:cnt.M+cnt.U)<c.hs.length;if(part)why.add(`(przez ${lv==='U'?cnt.U:cnt.M+cnt.U} z ${c.hs.length} h bloku)`);
+    const ord={N:0,O:1,K:2,'(':3},wl=[...why].sort((a,b)=>(ord[a[0]]??3)-(ord[b[0]]??3));return {lv,why:wl.length?wl.slice(0,5):['brak ograniczeń']}})}));
+  return {cols,rows,hrs,insights:wxInsights(cols,rows,hrs)};
+}
+function wxInsights(cols,rows,hrs){
+  const R=k=>rows.find(r=>r.k===k),ins=[];
+  const spans=idx=>{const out=[];let a=null,p=null;idx.forEach(i=>{if(a===null){a=p=i}else if(i===p+1)p=i;else{out.push([a,p]);a=p=i}});if(a!==null)out.push([a,p]);
+    return out.map(([x,y])=>x===y?cols[x].label:`${cols[x].st} – ${cols[y].en}`)};
+  const idxOf=(k,lv)=>R(k).cells.map((c,i)=>c.lv===lv||(lv==='MU'&&c.lv!=='F')?i:-1).filter(i=>i>=0);
+  const blocks=(k,lv)=>spans(idxOf(k,lv));
+  const lowVis=blocks('obs','U');
+  if(lowVis.length)ins.push(['Ograniczona obserwacja',`${lowVis.join(', ')}: mgła lub ciemna noc. Sprzyja skrytemu przemieszczaniu, infiltracji i rozpoznaniu bliskiemu; utrudnia obserwację i ogień obserwowany obu stron. Przewagę ma strona z lepszą termowizją, noktowizją i radarami.`]);
+  const uav=blocks('uav','U');
+  if(uav.length)ins.push(['Przerwy w działaniu BSP',`${uav.join(', ')}: małe BSP obu stron praktycznie wyłączone. To okno ruchu bez dozoru z powietrza, ale też bez własnego rozpoznania i korekty ognia z BSP.`]);
+  else if(blocks('uav','M').length)ins.push(['BSP ograniczone',`${blocks('uav','M').join(', ')}: loty małych BSP utrudnione (wiatr, opad, temperatura) – krótszy czas lotu i gorsza jakość obrazu po obu stronach.`]);
+  const cross=hrs.filter(h=>h.t>Date.now()&&h.t<Date.now()+72*36e5&&h.soilT!=null&&h.temp!=null&&Math.abs(h.soilT-h.temp)<WXT.dtIrM).map(h=>h.s.slice(11,16));
+  if(cross.length)ins.push(['Okresy słabego kontrastu termicznego',`m.in. godz. ${[...new Set(cross)].slice(0,6).join(', ')} (czas lokalny): termowizja przeciwnika (i własna) mniej skuteczna – lepsze warunki do skrytego ruchu wobec obserwacji IR.`]);
+  const wh=blocks('wh','MU'),tr=blocks('tr','MU');
+  if(wh.length||tr.length)ins.push(['Przejezdność obniżona',`Kołowe: ${wh.length?wh.join(', '):'bez ograniczeń'}; gąsienicowe: ${tr.length?tr.join(', '):'bez ograniczeń'}. Ruch poza drogami trudniejszy – kanalizuje działania na drogi i przeprawy (zgodnie z MCOO), co sprzyja obronie, zaporom i zasadzkom, a wydłuża natarcie.`]);
+  const fr=hrs.some(h=>h.t>Date.now()&&h.frozen);
+  if(fr)ins.push(['Grunt przemarznięty','Zwiększa nośność pól i terenów podmokłych także dla ciężkiego sprzętu przeciwnika – przeszkody terenowe z MCOO mogą ograniczać ruch słabiej niż wynika z analizy terenu. Grubości lodu na ciekach model nie podaje.']);
+  const heli=blocks('heli','U');if(heli.length)ins.push(['Lotnictwo śmigłowcowe ograniczone',`${heli.join(', ')}: niekorzystne warunki dla śmigłowców (ewakuacja medyczna, desant, wsparcie ogniowe) obu stron.`]);
+  const cold=blocks('inf','MU');if(cold.length)ins.push(['Obciążenie żołnierzy',`${cold.join(', ')}: wychłodzenie lub przegrzanie – potrzebna rotacja, ogrzewanie, ograniczenie czasu na posterunkach.`]);
+  const dirs=hrs.filter(h=>h.t>Date.now()&&h.t<Date.now()+24*36e5&&h.dir!=null).map(h=>h.dir);
+  if(dirs.length){let sx=0,sy=0;dirs.forEach(d=>{sx+=Math.sin(d*Math.PI/180);sy+=Math.cos(d*Math.PI/180)});const md=(Math.atan2(sx,sy)*180/Math.PI+360)%360;
+    ins.push(['Wiatr a dymy i skażenia',`W ciągu 24 h wiatr przeważnie z ${dirTxt(md)} (${Math.round(md)}°) – dym i ewentualne skażenia przemieszczają się na ${dirTxt((md+180)%360)}. Korzystniej ma strona, która ma wiatr za sobą (zasłony dymne w kierunku przeciwnika); strona po zawietrznej jest narażona na skażenia.`])}
+  if(!ins.length)ins.push(['Warunki sprzyjające','W najbliższych 72 h brak istotnych ograniczeń pogodowych dla obu stron.']);
+  return ins;
+}
+let wxMat=null,wxSel=null;
+function matrixHTML(m,interactive){
+  return `<div class="wxmx"><table class="wxm"><thead><tr><th>System / działanie</th>${m.cols.map(c=>`<th class="${c.night?'nt':''}" title="${c.night?'noc':'dzień'}">${c.label}${c.night?' ☾':''}</th>`).join('')}</tr></thead><tbody>
+  ${m.rows.map((r,ri)=>`<tr><th>${esc(r.n)}</th>${r.cells.map((c,ci)=>`<td class="lv-${c.lv}" data-wx="${c.lv}"${interactive?` data-r="${ri}" data-c="${ci}" tabindex="0"`:''} title="${esc(c.why.join('; '))}">${LVS[c.lv]}</td>`).join('')}</tr>`).join('')}
+  </tbody></table></div>`;
+}
+function renderWxMatrix(){
+  const box=$('wxMx');if(!box)return;
+  if(!wxState||!wxState.raw||!wxState.raw.hourly){box.innerHTML='<div class="hint">Pobierz prognozę, aby zobaczyć macierz.</div>';wxMat=null;return}
+  wxMat=buildWxMatrix(wxState.raw);
+  box.innerHTML=`<div class="wxleg"><span class="lv-F">K</span> korzystne <span class="lv-M">O</span> ograniczające <span class="lv-U">N</span> niekorzystne · ☾ noc · czas lokalny rejonu</div>${matrixHTML(wxMat,true)}
+    <div class="wxwhy" id="wxWhy">Kliknij komórkę, aby zobaczyć, z czego wynika ocena.</div>
+    <div class="mform"><b>Wnioski dla własnych wojsk i przeciwnika</b>${wxMat.insights.map(([a,b])=>`<div class="wxi wx-warn"><b>${esc(a)}.</b> ${esc(b)}</div>`).join('')}</div>`;
+  box.querySelectorAll('td[data-r]').forEach(td=>{const show=()=>{const r=wxMat.rows[+td.dataset.r],c=wxMat.cols[+td.dataset.c],cell=r.cells[+td.dataset.c];
+    $('wxWhy').innerHTML=`<b>${esc(r.n)} · ${c.label}:</b> ${LVN[cell.lv]} – ${esc(cell.why.join('; '))}`};td.onclick=show;td.onkeydown=e=>{if(e.key==='Enter')show()}});
+}
+function wxMatrixReportHTML(){
+  if(!wxState||!wxState.raw||!wxState.raw.hourly||!$('wxRep').checked)return '';
+  const m=buildWxMatrix(wxState.raw);
+  return `<h3>Wpływ pogody na działania (macierz IPB, 72 h)</h3><p class="meta">K – korzystne, O – ograniczające, N – niekorzystne; ☾ – noc; czas lokalny rejonu. Progi orientacyjne (do dostosowania do posiadanego sprzętu): ${esc(wxThDesc())}.</p>${matrixHTML(m,false)}
+  <h3>Wnioski dla własnych wojsk i przeciwnika</h3>${m.insights.map(([a,b])=>`<p><b>${esc(a)}.</b> ${esc(b)}</p>`).join('')}`;
+}
+function wxThDesc(){const T=WXT;return `śmigłowce: widzialność <${T.visHeliU} m / <${T.visHeliM} m, podstawa chmur <${T.baseHeliU} / <${T.baseHeliM} m, porywy >${T.gustHeliU} / >${T.gustHeliM} m/s; BSP: porywy >${T.gustUavU} / >${T.gustUavM} m/s; przejezdność kołowych: opad 72 h >${T.p72WhU} / >${T.p72WhM} mm; gąsienicowych >${T.p72TrU} / >${T.p72TrM} mm`}
+function buildWxThUI(){
+  const box=$('wxTh');box.innerHTML=WXT_UI.map(([g,list])=>`<div class="wxthg"><b>${g}</b>${list.map(([k,l,u])=>`<label class="wxthr"><span>${l}</span><input type="number" step="any" data-th="${k}" value="${WXT[k]}"><span>${u}</span></label>`).join('')}</div>`).join('')
+    +'<div class="row"><button class="btn sm" id="wxThReset">Przywróć wartości domyślne</button></div>';
+  box.querySelectorAll('[data-th]').forEach(i=>i.onchange=()=>{const v=parseFloat(i.value);if(isFinite(v)){WXT[i.dataset.th]=v;renderWxMatrix();save()}});
+  $('wxThReset').onclick=()=>{WXT={...WXT_DEF};buildWxThUI();renderWxMatrix();save()};
+}
+function openWxMatrixWide(){
+  if(!wxMat){toast('Najpierw pobierz prognozę.');return}
+  $('wmBody').innerHTML=`<div class="wxleg"><span class="lv-F">K</span> korzystne <span class="lv-M">O</span> ograniczające <span class="lv-U">N</span> niekorzystne · ☾ noc</div>${matrixHTML(wxMat,false)}
+   <table class="wxm wxwhyt"><thead><tr><th>System / działanie</th><th>Najgorsza ocena w 72 h i przyczyny</th></tr></thead><tbody>${wxMat.rows.map(r=>{let w='F',ci=0;r.cells.forEach((c,i)=>{if(LV.indexOf(c.lv)>LV.indexOf(w)){w=c.lv;ci=i}});
+     return `<tr><th>${esc(r.n)}</th><td class="tl"><span class="lv-${w} pill">${LVS[w]}</span> ${w==='F'?'brak ograniczeń':esc(wxMat.cols[ci].label+': '+r.cells[ci].why.join('; '))}</td></tr>`}).join('')}</tbody></table>`;
+  $('wmodal').hidden=false;
+}
+
 // --- radar opadów (RainViewer) ---
 const radarL=L.tileLayer('',{maxZoom:19,maxNativeZoom:7,opacity:.65,attribution:'Radar: <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a>'});
 let radarTime=null;
@@ -3859,7 +4053,7 @@ const areaEl=$('area');areaEl.oninput=()=>{areaAuto=false;save()};
 function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
-    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,wx:wxState?{lat:wxState.lat,lng:wxState.lng,time:wxState.time,raw:wxState.raw}:null,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,
+    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,wxTh:JSON.stringify(WXT)!==JSON.stringify(WXT_DEF)?WXT:null,wx:wxState?{lat:wxState.lat,lng:wxState.lng,time:wxState.time,raw:wxState.raw}:null,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,
     mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),inside:MC.inside?Array.from(MC.inside).join(''):null,showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
@@ -3878,7 +4072,8 @@ function load(fc,opt={}){
   }
   setAutoBox(m.autoBox?L.latLngBounds(m.autoBox):null,m.autoRing||null,m.autoDesc||'');
   lastSum=m.sum||null;updOcenaBtn();selectObj(null);
-  if(!opt.keepView){wxState=m.wx&&m.wx.raw?{...m.wx,a:analyzeWx(m.wx.raw)}:null;renderWx();$('rDoc').innerHTML='';rSnap=null}
+  if(!opt.keepView){WXT={...WXT_DEF,...(m.wxTh||{})};if($('wxTh').innerHTML)buildWxThUI();
+    wxState=m.wx&&m.wx.raw?{...m.wx,a:analyzeWx(m.wx.raw)}:null;renderWx();$('rDoc').innerHTML='';rSnap=null}
   if(!opt.keepView){let th=null;try{th=JSON.parse(localStorage.getItem('ocoka-theme')||'null')}catch(e){}
     if(th&&m.autoBox&&Math.abs(th.b[0][0]-m.autoBox[0][0])<1e-6&&Math.abs(th.b[1][1]-m.autoBox[1][1])<1e-6){theme=th;renderTheme()}else if(!m.autoBox){theme=null;renderTheme()}}
   doct=m.doct!==false;$('bDoct').setAttribute('aria-pressed',doct);doct?mcoo.addTo(map):map.removeLayer(mcoo);
@@ -3970,7 +4165,7 @@ modal.onclick=e=>{if(e.target===modal)$('mClose').onclick()};
 
 // ================= Skróty klawiszowe =================
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){if(!modal.hidden){$('mClose').onclick();return}if(!$('cmodal').hidden){$('cmodal').hidden=true;return}if(!$('mmodal').hidden){$('mX').onclick();return}if(!$('rmodal').hidden){$('rmodal').hidden=true;return}if((!$('sheet').hidden||map._popup)&&!mode){closeEditor();return}stopModes();return}
+  if(e.key==='Escape'){if(!modal.hidden){$('mClose').onclick();return}if(!$('cmodal').hidden){$('cmodal').hidden=true;return}if(!$('mmodal').hidden){$('mX').onclick();return}if(!$('wmodal').hidden){$('wmodal').hidden=true;return}if(!$('rmodal').hidden){$('rmodal').hidden=true;return}if((!$('sheet').hidden||map._popup)&&!mode){closeEditor();return}stopModes();return}
   if(e.key==='Enter'&&drawState&&drawState.type!=='marker'&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)){finishDraw();return}
   if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.target.isContentEditable)return;
   if((e.ctrlKey||e.metaKey)&&!e.altKey){const k=e.key.toLowerCase();
@@ -4006,7 +4201,9 @@ map.on('moveend',()=>{[['wxLinks',WXLINKS],['byLinks',BYLINKS]].forEach(([id,lis
 $('wxGo').onclick=()=>loadWx(wxPoint());
 $('wxMap').onclick=()=>{loadWx(map.getCenter())};
 $('wxWindyGo').onclick=showWindy;$('wxLayer').onchange=()=>{if($('wxWindy').innerHTML)showWindy()};
-$('ov-radar').onchange=e=>{setOver('radar',e.target.checked);save()};updEditBtns();updOcenaBtn();updThemeInfo();
+$('ov-radar').onchange=e=>{setOver('radar',e.target.checked);save()};
+buildWxThUI();renderWxMatrix();
+$('wxWide').onclick=openWxMatrixWide;$('wmX').onclick=()=>{$('wmodal').hidden=true};$('wmodal').onclick=e=>{if(e.target===$('wmodal'))$('wmodal').hidden=true};updEditBtns();updOcenaBtn();updThemeInfo();
 $('bMgrs').onclick=openMgrsDialog;$('wMgrs').onclick=()=>{showWelcome(false);openMgrsDialog()};
 $('thLoad').onclick=()=>loadThemeFor(autoBox||map.getBounds());
 histPush();
