@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obsidian dla OSINT — Kompletny Kurs</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap');
+:root{
+  --bg:#0b0e14;--bg2:#111622;--bg3:#181f2e;--bg4:#1a2235;
+  --border:#1e2a3a;--text:#c8d8e8;--muted:#5a7080;
+  --a1:#00d4ff;--a2:#a78bfa;--a3:#f97316;
+  --gold:#fbbf24;--green:#22c55e;--r:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.75;font-size:16px;}
+nav{position:sticky;top:0;z-index:100;background:rgba(11,14,20,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;gap:1.5rem;height:58px;}
+.nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;color:var(--a1);letter-spacing:.08em;white-space:nowrap;}
+.nav-links{display:flex;gap:.2rem;list-style:none;flex:1;justify-content:flex-end;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:500;padding:.3rem .75rem;border-radius:6px;transition:all .2s;}
+.nav-links a:hover{color:var(--text);background:var(--bg3);}
+.nav-links a.b1{color:var(--a1);}.nav-links a.b2{color:var(--a2);}.nav-links a.b3{color:var(--a3);}
+#prog{position:fixed;top:58px;left:0;right:0;height:3px;z-index:99;background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));transform-origin:left;transform:scaleX(0);transition:transform .1s;}
+.hero{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4rem 2rem;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 15% 40%,rgba(0,212,255,.09) 0%,transparent 60%),radial-gradient(ellipse 55% 55% at 85% 60%,rgba(167,139,250,.09) 0%,transparent 60%),radial-gradient(ellipse 45% 40% at 50% 95%,rgba(249,115,22,.06) 0%,transparent 60%);pointer-events:none;}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--a1);letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem;}
+.eyebrow::before,.eyebrow::after{content:'';display:block;width:40px;height:1px;background:var(--a1);opacity:.5;}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2.4rem,5.5vw,4.8rem);font-weight:800;line-height:1.05;letter-spacing:-.02em;margin-bottom:1.5rem;}
+h1 .l1{color:var(--text);}
+h1 .l2{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{color:var(--muted);font-size:1.05rem;max-width:560px;margin:0 auto 2.5rem;}
+.hero-badges{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;}
+.badge{display:flex;align-items:center;gap:.45rem;padding:.45rem 1.1rem;border-radius:999px;font-size:.82rem;font-weight:600;border:1px solid currentColor;}
+.badge-c{color:var(--a1);background:rgba(0,212,255,.07);}
+.badge-i{color:var(--a2);background:rgba(167,139,250,.07);}
+.badge-a{color:var(--a3);background:rgba(249,115,22,.07);}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.hgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:680px;width:100%;}
+.hstat{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem 1rem;text-align:center;}
+.hstat-n{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--a1);}
+.hstat-l{font-size:.73rem;color:var(--muted);margin-top:.2rem;}
+.section{padding:5rem 2rem;}.container{max-width:960px;margin:0 auto;}
+.sec-hdr{text-align:center;margin-bottom:3.5rem;}
+.sec-tag{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.65rem;}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.7rem,3vw,2.7rem);font-weight:800;line-height:1.1;}
+.sec-desc{color:var(--muted);margin-top:.7rem;font-size:.93rem;}
+.lcard{border:1px solid var(--border);border-radius:var(--r);margin-bottom:1.25rem;overflow:hidden;transition:border-color .2s;}
+.lcard:hover{border-color:rgba(255,255,255,.1);}
+.lhdr{padding:1.4rem 1.6rem;cursor:pointer;display:flex;align-items:flex-start;gap:1.1rem;user-select:none;}
+.lnum{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;border:1px solid currentColor;flex-shrink:0;margin-top:3px;}
+.lmeta{flex:1;}.ltitle{font-size:1rem;font-weight:700;margin-bottom:.25rem;}.ldesc{font-size:.83rem;color:var(--muted);}
+.lchev{color:var(--muted);font-size:1.1rem;transition:transform .3s;margin-top:5px;}
+.lcard.open .lchev{transform:rotate(180deg);}
+.lbody{display:none;padding:0 1.6rem 1.75rem;border-top:1px solid var(--border);}
+.lcard.open .lbody{display:block;}
+.steps{margin-top:1.4rem;}
+.step{display:flex;gap:1.1rem;}
+.sline{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:30px;}
+.snum{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;border:1px solid currentColor;flex-shrink:0;}
+.svline{flex:1;width:1px;background:var(--border);min-height:24px;margin:5px 0 0;}
+.step:last-child .svline{display:none;}
+.scontent{flex:1;padding:3px 0 1.4rem;}
+.stitle{font-weight:700;font-size:.95rem;margin-bottom:.5rem;}
+.sbody{font-size:.875rem;color:var(--text);line-height:1.72;}
+.sbody p{margin-bottom:.65rem;}.sbody p:last-child{margin-bottom:0;}
+.box{border-radius:8px;padding:.9rem 1.1rem;margin:.85rem 0;font-size:.855rem;display:flex;gap:.65rem;align-items:flex-start;}
+.box.info{background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.22);}
+.box.warn{background:rgba(249,115,22,.07);border:1px solid rgba(249,115,22,.22);}
+.box.ok{background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.22);}
+.box.note{background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.22);}
+.box-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}.box strong{font-weight:700;}
+.code{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:.9rem 1.1rem;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--a1);margin:.7rem 0;overflow-x:auto;line-height:1.75;white-space:pre;}
+.code .cm{color:var(--muted);}.code .kw{color:var(--a2);}.code .str{color:var(--green);}.code .tg{color:var(--a3);}
+kbd{background:var(--bg4);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:.1rem .45rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--gold);white-space:nowrap;}
+.ui{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:.05rem .4rem;font-size:.8rem;color:var(--text);font-weight:600;white-space:nowrap;}
+.pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.2rem .6rem;border-radius:4px;background:var(--bg3);border:1px solid var(--border);color:var(--gold);display:inline-block;margin:.15rem;}
+.obs-ui{background:#1a1a2e;border:1px solid #2d2d4e;border-radius:8px;margin:.8rem 0;overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:.75rem;}
+.obs-titlebar{background:#13132b;padding:.4rem .8rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid #2d2d4e;}
+.obs-dot{width:10px;height:10px;border-radius:50%;}.obs-dot.r{background:#ff5f57;}.obs-dot.y{background:#febc2e;}.obs-dot.g{background:#28c840;}
+.obs-title{flex:1;text-align:center;color:#5a5a8a;font-size:.68rem;}
+.obs-body{display:flex;min-height:120px;}
+.obs-sidebar{width:160px;background:#141428;border-right:1px solid #2d2d4e;padding:.5rem;color:#6a6a9a;font-size:.7rem;flex-shrink:0;}
+.obs-editor{flex:1;padding:.75rem 1rem;color:#c8d8e8;line-height:1.7;font-size:.78rem;}
+.chk{list-style:none;margin:.6rem 0;}
+.chk li{display:flex;align-items:flex-start;gap:.55rem;font-size:.875rem;margin-bottom:.4rem;}
+.chk li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.1rem;margin-top:2.25rem;}
+.ov-card{border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;background:rgba(255,255,255,.025);}
+.ov-icon{font-size:1.8rem;margin-bottom:.65rem;}
+.ov-card h3{font-size:.95rem;font-weight:700;margin-bottom:.35rem;}
+.ov-card p{font-size:.83rem;color:var(--muted);}
+.c1{color:var(--a1);}.c2{color:var(--a2);}.c3{color:var(--a3);}
+.bg1{background:rgba(0,212,255,.05);border-color:rgba(0,212,255,.18);}
+.bg2c{background:rgba(167,139,250,.05);border-color:rgba(167,139,250,.18);}
+.bg3c{background:rgba(249,115,22,.05);border-color:rgba(249,115,22,.18);}
+footer{border-top:1px solid var(--border);padding:2.5rem 2rem;text-align:center;color:var(--muted);font-size:.78rem;}
+.flogo{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;color:var(--a1);margin-bottom:.4rem;}
+@media(max-width:640px){.hgrid{grid-template-columns:1fr 1fr;}nav .nav-links{display:none;}.lhdr{padding:1rem;}.lbody{padding:0 1rem 1.25rem;}.obs-sidebar{display:none;}}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<nav>
+  <div class="nav-logo">⬡ OBSIDIAN &times; OSINT</div>
+  <ul class="nav-links">
+    <li><a href="#overview">Intro</a></li>
+    <li><a href="#basic" class="b1">&#9312; Podstawowy</a></li>
+    <li><a href="#inter" class="b2">&#9313; &#346;redni</a></li>
+    <li><a href="#adv" class="b3">&#9314; Zaawansowany</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Kurs krok po kroku &mdash; od zera</div>
+  <h1><div class="l1">Obsidian jako narzezie</div><div class="l2">OSINT Intelligence</div></h1>
+  <p class="hero-sub">Ka&#380;dy krok opisany tak, &#380;eby&#347; wiedzia&#322; dok&#322;adnie co klikn&#261;&#263;, gdzie patrze&#263; i dlaczego &mdash; nawet je&#347;li Obsidian widzisz dzi&#347; po raz pierwszy.</p>
+  <div class="hero-badges">
+    <span class="badge badge-c"><span class="dot"></span>Poziom 1 &mdash; Podstawowy</span>
+    <span class="badge badge-i"><span class="dot"></span>Poziom 2 &mdash; &#346;redni</span>
+    <span class="badge badge-a"><span class="dot"></span>Poziom 3 &mdash; Zaawansowany</span>
+  </div>
+  <div class="hgrid">
+    <div class="hstat"><div class="hstat-n">3</div><div class="hstat-l">Poziomy</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--a2)">12</div><div class="hstat-l">Lekcji</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--a3)">80+</div><div class="hstat-l">Krok&#243;w</div></div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="section" id="overview" style="background:var(--bg2)">
+<div class="container">
+  <div class="sec-hdr">
+    <div class="sec-tag" style="color:var(--muted)">// Czym jest Obsidian i po co go u&#380;ywa&#263; do OSINT</div>
+    <h2 class="sec-title">Lokalny &bdquo;m&#243;zg&rdquo; analityka</h2>
+    <p class="sec-desc">Obsidian to edytor notatek Markdown dzia&#322;aj&#261;cy w 100% lokalnie &mdash; &#380;aden serwer nie widzi Twoich danych.</p>
+  </div>
+  <div class="ov-grid">
+    <div class="ov-card"><div class="ov-icon">&#128274;</div><h3>Lokalno&#347;&#263; danych</h3><p>Wszystkie notatki to pliki .md na Twoim dysku. Mo&#380;esz zaszyfrowa&#263; ca&#322;y folder. &#379;adna chmura, &#380;aden vendor.</p></div>
+    <div class="ov-card"><div class="ov-icon">&#128376;</div><h3>Graf po&#322;&#261;cze&#324;</h3><p>Automatyczna wizualizacja relacji mi&#281;dzy osobami, firmami i zdarzeniami &mdash; jak Maltego, ale dla Twoich notatek.</p></div>
+    <div class="ov-card"><div class="ov-icon">&#9889;</div><h3>Szablony podmiot&#243;w</h3><p>Raz zaprojektowany formularz dla osoby/firmy/domeny wype&#322;niasz w sekundy. Obsidian sam tworzy powi&#261;zania.</p></div>
+    <div class="ov-card"><div class="ov-icon">&#128268;</div><h3>Ekosystem wtyczek</h3><p>Ponad 1000 bezp&#322;atnych wtyczek community &mdash; od Kanban przez SQL-like queries po automatyczne raporty PDF.</p></div>
+    <div class="ov-card"><div class="ov-icon">&#128196;</div><h3>Markdown = trwa&#322;o&#347;&#263;</h3><p>Format .md czyta ka&#380;dy edytor tekstu. Twoje notatki b&#281;d&#261; czytelne za 20 lat, niezale&#380;nie od producenta softu.</p></div>
+    <div class="ov-card"><div class="ov-icon">&#129302;</div><h3>Automatyzacja</h3><p>Skrypty JS w szablonach, SQL-like queries Dataview i shell commands pozwalaj&#261; generowa&#263; raporty jednym klikni&#281;ciem.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== BASIC ===== -->
+<section class="section" id="basic">
+<div class="container">
+  <div class="sec-hdr">
+    <div class="sec-tag c1">// Poziom 01 &mdash; Podstawowy</div>
+    <h2 class="sec-title c1">Fundament vaultu OSINT</h2>
+    <p class="sec-desc">Instalacja, interfejs, struktura folder&#243;w, szablony i nawyki dokumentacyjne. &#379;adnej wiedzy wst&#281;pnej nie zak&#322;adamy.</p>
+  </div>
+
+<!-- L1 -->
+<div class="lcard bg1" id="l1">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c1">01</div>
+  <div class="lmeta">
+    <div class="ltitle">Instalacja Obsidian i pierwsze uruchomienie</div>
+    <div class="ldesc">Pobierz aplikacj&#281;, utw&#243;rz vault i poznaj ka&#380;dy element interfejsu &mdash; od paska bocznego po edytor.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="box warn"><div class="box-icon">&#9888;&#65039;</div><div><strong>OPSEC na start:</strong> Nigdy nie synchronizuj vaultu OSINT przez iCloud, Google Drive, OneDrive ani Dropbox. Twoje &#378;r&#243;d&#322;a i metody powinny pozosta&#263; wy&#322;&#261;cznie na Twoim urz&#261;dzeniu. Je&#347;li potrzebujesz synchronizacji &mdash; u&#380;yj lokalnego Syncthing lub zaszyfrowanego dysku zewn&#281;trznego.</div></div>
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c1">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Pobierz Obsidian</div>
+<div class="sbody"><p>Wejd&#378; na <strong>obsidian.md</strong> i kliknij przycisk <span class="ui">Download</span>. Strona automatycznie wykryje Tw&#243;j system:</p>
+<ul class="chk">
+  <li><strong>Windows:</strong> pobierz <code>.exe</code> (instalator) lub <code>.zip</code> (wersja przeno&#347;na &mdash; polecana do uruchamiania z zaszyfrowanego dysku)</li>
+  <li><strong>macOS:</strong> pobierz <code>.dmg</code>, przeci&#261;gnij ikon&#281; do Applications</li>
+  <li><strong>Linux:</strong> pobierz <code>.AppImage</code>, nadaj prawa wykonania: <code>chmod +x Obsidian-*.AppImage</code>, nast&#281;pnie uruchom</li>
+</ul>
+<p>Instalacja standardowa &mdash; <span class="ui">Next &#8594; Install &#8594; Finish</span>. &#379;adne konto nie jest wymagane do pracy lokalnej.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Opcjonalnie: przygotuj zaszyfrowany kontener</div>
+<div class="sbody"><p>Zanim za&#322;o&#380;ysz vault, warto przygotowa&#263; zaszyfrowane miejsce na dane. Opcje:</p>
+<ul class="chk">
+  <li><strong>Windows:</strong> w&#322;&#261;cz BitLocker na dysku (Panel sterowania &#8594; Szyfrowanie dysku funkcj&#261; BitLocker) lub utw&#243;rz wolumin VeraCrypt (veracrypt.fr)</li>
+  <li><strong>macOS:</strong> Disk Utility &#8594; File &#8594; New Image &#8594; Image from Folder &mdash; wybierz szyfrowanie AES-256</li>
+  <li><strong>Linux:</strong> <code>cryptsetup</code> + LUKS lub EncFS</li>
+</ul>
+<p>Mo&#380;esz pomin&#261;&#263; ten krok na pocz&#261;tku i wr&#243;ci&#263; do niego p&#243;&#378;niej &mdash; Obsidian dzia&#322;a z dowolnym folderem.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Utw&#243;rz nowy vault &mdash; Tw&#243;j &#8222;sejf danych&#8221;</div>
+<div class="sbody"><p>Po pierwszym uruchomieniu Obsidian pokazuje ekran powitalny. Wybierz <span class="ui">Create new vault</span>.</p>
+<div class="obs-ui">
+  <div class="obs-titlebar"><div class="obs-dot r"></div><div class="obs-dot y"></div><div class="obs-dot g"></div><div class="obs-title">Obsidian &mdash; Welcome</div></div>
+  <div style="padding:1rem 1.25rem;color:#c8d8e8;font-family:'Inter',sans-serif;font-size:.82rem">
+    <div style="text-align:center;padding:.75rem 0">
+      <div style="font-size:1.05rem;font-weight:700;margin-bottom:1rem;color:#fff">Open vault</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem;max-width:280px;margin:0 auto">
+        <div style="background:#00d4ff22;border:1px solid #00d4ff44;border-radius:6px;padding:.6rem 1rem;color:#00d4ff;font-weight:600">&#10133; Create new vault</div>
+        <div style="background:#1a2235;border:1px solid #1e2a3a;border-radius:6px;padding:.6rem 1rem;color:#5a7080">&#128193; Open folder as vault</div>
+        <div style="background:#1a2235;border:1px solid #1e2a3a;border-radius:6px;padding:.6rem 1rem;color:#5a7080">&#9729;&#65039; Sign in to sync</div>
+      </div>
+    </div>
+  </div>
+</div>
+<p>W polu <span class="ui">Vault name</span> wpisz: <strong>OSINT-Vault</strong>. W polu <span class="ui">Location</span> kliknij <span class="ui">Browse</span> i wska&#380; folder na zaszyfrowanej partycji (lub dowolny folder). Kliknij <span class="ui">Create</span>.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">4</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Rozpoznaj interfejs &mdash; 5 stref Obsidian</div>
+<div class="sbody">
+<p>Po utworzeniu vaultu zobaczysz g&#322;&#243;wne okno. Sk&#322;ada si&#281; z 5 obszar&#243;w:</p>
+<div class="obs-ui">
+  <div class="obs-titlebar"><div class="obs-dot r"></div><div class="obs-dot y"></div><div class="obs-dot g"></div><div class="obs-title">OSINT-Vault &mdash; Obsidian</div></div>
+  <div class="obs-body">
+    <div style="width:26px;background:#0f0f24;border-right:1px solid #2d2d4e;display:flex;flex-direction:column;align-items:center;padding:.4rem 0;gap:.6rem;font-size:.9rem">
+      <span title="Files">&#128193;</span><span title="Search">&#128269;</span><span title="Bookmarks">&#11088;</span><span title="Graph">&#128376;</span><span style="margin-top:auto" title="Settings">&#9881;&#65039;</span>
+    </div>
+    <div class="obs-sidebar">
+      <div style="color:#00d4ff;margin-bottom:.4rem;font-size:.65rem">PLIKI VAULTU</div>
+      <div style="padding:.15rem .3rem">&#128196; Witaj.md</div>
+      <div style="color:#3a3a6a;font-size:.6rem;margin-top:.6rem">&#8592; lewa kolumna</div>
+    </div>
+    <div class="obs-editor">
+      <div style="color:#a78bfa;margin-bottom:.3rem"># Witaj w Obsidian</div>
+      <div style="color:#5a7080;font-size:.68rem">&#8592; &#347;rodek: edytor notatek</div>
+      <div style="margin-top:.35rem">Tutaj piszesz i czytasz notatki w formacie Markdown.</div>
+    </div>
+    <div style="width:110px;background:#141428;border-left:1px solid #2d2d4e;padding:.5rem;font-size:.65rem;color:#3a3a6a">
+      <div style="margin-bottom:.3rem">W&#321;A&#346;CIWO&#346;CI</div>
+      <div>&#8592; prawa kolumna</div>
+    </div>
+  </div>
+</div>
+<ul class="chk">
+  <li><strong>Lewa ikony (ribbon):</strong> pionowy pasek &mdash; prze&#322;&#261;czasz widoki (pliki, wyszukiwarka, zakładki, graf), na dole ikona &#9881;&#65039; to Settings</li>
+  <li><strong>Lewa kolumna (sidebar):</strong> eksplorator plik&#243;w &mdash; widzisz tu foldery i pliki swojego vaultu jak w eksploratorze systemu</li>
+  <li><strong>&#346;rodek (editor):</strong> tu piszesz i czytasz notatki w formacie Markdown &mdash; to g&#322;&#243;wna przestrze&#324; robocza</li>
+  <li><strong>Prawa kolumna:</strong> w&#322;a&#347;ciwo&#347;ci notatki (frontmatter YAML), linki przychodz&#261;ce, lokalny graf</li>
+  <li><strong>Pasek kart (u g&#243;ry):</strong> otwarte notatki jak karty w przegl&#261;darce &mdash; mo&#380;esz mie&#263; kilka otwartych jednocze&#347;nie</li>
+</ul>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">5</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Wy&#322;&#261;cz telemetri&#281; i ustaw ciemny motyw</div>
+<div class="sbody">
+<p>Naci&#347;nij <kbd>Ctrl</kbd>+<kbd>,</kbd> (przecinek) lub kliknij ikon&#281; &#9881;&#65039; w lewym dolnym rogu &mdash; otworzy si&#281; okno Settings. Przejd&#378; do sekcji <span class="ui">General</span>:</p>
+<ul class="chk"><li>Odznacz opcj&#281; <span class="ui">Send usage statistics to Obsidian</span></li></ul>
+<p>Kliknij <span class="ui">Appearance</span> w lewym menu Settings:</p>
+<ul class="chk">
+  <li><span class="ui">Base color scheme</span> &#8594; wybierz <strong>Dark</strong></li>
+  <li>Kliknij <span class="ui">Manage</span> przy Themes, wyszukaj <strong>Minimal</strong> i zainstaluj &mdash; czyste, profesjonalne renderowanie do eksportu PDF</li>
+</ul>
+<p>Zamknij Settings klikaj&#261;c <kbd>Esc</kbd>.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">6</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Odblokuj wtyczki spo&#322;eczno&#347;ciowe</div>
+<div class="sbody">
+<p>Domy&#347;lnie Obsidian pozwala u&#380;ywa&#263; tylko w&#322;asnych wtyczek. Odblokuj Community plugins:</p>
+<p>Otw&#243;rz <kbd>Ctrl</kbd>+<kbd>,</kbd> &#8594; kliknij <span class="ui">Community plugins</span> w lewym menu &#8594; kliknij <span class="ui">Turn on community plugins</span> &#8594; pojawi si&#281; ostrze&#380;enie &#8594; kliknij <span class="ui">Turn on</span>.</p>
+<div class="box info"><div class="box-icon">&#8505;&#65039;</div><div>Obsidian pyta o zgod&#281;, bo wtyczki community maj&#261; dost&#281;p do plik&#243;w. Instaluj tylko wtyczki z wysok&#261; liczb&#261; pobra&#324; i aktywnymi aktualizacjami &mdash; to sygna&#322;, &#380;e s&#261; sprawdzone przez spo&#322;eczno&#347;&#263;.</div></div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">7</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Zainstaluj 4 kluczowe wtyczki startowe</div>
+<div class="sbody">
+<p>W sekcji <span class="ui">Community plugins</span> kliknij <span class="ui">Browse</span>. Dla ka&#380;dej wtyczki: wpisz nazw&#281;, kliknij wynik, kliknij <span class="ui">Install</span>, poczekaj, kliknij <span class="ui">Enable</span>:</p>
+<div style="margin:.75rem 0"><span class="pill">Templater</span><span class="pill">Dataview</span><span class="pill">Tag Wrangler</span><span class="pill">Calendar</span></div>
+<ul class="chk">
+  <li><strong>Templater</strong> &mdash; inteligentne szablony z automatycznie wype&#322;nianymi polami (data, tytu&#322;, ID sprawy)</li>
+  <li><strong>Dataview</strong> &mdash; odpytuje notatki jak baz&#281; danych SQL: &bdquo;poka&#380; mi wszystkie aktywne podmioty z ostatnich 7 dni&rdquo;</li>
+  <li><strong>Tag Wrangler</strong> &mdash; masowe zarz&#261;dzanie tagami: przemianuj, po&#322;&#261;cz duplikaty, ukryj rzadkie</li>
+  <li><strong>Calendar</strong> &mdash; widok kalendarza z dzi&#281;nnymi notatkami wywiadowczymi</li>
+</ul>
+<p>Po instalacji wszystkich czterech zamknij okno wtyczek (<kbd>Esc</kbd>).</p>
+</div></div></div>
+
+</div><!-- /steps -->
+<div class="box ok"><div class="box-icon">&#9989;</div><div><strong>Efekt po tej lekcji:</strong> Masz zainstalowany Obsidian z odblokowanymi wtyczkami, ciemnym motywem i wy&#322;&#261;czon&#261; telemetri&#261;. Wiesz jak porusza&#263; si&#281; po interfejsie.</div></div>
+</div><!-- /lbody -->
+</div><!-- /lcard -->
+
+<!-- L2 -->
+<div class="lcard bg1" id="l2">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c1">02</div>
+  <div class="lmeta">
+    <div class="ltitle">Markdown w 10 minut &mdash; j&#281;zyk notatek OSINT</div>
+    <div class="ldesc">Sk&#322;adnia Markdown, wikilinki, tagi, frontmatter YAML &mdash; cztery rzeczy kt&#243;rych u&#380;ywasz codziennie.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="box note"><div class="box-icon">&#128218;</div><div><strong>Czym jest Markdown?</strong> To prosty spos&#243;b formatowania tekstu za pomoc&#261; znak&#243;w takich jak <code>#</code>, <code>*</code> czy <code>-</code>. Piszesz zwyk&#322;y tekst, a Obsidian renderuje go jako sformatowany dokument. Pliki .md otworzysz w ka&#380;dym edytorze &mdash; nawet w Notatniku.</div></div>
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c1">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Utw&#243;rz pierwsz&#261; notatk&#281; i w&#322;&#261;cz Live Preview</div>
+<div class="sbody">
+<p>Naci&#347;nij <kbd>Ctrl</kbd>+<kbd>N</kbd> &mdash; w &#347;rodkowym panelu otworzy si&#281; pusta notatka. Tytu&#322; &bdquo;Untitled&rdquo; jest edytowalny &mdash; wpisz: <strong>Jan Kowalski &mdash; Test</strong> i naci&#347;nij <kbd>Enter</kbd>.</p>
+<p>Obsidian domy&#347;lnie dzia&#322;a w trybie <strong>Live Preview</strong> &mdash; formatowanie pojawia si&#281; od razu podczas pisania. Mo&#380;esz prze&#322;&#261;czy&#263; na tryb Source (surowy Markdown) ikon&#261; &#9998; w prawym g&#243;rnym rogu edytora lub na Reading View (czysty podgl&#261;d) ikon&#261; &#128064;.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Podstawowa sk&#322;adnia &mdash; przepisz ten przyk&#322;ad</div>
+<div class="sbody">
+<p>Wpisz poni&#380;szy tekst w otwartej notatce i obserwuj jak Obsidian formatuje go na &#380;ywo:</p>
+<div class="code"><span class="tg"># Jan Kowalski</span>        <span class="cm">&#8592; nag&#322;&#243;wek H1 (tytu&#322; sekcji)</span>
+<span class="tg">## Identyfikatory</span>     <span class="cm">&#8592; nag&#322;&#243;wek H2 (podsekcja)</span>
+<span class="tg">### Notatki analityczne</span> <span class="cm">&#8592; nag&#322;&#243;wek H3</span>
+
+<span class="kw">**Imi&#281; i nazwisko:**</span> Jan Kowalski   <span class="cm">&#8592; pogrubienie</span>
+<span class="str">*Pseudonim:*</span> &#8222;Kowal&#8221;              <span class="cm">&#8592; kursywa</span>
+
+- Email: jan@example.com            <span class="cm">&#8592; lista punktowana</span>
+- Telefon: nieznany
+- LinkedIn: linkedin.com/in/jkowal
+
+1. Sprawd&#378; WHOIS domeny            <span class="cm">&#8592; lista numerowana</span>
+2. Przeszukaj social media
+3. Zweryfikuj adres
+
+&gt; WA&#379;NE: podmiot aktywny od 2022  <span class="cm">&#8592; cytat/notatka wyr&#243;&#380;niona</span>
+
+| Platforma | Username   | Status  |  <span class="cm">&#8592; tabela</span>
+|-----------|------------|---------|
+| Twitter   | @jkowal    | aktywny |
+| GitHub    | jkowal-dev | aktywny |
+
+- [x] Zidentyfikowany           <span class="cm">&#8592; checkbox zaznaczony</span>
+- [ ] Zweryfikowany             <span class="cm">&#8592; checkbox do zrobienia</span></div>
+<p>Ka&#380;da z tych konstrukcji b&#281;dzie Ci potrzebna w notatkach OSINT. &#262;wicz je a&#380; piszesz z pami&#281;ci.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Wikilinki &mdash; serce Obsidian</div>
+<div class="sbody">
+<p>Wikilink to podw&#243;jny nawias kwadratowy <code>[[nazwa notatki]]</code>. To <strong>najwa&#380;niejsza funkcja Obsidian</strong> &mdash; tworzy aktywne po&#322;&#261;czenia mi&#281;dzy notatkami widoczne w grafie:</p>
+<div class="code">Pracodawca: [[Firma XYZ Sp. z o.o.]]
+Powi&#261;zana osoba: [[Anna Nowak]]
+Zdarzenie: [[Atak phishingowy 2024-03-15]]
+Z aliasem: [[Anna Nowak|A. Nowak]]    <span class="cm">&#8592; tekst po | to wy&#347;wietlana nazwa</span></div>
+<p>Je&#347;li notatka o &#8222;Firma XYZ&#8221; jeszcze nie istnieje &mdash; link wy&#347;wietli si&#281; szar&#261; czcionk&#261; (unresolved). Kliknij go i Obsidian automatycznie otworzy now&#261; notatk&#281; z t&#261; nazw&#261;.</p>
+<div class="box info"><div class="box-icon">&#128161;</div><div>Zacznij wpisywa&#263; <code>[[</code> i Obsidian poka&#380;e podpowiedzi ze wszystkich notatek w vaulcie &mdash; dok&#322;adnie jak autocomplete. Wpisz fragment nazwy i wybierz strza&#322;kami.</div></div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">4</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Tagi &mdash; etykiety do szybkiego filtrowania</div>
+<div class="sbody">
+<p>Tag to s&#322;owo poprzedzone hashem: <code>#podmiot/osoba</code>. Obsidian traktuje <code>/</code> jako separator hierarchii:</p>
+<div class="code">#podmiot/osoba         <span class="cm">&#8592; typ wpisu</span>
+#status/aktywny        <span class="cm">&#8592; stan dochodzenia</span>
+#priorytet/wysoki      <span class="cm">&#8592; pilno&#347;&#263;</span>
+#zrodlo/linkedin       <span class="cm">&#8592; sk&#261;d pochodzi informacja</span></div>
+<p>Tagi wpisz bezpo&#347;rednio w tre&#347;ci notatki lub w frontmatter (pole <code>tagi:</code>). W lewym panelu &mdash; ikona znaczka &mdash; zobaczysz wszystkie tagi z liczb&#261; notatek.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">5</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Frontmatter YAML &mdash; metadane notatki jako baza danych</div>
+<div class="sbody">
+<p>Frontmatter to blok na samej g&#243;rze notatki, otoczony <code>---</code>. Obsidian traktuje go jak pola bazy danych &mdash; mo&#380;esz je p&#243;&#378;niej odpytywa&#263; przez Dataview:</p>
+<div class="code"><span class="cm">---</span>
+<span class="kw">typ:</span> <span class="str">osoba</span>
+<span class="kw">status:</span> <span class="str">aktywny</span>
+<span class="kw">narodowosc:</span> <span class="str">PL</span>
+<span class="kw">data_utworzenia:</span> <span class="str">2024-11-20</span>
+<span class="kw">tagi:</span> <span class="str">[podmiot/osoba, priorytet/wysoki]</span>
+<span class="cm">---</span>
+
+<span class="tg"># Jan Kowalski</span>
+Tutaj zaczyna si&#281; w&#322;a&#347;ciwa tre&#347;&#263; notatki.</div>
+<p><strong>Wa&#380;na zasada:</strong> klucze YAML pisz bez polskich znak&#243;w i spacji &mdash; u&#380;ywaj podkre&#347;lnik&#243;w: <code>data_urodzenia</code>, nie <code>data urodzenia</code>. Wielkie litery w kluczach mog&#261; sprawia&#263; problemy z Dataview &mdash; pisz ma&#322;ymi.</p>
+</div></div></div>
+
+</div>
+<div class="box ok"><div class="box-icon">&#9989;</div><div><strong>Efekt:</strong> Znasz sk&#322;adni&#281; Markdown, wikilinki, tagi i frontmatter. To 95% tego, czego u&#380;ywasz na co dzie&#324; w Obsidian.</div></div>
+</div></div>
+
+<!-- L3 -->
+<div class="lcard bg1" id="l3">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c1">03</div>
+  <div class="lmeta">
+    <div class="ltitle">Struktura folder&#243;w &mdash; architektura wywiadowcza</div>
+    <div class="ldesc">Zaprojektuj hierarchi&#281; katalog&#243;w odzwierciedlaj&#261;c&#261; realne procesy &#347;ledcze &mdash; tak &#380;eby&#347; za rok wiedzia&#322; gdzie co le&#380;y.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="box note"><div class="box-icon">&#128193;</div><div><strong>Dlaczego struktura jest wa&#380;na?</strong> Chaotyczna struktura oznacza, &#380;e za 3 miesi&#261;ce nie znajdziesz niczego. Zainwestuj 15 minut teraz &mdash; zaoszcz&#281;dzisz godziny w przysz&#322;o&#347;ci.</div></div>
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c1">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Jak tworzy&#263; foldery w Obsidian</div>
+<div class="sbody">
+<p>W lewym panelu (eksplorator plik&#243;w) kliknij <strong>prawym przyciskiem myszy</strong> na pustym obszarze &#8594; wybierz <span class="ui">New folder</span>. Mo&#380;esz te&#380; klikn&#261;&#263; ikon&#281; folderu w g&#243;rnym pasku eksploratora.</p>
+<p><strong>Trick:</strong> Obsidian sortuje foldery alfabetycznie. Numeruj&#261;c je (00, 01, 02&#8230;) wymuszasz sta&#322;&#261; kolejno&#347;&#263; niezale&#380;nie od nazwy. Podfoldery tworzysz klikaj&#261;c prawym na <strong>folder nadrz&#281;dny</strong> &#8594; <span class="ui">New folder</span>.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Utw&#243;rz kompletn&#261; struktur&#281; vaultu</div>
+<div class="sbody">
+<div class="code">OSINT-Vault/
+&#9500;&#9472;&#9472; <span class="kw">00_META/</span>              <span class="cm">&#8592; szablony, skrypty, taksonomia tag&#243;w</span>
+&#9474;   &#9500;&#9472;&#9472; Templates/
+&#9474;   &#9492;&#9472;&#9472; Scripts/
+&#9500;&#9472;&#9472; <span class="kw">01_DOCHODZENIA/</span>       <span class="cm">&#8592; aktywne sprawy</span>
+&#9474;   &#9492;&#9472;&#9472; CASE_001_PRZYK&#321;AD/
+&#9500;&#9472;&#9472; <span class="kw">02_PODMIOTY/</span>          <span class="cm">&#8592; baza podmiot&#243;w</span>
+&#9474;   &#9500;&#9472;&#9472; Osoby/
+&#9474;   &#9500;&#9472;&#9472; Firmy/
+&#9474;   &#9500;&#9472;&#9472; Domeny/
+&#9474;   &#9492;&#9472;&#9472; Konta-SM/
+&#9500;&#9472;&#9472; <span class="kw">03_ZDARZENIA/</span>         <span class="cm">&#8592; incydenty z datami (o&#347; czasu)</span>
+&#9500;&#9472;&#9472; <span class="kw">04_NARZEDZIA/</span>         <span class="cm">&#8592; notatki o narz&#281;dziach OSINT</span>
+&#9500;&#9472;&#9472; <span class="kw">05_RAPORTY/</span>           <span class="cm">&#8592; gotowe raporty ko&#324;cowe</span>
+&#9492;&#9472;&#9472; <span class="kw">06_ARCHIWUM/</span>          <span class="cm">&#8592; zamkni&#281;te sprawy w .zip</span></div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Skonfiguruj domy&#347;lny folder i folder za&#322;&#261;cznik&#243;w</div>
+<div class="sbody">
+<p>Otw&#243;rz <kbd>Ctrl</kbd>+<kbd>,</kbd> &#8594; <span class="ui">Files &amp; Links</span>:</p>
+<ul class="chk">
+  <li><span class="ui">Default location for new notes</span> &#8594; <em>In the folder specified below</em> &#8594; wpisz: <code>01_DOCHODZENIA</code></li>
+  <li><span class="ui">Default location for new attachments</span> &#8594; <em>In subfolder under current folder</em> &#8594; wpisz: <code>_attachments</code></li>
+</ul>
+<p>Dzi&#281;ki temu ka&#380;da nowa notatka startuje we w&#322;a&#347;ciwym miejscu, a wklejone screenshoty trafiaj&#261; do <code>_attachments</code> w folderze aktywnego case&#8217;u.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">4</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Stw&#243;rz plik INDEX &mdash; punkt wej&#347;cia dochodzenia</div>
+<div class="sbody">
+<p>Kliknij folder <code>CASE_001_PRZYK&#321;AD</code> prawym &#8594; <span class="ui">New note</span> &#8594; nazwij j&#261; <strong>INDEX</strong>. Wpisz:</p>
+<div class="code"><span class="cm">---</span>
+<span class="kw">typ:</span> <span class="str">dochodzenie-index</span>
+<span class="kw">case_id:</span> <span class="str">CASE-001</span>
+<span class="kw">cel:</span> <span class="str">"Op&#322;acono Twoim imieniu"</span>
+<span class="kw">status:</span> <span class="str">aktywny</span>
+<span class="kw">data_otwarcia:</span> <span class="str">2024-11-20</span>
+<span class="kw">priorytet:</span> <span class="str">wysoki</span>
+<span class="cm">---</span>
+
+<span class="tg"># CASE-001 &mdash; [Nazwa Sprawy]</span>
+
+<span class="tg">## Kluczowe podmioty</span>
+- [[Osoba 1]]
+- [[Firma ABC]]
+
+<span class="tg">## O&#347; czasu</span>
+- 2024-11-20: Otwarcie sprawy
+
+<span class="tg">## Status zada&#324;</span>
+- [ ] Zebranie danych OSINT
+- [ ] Weryfikacja &#378;r&#243;de&#322;
+- [ ] Sporz&#261;dzenie raportu</div>
+</div></div></div>
+
+</div>
+<div class="box ok"><div class="box-icon">&#9989;</div><div><strong>Efekt:</strong> Vault ma profesjonaln&#261; struktur&#281;. Ka&#380;de nowe dochodzenie zaczynasz od stworzenia folderu i pliku INDEX z checklistą zada&#324;.</div></div>
+</div></div>
+
+<!-- L4 -->
+<div class="lcard bg1" id="l4">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c1">04</div>
+  <div class="lmeta">
+    <div class="ltitle">Szablony podmiot&#243;w &mdash; formularze wywiadowcze</div>
+    <div class="ldesc">Zbuduj gotowe formularze dla os&#243;b, firm i domen. Ka&#380;dy nowy podmiot wype&#322;nisz w 30 sekund.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c1">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Skonfiguruj Templater &mdash; wska&#380; folder szablon&#243;w</div>
+<div class="sbody">
+<p>Otw&#243;rz <kbd>Ctrl</kbd>+<kbd>,</kbd> &#8594; kliknij <span class="ui">Templater</span> &#8594; w polu <span class="ui">Template folder location</span> wpisz: <strong>00_META/Templates</strong>. W&#322;&#261;cz <span class="ui">Trigger Templater on new file creation</span>.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Utw&#243;rz szablon profilu osoby</div>
+<div class="sbody">
+<p>Kliknij folder <code>00_META/Templates</code> prawym &#8594; <span class="ui">New note</span> &#8594; nazwij: <strong>TPL_Osoba</strong>. Wklej:</p>
+<div class="code"><span class="cm">---</span>
+<span class="kw">typ:</span> <span class="str">osoba</span>
+<span class="kw">imie_nazwisko:</span> <span class="str">"&lt;% tp.file.title %&gt;"</span>
+<span class="kw">pseudonimy:</span> <span class="str">[]</span>
+<span class="kw">data_urodzenia:</span> <span class="str">""</span>
+<span class="kw">narodowosc:</span> <span class="str">""</span>
+<span class="kw">lokalizacja:</span> <span class="str">""</span>
+<span class="kw">status:</span> <span class="str">aktywny</span>
+<span class="kw">wiarygodnosc:</span> <span class="str">C</span>
+<span class="kw">powiazane_firmy:</span> <span class="str">[]</span>
+<span class="kw">data_utworzenia:</span> <span class="str">&lt;% tp.date.now("YYYY-MM-DD") %&gt;</span>
+<span class="kw">tagi:</span> <span class="str">[podmiot/osoba, status/do-weryfikacji]</span>
+<span class="cm">---</span>
+
+<span class="tg"># &lt;% tp.file.title %&gt;</span>
+
+<span class="tg">## Identyfikatory kontaktowe</span>
+| Typ     | Warto&#347;&#263; | Status   |
+|---------|---------|----------|
+| Email   |         | nieznany |
+| Telefon |         | nieznany |
+| Adres   |         | nieznany |
+
+<span class="tg">## Profile online</span>
+| Platforma | URL / Username | Aktywny? |
+|-----------|----------------|----------|
+| LinkedIn  |                |          |
+| Twitter/X |                |          |
+| GitHub    |                |          |
+
+<span class="tg">## Powi&#261;zania</span>
+- Pracodawca: [[]]
+- Wsp&#243;&#322;pracownicy: [[]]
+- Powi&#261;zane zdarzenia: [[]]
+
+<span class="tg">## &#346;r&#243;d&#322;a informacji</span>
+| Data | &#346;r&#243;d&#322;o | Informacja | Wiarygodno&#347;&#263; |
+|------|-------|------------|-------------|
+
+<span class="tg">## Notatki analityczne</span>
+&gt; Wpisuj tu obserwacje, hipotezy i wnioski.
+
+<span class="tg">## Do weryfikacji</span>
+- [ ] Potwierd&#378; to&#380;samo&#347;&#263;
+- [ ] Sprawd&#378; social media
+- [ ] Zweryfikuj powi&#261;zania</div>
+<p>Znacznik <code>&lt;% tp.file.title %&gt;</code> zostaje zast&#261;piony nazw&#261; pliku &mdash; notatka &#8222;Jan Kowalski&#8221; automatycznie wypelni pole <code>imie_nazwisko</code> i nag&#322;&#243;wek <code>#</code>.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Jak u&#380;y&#263; szablonu w praktyce</div>
+<div class="sbody">
+<p><strong>Spos&#243;b 1 &mdash; r&#281;czny:</strong> Otw&#243;rz now&#261; notatk&#281; (<kbd>Ctrl</kbd>+<kbd>N</kbd>), nadaj jej nazw&#281; (np. &#8222;Jan Kowalski&#8221;), naci&#347;nij <kbd>Ctrl</kbd>+<kbd>P</kbd> &#8594; wpisz <strong>Templater: Insert Template</strong> &#8594; wybierz <code>TPL_Osoba</code>.</p>
+<p><strong>Spos&#243;b 2 &mdash; automatyczny (polecany):</strong> W ustawieniach Templater &#8594; <span class="ui">Folder Templates</span> &#8594; kliknij <strong>+</strong> &#8594; ustaw: Folder = <code>02_PODMIOTY/Osoby</code>, Template = <code>TPL_Osoba</code>. Teraz ka&#380;da notatka utworzona w tym folderze automatycznie dostaje szablon osoby.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">4</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Skala wiarygodno&#347;ci &mdash; klasyfikuj &#378;r&#243;d&#322;a jak wywiad</div>
+<div class="sbody">
+<p>Pole <code>wiarygodnosc:</code> w szablonie u&#380;ywa skali wzorowanej na standardach wywiadowczych:</p>
+<div class="code">A &mdash; Potwierdzone: min. 2 niezale&#380;ne &#378;r&#243;d&#322;a
+B &mdash; Prawdopodobnie prawdziwe: jedno wiarygodne &#378;r&#243;d&#322;o
+C &mdash; Mo&#380;liwe: nieweryfikowalne, ale logicznie sp&#243;jne
+D &mdash; W&#261;tpliwe: sprzeczne z innymi informacjami
+F &mdash; Fa&#322;szywe: zweryfikowane jako nieprawdziwe</div>
+<p>W raporcie ko&#324;cowym cytuj <strong>wy&#322;&#261;cznie &#378;r&#243;d&#322;a A i B</strong>. Informacje klasy C to wskaz&#243;wki do dalszych poszukiwa&#324;, nigdy fakty.</p>
+</div></div></div>
+
+</div>
+<div class="box ok"><div class="box-icon">&#9989;</div><div><strong>Efekt:</strong> Ka&#380;dy nowy podmiot dokumentujesz w 30 sekund. Dane trafiaj&#261; do frontmatter &mdash; Dataview b&#281;dzie m&#243;g&#322; je p&#243;&#378;niej odpytywa&#263; automatycznie.</div></div>
+</div></div>
+
+<!-- L5 -->
+<div class="lcard bg1" id="l5">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c1">05</div>
+  <div class="lmeta">
+    <div class="ltitle">Tagowanie i wyszukiwanie &mdash; znajd&#378; cokolwiek w sekundy</div>
+    <div class="ldesc">Zbuduj taksonomie tag&#243;w OSINT i opanuj zaawansowane wyszukiwanie pe&#322;notekstowe z operatorami.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c1">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Zaprojektuj hierarchi&#281; tag&#243;w &mdash; zapisz j&#261; raz na zawsze</div>
+<div class="sbody">
+<p>Utw&#243;rz notatk&#281; <code>00_META/Taksonomia-Tag&#243;w.md</code> i skopiuj poni&#380;sz&#261; struktur&#281;. Wr&#243;&#263; do niej za ka&#380;dym razem gdy chcesz doda&#263; nowy tag:</p>
+<div class="code"><span class="tg">## Typ podmiotu</span>
+#podmiot/osoba      <span class="cm">&#8592; profil fizycznej osoby</span>
+#podmiot/firma      <span class="cm">&#8592; sp&#243;&#322;ka, organizacja</span>
+#podmiot/domena     <span class="cm">&#8592; domain name, IP, infrastruktura</span>
+#podmiot/konto-sm   <span class="cm">&#8592; konto social media</span>
+
+<span class="tg">## Status</span>
+#status/aktywny
+#status/do-weryfikacji
+#status/zarchiwizowany
+
+<span class="tg">## &#378;r&#243;d&#322;o informacji</span>
+#zrodlo/socialmedia  #zrodlo/whois
+#zrodlo/dns-pasywny  #zrodlo/rejestry-publiczne
+#zrodlo/web-clipper  #zrodlo/shodan
+
+<span class="tg">## Priorytet</span>
+#priorytet/wysoki  #priorytet/sredni  #priorytet/niski</div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Zaawansowane wyszukiwanie &mdash; operatory</div>
+<div class="sbody">
+<p>Naci&#347;nij <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> aby otworzy&#263; wyszukiwark&#281; globaln&#261;. Obsidian obs&#322;uguje operatory:</p>
+<div class="code"><span class="cm"># Wszystkie aktywne osoby</span>
+tag:#podmiot/osoba tag:#status/aktywny
+
+<span class="cm"># W konkretnym folderze</span>
+path:01_DOCHODZENIA/CASE_001
+
+<span class="cm"># Wyklucz zarchiwizowane</span>
+tag:#podmiot -tag:#status/zarchiwizowany
+
+<span class="cm"># Linia zawieraj&#261;ca s&#322;owo kluczowe</span>
+line:(email OR telefon)
+
+<span class="cm"># Po dacie modyfikacji</span>
+mtime:2024-11-13..2024-11-20</div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c1">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Zapisz wyszukiwania jako zak&#322;adki i Quick Switcher</div>
+<div class="sbody">
+<p>Po wpisaniu zapytania kliknij ikon&#281; zak&#322;adki (&#128278;) w prawym g&#243;rnym rogu panelu wyszukiwania &#8594; <span class="ui">Save search</span>. Zak&#322;adki znajdziesz klikaj&#261;c ikon&#281; &#11088; w lewym pasku &mdash; jeden klik uruchamia aktualny filtr.</p>
+<p><strong>Quick Switcher:</strong> naci&#347;nij <kbd>Ctrl</kbd>+<kbd>O</kbd> &mdash; zacznij wpisywa&#263; fragment nazwy notatki i prze&#322;&#261;czaj si&#281; mi&#281;dzy plikami bez myszy. To najszybszy spos&#243;b nawigacji w du&#380;ym vaulcie &mdash; &#263;wicz od pierwszego dnia.</p>
+</div></div></div>
+
+</div>
+<div class="box ok"><div class="box-icon">&#127919;</div><div><strong>Efekt po poziomie podstawowym:</strong> Masz w pe&#322;ni funkcjonalny vault &mdash; struktura, szablony, tagowanie, wyszukiwanie. Czas na poziom &#347;redni: graf powi&#261;za&#324; i automatyczne raporty Dataview.</div></div>
+</div></div>
+
+</div><!-- /container -->
+</section><!-- /basic -->
+<!-- INTER -->
+<section class="section" id="inter" style="background:var(--bg2)">
+<div class="container">
+  <div class="sec-hdr">
+    <div class="sec-tag c2">// Poziom 02 &mdash; &Scaron;rednio-zaawansowany</div>
+    <h2 class="sec-title c2">Graf relacji, Dataview i web clipping</h2>
+    <p class="sec-desc">Wizualizuj sie&cacute; powi&atilde;za&ntilde;, odpytuj vault jak baz&#281; danych i automatycznie importuj strony do notatek.</p>
+  </div>
+
+<div class="lcard bg2c" id="l6">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c2">06</div>
+  <div class="lmeta">
+    <div class="ltitle">Graph View &mdash; mapa relacji wywiadowczych</div>
+    <div class="ldesc">Skonfiguruj graf, koloruj w&#281;z&#322;y wed&#322;ug typ&#243;w podmiot&#243;w i technika pivot przez sie&#263;.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="box note"><div class="box-icon">&#128376;</div><div><strong>Czym jest Graph View?</strong> Wizualizacja wszystkich wikilink&#243;w jako w&#281;z&#322;&#243;w (notatki) i kraw&#281;dzi (po&#322;&#261;czenia). Im wi&#281;cej link&#243;w ma notatka, tym wi&#281;kszy w&#281;ze&#322;. Podmiot powi&#261;zany z wieloma osobami b&#281;dzie centralnym hubem.</div></div>
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c2">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Global Graph vs Local Graph</div>
+<div class="sbody">
+<ul class="chk">
+  <li><strong>Global Graph</strong> (<kbd>Ctrl</kbd>+<kbd>G</kbd>) &mdash; ca&#322;y vault. Do widoku z lotu ptaka.</li>
+  <li><strong>Local Graph</strong> (ikona grafu w g&#243;rnym rogu) &mdash; tylko notatki po&#322;&#261;czone z aktualnie otwart&#261;. G&#322;&#243;wne narz&#281;dzie analityczne &mdash; odpowiednik "Expand" w Maltego.</li>
+</ul>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c2">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Konfiguracja filter&#243;w i Display</div>
+<div class="sbody">
+<p>Panel po prawej stronie grafu &mdash; sekcja <span class="ui">Filters</span>:</p>
+<ul class="chk">
+  <li>Search: <code>tag:#podmiot</code> &mdash; pokazuj tylko podmioty</li>
+  <li>W&#322;&#261;cz <span class="ui">Tags</span> &mdash; w&#281;z&#322;y tag&#243;w widoczne osobno</li>
+  <li>Wy&#322;&#261;cz <span class="ui">Orphans</span> &mdash; ukryj notatki bez po&#322;&#261;cze&#324;</li>
+</ul>
+<p>Sekcja <span class="ui">Display</span>: Node size 8, Link thickness 2, w&#322;&#261;cz <span class="ui">Arrow</span>.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c2">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Kolorowanie w&#281;z&#322;&#243;w wed&#322;ug typ&#243;w podmiot&#243;w</div>
+<div class="sbody">
+<p>Panel grafu &#8594; sekcja <span class="ui">Groups</span> &#8594; <span class="ui">New group</span>:</p>
+<div class="code">tag:#podmiot/osoba  &#8594; kolor: <span class="str">#00d4ff</span>  (niebieski)
+tag:#podmiot/firma  &#8594; kolor: <span class="str">#a78bfa</span>  (fioletowy)
+tag:#podmiot/domena &#8594; kolor: <span class="str">#f97316</span>  (pomara&#324;czowy)
+tag:#priorytet/wysoki &#8594; kolor: <span class="str">#ef4444</span> (czerwony)</div>
+<p>Graf staje si&#281; czytelna map&#261; kolorystyczn&#261; &mdash; natychmiast widoczne typy podmiot&#243;w i g&#281;sto&#347;&#263; powi&#261;za&#324;.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c2">4</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Technika pivot &mdash; nawigacja przez sie&#263;</div>
+<div class="sbody">
+<p>Otw&#243;rz Local Graph przy notatce osoby. Ustaw <span class="ui">Depth</span> na 2. Kliknij <strong>dwa razy</strong> na w&#281;ze&#322; firmy &mdash; Obsidian otworzy jej notatk&#281; i Graf od&#347;wie&#380;y si&#281; wzgl&#281;dem niej. Przeskakujesz po sieci w&#281;ze&#322; po w&#281;&#378;le jak w Maltego.</p>
+<div class="box info"><div class="box-icon">&#128161;</div><div>Ustaw Local Graph w osobnym panelu (przeci&#261;gnij kart&#281; na bok) &mdash; edytor po lewej, graf po prawej. Edytujesz notatki i na &#380;ywo widzisz zmiany w sieci.</div></div>
+</div></div></div>
+
+</div></div></div>
+
+<!-- L7 Dataview -->
+<div class="lcard bg2c" id="l7">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c2">07</div>
+  <div class="lmeta">
+    <div class="ltitle">Dataview &mdash; SQL dla Twoich notatek</div>
+    <div class="ldesc">Zapytania automatycznie agreguj&#261;ce dane z dziesi&#261;tek notatek. Buduj &#380;ywe dashboardy wywiadowcze.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="box note"><div class="box-icon">&#128202;</div><div><strong>Czym jest Dataview?</strong> Wtyczka traktuj&#261;ca vault jak baz&#281; danych. Ka&#380;de pole frontmatter staje si&#281; kolumn&#261;. Pytasz: "Poka&#380; mi wszystkie aktywne osoby posortowane od najnowszej".</div></div>
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c2">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Pierwsza tabela &mdash; aktywne podmioty</div>
+<div class="sbody">
+<p>Utw&#243;rz notatk&#281; <code>00_META/Dashboard.md</code> i skopiuj:</p>
+<div class="code">```dataview
+TABLE imie_nazwisko, narodowosc, lokalizacja, status
+FROM "02_PODMIOTY/Osoby"
+WHERE status = "aktywny"
+SORT data_utworzenia DESC
+```</div>
+<p>Obsidian renderuje &#380;yw&#261; tabel&#281; ze wszystkich notatek w folderze Osoby ze statusem aktywny.</p>
+<div class="box info"><div class="box-icon">&#8505;&#65039;</div><div>Pola w zapytaniu musz&#261; by&#263; <strong>identyczne</strong> jak klucze frontmatter w notatkach podmiot&#243;w. Dataview jest wra&#380;liwy na wielko&#347;&#263; liter i znaki.</div></div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c2">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Lista do weryfikacji i statystyki</div>
+<div class="sbody">
+<div class="code">```dataview
+LIST file.link
+FROM #status/do-weryfikacji
+SORT file.mtime ASC
+LIMIT 15
+```
+
+```dataview
+TABLE WITHOUT ID status, length(rows) AS "Liczba"
+FROM "02_PODMIOTY"
+WHERE status
+GROUP BY status
+```</div>
+<p>Pierwsze zapytanie &mdash; 15 najdawniej nieaktualizowanych notatek. Drugie &mdash; zestawienie podmiot&#243;w wed&#322;ug stanu.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c2">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Kompletny Dashboard OSINT</div>
+<div class="sbody">
+<div class="code"><span class="tg"># Dashboard OSINT</span>
+
+<span class="tg">## Statystyki</span>
+```dataview
+TABLE WITHOUT ID status, length(rows) AS "Podmiot&#243;w"
+FROM "02_PODMIOTY"
+GROUP BY status
+```
+
+<span class="tg">## Priorytety &mdash; pilne</span>
+```dataview
+LIST file.link
+FROM #status/do-weryfikacji AND #priorytet/wysoki
+SORT file.mtime ASC
+```
+
+<span class="tg">## Aktywne dochodzenia</span>
+```dataview
+TABLE cel, status, data_otwarcia
+FROM "01_DOCHODZENIA"
+WHERE status = "aktywny"
+SORT data_otwarcia DESC
+```</div>
+<p>Zapisz Dashboard jako zak&#322;adk&#281; (<kbd>Ctrl</kbd>+<kbd>D</kbd>) &mdash; startowy ekran ka&#380;dej sesji.</p>
+</div></div></div>
+
+</div></div></div>
+
+<!-- L8 Web Clipper -->
+<div class="lcard bg2c" id="l8">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c2">08</div>
+  <div class="lmeta">
+    <div class="ltitle">Web Clipper i archiwizacja &Zcaron;r&#243;de&#322;</div>
+    <div class="ldesc">Zainstaluj rozszerzenie przegl&#261;darki i archiwizuj strony jako notatki jednym klikni&#281;ciem.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c2">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Instalacja i konfiguracja Web Clipper</div>
+<div class="sbody">
+<p>Zainstaluj oficjaln&#261; wtyczk&#281; <strong>Obsidian Web Clipper</strong> ze sklepu przegl&#261;darki (Chrome/Firefox/Edge/Brave). Kliknij ikon&#281; &#8594; wybierz vault <strong>OSINT-Vault</strong>. Obsidian musi by&#263; uruchomiony podczas klipowania.</p>
+<p>W ustawieniach rozszerzenia &#8594; <span class="ui">Templates</span> &#8594; utw&#243;rz szablon "OSINT Source":</p>
+<div class="code"><span class="cm">---</span>
+<span class="kw">typ:</span> <span class="str">zrodlo-web</span>
+<span class="kw">url:</span> <span class="str">"{{url}}"</span>
+<span class="kw">tytul_strony:</span> <span class="str">"{{title}}"</span>
+<span class="kw">data_archiwizacji:</span> <span class="str">"{{date:YYYY-MM-DD}}"</span>
+<span class="kw">wiarygodnosc:</span> <span class="str">C</span>
+<span class="kw">tagi:</span> <span class="str">[zrodlo/web-clipper, status/do-weryfikacji]</span>
+<span class="cm">---</span>
+
+<span class="tg"># {{title}}</span>
+**URL:** {{url}}
+
+<span class="tg">## Tre&#347;&#263;</span>
+{{content}}
+
+<span class="tg">## Moje notatki</span></div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c2">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">SingleFile &mdash; pe&#322;na archiwizacja strony</div>
+<div class="sbody">
+<p>Dla krytycznych dowod&#243;w (posty SM, strony podmiot&#243;w) zainstaluj rozszerzenie <strong>SingleFile</strong> &mdash; zapisuje kompletn&#261; stron&#281; HTML jako jeden plik ze stylami i obrazkami. Zapisz do <code>_attachments</code> i podlinkuj:</p>
+<div class="code">[[_attachments/linkedin-jan-kowalski-20241120.html|Profil LinkedIn &mdash; archiwum]]</div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c2">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Kanban &mdash; tablica zarz&#261;dzania dochodzeniami</div>
+<div class="sbody">
+<p>Zainstaluj <span class="pill">obsidian-kanban</span>. Utw&#243;rz notatk&#281; <code>00_META/Kanban-Sprawy.md</code> &#8594; <kbd>Ctrl</kbd>+<kbd>P</kbd> &#8594; <span class="ui">Kanban: Create new board</span>. Kolumny:</p>
+<div class="code">&#128229; Nowe &#8594; &#128269; OSINT aktywny &#8594; &#128221; Analiza &#8594; &#9989; Raport &#8594; &#128452; Zamkni&#281;te</div>
+<p>Ka&#380;da karta to link do case&#8217;u: <code>[[CASE_001_PRZYK&#321;AD]]</code>.</p>
+</div></div></div>
+
+</div>
+<div class="box ok"><div class="box-icon">&#9989;</div><div><strong>Efekt po poziomie &#347;rednim:</strong> Vault o&#380;y&#322; &mdash; graf wizualizuje powi&#261;zania, Dataview odpytuje dane, Web Clipper importuje dowody.</div></div>
+</div></div>
+
+</div></section>
+<!-- ADVANCED -->
+<section class="section" id="adv">
+<div class="container">
+  <div class="sec-hdr">
+    <div class="sec-tag c3">// Poziom 03 &mdash; Zaawansowany</div>
+    <h2 class="sec-title c3">Automatyzacja, skrypty i raportowanie</h2>
+    <p class="sec-desc">Skrypty JavaScript, DataviewJS API, integracja z narz&#281;dziami OSINT i automatyczny pipeline raportowy.</p>
+  </div>
+
+<!-- L9 Templater JS -->
+<div class="lcard bg3c" id="l9">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c3">09</div>
+  <div class="lmeta">
+    <div class="ltitle">Templater &mdash; skrypty JavaScript w szablonach</div>
+    <div class="ldesc">Automatycznie generuj ID spraw, tw&#243;rz podfoldery i buduj interaktywne menu wyboru podmiot&#243;w.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c3">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Dwa tryby tag&#243;w Templater</div>
+<div class="sbody">
+<ul class="chk">
+  <li><code>&lt;% ... %&gt;</code> &mdash; wstaw wynik wyra&#380;enia (dat&#281;, tytu&#322; pliku, wynik funkcji)</li>
+  <li><code>&lt;%* ... *%&gt;</code> &mdash; wykonaj kod JavaScript &mdash; logika, p&#281;tle, operacje na plikach</li>
+</ul>
+<p>Wbudowane zmienne: <code>tp.file.title</code>, <code>tp.date.now("YYYY-MM-DD")</code>, <code>tp.system.prompt("Pytanie")</code>, <code>tp.system.suggester(etykiety, wartosci)</code>.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Skrypt generatora ID sprawy</div>
+<div class="sbody">
+<p>Settings &#8594; Templater &#8594; <span class="ui">Script files folder location</span> &#8594; wpisz: <code>00_META/Scripts</code>. Utw&#243;rz <code>00_META/Scripts/caseId.js</code>:</p>
+<div class="code"><span class="cm">// Generuje unikalny ID: CASE-202411-1234</span>
+<span class="kw">function</span> caseId() {
+  <span class="kw">const</span> now = <span class="kw">new</span> Date();
+  <span class="kw">const</span> y = now.getFullYear();
+  <span class="kw">const</span> m = String(now.getMonth() + 1).padStart(2, <span class="str">'0'</span>);
+  <span class="kw">const</span> r = Math.floor(Math.random() * 9000) + 1000;
+  <span class="kw">return</span> <span class="str">`CASE-${y}${m}-${r}`</span>;
+}
+module.exports = caseId;</div>
+<p>Wywo&#322;anie w szablonie: <code>&lt;% tp.user.caseId() %&gt;</code></p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Interaktywny szablon dochodzenia z automatycznym folderem</div>
+<div class="sbody">
+<p>Utw&#243;rz <code>00_META/Templates/TPL_Dochodzenie.md</code>:</p>
+<div class="code">&lt;%*
+<span class="kw">const</span> id = tp.user.caseId();
+<span class="kw">const</span> nazwa = <span class="kw">await</span> tp.system.prompt(<span class="str">"Nazwa sprawy:"</span>);
+<span class="kw">const</span> cel = <span class="kw">await</span> tp.system.prompt(<span class="str">"Cel dochodzenia:"</span>);
+<span class="kw">const</span> prio = <span class="kw">await</span> tp.system.suggester(
+  [<span class="str">"Wysoki"</span>, <span class="str">"&#346;redni"</span>, <span class="str">"Niski"</span>],
+  [<span class="str">"wysoki"</span>, <span class="str">"sredni"</span>, <span class="str">"niski"</span>]
+);
+<span class="kw">const</span> folder = <span class="str">`01_DOCHODZENIA/${id}_${nazwa}`</span>;
+<span class="kw">await</span> tp.file.move(folder + <span class="str">"/INDEX"</span>);
+<span class="kw">await</span> app.vault.createFolder(folder + <span class="str">"/_attachments"</span>);
+*%&gt;
+<span class="cm">---</span>
+<span class="kw">case_id:</span> <span class="str">"&lt;% id %&gt;"</span>
+<span class="kw">cel:</span> <span class="str">"&lt;% cel %&gt;"</span>
+<span class="kw">priorytet:</span> <span class="str">&lt;% prio %&gt;</span>
+<span class="kw">status:</span> <span class="str">aktywny</span>
+<span class="kw">data_otwarcia:</span> <span class="str">&lt;% tp.date.now("YYYY-MM-DD") %&gt;</span>
+<span class="cm">---</span>
+
+<span class="tg"># &lt;% id %&gt; &mdash; &lt;% nazwa %&gt;</span>
+<span class="tg">## Zadania</span>
+- [ ] Zebranie danych OSINT
+- [ ] Weryfikacja &#378;r&#243;de&#322;
+- [ ] Analiza powi&#261;za&#324;
+- [ ] Sporz&#261;dzenie raportu</div>
+<p>U&#380;ycie: <kbd>Ctrl</kbd>+<kbd>N</kbd> &#8594; <kbd>Ctrl</kbd>+<kbd>P</kbd> &#8594; Templater &#8594; TPL_Dochodzenie. Obsidian zapyta o nazw&#281; i cel, stworzy folder i przeniesie notatk&#281;.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">4</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Hotkeys dla szablon&#243;w</div>
+<div class="sbody">
+<p>Settings &#8594; Templater &#8594; <span class="ui">Template Hotkeys</span> &#8594; <strong>+</strong>:</p>
+<ul class="chk">
+  <li><kbd>Alt</kbd>+<kbd>O</kbd> &#8594; TPL_Osoba</li>
+  <li><kbd>Alt</kbd>+<kbd>F</kbd> &#8594; TPL_Firma</li>
+  <li><kbd>Alt</kbd>+<kbd>D</kbd> &#8594; TPL_Dochodzenie</li>
+</ul>
+</div></div></div>
+
+</div></div></div>
+
+<!-- L10 DataviewJS -->
+<div class="lcard bg3c" id="l10">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c3">10</div>
+  <div class="lmeta">
+    <div class="ltitle">DataviewJS &mdash; zaawansowane agregacje wywiadowcze</div>
+    <div class="ldesc">JavaScript API Dataview: alerty o przestarza&#322;ych danych, macierze powi&#261;za&#324; i heatmapa aktywno&#347;ci.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c3">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">DQL vs DataviewJS &mdash; kiedy u&#380;ywa&#263; czego</div>
+<div class="sbody">
+<p>Zwyk&#322;y Dataview (DQL) wystarczy do ~90% zada&#324;. DataviewJS (blok <code>```dataviewjs</code>) u&#380;ywaj gdy:</p>
+<ul class="chk">
+  <li>Potrzebujesz <strong>oblicze&#324;</strong> (np. ile dni min&#281;&#322;o od aktualizacji)</li>
+  <li>Chcesz <strong>warunkowego formatowania</strong> (podkre&#347;l czerwono je&#347;li...)</li>
+  <li>Budujesz <strong>zagnie&#380;d&#380;one agregacje</strong> niemo&#380;liwe w DQL</li>
+</ul>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Alert &mdash; podmioty bez aktualizacji &gt;7 dni</div>
+<div class="sbody">
+<div class="code">```dataviewjs
+<span class="kw">const</span> DAYS = 7;
+<span class="kw">const</span> stale = dv.pages(<span class="str">'#podmiot AND #status/aktywny'</span>)
+  .where(p => (Date.now() - p.file.mtime) / 86400000 > DAYS);
+
+<span class="kw">if</span> (stale.length === 0) {
+  dv.paragraph(<span class="str">"&#9989; Wszystkie aktywne podmioty aktualne."</span>);
+} <span class="kw">else</span> {
+  dv.header(4, <span class="str">`&#9888;&#65039; ${stale.length} podmiot&#243;w bez aktualizacji &gt;${DAYS} dni:`</span>);
+  dv.table([<span class="str">"Podmiot"</span>, <span class="str">"Ostatnia zmiana"</span>],
+    stale.map(p => [p.file.link, p.file.mtime.toFormat(<span class="str">"dd.MM.yyyy"</span>)]));
+}
+```</div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Macierz powi&#261;za&#324; osoba &#8594; firma</div>
+<div class="sbody">
+<div class="code">```dataviewjs
+<span class="kw">const</span> osoby = dv.pages(<span class="str">'"02_PODMIOTY/Osoby"'</span>)
+  .where(p => p.powiazane_firmy?.length > 0);
+dv.table([<span class="str">"Osoba"</span>, <span class="str">"Powi&#261;zane firmy"</span>, <span class="str">"Status"</span>],
+  osoby.map(p => [
+    p.file.link,
+    dv.array(p.powiazane_firmy).join(<span class="str">", "</span>),
+    p.status
+  ])
+);
+```</div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">4</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Heatmapa aktywno&#347;ci zbierania danych</div>
+<div class="sbody">
+<div class="code">```dataviewjs
+<span class="kw">const</span> byDay = {};
+dv.pages(<span class="str">'#zrodlo'</span>).forEach(p => {
+  <span class="kw">const</span> d = p.data_archiwizacji?.toString().slice(0,10);
+  <span class="kw">if</span>(d) byDay[d] = (byDay[d]||0)+1;
+});
+<span class="kw">const</span> sorted = Object.entries(byDay).sort().slice(-30);
+dv.table([<span class="str">"Data"</span>, <span class="str">"Nowe &#378;r&#243;d&#322;a"</span>, <span class="str">"Wykres"</span>],
+  sorted.map(([d,n]) => [d, n, <span class="str">"&#9608;"</span>.repeat(Math.min(n,20))]));
+```</div>
+</div></div></div>
+
+</div></div></div>
+
+<!-- L11 Integrations -->
+<div class="lcard bg3c" id="l11">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c3">11</div>
+  <div class="lmeta">
+    <div class="ltitle">Integracja z narz&#281;dziami OSINT &mdash; Shodan, Maltego</div>
+    <div class="ldesc">Importuj wyniki zewn&#281;trznych narz&#281;dzi do vaultu automatycznie przez skrypty Python i Shell Commands.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="box warn"><div class="box-icon">&#9888;&#65039;</div><div><strong>Bezpiecze&#324;stwo kluczy API:</strong> NIGDY nie wklejaj kluczy API (Shodan, VirusTotal, Censys) do plik&#243;w w vaulcie. U&#380;ywaj zmiennych &#347;rodowiskowych: <code>os.environ['SHODAN_KEY']</code>.</div></div>
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c3">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Shell Commands &mdash; uruchamiaj skrypty z Obsidian</div>
+<div class="sbody">
+<p>Zainstaluj <span class="pill">obsidian-shellcommands</span>. Settings &#8594; Shell Commands &#8594; <span class="ui">New shell command</span>:</p>
+<div class="code"><span class="cm">Windows: terminal w vaulcie</span>
+start cmd /k "cd /d {{vault_path}}"
+<span class="cm">macOS/Linux:</span>
+open -a Terminal {{vault_path}}</div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Skrypt Python &mdash; Shodan &#8594; notatka domeny</div>
+<div class="sbody">
+<div class="code"><span class="kw">import</span> shodan, os, sys
+<span class="kw">from</span> datetime <span class="kw">import</span> datetime
+
+api = shodan.Shodan(os.environ[<span class="str">'SHODAN_KEY'</span>])
+ip, vault = sys.argv[1], sys.argv[2]
+host = api.host(ip)
+ports = [
+  <span class="str">f"- **{s['port']}/{s['transport']}** &mdash; {s.get('product','?')}"</span>
+  <span class="kw">for</span> s <span class="kw">in</span> host[<span class="str">'data'</span>]
+]
+lines = [
+  <span class="str">"---"</span>,
+  <span class="str">f"typ: infrastruktura"</span>,
+  <span class="str">f"ip: \"{host['ip_str']}\""</span>,
+  <span class="str">f"org: \"{host.get('org','?')}\""</span>,
+  <span class="str">f"kraj: \"{host.get('country_name','?')}\""</span>,
+  <span class="str">f"ostatni_skan: \"{datetime.now().strftime('%Y-%m-%d')}\""</span>,
+  <span class="str">"tagi: [podmiot/ip, zrodlo/shodan, status/do-weryfikacji]"</span>,
+  <span class="str">"---"</span>,
+  <span class="str">f"# {host['ip_str']}"</span>,
+  <span class="str">""</span>,
+  <span class="str">"## Otwarte porty"</span>,
+] + ports + [<span class="str">""</span>, <span class="str">"## Notatki analityczne"</span>]
+path = <span class="str">f"{vault}/02_PODMIOTY/Domeny/{ip}.md"</span>
+open(path, <span class="str">'w'</span>, encoding=<span class="str">'utf-8'</span>).write(<span class="str">'\n'</span>.join(lines))</div>
+<p>Shell Command w Obsidian: <code>python ~/scripts/shodan.py {{prompt:IP}} {{vault_path}}</code></p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Eksport z Maltego CSV &#8594; notatki Obsidian</div>
+<div class="sbody">
+<p>W Maltego: prawym na graf &#8594; <span class="ui">Export Graph &#8594; CSV</span>. Nast&#281;pnie:</p>
+<div class="code"><span class="kw">import</span> csv, os
+TYPE_MAP = {
+  <span class="str">'Person'</span>: (<span class="str">'02_PODMIOTY/Osoby'</span>, <span class="str">'podmiot/osoba'</span>),
+  <span class="str">'Domain'</span>: (<span class="str">'02_PODMIOTY/Domeny'</span>, <span class="str">'podmiot/domena'</span>),
+  <span class="str">'Company'</span>: (<span class="str">'02_PODMIOTY/Firmy'</span>, <span class="str">'podmiot/firma'</span>),
+}
+VAULT = <span class="str">"/sciezka/OSINT-Vault"</span>
+<span class="kw">with</span> open(<span class="str">'maltego_export.csv'</span>, encoding=<span class="str">'utf-8'</span>) <span class="kw">as</span> f:
+  <span class="kw">for</span> row <span class="kw">in</span> csv.DictReader(f):
+    folder, tag = TYPE_MAP.get(row[<span class="str">'Type'</span>], (<span class="str">'02_PODMIOTY'</span>, <span class="str">'podmiot/inne'</span>))
+    val = row[<span class="str">'Value'</span>]
+    lines = [
+      <span class="str">"---"</span>,
+      <span class="str">f"typ: {row['Type'].lower()}"</span>,
+      <span class="str">f"wartosc: \"{val}\""</span>,
+      <span class="str">f"tagi: [{tag}, zrodlo/maltego, status/do-weryfikacji]"</span>,
+      <span class="str">"---"</span>,
+      <span class="str">f"# {val}"</span>,
+      <span class="str">""</span>,
+      <span class="str">"> Importowane z Maltego. Wymaga weryfikacji."</span>
+    ]
+    safe = val.replace(<span class="str">'/'</span>,<span class="str">'-'</span>)[:80]
+    open(<span class="str">f"{VAULT}/{folder}/{safe}.md"</span>,<span class="str">'w'</span>).write(<span class="str">'\n'</span>.join(lines))</div>
+</div></div></div>
+
+</div></div></div>
+
+<!-- L12 Reporting -->
+<div class="lcard bg3c" id="l12">
+<div class="lhdr" onclick="tog(this)">
+  <div class="lnum c3">12</div>
+  <div class="lmeta">
+    <div class="ltitle">Pipeline raportowy &mdash; raport OSINT jednym poleceniem</div>
+    <div class="ldesc">Szablon raportu z Dataview, eksport PDF i DOCX przez Pandoc, archiwizacja zamkni&#281;tych spraw.</div>
+  </div>
+  <div class="lchev">&#9662;</div>
+</div>
+<div class="lbody">
+<div class="steps">
+
+<div class="step"><div class="sline"><div class="snum c3">1</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Szablon raportu ko&#324;cowego z Dataview</div>
+<div class="sbody">
+<div class="code"><span class="cm">---</span>
+<span class="kw">typ:</span> <span class="str">raport</span>
+<span class="kw">data_raportu:</span> <span class="str">&lt;% tp.date.now("YYYY-MM-DD") %&gt;</span>
+<span class="kw">klasyfikacja:</span> <span class="str">POUFNE</span>
+<span class="cm">---</span>
+
+<span class="tg"># Raport OSINT &mdash; &lt;% tp.file.title %&gt;</span>
+
+<span class="tg">## 1. Streszczenie wykonawcze</span>
+&gt; Wpisz 3-5 zdaniowe podsumowanie.
+
+<span class="tg">## 2. Podmioty obj&#281;te analiz&#261;</span>
+```dataview
+TABLE imie_nazwisko, narodowosc, status, wiarygodnosc
+FROM "02_PODMIOTY"
+WHERE status != "zarchiwizowany"
+SORT typ ASC
+```
+
+<span class="tg">## 3. Zweryfikowane &#378;r&#243;d&#322;a</span>
+```dataview
+TABLE url, data_archiwizacji, wiarygodnosc
+FROM #zrodlo/web-clipper
+WHERE wiarygodnosc != "F"
+SORT wiarygodnosc ASC
+```
+
+<span class="tg">## 4. Do weryfikacji</span>
+```dataview
+LIST file.link
+FROM #status/do-weryfikacji
+```
+
+<span class="tg">## 5. Zalecenia</span>
+
+<span class="tg">## 6. Ograniczenia analizy</span></div>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">2</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Eksport do PDF z Obsidian</div>
+<div class="sbody">
+<p>Otw&#243;rz notatk&#281; w trybie Reading View (ikona &#128064;) &#8594; <kbd>Ctrl</kbd>+<kbd>P</kbd> &#8594; wpisz <strong>Export to PDF</strong>. Obsidian renderuje Markdown + tabele Dataview do jednego pliku PDF. Motyw Minimal daje najlepszy wygl&#261;d.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">3</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Eksport do DOCX przez Pandoc</div>
+<div class="sbody">
+<p>Zainstaluj Pandoc (pandoc.org). Shell Command:</p>
+<div class="code">pandoc "{{file_path}}" \
+  --from markdown+yaml_metadata_block \
+  --to docx \
+  --reference-doc="{{vault_path}}/00_META/raport_szablon.docx" \
+  --toc --toc-depth=2 \
+  -o "{{vault_path}}/05_RAPORTY/{{file_name}}.docx"</div>
+<p><code>raport_szablon.docx</code> to pusty Word z Twoimi stylami i logo. Pandoc nak&#322;ada je na tre&#347;&#263; z Markdown.</p>
+</div></div></div>
+
+<div class="step"><div class="sline"><div class="snum c3">4</div><div class="svline"></div></div>
+<div class="scontent"><div class="stitle">Pe&#322;ny workflow &mdash; od notatki do raportu</div>
+<div class="sbody">
+<div class="code"><span class="tg">1. NOWA SPRAWA</span>
+   Alt+D &#8594; Templater: nazwa, cel, priorytet
+   &#8594; Auto folder CASE-202411-XXXX/
+   &#8594; INDEX.md z checklistą
+
+<span class="tg">2. ZBIERANIE DANYCH</span>
+   &#8226; Web Clipper &#8594; strony jako notatki
+   &#8226; Alt+O / Alt+F &#8594; podmioty z szablonami
+   &#8226; Shell Command "Shodan IP" &#8594; infrastruktura
+   &#8226; SingleFile &#8594; archiwum HTML
+
+<span class="tg">3. ANALIZA</span>
+   &#8226; Dashboard.md &#8594; braki i priorytety
+   &#8226; Local Graph &#8594; pivot przez sie&#263;
+   &#8226; DataviewJS alert &#8594; nieaktualne wpisy
+
+<span class="tg">4. RAPORT</span>
+   &#8226; TPL_Raport &#8594; Dataview auto-tabele
+   &#8226; Export PDF lub Pandoc DOCX
+
+<span class="tg">5. ARCHIWIZACJA</span>
+   &#8226; Shell Command: ZIP + usuni&#281;cie folderu
+   &#8226; Vault czysty i gotowy</div>
+</div></div></div>
+
+</div>
+<div class="box ok"><div class="box-icon">&#127919;</div><div><strong>Gratulacje!</strong> Masz w pe&#322;ni zautomatyzowany vault wywiadowczy. Od pierwszej notatki po gotowy raport PDF &mdash; wszystko wewn&#261;trz jednego, lokalnego, zaszyfrowanego systemu.</div></div>
+</div></div>
+
+</div></section>
+
+<!-- PLUGINS REF -->
+<section class="section" style="background:var(--bg2)">
+<div class="container">
+  <div class="sec-hdr">
+    <div class="sec-tag" style="color:var(--muted)">// Ekosystem</div>
+    <h2 class="sec-title">Polecane wtyczki &mdash; mapa ekosystemu</h2>
+  </div>
+  <div class="ov-grid">
+    <div class="ov-card"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--gold);margin-bottom:.65rem">ZBIERANIE DANYCH</div><ul class="chk"><li>Obsidian Web Clipper (oficjalny)</li><li>Tag Wrangler &mdash; taksonomia</li><li>Calendar &mdash; dzienny dziennik</li></ul></div>
+    <div class="ov-card"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--gold);margin-bottom:.65rem">ORGANIZACJA</div><ul class="chk"><li>Templater &mdash; szablony z JS</li><li>Kanban &mdash; tablice spraw</li><li>Timelines &mdash; o&#347; czasu</li></ul></div>
+    <div class="ov-card"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--gold);margin-bottom:.65rem">ANALIZA</div><ul class="chk"><li>Dataview &mdash; SQL dla notatek</li><li>Graph Analysis &mdash; metryki sieci</li><li>Excalidraw &mdash; mapy r&#281;czne</li></ul></div>
+    <div class="ov-card"><div style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--gold);margin-bottom:.65rem">AUTOMATYZACJA</div><ul class="chk"><li>Shell Commands &mdash; skrypty zewn&#281;trzne</li><li>Periodic Notes &mdash; raporty cykliczne</li><li>Pandoc &mdash; eksport DOCX/PDF</li></ul></div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div class="flogo">&#11041; OBSIDIAN &times; OSINT</div>
+  <p>Kurs oparty na najlepszych praktykach analizy wywiadowczej open-source.</p>
+  <p style="margin-top:.4rem">Wszystkie techniki dotycz&#261; wy&#322;&#261;cznie legalnych, publicznych &#378;r&#243;de&#322; danych.</p>
+</footer>
+
+<script>
+function tog(hdr){hdr.closest('.lcard').classList.toggle('open');}
+window.addEventListener('scroll',()=>{
+  const t=document.body.scrollHeight-window.innerHeight;
+  document.getElementById('prog').style.transform=`scaleX(${window.scrollY/t})`;
+});
+['l1','l6','l9'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('open');});
+</script>
+</body>
+</html>
