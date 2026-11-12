@@ -10,11 +10,11 @@
 <style>
 :root{
   --bg:#0f1210;--panel:#171b18;--panel2:#1d221e;--ink:#e3e8e0;--muted:#8d978b;
-  --line:#2a312b;--accent:#8fb573;--accent-ink:#0f1210;--tool:#8fb573;--course:#d9a441;
+  --line:#2a312b;--accent:#8fb573;--accent-ink:#0f1210;--tool:#8fb573;--course:#d9a441;--training:#7ea8ea;
 }
 @media (prefers-color-scheme: light){
   :root{--bg:#eef0ec;--panel:#f8f9f6;--panel2:#ffffff;--ink:#1d221d;--muted:#5d665c;
-    --line:#cfd5cb;--accent:#3d5a3a;--accent-ink:#ffffff;--tool:#3d5a3a;--course:#8a5a00;}
+    --line:#cfd5cb;--accent:#3d5a3a;--accent-ink:#ffffff;--tool:#3d5a3a;--course:#8a5a00;--training:#1c4f96;}
 }
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'IBM Plex Sans',system-ui,sans-serif}
@@ -72,6 +72,10 @@ footer a{color:inherit}
       <li><a href="obsidian-kurs.html">Obsidian dla OSINT — Kompletny Kurs</a></li>
       <li><a href="obsidian-osint-field-manual.html">Obsidian OSINT Field Manual</a></li>
       <li><a href="dobowy-brief.html">Dobowy brief OSINT Polska</a></li>
+      <li><a href="platforma-osint.html">Biały Wywiad — Platforma OSINT (hasło)</a></li>
+      <li><a href="trening-osint.html">Trening OSINT (hasło)</a></li>
+      <li><a href="trening-slp-2222.html">Trening SLP 2222 (hasło)</a></li>
+      <li><a href="trening-slp-3333.html">Trening SLP 3333 (hasło)</a></li>
     </ul>
   </noscript>
 </main>
@@ -113,11 +117,43 @@ const MATERIALY = [
     plik: "dobowy-brief.html",
     opis: "Dobowy przegląd otwartych źródeł dla Polski w układzie PMESII: mapa zdarzeń, filtr województw, etykiety epistemiczne i archiwum wydań.",
     tagi: ["PMESII", "monitoring", "mapa", "archiwum"]
+  },
+  {
+    tytul: "Biały Wywiad — Platforma OSINT",
+    rodzaj: "Narzędzie",
+    plik: "platforma-osint.html",
+    haslo: true,
+    opis: "SOCMINT Workbench + Akademia: wyszukiwanie w FB, X, Instagramie, VK, OK i Telegramie, mapa taktyczna z MGRS/OCOKA, pivoty po infrastrukturze oraz interaktywne lekcje.",
+    tagi: ["SOCMINT", "Warsztat", "Akademia"]
+  },
+  {
+    tytul: "Trening OSINT",
+    rodzaj: "Kurs",
+    plik: "trening-osint.html",
+    haslo: true,
+    opis: "Materiał do samodzielnej nauki do szkolenia Narzędziownik OSINT: 6 modułów z lekcjami, quizami i fiszkami, sprawa szkoleniowa, plan 14 dni, warsztat analityka i egzamin.",
+    tagi: ["6 modułów", "quizy", "egzamin"]
+  },
+  {
+    tytul: "Trening SLP 2222",
+    rodzaj: "Trening",
+    plik: "trening-slp-2222.html",
+    haslo: true,
+    opis: "Trenażer STANAG 6001: rosyjski z poziomu 1 na 2. Czytanie, słuchanie, słownictwo, gramatyka, odmiana, pisanie i mówienie oraz symulacje egzaminu.",
+    tagi: ["STANAG 6001", "rosyjski", "1 → 2"]
+  },
+  {
+    tytul: "Trening SLP 3333",
+    rodzaj: "Trening",
+    plik: "trening-slp-3333.html",
+    haslo: true,
+    opis: "Trenażer STANAG 6001: angielski na poziom 3. Teksty i nagrania egzaminacyjne, Use of English, pisanie pod czas, strategie i szybkie testy.",
+    tagi: ["STANAG 6001", "angielski", "→ 3"]
   }
 ];
 
-const MNOGA = { "Narzędzie": "Narzędzia", "Kurs": "Kursy" };
-const KOLORY = { "Narzędzie": "var(--tool)", "Kurs": "var(--course)" };
+const MNOGA = { "Narzędzie": "Narzędzia", "Kurs": "Kursy", "Trening": "Treningi" };
+const KOLORY = { "Narzędzie": "var(--tool)", "Kurs": "var(--course)", "Trening": "var(--training)" };
 const grid = document.getElementById("grid"), chips = document.getElementById("chips"),
       q = document.getElementById("q"), count = document.getElementById("count");
 let aktywny = "Wszystko";
@@ -139,8 +175,8 @@ function rysuj(){
   grid.replaceChildren(...lista.map(m => {
     const li = el("li"), a = el("a", "card");
     a.href = m.plik; a.style.setProperty("--kind", KOLORY[m.rodzaj] || "var(--accent)");
-    a.append(el("span", "kind", m.rodzaj), el("h2", "", m.tytul), el("p", "", m.opis));
-    const t = el("ul", "tags"); (m.tagi || []).forEach(x => t.appendChild(el("li", "", x))); a.appendChild(t);
+    a.append(el("span", "kind", m.rodzaj + (m.haslo ? " · 🔒" : "")), el("h2", "", m.tytul), el("p", "", m.opis));
+    const t = el("ul", "tags"); (m.tagi || []).forEach(x => t.appendChild(el("li", "", x))); if(m.haslo) t.appendChild(el("li", "", "🔒 hasło")); a.appendChild(t);
     a.appendChild(el("span", "go", "Otwórz →"));
     li.appendChild(a); return li;
   }));
