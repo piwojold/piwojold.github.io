@@ -749,6 +749,10 @@ textarea{resize:vertical;min-height:56px}
 .help table{border-collapse:collapse;width:100%;font-size:13px}
 .help td{border-top:1px solid var(--line);padding:6px 4px;vertical-align:top}
 .help td:first-child{font-weight:600;white-space:nowrap;color:var(--c)}
+.optab{width:100%;border-collapse:collapse;font-size:12.5px}.optab th,.optab td{border:1px solid var(--line);padding:4px 6px;text-align:left;vertical-align:top}.optab th{background:var(--bg);font-weight:600}.optab tr[data-cr]{cursor:pointer}.optab tr[data-cr]:hover td{background:var(--bg)}
+.isolab span{position:absolute;transform:translate(-50%,-50%);color:#fff;font:600 11px IBM Plex Mono,monospace;padding:1px 5px;border-radius:8px;white-space:nowrap;box-shadow:0 0 0 1.5px #fff}
+#shareUrl{width:100%;font:12px IBM Plex Mono,monospace}
+.relb{font-size:11px;font-weight:600;margin-left:6px;padding:0 6px;border-radius:8px;border:1px solid var(--cc);color:var(--cc);white-space:nowrap}
 .note{background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px;font-size:13px}
 
 /* mapa */
@@ -948,6 +952,7 @@ textarea{resize:vertical;min-height:56px}
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="analiza" aria-selected="true">Analiza</button>
       <button class="tab" role="tab" data-tab="teren" aria-selected="false">Mapa i teren</button>
+      <button class="tab" role="tab" data-tab="dzialania" aria-selected="false">Działania</button>
       <button class="tab" role="tab" data-tab="pogoda" aria-selected="false">Pogoda</button>
       <button class="tab" role="tab" data-tab="pomoc" aria-selected="false">Instrukcja</button>
     </div>
@@ -993,6 +998,9 @@ textarea{resize:vertical;min-height:56px}
         <label class="small" for="pDem">Model wysokościowy</label>
         <select id="pDem"><option value="terrarium">AWS Terrain Tiles – SRTM / EU-DEM (model terenu)</option><option value="cop">Copernicus GLO-30 – model powierzchni (DSM) do widoczności</option></select>
         <div class="hint">Copernicus GLO-30 (30 m, cały świat, także Białoruś) zawiera rzeczywistą wysokość lasu i zabudowy, więc daje dokładniejsze martwe pola. Nachylenia i MCOO nadal liczone są z modelu terenu. Jeśli Copernicus będzie niedostępny, narzędzie wróci do SRTM i zaznaczy to w ocenie wiarygodności.</div>
+        <label class="small" for="pCover">Pokrycie terenu (lasy, zabudowa, wody)</label>
+        <select id="pCover"><option value="osm">OpenStreetMap</option><option value="wc">OpenStreetMap + ESA WorldCover 10 m (satelitarne, 2021)</option></select>
+        <div class="hint">WorldCover uzupełnia lasy, zabudowę, wody i mokradła tam, gdzie OpenStreetMap jest niepełny (np. Białoruś). Pobranie trwa dłużej; jeśli dane będą niedostępne, narzędzie użyje samego OSM i zaznaczy to w ocenie wiarygodności.</div>
         <label class="check"><input type="checkbox" id="pDsm" checked> Uwzględnij las i zabudowę w widoczności</label>
         <div class="row" style="flex-wrap:nowrap">
           <div style="flex:1"><label class="small" for="pHF">Wysokość lasu (m)</label><input type="number" id="pHF" value="20" min="0" max="50" step="1"></div>
@@ -1022,6 +1030,59 @@ textarea{resize:vertical;min-height:56px}
         <h3>Białoruś – mapy i dane wysokościowe</h3>
         <div class="links" id="byLinks"></div>
         <div class="hint">Yandex, mapa katastralna (maps.nca.by), floodmap.net, topographic-map.com i EarthExplorer nie udostępniają kafli do użycia w innych aplikacjach, a regulamin Yandex wprost tego zabrania. Dlatego otwierają się w nowej karcie, Yandex i Copernicus Browser w miejscu środka mapy. W samym narzędziu dla Białorusi najdokładniejsze są: radzieckie mapy sztabowe (1:50 000–1:200 000), OpenTopoMap, zdjęcia Esri i Sentinel-2 oraz model terenu Copernicus GLO-30 (Parametry analizy). Warstwy Geoportalu (PL) nie obejmują Białorusi.</div>
+      </div>
+      <div class="section">
+        <h3>Wymiana danych</h3>
+        <div class="row"><button class="btn sm" id="xKml">Eksport KML</button><button class="btn sm" id="xGpx">Eksport GPX</button><button class="btn sm" id="xGeo">Eksport GeoJSON</button><button class="btn sm" id="xImp">Import KML / GPX / GeoJSON</button></div>
+        <div class="hint">KML otworzysz w ATAK, Google Earth i QGIS; GPX w odbiornikach GPS i aplikacjach terenowych. Import dodaje obiekty do bieżącej analizy (do aktywnej kategorii, jeśli plik jej nie podaje).</div>
+        <div class="row"><button class="btn sm primary" id="xLink">Kopiuj link do analizy</button></div>
+        <div id="shareOut" class="mform" hidden></div>
+      </div>
+      <div class="section">
+        <h3>Praca bez internetu</h3>
+        <div class="hint" id="offState">—</div>
+        <div class="row"><button class="btn sm primary" id="offSave">Zapisz podkład rejonu offline</button><button class="btn sm" id="offClear">Usuń zapisane podkłady</button></div>
+        <div class="hint">Zapisywany jest wybrany podkład dla ocenianego rejonu (do 240 kafli, zgodnie z zasadami serwerów map). Bez internetu działają: mapa z zapisanych kafli, obiekty, wnioski, raport tekstowy i eksport. Nowa ocena rejonu i pogoda wymagają połączenia.</div>
+      </div>
+    </div>
+
+    <div class="pane" id="p-dzialania" hidden>
+      <div class="section">
+        <h3>Kierunek działania i zadanie</h3>
+        <label class="small" for="opDir">Przeciwnik działa z kierunku</label><select id="opDir"></select>
+        <div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small" for="opTask">Własne zadanie</label><select id="opTask"><option value="obr">obrona (przeciwnik naciera)</option><option value="nat">natarcie (własny ruch na przeciwnika)</option></select></div>
+          <div style="flex:1"><label class="small" for="opMode">Rodzaj ruchu</label><select id="opMode"></select></div></div>
+        <label class="check"><input type="checkbox" id="opWx" checked> Uwzględnij pogodę (macierz z zakładki „Pogoda”)</label>
+        <div class="row"><button class="btn sm primary" id="opRun">Wyznacz drogi podejścia i czasy</button></div>
+        <div id="opOut" class="mform"></div>
+      </div>
+      <div class="section">
+        <h3>Linie czasowe</h3>
+        <div class="row" style="flex-wrap:nowrap;align-items:end"><div style="flex:1"><label class="small" for="opIso">Czasy w minutach („auto” dobiera je do rejonu)</label><input type="text" id="opIso" value="auto" placeholder="auto lub np. 30, 60, 120"></div>
+          <label class="check" style="flex:1"><input type="checkbox" id="opIsoOn" checked> Pokaż na mapie</label></div>
+        <div class="hint">Linie pokazują, dokąd wybrany rodzaj ruchu może dotrzeć w danym czasie od krawędzi rejonu, z której zaczyna się działanie.</div>
+      </div>
+      <div class="section">
+        <h3>Przeciwnik – obserwacja i ogień</h3>
+        <div class="hint">Nanieś symbole przeciwnika w rejonie i w edycji symbolu podaj zasięg obserwacji oraz zasięg ognia. Narzędzie policzy, co z tych pozycji widać i gdzie są pola martwe.</div>
+        <div class="row"><button class="btn sm primary" id="opEn">Policz obserwację przeciwnika</button><label class="check"><input type="checkbox" id="opEnOn" checked> Pokaż na mapie</label></div>
+        <div id="opEnOut" class="mform"></div>
+      </div>
+      <div class="section">
+        <h3>Przeprawy</h3>
+        <div class="row" style="flex-wrap:nowrap;align-items:end"><div style="flex:1"><label class="small" for="opMass">Masa pojazdu (t)</label><input type="number" id="opMass" value="40" min="1" max="150" step="1"></div><div style="flex:2" class="hint">Mosty o mniejszej nośności zostaną oznaczone i wyłączone z ruchu pojazdów.</div></div>
+        <div id="opCross" class="mform"></div>
+      </div>
+      <div class="section">
+        <h3>Widoczność między dwoma punktami</h3>
+        <div class="row"><button class="btn sm primary" id="opLos">Wskaż punkty A i B</button></div>
+        <div class="hint">Profil terenu z odpowiedzią „widać / nie widać” i miejscem, w którym teren przesłania cel. Wysokości obserwatora i celu ustawisz w zakładce „Mapa i teren”.</div>
+      </div>
+      <div class="section">
+        <h3>Tryb szkoleniowy</h3>
+        <label class="check"><input type="checkbox" id="trOn"> Ukryj wynik automatyczny do czasu porównania</label>
+        <div class="hint">Uczestnik zaznacza rejon, sam nanosi obiekty i wpisuje wnioski, a potem porównuje je z oceną automatyczną.</div>
+        <div class="row"><button class="btn sm primary" id="trCmp" hidden>Porównaj z oceną automatyczną</button></div>
       </div>
     </div>
 
@@ -1065,7 +1126,7 @@ textarea{resize:vertical;min-height:56px}
       <button class="btn" id="bExport">Zapisz plik</button>
       <button class="btn" id="bImport">Wczytaj plik</button>
       <button class="btn" id="bClear">Wyczyść</button>
-      <input type="file" id="file" accept=".geojson,.json" hidden>
+      <input type="file" id="file" accept=".geojson,.json,.kml,.gpx,application/vnd.google-earth.kml+xml,application/gpx+xml" hidden>
     </div>
   </aside>
 
@@ -1299,6 +1360,16 @@ const HELP=`
 <p>Przy ocenie rejonu narzędzie rysuje wektorową mapę terenu z OpenStreetMap: rzeki, cieki i rowy, jeziora i mokradła, lasy, zarośla i sady, drogi według klas, drogi gruntowe, koleje, zabudowę, urwiska, skarpy, nasypy i wyrobiska. Każdą grupę włączasz osobno w nakładkach; trafiają też jako osobne warstwy do PDF. Dodatkowo dostępne są nakładki hydrografii i komunikacji Esri.</p>
 <h3>Pogoda (OCOKA-W)</h3>
 <p>Zakładka <i>Pogoda</i> pobiera prognozę dla środka rejonu oceny (Open-Meteo) i ocenia jej wpływ na działania: opady z ostatnich 72 h a przejezdność, zamarznięty grunt, pokrywa śnieżna, widoczność (mgła), porywy wiatru a loty BSP, godziny wschodu i zachodu oraz faza Księżyca. Progi są orientacyjne. Możesz włączyć radar opadów na mapie (RainViewer), otworzyć mapę Windy w panelu i przejść do serwisów: Windy, Meteoblue, RainViewer, Sat24, IMGW, Meteo.pl, Belgidromet (pogoda.by), Gismeteo i MeteoX. Warunki trafiają do raportu jako sekcja „W”.</p>
+<h4>Zakładka „Działania”</h4>
+<p><b>Kierunek działania i zadanie</b>: wskaż, z której strony działa przeciwnik (albo zostaw „automatycznie” – kierunek wynika wtedy z naniesionych symboli), wybierz obronę lub natarcie i rodzaj ruchu. Narzędzie wyznaczy najszybszą drogę podejścia i drogę alternatywną, poda czasy przejścia pieszo, na kołach i na gąsienicach, pokaże, jaką część drogi widać z własnych punktów obserwacyjnych, i dopisze wnioski do sekcji A i K.</p>
+<p><b>Linie czasowe</b> pokazują, dokąd dany rodzaj ruchu dotrze w kolejnych minutach od krawędzi rejonu. „auto” dobiera czasy do wielkości rejonu; możesz wpisać własne, np. 30, 60, 120. Prędkości są orientacyjne i zależą od dróg, klasy MCOO, nachylenia oraz – jeśli pobrano prognozę – pogody.</p>
+<p><b>Przeciwnik – obserwacja i ogień</b>: w edycji symbolu przeciwnika podaj zasięg obserwacji i zasięg ognia. Przycisk liczy, jaką część rejonu i dróg podejścia przeciwnik widzi (pomarańczowy) i ma w zasięgu ognia (czerwony); reszta to pola martwe względem przeciwnika.</p>
+<p><b>Przeprawy</b>: lista mostów i brodów z nośnością i szerokością z OpenStreetMap. Po wpisaniu masy pojazdu mosty zbyt słabe są oznaczane i wyłączane z obliczeń ruchu pojazdów. Brak danych o nośności jest częsty – takie mosty trzeba sprawdzić w terenie.</p>
+<p><b>Widoczność między dwoma punktami</b>: wskaż punkt A i B, a zobaczysz profil terenu, odpowiedź „widać / nie widać” i miejsce, w którym teren przesłania cel.</p>
+<p><b>Tryb szkoleniowy</b>: po zaznaczeniu rejonu wynik automatyczny jest ukrywany. Uczestnik sam nanosi obiekty i wpisuje wnioski, a przycisk „Porównaj” zestawia je z oceną automatyczną.</p>
+<h4>Wymiana danych i praca bez internetu</h4>
+<p>W zakładce „Mapa i teren” wyeksportujesz analizę do KML (ATAK, Google Earth, QGIS), GPX i GeoJSON oraz zaimportujesz obiekty z tych formatów. „Kopiuj link do analizy” tworzy adres, który odtwarza rejon, obiekty i wnioski u innej osoby. „Zapisz podkład rejonu offline” pobiera kafle wybranego podkładu, tak aby mapa i zapisana analiza działały bez połączenia; nowa ocena rejonu i pogoda wymagają internetu.</p>
+<p><b>Pokrycie terenu z ESA WorldCover</b> (Parametry analizy) uzupełnia lasy, zabudowę i wody danymi satelitarnymi 10 m tam, gdzie OpenStreetMap jest niepełny.</p>
 <p><b>Wpływ pogody na działania (macierz IPB)</b>: tabela na 72 h w blokach 6-godzinnych ocenia jako korzystne (K), ograniczające (O) lub niekorzystne (N) warunki dla: śmigłowców, lotnictwa, małych BSP, obserwacji wzrokowej, termowizji, artylerii (ogień obserwowany), przejezdności pojazdów kołowych i gąsienicowych, żołnierzy, łączności, zasłon dymnych i skażeń oraz desantu. Kliknięcie komórki pokazuje przyczynę oceny. Pod macierzą są wnioski dla własnych wojsk i przeciwnika, np. okna bez BSP, okresy słabego kontrastu termicznego, kanalizowanie ruchu przez rozmokły grunt, kierunek dryfu dymów i skażeń. Progi są orientacyjne i można je zmienić w sekcji „Progi oceny”. Podstawa chmur jest szacowana z różnicy temperatury i punktu rosy, więc ma charakter przybliżony.</p>
 <h3>Białoruś</h3>
 <p>Dla Białorusi najdokładniejsze podkłady w narzędziu to radzieckie mapy sztabowe, OpenTopoMap oraz zdjęcia Esri i Sentinel-2. W <i>Parametrach analizy</i> wybierz model <b>Copernicus GLO-30</b> – zawiera rzeczywistą wysokość lasu i zabudowy, więc martwe pola są dokładniejsze. Yandex Mapy, mapa katastralna (maps.nca.by), floodmap.net, topographic-map.com, EarthExplorer i Copernicus Browser otwierasz z sekcji <i>Białoruś</i> w zakładce <i>Mapa i teren</i>.</p>
@@ -1696,6 +1767,7 @@ function decorate(){
     if(hasSector)deco.addLayer(L.polygon(wedge(l.getLatLng(),+p.az,+p.sw,+p.range),{color:c,weight:1.5,dashArray:'6 4',fillOpacity:.06,interactive:false}));
     else if(l instanceof L.Marker&&+p.range>0)
       deco.addLayer(L.circle(l.getLatLng(),{radius:+p.range,color:c,weight:1.5,dashArray:'4 4',fillOpacity:.05,interactive:false}));
+    if(p.cat==='E'&&l instanceof L.Marker&&+p.fire>0)deco.addLayer(L.circle(l.getLatLng(),{radius:+p.fire,color:eCol(p),weight:2,fill:false,interactive:false}));
     if(p.cat==='E')return decoEnemy(l,p,isLine);
     if(!doct)return decoClassic(l,p,c);
     if(l instanceof L.Marker&&p.cat==='O')dlabel(l.getLatLng(),'OP'+(++nOP),c);
@@ -1882,6 +1954,7 @@ function enemyFields(l,isPt,isLine){
     <div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small">Szczebel</label><select data-f="ech">${Object.entries(ECH).map(([k,n])=>`<option value="${k}">${k?k+' – '+n:'brak'}</option>`).join('')}</select></div>${confSel}</div>
     <div class="row" style="flex-wrap:nowrap">${sideSel}<div style="flex:1"><label class="small">Kierunek ruchu (°)</label><input type="number" min="0" max="359" step="5" data-f="mv" placeholder="brak"></div></div>
     <label class="small">Zasięg obserwacji (m)</label><input type="number" min="500" max="10000" step="250" data-f="range" placeholder="3000 (dla pola widzenia)">
+    <label class="small">Zasięg ognia (m)</label><input type="number" min="0" max="40000" step="100" data-f="fire" placeholder="np. 2000 – do analizy w zakładce „Działania”">
     ${p.vs?`<div class="mono">Pole widzenia: ${esc(p.vs)}</div>`:''}`;
   if(isLine)return `<div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small">Rodzaj</label><select data-f="ln">${Object.entries(ELN).map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select></div>${sideSel}</div><div class="row">${confSel}</div>`;
   return `<div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small">Rodzaj</label><select data-f="pa">${Object.entries(EPA).map(([k,n])=>`<option value="${k}">${n}</option>`).join('')}</select></div>${sideSel}</div><div class="row">${confSel}</div>`;
@@ -1984,7 +2057,7 @@ function startBrush(){
 
 // ================= Cofnij / ponów =================
 let hist=[],hi=-1,histTimer=null,restoring=false;
-function snap(){const fc=toGeoJSON();delete fc.ocoka.saved;return JSON.stringify(fc)}
+function snap(){const fc=toGeoJSON();delete fc.ocoka.saved;delete fc.ocoka.gx;return JSON.stringify(fc)}
 function histPush(){if(restoring)return;const sn=snap();if(hist[hi]===sn)return;hist=hist.slice(0,hi+1);hist.push(sn);if(hist.length>60)hist.shift();hi=hist.length-1;updUndo()}
 function updUndo(){$('bUndo').disabled=hi<=0;$('bRedo').disabled=hi>=hist.length-1}
 function restore(sn){
@@ -2181,7 +2254,10 @@ function reliability(q){
   if(q.demSrc==='cop')rows.push(['Widoczność i martwe pola','mid',`Linie widoczności liczone na modelu powierzchni Copernicus GLO-30 (DSM, 30 m, dane radarowe z lat 2011–2015), który zawiera rzeczywistą wysokość lasu i zabudowy; obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję. Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.`]);
   else rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',(q.demSrc==='cop-failed'?'Model Copernicus był niedostępny – użyto SRTM. ':'')+(q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`)]);
   rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
-  rows.push(['Kierunki podejścia (AA)','lo','Model najmniejszego oporu po klasach MCOO z preferencją dróg; wskazuje kandydatów w dwóch umownych kierunkach (S→N, W→E). Wymagają oceny analityka i ukierunkowania względem przeciwnika.']);
+  if(String(q.coverSrc||'').includes('wc'))rows.push(['Pokrycie terenu – ESA WorldCover',String(q.coverSrc).includes('niedost')?'lo':'mid',String(q.coverSrc).includes('niedost')?'Dane WorldCover były niedostępne – użyto samego OpenStreetMap.':'ESA WorldCover v200 (Sentinel-1/2, stan na 2021 r., 10 m, CC BY 4.0) uzupełnia lasy, zabudowę, wody i mokradła. Zmiany po 2021 r. (wycinki, nowa zabudowa) nie są odwzorowane; klasyfikacja satelitarna myli się zwykle w kilku–kilkunastu procentach pikseli.']);
+  rows.push(['Kierunki podejścia (AA)',OPS.res?'mid':'lo',OPS.res?'Drogi najkrótszego czasu dla wskazanego kierunku działania i rodzaju ruchu (zakładka „Działania”), liczone po siatce z prędkościami orientacyjnymi zależnymi od dróg, klasy MCOO, nachylenia i pogody. Nie uwzględniają zapór, ognia ani stanu nawierzchni.':'Model najmniejszego oporu po klasach MCOO z preferencją dróg; wskazuje kandydatów w dwóch umownych kierunkach (S→N, W→E). Wskaż kierunek działania przeciwnika w zakładce „Działania”, aby je ukierunkować.']);
+  if(OPS.res)rows.push(['Czasy ruchu i linie czasowe','lo','Prędkości orientacyjne (nie z konkretnego regulaminu): pieszo wg funkcji Toblera, pojazdy kołowe 40 km/h po drogach i 4–12 km/h w terenie, gąsienicowe 30 i 8–20 km/h, z poprawką na nachylenie i pogodę. Drogi w modelu to tylko drogi publiczne z OSM; drogi gruntowe i mosty na nich nie przyspieszają ruchu. Czasy służą do porównania wariantów, nie do planowania co do minuty.']);
+  if(OPS.en)rows.push(['Obserwacja i ogień przeciwnika','lo','Widoczność z naniesionych pozycji liczona na siatce oceny z lasem i zabudową jako przesłonami, w granicach podanych zasięgów. Wynik zależy od dokładności położenia przeciwnika; zasięg ognia traktowany jest jako ogień bezpośredni obserwowany.']);
   rows.push(['Infrastruktura',q.infErr?'lo':'mid',q.infErr?'Brak danych o infrastrukturze (serwer niedostępny).':'OpenStreetMap: obecność obiektu jest wiarygodna, brak obiektu nie oznacza, że go nie ma.']);
   return rows;
 }
@@ -2663,6 +2739,9 @@ async function snapMap(fit){
   if((MC&&map.hasLayer(mcoo))||(ovSlope&&map.hasLayer(ovSlope))){const ctx=mk('MCOO, martwe pola, nachylenie',false);
     if(ovSlope&&map.hasLayer(ovSlope))await drawVec(ctx,[ovSlope],S);
     if(MC&&map.hasLayer(mcoo))await drawTiles(ctx,mcoo,S,cR,warn,'MCOO')}
+  // 4b. obserwacja przeciwnika i linie czasowe
+  if(enLayer&&map.hasLayer(enLayer)){const ctx=mk('Obserwacja i ogień przeciwnika',false);await drawVec(ctx,[enLayer],S)}
+  if(isoLayer.getLayers().length){const ctx=mk('Linie czasowe',false);await drawVec(ctx,isoLayer.getLayers(),S)}
   // 5. siatka
   if(map.hasLayer(gridL)){const ctx=mk('Siatka MGRS',false);await drawVec(ctx,gridL.getLayers(),S)}
   // 6. infrastruktura
@@ -2705,6 +2784,7 @@ async function buildReportHTML(snap){
   if(lastSum){const s=lastSum;
     parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'—':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}; MCOO: teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}.</p>`)}
   parts.push(wxReportHTML());
+  parts.push(opsReportHTML());
   const cl=t=>(t||'—').replace(/\n/g,' ');
   const en=drawn.getLayers().filter(l=>l.feature.properties.cat==='E');
   if(en.length||notes.E.trim()){
@@ -2738,7 +2818,7 @@ async function buildReportHTML(snap){
   return parts.join('\n');
 }
 let rSig='',rEdited=false;
-function repSig(){return JSON.stringify([areaEl.value,autoDesc,lastSum&&lastSum.date,hi,drawn.getLayers().length,wxState&&wxState.time,wxState&&$('wxRep').checked,WXT])}
+function repSig(){return JSON.stringify([areaEl.value,autoDesc,lastSum&&lastSum.date,hi,drawn.getLayers().length,wxState&&wxState.time,wxState&&$('wxRep').checked,WXT,OPS.res&&OPS.res.date,OPS.en&&OPS.en.date,OPS.mass])}
 async function openReport(regen){
   const m=$('rmodal');m.hidden=false;$('rStale').hidden=true;
   if(!regen&&$('rDoc').innerHTML.trim()&&rSnap){
@@ -3328,15 +3408,15 @@ async function showProfile(lls,name){
 }
 async function runLOS(from,to){
   const name=from.feature.properties.name||'punkt';
-  openProfile('Widoczność z '+esc(name),'Obliczanie…','');losLayer.clearLayers();
+  openProfile('Widoczność z '+esc(name),'Obliczanie…','');losLayer.clearLayers();losLayer.addLayer(L.circleMarker(from.getLatLng(),{radius:5,color:'#fff',weight:2,fillColor:'#111',fillOpacity:1,interactive:false}));
   try{
     const {pts,total}=samplePath([from.getLatLng(),to],250),h=await sampleElev(pts,total);
     const hO=+$('hObs').value||0,hT=+$('hTgt').value||0,Rk=6371000/(1-.13);
     const drop=d=>d*d/(2*Rk),eye=h[0]+hO;
-    let maxA=-Infinity;const vis=[true];
+    let maxA=-Infinity,blk=-1;const vis=[true];
     for(let i=1;i<pts.length;i++){
       const d=pts[i].d,a=(h[i]+hT-drop(d)-eye)/d;vis.push(a>=maxA);
-      maxA=Math.max(maxA,(h[i]-drop(d)-eye)/d);
+      const g2=(h[i]-drop(d)-eye)/d;if(g2>maxA){maxA=g2;if(i<pts.length-1)blk=i}
     }
     const ok=vis[vis.length-1],share=Math.round(vis.filter(Boolean).length/vis.length*100);
     let seg=[pts[0].ll],cur=vis[0];
@@ -3344,8 +3424,10 @@ async function runLOS(from,to){
     for(let i=1;i<pts.length;i++){seg.push(pts[i].ll);if(vis[i]!==cur){flush();seg=[pts[i].ll];cur=vis[i]}}
     flush();
     losLayer.addLayer(L.circleMarker(to,{radius:6,color:'#fff',weight:2,fillColor:ok?css('--ok'):css('--bad'),fillOpacity:1}));
+    const blkTxt=!ok&&blk>0?`<span>Przesłania teren w <b>${mgrs(pts[blk].ll.lat,pts[blk].ll.lng)}</b> (${Math.round(h[blk])} m n.p.m., ${fmtDist(pts[blk].d)} od obserwatora)</span>`:'';
+    if(!ok&&blk>0)losLayer.addLayer(L.marker(pts[blk].ll,{interactive:false,keyboard:false,icon:L.divIcon({className:'isolab',html:'<span style="background:#c62828">przesłona</span>',iconSize:[0,0]})}));
     openProfile('Widoczność z '+esc(name),
-      `<span class="verdict" style="color:var(${ok?'--ok':'--bad'})">${ok?'Cel WIDOCZNY':'Cel NIEWIDOCZNY'}</span><span>Odległość <b>${fmtDist(total)}</b></span><span>Wys. obserwatora <b>${Math.round(h[0])}+${hO} m</b></span><span>Wys. celu <b>${Math.round(h[h.length-1])}+${hT} m</b></span><span>Widoczna część trasy <b>${share}%</b></span><span>MGRS celu <b>${mgrs(to.lat,to.lng)}</b></span>`,
+      `<span class="verdict" style="color:var(${ok?'--ok':'--bad'})">${ok?'Cel WIDOCZNY':'Cel NIEWIDOCZNY'}</span><span>Odległość <b>${fmtDist(total)}</b></span><span>Wys. obserwatora <b>${Math.round(h[0])}+${hO} m</b></span><span>Wys. celu <b>${Math.round(h[h.length-1])}+${hT} m</b></span><span>Widoczna część trasy <b>${share}%</b></span><span>MGRS celu <b>${mgrs(to.lat,to.lng)}</b></span>${blkTxt}`,
       chart(pts,h,{vis,sight:[eye,h[h.length-1]+hT],ok}));
   }catch(e){openProfile('Widoczność','Nie udało się pobrać danych wysokościowych. Sprawdź połączenie z internetem.','')}
 }
@@ -3436,6 +3518,12 @@ async function runAuto(b,opt={}){
     let osmRaw=null;
     try{osmRaw=await overpass(b);osm=parseOSM(osmRaw,b,g)}catch(e){osmErr=true}
     if(osmRaw)try{setTheme(parseTheme(osmRaw,b))}catch(e){console.error(e)}
+    let coverSrc=osm?'osm':'none',wcAdd=0;
+    if($('pCover').value==='wc'){
+      step('Krok 2 z 3: pobieram pokrycie terenu ESA WorldCover (10 m)…');
+      try{const wm=await wcMasks(b,g);if(!osm)osm=parseOSM({elements:[]},b,g);wcAdd=mergeWC(osm,wm,g);coverSrc=osmErr?'wc':'osm+wc'}
+      catch(e){console.error(e);coverSrc=osm?'osm (WorldCover niedostępny)':'none';toast('ESA WorldCover jest niedostępny – używam samego OpenStreetMap.')}
+    }
     step('Krok 2 z 3: rozpoznaję obiekty infrastruktury…');
     try{inf=await pInf}catch(e){inf=null}
     step('Krok 3 z 3: liczę nachylenia i widoczność…');
@@ -3456,15 +3544,20 @@ async function runAuto(b,opt={}){
       pinf.items.forEach(it=>res.F.push({cat:'I',kind:it.kind,ll:it.ll,lls:it.lls,name:it.name,note:it.sig||IT[it.type].sig,extra:{itype:it.type}}));
       res.NI=infraNotes(pinf,res.N);res.infCount=pinf.items.length;
     }
-    applyAuto(res,b,g,t);
-    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,osmErr,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
+    if(coverSrc.includes('wc')&&!coverSrc.includes('niedost'))res.N.C.push(`Pokrycie terenu uzupełniono danymi satelitarnymi ESA WorldCover 2021 (10 m)${wcAdd>0.005?`: las poza OpenStreetMap zajmuje dodatkowo ${pct(wcAdd)} rejonu`:''}.`);
+    applyAuto(res,b,g,t);setGX(b,g,t,osm);opsReset();
+    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,coverSrc,osmErr,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
     if(surf)res.N.O.push('Widoczność obliczono na modelu powierzchni Copernicus GLO-30 (rzeczywista wysokość lasu i zabudowy); punkty obserwacyjne wybrano poza lasem i zabudową.');
     else if(dsm)res.N.O.push(`Widoczność obliczono z uwzględnieniem lasu (${hF} m) i zabudowy (${hB} m); punkty obserwacyjne wybrano poza lasem i zabudową.`);
     else res.N.O.push('Widoczność obliczono po gołym terenie (bez lasu i zabudowy) – rzeczywiste martwe pola są większe.');
     {const own=notes.O.split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim();notes.O='[AUTO] '+res.N.O.join(' ')+(own?'\n'+own:'');render()}
-    lastSum={km2:opt.km2||km2,mn:t.mn,mx:t.mx,forest:osm?osm.forestShare:null,open:osm?osm.openShare:null,union:t.union,mU:t.mU,mR:t.mR,mS:t.mS,objs:res.F.length,inf:res.infCount||0,NI:res.NI||'',osmErr,desc:autoDesc,q,date:new Date().toISOString()};
+    lastSum={km2:opt.km2||km2,mn:t.mn,mx:t.mx,forest:osm?osm.forestShare:null,open:osm?osm.openShare:null,union:t.union,mU:t.mU,mR:t.mR,mS:t.mS,objs:res.F.length,inf:res.infCount||0,NI:res.NI||'',osmErr,desc:autoDesc,q,date:new Date().toISOString(),
+      cross:osm?osm.cross.map(c=>({lat:r5(c.ll.lat),lng:r5(c.ll.lng),kind:c.kind,name:c.name,mw:c.mw,w:c.w,water:c.water||''})):[],rivW:osm?osm.rivW:''};
+    if(osm&&osm.cross.length){const cr=osm.cross,nb=cr.filter(c=>c.kind==='most').length,nf=cr.length-nb,kn=cr.filter(c=>c.mw!=null);
+      notes.K=(notes.K+`\n[AUTO] Przeprawy: mostów ${nb}${nf?`, brodów ${nf}`:''}; nośność znana dla ${kn.length}${kn.length?` (najsłabszy ${Math.min(...kn.map(c=>c.mw))} t)`:''}. Szczegóły i ocena dla masy pojazdu w zakładce „Działania”.`).trim()}
     updOcenaBtn();save();
-    showAutoPanel(lastSum);showManual(true);orientAA(true);
+    showAutoPanel(lastSum);showManual(true);orientAA(true);renderOps();
+    if(TRAIN.on)trainHide();
   }catch(e){
     console.error(e);
     openProfile('Ocena rejonu','Nie udało się pobrać modelu terenu. Sprawdź połączenie z internetem i spróbuj ponownie.','');
@@ -3544,7 +3637,7 @@ function analyzeTerrain(g,cover){
   const vis=new Uint8Array(N2);peaks.forEach((p,pi)=>{for(let k=0;k<N2;k++)if(p.v[k])vis[k]|=1<<pi;delete p.v});
   let union=0;for(let k=0;k<N2;k++)if(vis[k]&&ins[k])union++;
   for(let k=0;k<N2;k++)if(!ins[k])vis[k]=255; // poza rejonem – nie oznaczaj jako martwe pole
-  return {slope,vis,peaks,mn,mx,mean:sum/NI,relief:mx-mn,go:go/NI,slow:slow/NI,nogo:nogo/NI,steep:steep/NI,union:union/NI,NI,dsm:!!cover,cand:cands.length};
+  return {slope,vis,peaks,mn,mx,mean:sum/NI,relief:mx-mn,go:go/NI,slow:slow/NI,nogo:nogo/NI,steep:steep/NI,union:union/NI,NI,dsm:!!cover,cand:cands.length,hs};
 }
 
 // ---- OpenStreetMap (Overpass API) ----
@@ -3559,6 +3652,7 @@ way["waterway"~"^(river|canal|stream)$"](${bb});
 way["landuse"~"^(residential|industrial|commercial|retail)$"](${bb});
 way["highway"~"^(motorway|trunk|primary|secondary|tertiary|unclassified|track)$"](${bb});
 way["railway"="rail"](${bb});
+node["ford"](${bb});way["ford"](${bb});
 );out geom;
 way["building"](${bb});out count;`;
   for(const ep of OVERPASS){
@@ -3617,7 +3711,7 @@ function parseOSM(d,b,g){
   const o={forests:[],waters:[],wets:[],forestMask:new Uint8Array(N2),waterMask:new Uint8Array(N2),
     wetMask:new Uint8Array(N2),builtMask:new Uint8Array(N2),roadMask:new Uint8Array(N2),riverMask:new Uint8Array(N2),
     scrubMask:new Uint8Array(N2),orchMask:new Uint8Array(N2),quarryMask:new Uint8Array(N2),cliffMask:new Uint8Array(N2),embMask:new Uint8Array(N2),cliffKm:0,embKm:0,quarries:0,
-    lines:{river:{},canal:{},stream:{}},roads:{},rail:{},bridges:[],minorKm:0,trackKm:0,buildings:0};
+    lines:{river:{},canal:{},stream:{}},roads:{},rail:{},bridges:[],cross:[],minorKm:0,trackKm:0,buildings:0};
   const polyCells=(ring,mask)=>{
     const bb=L.latLngBounds(ring);let cnt=0;
     const i0=Math.max(0,Math.floor((bb.getWest()-W)/(E-W)*(n-1))),i1=Math.min(n-1,Math.ceil((bb.getEast()-W)/(E-W)*(n-1)));
@@ -3633,6 +3727,10 @@ function parseOSM(d,b,g){
   for(const el of d.elements||[]){
     const t=el.tags||{};
     if(el.type==='count'){o.buildings=+(t.ways||t.total||0);continue}
+    if(t.ford&&t.ford!=='no'){const fl=el.type==='node'?L.latLng(el.lat,el.lon):el.geometry&&el.geometry.length?L.latLng(el.geometry[Math.floor(el.geometry.length/2)].lat,el.geometry[Math.floor(el.geometry.length/2)].lon):null;
+      if(fl&&b.contains(fl)&&o.cross.every(c=>c.ll.distanceTo(fl)>60))o.cross.push({ll:fl,kind:'bród',name:t.name||'',mw:null,w:null,main:false});
+      if(el.type==='node'||!t.highway)continue}
+    if(el.type==='node')continue;
     let rings=[];
     if(el.type==='way'&&el.geometry)rings=[toLL(el.geometry)];
     else if(el.type==='relation'&&el.members)rings=el.members.filter(m=>m.type==='way'&&m.geometry&&m.role!=='inner').map(m=>toLL(m.geometry));
@@ -3669,13 +3767,14 @@ function parseOSM(d,b,g){
     if(!runs.length)continue;
     if(t.waterway&&o.lines[t.waterway]){
       const k=t.name||'';const grp=o.lines[t.waterway][k]||(o.lines[t.waterway][k]={name:t.name||'',type:t.waterway,len:0,runs:[]});
-      grp.len+=len;grp.runs.push(...runs);
+      grp.len+=len;grp.runs.push(...runs);{const w=parseFloat(t.width||t.est_width);if(w>0)grp.width=Math.max(grp.width||0,w)}
       if(t.waterway!=='stream')mark(runs,o.riverMask);
     }else if(t.highway){
       if(t.highway in MAIN||t.highway==='unclassified')mark(runs,o.roadMask);
-      if(t.bridge&&t.bridge!=='no'&&(t.highway in MAIN||t.highway==='unclassified')){
-        const mid=lls[Math.floor(lls.length/2)];
-        if(b.contains(mid))o.bridges.push({ll:mid,name:t.ref?fmtRef(t.ref):(t.name?'ul. '+t.name:''),main:t.highway in MAIN});
+      if(t.bridge&&t.bridge!=='no'&&(t.highway in MAIN||t.highway==='unclassified'||t.highway==='track')){
+        const mid=lls[Math.floor(lls.length/2)],mw=parseFloat(String(t.maxweight||t['maxweight:hgv']||'').replace(',','.')),bw=parseFloat(String(t.width||'').replace(',','.'));
+        const it={ll:mid,name:t.ref?fmtRef(t.ref):(t.name?'ul. '+t.name:t.highway==='track'?'(droga gruntowa)':''),main:t.highway in MAIN,kind:'most',mw:mw>0?mw:null,w:bw>0?bw:null};
+        if(b.contains(mid)){if(t.highway!=='track')o.bridges.push(it);o.cross.push(it)}
       }
       if(t.highway in MAIN){
         const k=t.ref?fmtRef(t.ref):(t.name||t.highway);
@@ -3691,6 +3790,11 @@ function parseOSM(d,b,g){
   // scal mosty leżące blisko siebie
   const br=[];for(const x of o.bridges.sort((a,c)=>c.main-a.main))if(br.every(y=>y.ll.distanceTo(x.ll)>150))br.push(x);
   o.bridges=br;
+  {const cr=[];for(const x of o.cross.sort((a,c)=>(c.main-a.main)||((c.mw!=null)-(a.mw!=null))))if(cr.every(y=>y.kind!==x.kind||y.ll.distanceTo(x.ll)>120))cr.push(x);
+    const rivers=[...Object.values(o.lines.river),...Object.values(o.lines.canal),...Object.values(o.lines.stream)].filter(r=>r.name);
+    cr.forEach(c=>{let bd=250,nm='';rivers.forEach(r=>r.runs.forEach(run=>run.forEach(p=>{const d=p.distanceTo(c.ll);if(d<bd){bd=d;nm=r.name}})));c.water=nm});
+    o.cross=cr.slice(0,60);
+    o.rivW=rivers.filter(r=>r.width).sort((a,c)=>c.width-a.width).slice(0,5).map(r=>`${r.name} do ${r.width} m`).join(', ')}
   const ins=g.inside||new Uint8Array(N2).fill(1);let NI=0;for(let k=0;k<N2;k++)NI+=ins[k];NI=NI||1;
   let fc=0,wc=0;for(let k=0;k<N2;k++)if(ins[k]){fc+=o.forestMask[k];wc+=o.waterMask[k]}
   o.forestShare=fc/NI;o.waterShare=wc/NI;
@@ -3784,7 +3888,7 @@ function buildResults(b,g,t,o,km2){
     if(o.forestShare>0.01){
       const fs=[...o.forests].sort((a,c)=>c.area-a.area);
       N.O.push(`Lasy (${pct(o.forestShare)} rejonu) ograniczają obserwację i pola ostrzału.`);
-      N.C.push(`Lasy pokrywają ${pct(o.forestShare)} rejonu (największy kompleks ${fmtArea(fs[0].area)}) i dają ukrycie przed obserwacją naziemną i z powietrza.`);
+      N.C.push(`Lasy pokrywają ${pct(o.forestShare)} rejonu ${fs.length?` (największy kompleks ${fmtArea(fs[0].area)})`:''} i dają ukrycie przed obserwacją naziemną i z powietrza.`);
       fs.slice(0,6).forEach((f,i)=>F.push({cat:'C',kind:'poly',ring:f.ring,name:f.name||`Las-auto ${i+1}`,note:`Kompleks leśny, ${fmtArea(f.area)} w rejonie. Ukrycie; osłona zależna od drzewostanu.`}));
     }else N.C.push('W rejonie praktycznie brak lasów: słabe ukrycie przed obserwacją.');
     const dens=o.buildings/km2;
@@ -3849,8 +3953,19 @@ function applyAuto(res,b,g,t){
   map.fitBounds(b,{padding:[40,40]});
 }
 
+function sectionRel(q){
+  if(!q)return {};
+  const osmOk=!q.osmErr,wc=String(q.coverSrc||'').includes('wc')&&!String(q.coverSrc).includes('niedost'),age=q.osmTime?Math.round((Date.now()-new Date(q.osmTime))/864e5):null;
+  const cov=wc?'OSM + WorldCover 10 m':osmOk?'OSM'+(age!=null?` (dane sprzed ${age} dni)`:''):'brak danych o pokryciu';
+  const lv=(a,t)=>[a,t];
+  return {O:lv(q.demSrc==='cop'?'mid':osmOk&&q.dsm?'mid':'lo',`model ${q.demSrc==='cop'?'Copernicus DSM 30 m':'terenu ~30 m'}, siatka ${Math.round(q.cell)} m`),
+    C:lv(wc?'mid':osmOk?'mid':'lo',cov),Ob:lv(osmOk||wc?'mid':'lo',`nachylenia: model ~30 m; ${cov}`),
+    K:lv(osmOk?'mid':'lo',osmOk?'wzniesienia z modelu, mosty z OSM':'tylko wzniesienia z modelu'),
+    A:lv(OPS.res?'mid':'lo',OPS.res?'drogi wyznaczone dla wskazanego kierunku działania':'kierunki umowne – wskaż kierunek w zakładce „Działania”')};
+}
 function showAutoPanel(sum){
-  const S=sum;
+  if(TRAIN.stash){showTrainPanel();return}
+  const S=sum,SR=sectionRel(S.q),relB=k=>SR[k]?`<span class="relb" style="--cc:${CONF[SR[k][0]][1]}" title="${esc(SR[k][1])}">wiarygodność ${CONF[SR[k][0]][0]}</span>`:'',relT=k=>SR[k]?`<div class="hint">Podstawa: ${esc(SR[k][1])}.</div>`:'';
   const stats=`<span>Powierzchnia <b>${S.km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(S.mn)}–${Math.round(S.mx)} m</b></span><span>Lasy <b>${S.forest==null?'—':pct(S.forest)}</b></span>${S.open!=null?`<span>Teren otwarty <b>${pct(S.open)}</b></span>`:''}<span>Widoczność z wzgórz <b>${pct(S.union)}</b></span><span>MCOO U/R/SR <b>${pct(S.mU)} / ${pct(S.mR)} / ${pct(S.mS)}</b></span><span>Obiekty auto <b>${S.objs}</b></span><span>Infrastruktura <b>${S.inf}</b></span>`;
   const txt=k=>esc(stripAuto(notes[k])||'—').replace(/\n/g,'<br>');
   const enN=drawn.getLayers().filter(l=>l.feature.properties.cat==='E').length;
@@ -3867,7 +3982,7 @@ function showAutoPanel(sum){
       <span class="sw" style="background:rgba(198,40,40,.75)"></span><span class="hint">&gt;30%</span>
     </div>
     ${S.osmErr?'<div class="note">Serwer OpenStreetMap (Overpass) nie odpowiedział, więc lasy, wody i drogi nie zostały uwzględnione. Spróbuj ponownie za chwilę.</div>':''}
-    <div class="res">${CATS.map(c=>`<div class="ri" style="--c:var(${c.v})"><div class="letter">${c.l}</div><div><b>${c.name}</b><div>${txt(c.k)}</div></div></div>`).join('')}
+    <div class="res">${CATS.map(c=>`<div class="ri" style="--c:var(${c.v})"><div class="letter">${c.l}</div><div><b>${c.name}</b>${relB(c.k)}<div>${txt(c.k)}</div>${relT(c.k)}</div></div>`).join('')}
       <div class="ri" style="--c:var(--I)"><div class="letter">I</div><div><b>Infrastruktura</b><div>${txt('I')}</div></div></div>
       ${enN||notes.E.trim()?`<div class="ri" style="--c:var(--E)"><div class="letter" style="background:none">${diamondMini().replace(/20/g,'26')}</div><div><b>Przeciwnik</b><div>${enN} naniesionych obiektów. ${esc(notes.E.trim())}</div></div></div>`:''}
     </div>
@@ -3890,7 +4005,7 @@ function showAutoPanel(sum){
 function clearAuto(){
   drawn.getLayers().filter(l=>l.feature.properties.auto).forEach(l=>drawn.removeLayer(l));
   [...CATS,INFRA].forEach(c=>notes[c.k]=notes[c.k].split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim());
-  if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;setMC(null);lastSum=null;updOcenaBtn();
+  if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;setMC(null);lastSum=null;updOcenaBtn();GX=null;TRAIN.stash=null;opsReset();
   setAutoBox(null);decorate();render();save();
 }
 
@@ -4044,7 +4159,8 @@ function render(){
 }
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
-  ['analiza','teren','pogoda','pomoc'].forEach(n=>$('p-'+n).hidden=n!==t.dataset.tab);
+  ['analiza','teren','dzialania','pogoda','pomoc'].forEach(n=>$('p-'+n).hidden=n!==t.dataset.tab);
+  if(t.dataset.tab==='dzialania')renderOps();
   if(t.dataset.tab==='pogoda')updWxLoc();
 });
 
@@ -4053,7 +4169,7 @@ const areaEl=$('area');areaEl.oninput=()=>{areaAuto=false;save()};
 function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
-    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,wxTh:JSON.stringify(WXT)!==JSON.stringify(WXT_DEF)?WXT:null,wx:wxState?{lat:wxState.lat,lng:wxState.lng,time:wxState.time,raw:wxState.raw}:null,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,
+    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,wxTh:JSON.stringify(WXT)!==JSON.stringify(WXT_DEF)?WXT:null,wx:wxState?{lat:wxState.lat,lng:wxState.lng,time:wxState.time,raw:wxState.raw}:null,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,ops:{...OPS,_T:undefined,_isoN:undefined},gx:gxEnc(),train:TRAIN.stash,
     mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),inside:MC.inside?Array.from(MC.inside).join(''):null,showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
@@ -4088,7 +4204,9 @@ function load(fc,opt={}){
     if(g&&g.length&&Array.isArray(g[0])&&Array.isArray(g[0][0]))return;
     attach(l,pr);
   })});
-  decorate();render();
+  OPS={...OPS_DEF,...(m.ops||{})};OPS._T=null;TRAIN.stash=m.train||null;
+  if(m.gx)GX=gxDec(m.gx);else if(!opt.keepView||!gxOk())GX=null;
+  decorate();render();opsRestore();
   if(!opt.keepView&&drawn.getLayers().length)map.fitBounds(drawn.getBounds(),{padding:[60,60],maxZoom:15});
 }
 function writeLS(){const fc=toGeoJSON();if(!fc.features.length&&!autoBox&&!areaEl.value.trim()&&!Object.values(notes).some(x=>x.trim()))return;try{localStorage.setItem('ocoka-v2',JSON.stringify(fc))}catch(e){}}
@@ -4148,7 +4266,12 @@ $('bCopy').onclick=async()=>{const t=await report();navigator.clipboard.writeTex
 $('bExport').onclick=()=>{download(`${slug()}-${stamp()}.geojson`,JSON.stringify(toGeoJSON(),null,1),'application/geo+json');toast('Plik zapisany')};
 $('bImport').onclick=()=>$('file').click();
 $('file').onchange=()=>{const f=$('file').files[0];if(!f)return;const r=new FileReader();
-  r.onload=()=>{try{load(JSON.parse(r.result));save();toast('Wczytano '+drawn.getLayers().length+' obiektów')}catch(e){toast('To nie jest poprawny plik GeoJSON')}$('file').value=''};r.readAsText(f)};
+  r.onload=()=>{importFile(f.name,String(r.result));$('file').value=''};r.readAsText(f)};
+$('xImp').onclick=()=>$('file').click();
+$('xGeo').onclick=()=>$('bExport').onclick();
+$('xKml').onclick=()=>{download(`${slug()}-${stamp()}.kml`,toKML(),'application/vnd.google-earth.kml+xml');toast('Zapisano plik KML')};
+$('xGpx').onclick=()=>{download(`${slug()}-${stamp()}.gpx`,toGPX(),'application/gpx+xml');toast('Zapisano plik GPX')};
+$('xLink').onclick=()=>shareLink();
 let clearArmed=false;
 $('bClear').onclick=()=>{
   const b=$('bClear');
@@ -4181,6 +4304,546 @@ document.addEventListener('keydown',e=>{
   if(k==='r')startAuto();else if(k==='d'&&!$('bDoct').closest('[hidden]'))setDoct(!doct);else if(k==='p')startDraw('marker');else if(k==='l')startDraw('polyline');else if(k==='o')startDraw('polygon');
 });
 
+// ================= Działania: kierunek, czas ruchu, przeciwnik, przeprawy =================
+const b64e=u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s)};
+const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+let GX=null;
+function setGX(b,g,t,o){
+  const n=g.n,N2=n*n,fl=new Uint8Array(N2),sl=new Uint8Array(N2),cv=new Uint8Array(N2);
+  for(let k=0;k<N2;k++){
+    fl[k]=o?(o.roadMask[k]?1:0)|((o.waterMask[k]||o.riverMask[k])?2:0)|(o.forestMask[k]?4:0)|(o.builtMask[k]?8:0)|(o.wetMask[k]?16:0):0;
+    sl[k]=Math.min(255,Math.round(t.slope[k]));cv[k]=Math.max(0,Math.min(255,Math.round((t.hs?t.hs[k]:g.h[k])-g.h[k])));
+  }
+  GX={b,n,dx:g.dx,dy:g.dy,h:Float32Array.from(g.h),cv,sl,fl,enc:null};
+}
+function gxEnc(){
+  if(!GX)return null;
+  if(!GX.enc){const hi=new Int16Array(GX.n*GX.n);GX.h.forEach((v,i)=>hi[i]=Math.max(-32000,Math.min(32000,Math.round(v*4))));
+    GX.enc={b:[[GX.b.getSouth(),GX.b.getWest()],[GX.b.getNorth(),GX.b.getEast()]],n:GX.n,dx:GX.dx,dy:GX.dy,h:b64e(new Uint8Array(hi.buffer)),cv:b64e(GX.cv),sl:b64e(GX.sl),fl:b64e(GX.fl)}}
+  return GX.enc;
+}
+function gxDec(e){
+  try{const n=e.n,hb=b64d(e.h),hi=new Int16Array(hb.buffer,0,n*n),h=new Float32Array(n*n);hi.forEach((v,i)=>h[i]=v/4);
+    const g={b:L.latLngBounds(e.b),n,dx:e.dx,dy:e.dy,h,cv:b64d(e.cv),sl:b64d(e.sl),fl:b64d(e.fl),enc:e};
+    return g.cv.length===n*n&&g.fl.length===n*n?g:null}catch(x){return null}
+}
+const gxOk=()=>!!(GX&&MC&&GX.n===MC.n&&Math.abs(GX.b.getSouth()-MC.b.getSouth())<1e-6&&Math.abs(GX.b.getEast()-MC.b.getEast())<1e-6);
+const cellLL=k=>{const n=GX.n,b=GX.b,i=k%n,j=(k-i)/n;return L.latLng(b.getNorth()-(b.getNorth()-b.getSouth())*j/(n-1),b.getWest()+(b.getEast()-b.getWest())*i/(n-1))};
+const xyLL=(x,y)=>{const n=GX.n,b=GX.b;return L.latLng(b.getNorth()-(b.getNorth()-b.getSouth())*y/(n-1),b.getWest()+(b.getEast()-b.getWest())*x/(n-1))};
+const llCell=(ll,clamp)=>{const n=GX.n,b=GX.b;let i=Math.round((ll.lng-b.getWest())/(b.getEast()-b.getWest())*(n-1)),j=Math.round((b.getNorth()-ll.lat)/(b.getNorth()-b.getSouth())*(n-1));
+  if(i<0||j<0||i>=n||j>=n){if(!clamp)return -1;i=Math.max(0,Math.min(n-1,i));j=Math.max(0,Math.min(n-1,j))}return j*n+i};
+
+const OPS_DEF={dir:'auto',task:'obr',mode:'tr',iso:'auto',wx:true,mass:40,isoOn:true,enOn:true,res:null,en:null};
+let OPS={...OPS_DEF};
+const DIRS={N:[0,'północy'],NE:[45,'północnego wschodu'],E:[90,'wschodu'],SE:[135,'południowego wschodu'],S:[180,'południa'],SW:[225,'południowego zachodu'],W:[270,'zachodu'],NW:[315,'północnego zachodu']};
+const MODES={ft:'pieszo',wh:'pojazdy kołowe',tr:'pojazdy gąsienicowe'};
+const fmtMin=m=>m==null||!isFinite(m)?'brak przejścia':m<60?Math.max(1,Math.round(m))+' min':Math.floor(m/60)+' h '+String(Math.round(m%60)).padStart(2,'0')+' min';
+const isoLayer=new L.LayerGroup().addTo(map);let enLayer=null;
+
+function wxFactor(mode){
+  if(!OPS.wx||!wxMat)return 1;
+  const r=wxMat.rows.find(x=>x.k==={ft:'inf',wh:'wh',tr:'tr'}[mode]);if(!r)return 1;
+  const lv=r.cells[0].lv;return mode==='ft'?{F:1,M:.85,U:.7}[lv]:{F:1,M:.7,U:.45}[lv];
+}
+function bridgeBlocks(){
+  const bl=new Uint8Array(GX.n*GX.n),n=GX.n;
+  ((lastSum&&lastSum.cross)||[]).forEach(c=>{if(c.kind!=='most'||c.mw==null||c.mw>=OPS.mass)return;const k=llCell(L.latLng(c.lat,c.lng));if(k<0)return;
+    const i=k%n,j=(k-i)/n;for(let dj=-1;dj<=1;dj++)for(let di=-1;di<=1;di++){const ii=i+di,jj=j+dj;if(ii>=0&&jj>=0&&ii<n&&jj<n)bl[jj*n+ii]=1}});
+  return bl;
+}
+// prędkość [km/h] w komórce; 0 = brak przejścia
+function speedField(mode){
+  const {n,sl,fl}=GX,N2=n*n,mob=MC.mob,ins=MC.inside,wf=wxFactor(mode),v=new Float32Array(N2),bl=mode==='ft'?null:bridgeBlocks(),ford=new Uint8Array(N2);
+  ((lastSum&&lastSum.cross)||[]).forEach(c=>{if(c.kind!=='bród')return;const k=llCell(L.latLng(c.lat,c.lng));if(k<0)return;const i=k%n,j=(k-i)/n;
+    for(let dj=-1;dj<=1;dj++)for(let di=-1;di<=1;di++){const ii=i+di,jj=j+dj;if(ii>=0&&jj>=0&&ii<n&&jj<n&&(fl[jj*n+ii]&2))ford[jj*n+ii]=1}});
+  for(let k=0;k<N2;k++){
+    if(ins&&!ins[k])continue;
+    if(ford[k]&&!(fl[k]&1)){v[k]=(mode==='ft'?2:5)*wf;continue}
+    const road=fl[k]&1,wat=fl[k]&2,s=sl[k],m=mob[k];
+    if(mode==='ft'){const tob=6*Math.exp(-3.5*Math.abs(s/100+.05));v[k]=road?tob:wat?0:tob*wf*(m===2?.25:(fl[k]&16)?.3:m===1?.6:.8);continue}
+    if(road&&!bl[k]){v[k]=(mode==='wh'?40:30)*Math.max(.4,1-s/50);continue}
+    if(road&&wat){v[k]=0;continue}
+    if(m===2||wat||(mode==='wh'&&s>=30)){v[k]=0;continue}
+    v[k]=(mode==='wh'?(m===1?4:12):(m===1?8:20))*wf*Math.max(.3,1-s/60);
+  }
+  return v;
+}
+function timeField(v,src){
+  const {n,dx,dy}=GX,N2=n*n,T=new Float64Array(N2).fill(Infinity),P=new Int32Array(N2).fill(-1),h=new Heap();
+  src.forEach(k=>{if(k>=0&&v[k]>0&&T[k]!==0){T[k]=0;h.push(k,0)}});
+  while(h.size){const [d,k]=h.pop();if(d>T[k])continue;const i=k%n,j=(k-i)/n;
+    for(let dj=-1;dj<=1;dj++)for(let di=-1;di<=1;di++){if(!di&&!dj)continue;const ii=i+di,jj=j+dj;if(ii<0||jj<0||ii>=n||jj>=n)continue;
+      const kk=jj*n+ii;if(!(v[kk]>0))continue;
+      const nd=d+Math.hypot(di*dx,dj*dy)/(2*v[k]*v[kk]/(v[k]+v[kk])*1000/60);
+      if(nd<T[kk]){T[kk]=nd;P[kk]=k;h.push(kk,nd)}}}
+  return {T,P};
+}
+function nearPassable(k,v){
+  if(k<0)return -1;if(v[k]>0)return k;const n=GX.n,i=k%n,j=(k-i)/n;let best=-1,bd=1e9;
+  for(let dj=-4;dj<=4;dj++)for(let di=-4;di<=4;di++){const ii=i+di,jj=j+dj;if(ii<0||jj<0||ii>=n||jj>=n)continue;const kk=jj*n+ii,d=Math.hypot(di,dj);if(v[kk]>0&&d<bd){bd=d;best=kk}}
+  return best;
+}
+function edgeCells(az){
+  const n=GX.n,c=(n-1)/2,out=[],ins=MC.inside;
+  const add=(i,j)=>{const b=(Math.atan2(i-c,c-j)*180/Math.PI+360)%360,d=Math.abs(((b-az+540)%360)-180);if(d>45.01)return;
+    let x=i,y=j;for(let s=0;s<n&&ins&&!ins[Math.round(y)*n+Math.round(x)];s++){x+=(c-i)/n;y+=(c-j)/n}
+    out.push(Math.round(y)*n+Math.round(x))};
+  for(let q=0;q<n;q++){add(q,0);add(q,n-1);add(0,q);add(n-1,q)}
+  return [...new Set(out)];
+}
+function pathTo(P,k){const p=[];for(;k>=0;k=P[k])p.push(k);return p.reverse()}
+function pathTime(path,v){
+  let t=0;for(let q=1;q<path.length;q++){const a=path[q-1],b=path[q];if(!(v[a]>0)||!(v[b]>0))return null;
+    const n=GX.n,di=(a%n)-(b%n),dj=Math.floor(a/n)-Math.floor(b/n);t+=Math.hypot(di*GX.dx,dj*GX.dy)/(2*v[a]*v[b]/(v[a]+v[b])*1000/60)}
+  return t;
+}
+function pathLen(path){let d=0;const n=GX.n;for(let q=1;q<path.length;q++){const a=path[q-1],b=path[q];d+=Math.hypot(((a%n)-(b%n))*GX.dx,(Math.floor(a/n)-Math.floor(b/n))*GX.dy)}return d}
+function contours(T,level){
+  const n=GX.n,segs=[],V=(i,j)=>T[j*n+i],lerp=(a,b)=>(level-a)/(b-a);
+  for(let j=0;j<n-1;j++)for(let i=0;i<n-1;i++){
+    const a=V(i,j),b=V(i+1,j),c=V(i+1,j+1),d=V(i,j+1);
+    if(!isFinite(a)||!isFinite(b)||!isFinite(c)||!isFinite(d))continue;
+    const idx=(a<level?1:0)|(b<level?2:0)|(c<level?4:0)|(d<level?8:0);if(idx===0||idx===15)continue;
+    const top=()=>[i+lerp(a,b),j],right=()=>[i+1,j+lerp(b,c)],bottom=()=>[i+lerp(d,c),j+1],left=()=>[i,j+lerp(a,d)];
+    const add=(p,q)=>segs.push([xyLL(p[0],p[1]),xyLL(q[0],q[1])]);
+    switch(idx){case 1:case 14:add(left(),top());break;case 2:case 13:add(top(),right());break;case 3:case 12:add(left(),right());break;
+      case 4:case 11:add(right(),bottom());break;case 6:case 9:add(top(),bottom());break;case 7:case 8:add(left(),bottom());break;
+      case 5:add(left(),top());add(right(),bottom());break;case 10:add(top(),right());add(left(),bottom());break}
+  }
+  return segs;
+}
+function vsGX(ci,cj,hO,hT,R){
+  const {n,h,cv,dx,dy}=GX,HS=(i,j)=>h[j*n+i]+cv[j*n+i],Rk=6371000/(1-.13),drop=d=>d*d/(2*Rk),eye=h[cj*n+ci]+hO,vis=new Uint8Array(n*n);
+  const bil=(x,y)=>{const x0=Math.floor(x),y0=Math.floor(y),x1=Math.min(n-1,x0+1),y1=Math.min(n-1,y0+1),fx=x-x0,fy=y-y0;
+    return HS(x0,y0)*(1-fx)*(1-fy)+HS(x1,y0)*fx*(1-fy)+HS(x0,y1)*(1-fx)*fy+HS(x1,y1)*fx*fy};
+  const ri=Math.ceil(R/dx),rj=Math.ceil(R/dy);
+  for(let j=Math.max(0,cj-rj);j<=Math.min(n-1,cj+rj);j++)for(let i=Math.max(0,ci-ri);i<=Math.min(n-1,ci+ri);i++){
+    if(i===ci&&j===cj){vis[j*n+i]=1;continue}
+    const di=i-ci,dj=j-cj,D=Math.hypot(di*dx,dj*dy);if(D>R)continue;
+    const steps=Math.max(Math.abs(di),Math.abs(dj));let maxA=-Infinity;
+    for(let s=1;s<steps;s++){const f=s/steps,d=D*f,a=(bil(ci+di*f,cj+dj*f)-drop(d)-eye)/d;if(a>maxA)maxA=a}
+    if((h[j*n+i]+hT-drop(D)-eye)/D>=maxA)vis[j*n+i]=1;
+  }
+  return vis;
+}
+const enemyPts=()=>drawn.getLayers().filter(l=>l instanceof L.Marker&&l.feature.properties.cat==='E'&&l.feature.properties.side!=='własne');
+function resolveDir(){
+  if(OPS.dir!=='auto')return {az:DIRS[OPS.dir][0],key:OPS.dir,auto:false};
+  const en=drawn.getLayers().filter(l=>l.feature.properties.cat==='E'&&l.feature.properties.side!=='własne').map(anchor);
+  if(!en.length)return null;
+  const c=GX.b.getCenter(),lat=en.reduce((s,p)=>s+p.lat,0)/en.length,lng=en.reduce((s,p)=>s+p.lng,0)/en.length,cen=L.latLng(lat,lng);
+  if(cen.distanceTo(c)<Math.min(GX.dx,GX.dy)*(GX.n-1)*.12)return null;
+  const az=bearing(c,cen),key=Object.keys(DIRS)[Math.round(az/45)%8];
+  return {az:DIRS[key][0],key,auto:true};
+}
+function runOps(){
+  if(!gxOk()){toast('Najpierw wykonaj ocenę rejonu (przycisk „Zaznacz rejon”). Po wczytaniu linku lub starszego pliku ocenę trzeba powtórzyć.');return}
+  const dir=resolveDir();
+  if(!dir){toast('Nanieś przeciwnika poza środkiem rejonu albo wybierz kierunek z listy.');return}
+  const attack=OPS.task==='nat',enEdge=edgeCells(dir.az),ownEdge=edgeCells((dir.az+180)%360);
+  const fields={},best={};
+  for(const m of Object.keys(MODES)){
+    const v=speedField(m),src=(attack?ownEdge:enEdge).map(k=>nearPassable(k,v)).filter(k=>k>=0),tf=timeField(v,src),tg=(attack?enEdge:ownEdge);
+    let e=-1;tg.forEach(k=>{if(isFinite(tf.T[k])&&(e<0||tf.T[k]<tf.T[e]))e=k});
+    fields[m]={v,tf,end:e,src};best[m]=e<0?null:tf.T[e];
+  }
+  const F=fields[OPS.mode];
+  if(F.end<0){toast(`Dla trybu „${MODES[OPS.mode]}” nie ma przejścia przez rejon w tym kierunku (przeszkody wodne, teren bardzo ograniczony). Wybierz inny rodzaj ruchu lub sprawdź przeprawy.`)}
+  const paths=[];
+  if(F.end>=0){
+    const p1=pathTo(F.tf.P,F.end);paths.push(p1);
+    // droga alternatywna: zniechęcenie do pasa wokół pierwszej
+    const n=GX.n,v2=Float32Array.from(F.v),R=Math.max(3,Math.round(n/9)),core=p1.slice(Math.floor(p1.length*.12),Math.ceil(p1.length*.88));
+    core.forEach(k=>{const i=k%n,j=(k-i)/n;for(let dj=-R;dj<=R;dj++)for(let di=-R;di<=R;di++){const ii=i+di,jj=j+dj;if(ii<0||jj<0||ii>=n||jj>=n||di*di+dj*dj>R*R)continue;const kk=jj*n+ii;if(v2[kk]===F.v[kk])v2[kk]=F.v[kk]/4}});
+    const t2=timeField(v2,F.src);let e2=-1;(attack?enEdge:ownEdge).forEach(k=>{if(isFinite(t2.T[k])&&(e2<0||t2.T[k]<t2.T[e2]))e2=k});
+    if(e2>=0){const p2=pathTo(t2.P,e2),s1=new Set(p1),share=p2.filter(k=>s1.has(k)).length/p2.length,tt=pathTime(p2,F.v);
+      if(share<.5&&tt!=null&&tt<best[OPS.mode]*2.5)paths.push(p2)}
+  }
+  // własne punkty obserwacyjne a droga podejścia
+  const ops=drawn.getLayers().filter(l=>l instanceof L.Marker&&l.feature.properties.cat==='O').map(l=>({l,k:llCell(l.getLatLng())})).filter(o=>o.k>=0).slice(0,8);
+  const hO=+$('hObs').value||2,hT=+$('hTgt').value||1.5,n=GX.n;
+  ops.forEach(o=>{o.vis=vsGX(o.k%n,Math.floor(o.k/n),hO,hT,+o.l.feature.properties.range||1e9)});
+  const enSeen=OPS.en&&enMask?enMask:null,cross=(lastSum&&lastSum.cross)||[];
+  drawn.getLayers().filter(l=>l.feature.properties.auto&&l.feature.properties.cat==='A'&&/^AA-auto/.test(l.feature.properties.name||'')).forEach(l=>drawn.removeLayer(l));
+  const aa=paths.map((p,ix)=>{
+    const len=pathLen(p),t={};Object.keys(MODES).forEach(m=>t[m]=pathTime(p,fields[m].v));
+    const any=new Uint8Array(n*n);ops.forEach(o=>{for(let k=0;k<n*n;k++)if(o.vis[k])any[k]=1});
+    const ownObs=ops.length?p.filter(k=>any[k]).length/p.length:null,enObs=enSeen?p.filter(k=>enSeen[k]&1).length/p.length:null;
+    const restr=p.filter(k=>MC.mob[k]>0&&!(GX.fl[k]&1)).length/p.length;
+    const cr=cross.filter(c=>{const k=llCell(L.latLng(c.lat,c.lng));if(k<0)return false;const i=k%n,j=(k-i)/n;return p.some(q=>Math.abs(q%n-i)<=1&&Math.abs(Math.floor(q/n)-j)<=1)});
+    const wat=[];p.forEach((k,q)=>{if((GX.fl[k]&2)&&!(q&&(GX.fl[p[q-1]]&2)))wat.push(cellLL(k))});
+    const name=`AA-auto ${ix+1} (${attack?'na':'z'} ${dir.key}, ${MODES[OPS.mode]})`;
+    const lls=simplify(p.map(k=>({x:k%n,y:Math.floor(k/n),k})),1.2).map(q=>cellLL(q.k));
+    const note=`${ix?'Droga alternatywna':'Najszybsza droga'} ${attack?'własnego podejścia w kierunku '+DIRS[dir.key][1]:'podejścia przeciwnika z '+DIRS[dir.key][1]} dla trybu „${MODES[OPS.mode]}”: ${fmtDist(len)}, czas ok. ${fmtMin(t[OPS.mode])}. ${pct(restr)} trasy poza drogami w terenie ograniczonym.`+(wat.length?` Przecina przeszkodę wodną ${wat.length}× (pierwsze miejsce: ${mgrs(wat[0].lat,wat[0].lng)}).`:'');
+    attach(L.polyline(lls),{cat:'A',name,note,auto:true,range:'',aaType:'AA',side:attack?'własne':'wróg'});
+    return {name,len,t,ownObs,enObs,restr,wat:wat.map(w=>mgrs(w.lat,w.lng)),cross:cr.map(c=>({name:c.name,kind:c.kind,mw:c.mw,mg:mgrs(c.lat,c.lng)}))};
+  });
+  const opRank=paths.length?ops.map(o=>({name:o.l.feature.properties.name||'PO',mg:mgrs(o.l.getLatLng().lat,o.l.getLatLng().lng),share:paths[0].filter(k=>o.vis[k]).length/paths[0].length})).sort((a,b)=>b.share-a.share):[];
+  OPS._T=F.tf.T;
+  OPS.res={dir:dir.key,auto:dir.auto,task:OPS.task,mode:OPS.mode,date:new Date().toISOString(),aa,best,op:opRank.slice(0,4),wf:{ft:wxFactor('ft'),wh:wxFactor('wh'),tr:wxFactor('tr')},mass:OPS.mass,iso:isoLevels()};
+  // wnioski do OCOKA
+  const setAuto=(k,tag,txt)=>{const ls=notes[k].split('\n').filter(x=>!x.startsWith('[AUTO] '+tag));const ix=ls.findIndex(x=>!x.startsWith('[AUTO]'));if(txt)ls.splice(ix<0?ls.length:ix,0,'[AUTO] '+tag+' '+txt);notes[k]=ls.join('\n').trim()};
+  if(aa.length){
+    const a=aa[0],who=attack?'Własne natarcie w kierunku '+DIRS[dir.key][1]:'Przeciwnik z '+DIRS[dir.key][1];
+    setAuto('A','Kierunek działania:',`${who}: ${a.name} – ${fmtDist(a.len)}, czas przejścia rejonu ok. ${fmtMin(a.t.ft)} pieszo, ${fmtMin(a.t.wh)} kołowe, ${fmtMin(a.t.tr)} gąsienicowe`+(aa[1]?`; droga alternatywna ${fmtDist(aa[1].len)} (${fmtMin(aa[1].t[OPS.mode])}, ${MODES[OPS.mode]})`:'; brak wyraźnej drogi alternatywnej – ruch skanalizowany')+'.'+(a.restr>.3?` ${pct(a.restr)} głównej drogi biegnie terenem ograniczonym.`:''));
+    const kb=[];if(opRank.length&&opRank[0].share>.05)kb.push(`${opRank[0].name} (${opRank[0].mg}) obserwuje ${pct(opRank[0].share)} głównej drogi podejścia – ${attack?'w rękach przeciwnika zagraża natarciu, wymaga opanowania lub oślepienia':'jego utrzymanie daje wczesne ostrzeganie i korektę ognia'}`);
+    if(a.cross.length)kb.push(`przeprawy na drodze podejścia: ${a.cross.slice(0,3).map(c=>`${c.kind} ${c.name||''} ${c.mg}`.replace(/\s+/g,' ')).join(', ')} – ${attack?'do uchwycenia w pierwszej kolejności':'miejsca na zapory i punkty niszczenia'}`);
+    else if(a.wat.length)kb.push(`droga podejścia przecina przeszkodę wodną w ${a.wat[0]} bez rozpoznanej przeprawy w danych`);
+    setAuto('K','Kierunek działania:',kb.length?kb.join('; ')+'.':'');
+  }else{setAuto('A','Kierunek działania:','');setAuto('K','Kierunek działania:','')}
+  drawIso();decorate();render();save();renderOps();
+  if(aa.length)toast(`Wyznaczono ${aa.length} ${aa.length===1?'drogę':'drogi'} podejścia`+(OPS.isoOn&&!OPS._isoN?'. Rejon jest pokonywany szybciej niż podane czasy – wpisz „auto” w liniach czasowych.':' i linie czasowe'));
+}
+function isoLevels(){
+  const tx=String(OPS.iso||'').trim(),man=tx.split(/[^0-9.]+/).map(Number).filter(x=>x>0&&x<=1440).sort((a,b)=>a-b).slice(0,6);
+  if(man.length&&!/auto/i.test(tx))return man;
+  if(!OPS._T)return [];
+  let mx=0;for(const v of OPS._T)if(isFinite(v)&&v>mx)mx=v;
+  const step=[1,2,5,10,15,30,60,120,240].find(x=>mx/x<=4.6)||480;return [1,2,3,4].map(i=>i*step).filter(x=>x<mx);
+}
+function drawIso(){
+  isoLayer.clearLayers();
+  if(!OPS.isoOn||!OPS._T||!gxOk()||!OPS.res)return;
+  const lv=isoLevels(),cols=['#f9a825','#ef6c00','#c62828','#6a1b9a','#283593','#004d40'];
+  let drawnN=0;
+  lv.forEach((m,ix)=>{const segs=contours(OPS._T,m);if(!segs.length)return;drawnN++;
+    const c=cols[ix%cols.length];
+    isoLayer.addLayer(L.polyline(segs,{color:'#fff',weight:5,opacity:.7,interactive:false,pane:'auto'}));
+    isoLayer.addLayer(L.polyline(segs,{color:c,weight:2.5,opacity:1,interactive:false,pane:'auto'}));
+    const step=Math.max(1,Math.floor(segs.length/3));
+    for(let q=Math.floor(step/2);q<segs.length;q+=step)isoLayer.addLayer(L.marker(segs[q][0],{interactive:false,keyboard:false,icon:L.divIcon({className:'isolab',html:`<span style="background:${c}">${fmtMin(m).replace(' min','′').replace(' h ','h')}</span>`,iconSize:[0,0]})}));
+  });
+  OPS._isoN=drawnN;
+}
+let enMask=null;
+function runEnemy(){
+  if(!gxOk()){toast('Najpierw wykonaj ocenę rejonu (przycisk „Zaznacz rejon”).');return}
+  const pts=enemyPts();if(!pts.length){toast('Nanieś symbole przeciwnika (kategoria „Przeciwnik”, punkt).');return}
+  const n=GX.n,N2=n*n,m=new Uint8Array(N2),hO=+$('hObs').value||2,hT=+$('hTgt').value||1.5;let used=0,skipped=0;const list=[];
+  pts.forEach(l=>{const p=l.feature.properties,k=llCell(l.getLatLng());if(k<0){skipped++;return}used++;
+    const R=Math.max(200,+p.range||3000),Fr=Math.max(0,+p.fire||0),vis=vsGX(k%n,Math.floor(k/n),hO,hT,R),ci=k%n,cj=Math.floor(k/n);let c=0,f=0;
+    for(let q=0;q<N2;q++)if(vis[q]){m[q]|=1;c++;if(Fr&&Math.hypot((q%n-ci)*GX.dx,(Math.floor(q/n)-cj)*GX.dy)<=Fr){m[q]|=2;f++}}
+    list.push({name:p.name||UT[p.utype]||'jednostka',mg:mgrs(l.getLatLng().lat,l.getLatLng().lng),range:R,fire:Fr,cells:c})});
+  if(!used){toast('Symbole przeciwnika leżą poza ocenianym rejonem. Dla nich użyj „Pole widzenia” w edycji symbolu.');return}
+  const ins=MC.inside;let NI=0,obs=0,fire=0;for(let q=0;q<N2;q++){if(ins&&!ins[q])continue;NI++;if(m[q]&1)obs++;if(m[q]&2)fire++}
+  enMask=m;
+  const aaL=drawn.getLayers().filter(l=>l.feature.properties.cat==='A'&&l instanceof L.Polyline&&!(l instanceof L.Polygon)).map(l=>{
+    const {pts}=samplePath(l.getLatLngs(),120);let o=0,f=0,c=0;pts.forEach(p=>{const k=llCell(p.ll);if(k<0)return;c++;if(m[k]&1)o++;if(m[k]&2)f++});
+    return {name:l.feature.properties.name||'AA',obs:c?o/c:0,fire:c?f/c:0}});
+  OPS.en={date:new Date().toISOString(),used,skipped,obs:obs/NI,fire:fire/NI,list,aa:aaL,mask:b64e(m)};
+  if(OPS.res)OPS.res.aa.forEach(a=>{const x=aaL.find(y=>y.name===a.name);if(x)a.enObs=x.obs});
+  drawEnemy();save();renderOps();
+  toast(`Przeciwnik obserwuje ${pct(obs/NI)} rejonu`+(fire?`, pod ogniem obserwowanym ${pct(fire/NI)}`:''));
+}
+function drawEnemy(){
+  if(enLayer){map.removeLayer(enLayer);enLayer=null}
+  if(!OPS.enOn||!enMask||!gxOk())return;
+  const n=GX.n,cv=document.createElement('canvas');cv.width=cv.height=n;const x=cv.getContext('2d'),im=x.createImageData(n,n),ins=MC.inside;
+  for(let k=0;k<n*n;k++){if(ins&&!ins[k])continue;if(enMask[k]&2)im.data.set([200,25,40,120],k*4);else if(enMask[k]&1)im.data.set([245,140,20,85],k*4)}
+  x.putImageData(im,0,0);
+  enLayer=L.imageOverlay(cv.toDataURL(),GX.b,{pane:'auto',interactive:false,className:'pix'}).addTo(map);
+}
+function crossVerdict(c){
+  if(c.kind==='bród')return ['mid','bród – przejezdność zależy od stanu wody'];
+  if(c.mw==null)return ['mid','brak danych o nośności – sprawdź w terenie'];
+  return c.mw>=OPS.mass?['hi',`wystarczająca (${c.mw} t)`]:['lo',`za mała (${c.mw} t)`];
+}
+function renderOps(){
+  const R=OPS.res,out=$('opOut');if(!out)return;
+  $('opDir').value=OPS.dir;$('opTask').value=OPS.task;$('opMode').value=OPS.mode;$('opWx').checked=!!OPS.wx;$('opIso').value=OPS.iso;$('opIsoOn').checked=!!OPS.isoOn;$('opEnOn').checked=!!OPS.enOn;$('opMass').value=OPS.mass;
+  if(!R)out.innerHTML='<div class="hint">Po ocenie rejonu wybierz kierunek i kliknij przycisk. Narzędzie wyznaczy drogi podejścia, czasy przejścia i linie czasowe.</div>';
+  else{
+    const wxn=Object.entries(R.wf).filter(([k,v])=>v<1).map(([k,v])=>`${MODES[k]} ×${v}`);
+    out.innerHTML=`<div class="note">${R.task==='nat'?'Własne natarcie w kierunku':'Przeciwnik działa z'} <b>${DIRS[R.dir][1]}</b>${R.auto?' (kierunek z naniesionych symboli)':''}. ${R.aa.length?'':'Brak przejścia dla wybranego rodzaju ruchu.'}</div>
+    ${R.aa.length?`<table class="optab"><tr><th>Droga</th><th>Długość</th><th>Pieszo</th><th>Koła</th><th>Gąs.</th><th>Widzą własne PO</th><th>Widzi npl</th></tr>${R.aa.map(a=>`<tr><td>${esc(a.name.replace(/ \(.*/,''))}</td><td>${fmtDist(a.len)}</td><td>${fmtMin(a.t.ft)}</td><td>${fmtMin(a.t.wh)}</td><td>${fmtMin(a.t.tr)}</td><td>${a.ownObs==null?'—':pct(a.ownObs)}</td><td>${a.enObs==null?'—':pct(a.enObs)}</td></tr>`).join('')}</table>`:''}
+    <div class="hint">Najkrótszy czas przejścia całego rejonu własną trasą: pieszo ${fmtMin(R.best.ft)}, kołowe ${fmtMin(R.best.wh)}, gąsienicowe ${fmtMin(R.best.tr)}.${wxn.length?' Uwzględniono pogodę: '+wxn.join(', ')+' (prędkość poza drogami).':''}</div>
+    ${R.op.length?`<div class="hint">Obserwacja głównej drogi: ${R.op.map(o=>`${esc(o.name)} ${pct(o.share)}`).join(', ')}.</div>`:''}`;
+  }
+  const E=OPS.en,eo=$('opEnOut');
+  eo.innerHTML=E?`<div class="note">Przeciwnik obserwuje <b>${pct(E.obs)}</b> rejonu${E.list.some(x=>x.fire)?`, pod ogniem obserwowanym <b>${pct(E.fire)}</b>`:''}; pola martwe względem przeciwnika: <b>${pct(1-E.obs)}</b>.${E.skipped?` Pominięto ${E.skipped} symboli spoza rejonu.`:''}</div>
+    ${E.aa.length?`<table class="optab"><tr><th>Droga / kierunek</th><th>Obserwowana</th><th>Pod ogniem</th></tr>${E.aa.map(a=>`<tr><td>${esc(a.name)}</td><td>${pct(a.obs)}</td><td>${pct(a.fire)}</td></tr>`).join('')}</table>`:''}
+    <div class="row"><span class="sw" style="background:rgba(245,140,20,.6)"></span><span class="hint">obserwowane</span><span class="sw" style="background:rgba(200,25,40,.7)"></span><span class="hint">w zasięgu ognia</span></div>`:'';
+  const cr=(lastSum&&lastSum.cross)||[],co=$('opCross');
+  co.innerHTML=cr.length?`<table class="optab"><tr><th>Przeprawa</th><th>MGRS</th><th>Szer.</th><th>Nośność dla ${OPS.mass} t</th></tr>${cr.map((c,i)=>{const [lv,tx]=crossVerdict(c);return `<tr data-cr="${i}" tabindex="0"><td>${c.kind==='bród'?'Bród':'Most'}${c.name?' '+esc(c.name):''}${c.water?' ('+esc(c.water)+')':''}</td><td>${mgrs(c.lat,c.lng)}</td><td>${c.w?c.w+' m':'—'}</td><td><span class="cf" style="--cc:${CONF[lv][1]}">${esc(tx)}</span></td></tr>`}).join('')}</table>
+    <div class="hint">Kliknij wiersz, aby pokazać przeprawę na mapie. Nośność i szerokość pochodzą ze znaczników OpenStreetMap (maxweight, width) i często ich brakuje. Mosty o za małej nośności są zamykane dla pojazdów w obliczeniach czasu ruchu.${lastSum.rivW?' Szerokość cieków wg OSM: '+esc(lastSum.rivW)+'.':''}</div>`
+    :`<div class="hint">${lastSum?'W rejonie nie rozpoznano mostów ani brodów.':'Lista mostów i brodów pojawi się po ocenie rejonu.'}</div>`;
+  co.querySelectorAll('[data-cr]').forEach(tr=>tr.onclick=()=>{const c=cr[+tr.dataset.cr],ll=L.latLng(c.lat,c.lng);map.setView(ll,Math.max(map.getZoom(),15));losLayer.clearLayers();losLayer.addLayer(L.circleMarker(ll,{radius:14,color:'#ffb300',weight:4,fill:false,interactive:false}))});
+  $('trOn').checked=TRAIN.on;$('trCmp').hidden=!TRAIN.stash;
+}
+function opsReportHTML(){
+  const R=OPS.res,E=OPS.en,cr=(lastSum&&lastSum.cross)||[],p=[];
+  if(!R&&!E&&!cr.length)return '';
+  p.push('<h2>Ocena pod kątem działań</h2>');
+  if(R){
+    p.push(`<p>${R.task==='nat'?'Zadanie własne: natarcie w kierunku':'Zadanie własne: obrona; przeciwnik działa z'} ${escH(DIRS[R.dir][1])}${R.auto?' (kierunek wyznaczony z naniesionych symboli przeciwnika)':''}. Drogi wyznaczono dla trybu „${MODES[R.mode]}” jako trasy najkrótszego czasu przez rejon.</p>`);
+    if(R.aa.length)p.push(tableHTML(['Droga podejścia','Długość','Pieszo','Kołowe','Gąsienicowe','Obserwowana z własnych PO','Obserwowana przez przeciwnika'],R.aa.map(a=>[a.name,fmtDist(a.len),fmtMin(a.t.ft),fmtMin(a.t.wh),fmtMin(a.t.tr),a.ownObs==null?'—':pct(a.ownObs),a.enObs==null?'—':pct(a.enObs)])));
+    else p.push('<p>Dla wybranego rodzaju ruchu nie ma przejścia przez rejon w tym kierunku.</p>');
+    p.push(`<p>Najkrótszy czas przejścia całego rejonu: pieszo ${fmtMin(R.best.ft)}, pojazdy kołowe ${fmtMin(R.best.wh)}, gąsienicowe ${fmtMin(R.best.tr)}. Linie czasowe na mapie: ${R.iso.length?R.iso.map(m=>fmtMin(m)).join(', '):'brak'} od ${R.task==='nat'?'własnej':'wejścia przeciwnika na'} krawędzi rejonu (${MODES[R.mode]}). Prędkości orientacyjne: pieszo wg funkcji Toblera (ok. 4–5 km/h po płaskim), kołowe 40 km/h po drogach i 4–12 km/h w terenie, gąsienicowe 30 km/h po drogach i 8–20 km/h w terenie, z poprawką na nachylenie${Object.values(R.wf).some(v=>v<1)?' i pogodę ('+Object.entries(R.wf).filter(([k,v])=>v<1).map(([k,v])=>MODES[k]+' ×'+v).join(', ')+')':''}; masa pojazdu do oceny mostów ${R.mass} t.</p>`);
+    if(R.op.length)p.push(`<p>Obserwacja głównej drogi podejścia z własnych punktów: ${R.op.map(o=>`${escH(o.name)} (${o.mg}) – ${pct(o.share)}`).join('; ')}.</p>`);
+  }
+  if(E){
+    p.push(`<h3>Obserwacja i ogień przeciwnika</h3><p>Z ${E.used} naniesionych pozycji przeciwnik obserwuje ${pct(E.obs)} rejonu${E.list.some(x=>x.fire)?`, a ${pct(E.fire)} ma w zasięgu ognia obserwowanego`:''}. Pola martwe względem przeciwnika: ${pct(1-E.obs)}.${E.skipped?` Pominięto ${E.skipped} symboli spoza rejonu.`:''}</p>`);
+    p.push(tableHTML(['Pozycja','MGRS','Zasięg obserwacji','Zasięg ognia'],E.list.map(x=>[x.name,x.mg,fmtDist(x.range),x.fire?fmtDist(x.fire):'—'])));
+    if(E.aa.length)p.push(tableHTML(['Droga / kierunek','Obserwowana przez przeciwnika','W zasięgu ognia'],E.aa.map(a=>[a.name,pct(a.obs),pct(a.fire)])));
+  }
+  if(cr.length){
+    p.push(`<h3>Przeprawy</h3>`);
+    p.push(tableHTML(['Przeprawa','MGRS','Szerokość',`Nośność dla pojazdu ${OPS.mass} t`],cr.map(c=>[(c.kind==='bród'?'Bród':'Most')+(c.name?' '+c.name:'')+(c.water?' ('+c.water+')':''),mgrs(c.lat,c.lng),c.w?c.w+' m':'—',crossVerdict(c)[1]])));
+    p.push('<p class="meta">Nośność i szerokość mostów wg znaczników OpenStreetMap; brak danych nie oznacza braku ograniczeń.</p>');
+  }
+  return p.join('\n');
+}
+function opsReset(){OPS.res=null;OPS.en=null;OPS._T=null;enMask=null;isoLayer.clearLayers();if(enLayer){map.removeLayer(enLayer);enLayer=null}renderOps()}
+function initOps(){
+  $('opDir').innerHTML='<option value="auto">automatycznie – z naniesionych symboli</option>'+Object.entries(DIRS).map(([k,[a,n]])=>`<option value="${k}">z ${n} (${k})</option>`).join('');
+  $('opMode').innerHTML=Object.entries(MODES).map(([k,n])=>`<option value="${k}">${n}</option>`).join('');
+  const bind=(id,key,fn,after)=>$(id).onchange=e=>{OPS[key]=fn(e.target);save();after&&after()};
+  bind('opDir','dir',t=>t.value);bind('opTask','task',t=>t.value);bind('opMode','mode',t=>t.value);bind('opWx','wx',t=>t.checked);
+  bind('opIso','iso',t=>t.value,()=>{if(OPS.res){OPS.res.iso=isoLevels();drawIso()}});bind('opIsoOn','isoOn',t=>t.checked,drawIso);bind('opEnOn','enOn',t=>t.checked,drawEnemy);
+  bind('opMass','mass',t=>Math.max(1,+t.value||40),renderOps);
+  $('opRun').onclick=runOps;$('opEn').onclick=runEnemy;
+  $('opLos').onclick=()=>{stopModes();mode='los2';map.getContainer().style.cursor='crosshair';if(narrow())document.querySelector('.mapwrap').scrollIntoView({behavior:'smooth'});toast((COARSE?'Dotknij':'Kliknij')+' punkt A (obserwator), potem punkt B (cel).')};
+  map.on('click',e=>{if(mode!=='los2')return;const ll=e.latlng;losLayer.clearLayers();losLayer.addLayer(L.circleMarker(ll,{radius:6,color:'#fff',weight:2,fillColor:'#111',fillOpacity:1,interactive:false}));
+    setTimeout(()=>{losFrom={getLatLng:()=>ll,feature:{properties:{name:'punkt A '+mgrs(ll.lat,ll.lng)}}};mode='los';updateStatus()},0)});
+  $('trOn').onchange=e=>{TRAIN.on=e.target.checked;try{localStorage.setItem('ocoka-train',TRAIN.on?'1':'')}catch(x){}toast(TRAIN.on?'Tryb szkoleniowy włączony: po ocenie rejonu wynik automatyczny zostanie ukryty.':'Tryb szkoleniowy wyłączony.')};
+  $('trCmp').onclick=trainCompare;
+  renderOps();
+}
+
+// ================= Tryb szkoleniowy =================
+const TRAIN={on:false,stash:null};try{TRAIN.on=!!localStorage.getItem('ocoka-train')}catch(e){}
+function trainHide(){
+  const feats=[];drawn.getLayers().filter(l=>l.feature.properties.auto).forEach(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};feats.push(g);drawn.removeLayer(l)});
+  const an={};ALLCATS.forEach(c=>{const ls=notes[c.k].split('\n');an[c.k]=ls.filter(x=>x.startsWith('[AUTO]'));notes[c.k]=ls.filter(x=>!x.startsWith('[AUTO]')).join('\n').trim()});
+  TRAIN.stash={feats,notes:an,show:MC?[MC.showMob,MC.showDead]:null};
+  if(MC){MC.showMob=false;MC.showDead=false;mcoo.redraw()}
+  if(ovSlope)map.removeLayer(ovSlope);
+  opsReset();decorate();render();save();showTrainPanel();
+}
+function showTrainPanel(){
+  openProfile('Tryb szkoleniowy – oceń rejon samodzielnie','<span>Wynik automatyczny jest ukryty.</span>',
+   `<div class="hint">1. Obejrzyj rejon na podkładach (zakładka „Mapa i teren”). 2. Nanieś własne obiekty: punkty obserwacyjne (O), ukrycia (C), przeszkody (O), teren kluczowy (K), drogi podejścia (A). 3. Wpisz wnioski w zakładce „Analiza”. 4. Kliknij „Porównaj”.</div>
+    <div class="row"><button class="btn sm primary" id="trGo">Porównaj z oceną automatyczną</button><button class="btn sm" id="trAn">Przejdź do analizy</button></div>`);
+  $('profile').dataset.kind='ocena';
+  $('trGo').onclick=trainCompare;$('trAn').onclick=()=>{$('profile').hidden=true;document.querySelector('.tab[data-tab=analiza]').click()};
+}
+function trainCompare(){
+  const st=TRAIN.stash;if(!st){toast('Brak ukrytej oceny do porównania.');return}
+  const b=autoBox||map.getBounds(),tol=Math.max(300,b.getNorthEast().distanceTo(b.getSouthWest())*.08);
+  const user=drawn.getLayers().filter(l=>!l.feature.properties.auto&&CATS.some(c=>c.k===l.feature.properties.cat));
+  const samp=g=>{if(g.type==='Point')return [L.latLng(g.coordinates[1],g.coordinates[0])];
+    const cs=g.type==='Polygon'?g.coordinates[0]:g.coordinates,lls=cs.map(c=>L.latLng(c[1],c[0]));return lls.length>1?samplePath(lls,24).pts.map(p=>p.ll):lls};
+  const dist=(A,B)=>{let s=0;A.forEach(a=>{let m=Infinity;B.forEach(q=>{m=Math.min(m,a.distanceTo(q))});s+=m});return s/A.length};
+  const rows=[];let hitA=0,totA=0,hitU=0,totU=0;
+  CATS.forEach(c=>{
+    const U=user.filter(l=>l.feature.properties.cat===c.k).map(l=>({n:l.feature.properties.name||'obiekt',p:samp(l.toGeoJSON().geometry),pt:l instanceof L.Marker}));
+    const A=st.feats.filter(f=>f.properties.cat===c.k).map(f=>({n:f.properties.name||'obiekt',p:samp(f.geometry),pt:f.geometry.type==='Point'}));
+    const near=(x,y)=>Math.min(dist(x.p,y.p),dist(y.p,x.p))<(x.pt&&y.pt?tol:tol*1.5);
+    const aHit=A.filter(a=>U.some(u=>near(u,a))),uHit=U.filter(u=>A.some(a=>near(u,a)));
+    hitA+=aHit.length;totA+=A.length;hitU+=uHit.length;totU+=U.length;
+    rows.push({c,U,A,aHit,uHit,miss:A.filter(a=>!aHit.includes(a)).map(a=>a.n),extra:U.filter(u=>!uHit.includes(u)).map(u=>u.n),own:notes[c.k].trim(),auto:stripAuto(st.notes[c.k].join('\n'))});
+  });
+  // przywróć wynik automatyczny
+  st.feats.forEach(ft=>{const isI=ft.properties.cat==='I',igc=isI?'ig-'+((IT[ft.properties.itype]||{g:'tr'}).g):'';
+    L.geoJSON(ft,{pointToLayer:(f,ll)=>L.marker(ll,isI?{pane:'infraM'}:{}),...(isI?{pane:'infraP',className:igc}:{})}).eachLayer(l=>{const pr={...l.feature.properties};delete l.feature;attach(l,pr)})});
+  ALLCATS.forEach(c=>{const a=st.notes[c.k]||[];if(a.length)notes[c.k]=(a.join('\n')+'\n'+notes[c.k]).trim()});
+  if(MC&&st.show){MC.showMob=st.show[0];MC.showDead=st.show[1];mcoo.redraw()}
+  TRAIN.stash=null;decorate();render();save();renderOps();
+  const sc=totA?Math.round(hitA/totA*100):0;
+  openProfile('Tryb szkoleniowy – porównanie',`<span>Odnalezione obiekty automatyczne <b>${hitA} z ${totA} (${sc}%)</b></span><span>Twoje obiekty potwierdzone automatem <b>${hitU} z ${totU}</b></span><span>Tolerancja <b>${fmtDist(tol)}</b></span>`,
+   `<table class="optab"><tr><th></th><th>Twoje</th><th>Automat</th><th>Zgodne</th><th>Pominięte przez Ciebie</th><th>Tylko u Ciebie</th></tr>${rows.map(r=>`<tr><td><b>${r.c.l}</b> ${esc(r.c.name)}</td><td>${r.U.length}</td><td>${r.A.length}</td><td>${r.aHit.length}</td><td>${esc(r.miss.slice(0,4).join(', ')||'—')}</td><td>${esc(r.extra.slice(0,4).join(', ')||'—')}</td></tr>`).join('')}</table>
+    <div class="res">${rows.map(r=>`<div class="ri" style="--c:var(${r.c.v})"><div class="letter">${r.c.l}</div><div><b>Twoje wnioski</b><div>${esc(r.own||'— (brak)').replace(/\n/g,'<br>')}</div><b>Ocena automatyczna</b><div>${esc(r.auto||'—').replace(/\n/g,'<br>')}</div></div></div>`).join('')}</div>
+    <div class="hint">Zgodność liczona po położeniu obiektów tej samej kategorii. Obiekty „tylko u Ciebie” nie są błędem: automat nie zna zadania ani przeciwnika, a Ty możesz widzieć więcej. Wynik automatyczny został przywrócony na mapie; okno pełnej oceny otworzysz przyciskiem „Ocena”.</div>`);
+  $('profile').dataset.kind='';
+}
+
+// ================= ESA WorldCover (pokrycie terenu 10 m) =================
+const WC_BASE='https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/';
+function wcName(lat,lon){const la=Math.floor(lat/3)*3,lo=Math.floor(lon/3)*3;
+  return `${WC_BASE}ESA_WorldCover_10m_2021_v200_${la>=0?'N':'S'}${String(Math.abs(la)).padStart(2,'0')}${lo>=0?'E':'W'}${String(Math.abs(lo)).padStart(3,'0')}_Map.tif`}
+async function wcMasks(b,g){
+  if(!window.GeoTIFF)await loadScript(GEOTIFF_URL);
+  const tiles=[],seen=new Set();
+  for(const la of [b.getSouth(),b.getNorth()-1e-9])for(const lo of [b.getWest(),b.getEast()-1e-9]){
+    const url=wcName(la,lo);if(seen.has(url))continue;seen.add(url);
+    const tif=await GeoTIFF.fromUrl(url,{allowFullFile:true}),img=await tif.getImage();
+    const [minX,minY,maxX,maxY]=img.getBoundingBox(),W=img.getWidth(),Hh=img.getHeight(),rx=(maxX-minX)/W,ry=(maxY-minY)/Hh;
+    const x0=Math.max(0,Math.floor((Math.max(b.getWest(),minX)-minX)/rx)-1),x1=Math.min(W,Math.ceil((Math.min(b.getEast(),maxX)-minX)/rx)+1);
+    const y0=Math.max(0,Math.floor((maxY-Math.min(b.getNorth(),maxY))/ry)-1),y1=Math.min(Hh,Math.ceil((maxY-Math.max(b.getSouth(),minY))/ry)+1);
+    if(x1<=x0||y1<=y0)continue;
+    const sc=Math.max(1,Math.ceil(Math.max(x1-x0,y1-y0)/2400)),w=Math.ceil((x1-x0)/sc),h=Math.ceil((y1-y0)/sc);
+    const data=await img.readRasters({window:[x0,y0,x1,y1],width:w,height:h,samples:[0],interleave:true,resampleMethod:'nearest'});
+    tiles.push({minX,maxY,rx:rx*(x1-x0)/w,ry:ry*(y1-y0)/h,ox:minX+x0*rx,oy:maxY-y0*ry,w,h,data});
+  }
+  if(!tiles.length)throw new Error('wc');
+  const cls=(lat,lng)=>{for(const t of tiles){const x=Math.floor((lng-t.ox)/t.rx),y=Math.floor((t.oy-lat)/t.ry);if(x>=0&&y>=0&&x<t.w&&y<t.h)return t.data[y*t.w+x]}return 0};
+  const n=g.n,N2=n*n,m={forest:new Uint8Array(N2),built:new Uint8Array(N2),water:new Uint8Array(N2),wet:new Uint8Array(N2),scrub:new Uint8Array(N2)};
+  const dLat=(b.getNorth()-b.getSouth())/(n-1)/3,dLng=(b.getEast()-b.getWest())/(n-1)/3;let ok=0;
+  for(let k=0;k<N2;k++){const p=g.pts[k];let f=0,bu=0,wa=0,we=0,s=0,c=0;
+    for(let a=-1;a<=1;a++)for(let q=-1;q<=1;q++){const v=cls(p.lat+a*dLat,p.lng+q*dLng);if(!v)continue;c++;if(v===10||v===95)f++;else if(v===50)bu++;else if(v===80)wa++;else if(v===90)we++;else if(v===20)s++}
+    if(c)ok++;if(f>=4)m.forest[k]=1;if(bu>=3)m.built[k]=1;if(wa>=5)m.water[k]=1;if(we>=4)m.wet[k]=1;if(s>=5)m.scrub[k]=1}
+  if(ok<N2*.9)throw new Error('wc coverage');
+  return m;
+}
+function osmShares(o,g){
+  const N2=g.n*g.n,ins=g.inside||new Uint8Array(N2).fill(1);let NI=0;for(let k=0;k<N2;k++)NI+=ins[k];NI=NI||1;
+  let fc=0,wc=0,sc=0,oc=0,bc=0,open=0;
+  for(let k=0;k<N2;k++){if(!ins[k])continue;fc+=o.forestMask[k];wc+=o.waterMask[k];sc+=o.scrubMask[k];oc+=o.orchMask[k];bc+=o.builtMask[k];
+    if(!o.forestMask[k]&&!o.waterMask[k]&&!o.wetMask[k]&&!o.builtMask[k]&&!o.scrubMask[k]&&!o.orchMask[k]&&!o.quarryMask[k])open++}
+  o.forestShare=fc/NI;o.waterShare=wc/NI;o.scrubShare=sc/NI;o.orchShare=oc/NI;o.builtShare=bc/NI;o.openShare=open/NI;
+}
+function mergeWC(o,m,g){
+  const N2=g.n*g.n;let add=0;
+  for(let k=0;k<N2;k++){if(m.forest[k]&&!o.forestMask[k]&&!o.waterMask[k]){o.forestMask[k]=1;add++}if(m.built[k])o.builtMask[k]=1;if(m.water[k])o.waterMask[k]=1;if(m.wet[k])o.wetMask[k]=1;if(m.scrub[k]&&!o.forestMask[k])o.scrubMask[k]=1}
+  osmShares(o,g);return add/N2;
+}
+
+// ================= Wymiana danych: KML, GPX, link, praca offline =================
+const xmlEsc=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+function kmlColor(c,a='ff'){const m=/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec((c||'').trim());return m?a+m[3]+m[2]+m[1]:a+'0000ff'}
+function toKML(){
+  const co=ll=>`${r5(ll.lng)},${r5(ll.lat)},0`;let s=`<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>${xmlEsc(areaEl.value||'OCOKA')}</name>\n`;
+  ALLCATS.forEach(c=>{const col=colOf(c.k);s+=`<Style id="s${c.k}"><LineStyle><color>${kmlColor(col)}</color><width>3</width></LineStyle><PolyStyle><color>${kmlColor(col,'55')}</color></PolyStyle><IconStyle><color>${kmlColor(col)}</color></IconStyle></Style>\n`});
+  if(autoBox){const b=autoBox,ring=autoRing||[b.getSouthWest(),b.getSouthEast(),b.getNorthEast(),b.getNorthWest()];
+    s+=`<Placemark><name>Rejon oceny</name><Style><LineStyle><color>ff000000</color><width>2</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style><Polygon><outerBoundaryIs><LinearRing><coordinates>${[...ring,ring[0]].map(p=>co(L.latLng(p))).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>\n`}
+  ALLCATS.forEach(c=>{const ls=drawn.getLayers().filter(l=>l.feature.properties.cat===c.k);if(!ls.length)return;
+    s+=`<Folder><name>${xmlEsc(c.k==='E'?'Przeciwnik i siły':c.l+' – '+c.name)}</name>\n`;
+    ls.forEach(l=>{const p=l.feature.properties,a=anchor(l);let geom;
+      if(l instanceof L.Marker)geom=`<Point><coordinates>${co(l.getLatLng())}</coordinates></Point>`;
+      else if(l instanceof L.Polygon){const r=flatRings(l.getLatLngs())[0]||[];geom=`<Polygon><outerBoundaryIs><LinearRing><coordinates>${[...r,r[0]].map(co).join(' ')}</coordinates></LinearRing></outerBoundaryIs></Polygon>`}
+      else geom=`<LineString><coordinates>${l.getLatLngs().map(co).join(' ')}</coordinates></LineString>`;
+      s+=`<Placemark><name>${xmlEsc(p.name||c.name)}</name><description>${xmlEsc([p.note,'MGRS '+mgrs(a.lat,a.lng)].filter(Boolean).join(' | '))}</description><styleUrl>#s${c.k}</styleUrl><ExtendedData><Data name="ocoka_cat"><value>${c.k}</value></Data>${p.side?`<Data name="ocoka_side"><value>${xmlEsc(p.side)}</value></Data>`:''}</ExtendedData>${geom}</Placemark>\n`});
+    s+='</Folder>\n'});
+  return s+'</Document></kml>';
+}
+function toGPX(){
+  let s=`<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="OCOKA Planer" xmlns="http://www.topografix.com/GPX/1/1"><metadata><name>${xmlEsc(areaEl.value||'OCOKA')}</name></metadata>\n`,w='',t='';
+  drawn.eachLayer(l=>{const p=l.feature.properties,nm=xmlEsc(`[${p.cat}] ${p.name||''}`.trim()),d=xmlEsc(p.note||'');
+    if(l instanceof L.Marker){const a=l.getLatLng();w+=`<wpt lat="${r5(a.lat)}" lon="${r5(a.lng)}"><name>${nm}</name><desc>${d}</desc></wpt>\n`}
+    else{let lls=l instanceof L.Polygon?(flatRings(l.getLatLngs())[0]||[]):l.getLatLngs();if(l instanceof L.Polygon&&lls.length)lls=[...lls,lls[0]];
+      t+=`<trk><name>${nm}</name><desc>${d}</desc><trkseg>${lls.map(a=>`<trkpt lat="${r5(a.lat)}" lon="${r5(a.lng)}"/>`).join('')}</trkseg></trk>\n`}});
+  return s+w+t+'</gpx>';
+}
+function importFeatures(list){
+  let nAdd=0;const added=[];
+  list.forEach(f=>{let l=null;const lls=f.c.map(c=>L.latLng(c[1],c[0])).filter(p=>isFinite(p.lat)&&isFinite(p.lng)&&Math.abs(p.lat)<=90);
+    if(!lls.length)return;
+    if(f.t==='pt')l=L.marker(lls[0]);else if(f.t==='line'&&lls.length>1)l=L.polyline(lls);else if(f.t==='poly'&&lls.length>2){if(lls[0].equals(lls[lls.length-1]))lls.pop();l=L.polygon(lls)}
+    if(!l)return;const cat=ALLCATS.some(c=>c.k===f.cat)?f.cat:active==='I'?'O':active;
+    attach(l,{cat,name:f.name||'',note:f.note||'',...(f.side?{side:f.side}:{})});added.push(l);nAdd++});
+  if(nAdd){decorate();render();save();showWelcome(false);showManual(true);map.fitBounds(L.featureGroup(added).getBounds(),{padding:[60,60],maxZoom:15})}
+  return nAdd;
+}
+function parseKML(txt){
+  const d=new DOMParser().parseFromString(txt,'application/xml');if(d.querySelector('parsererror'))throw new Error('xml');
+  const cs=el=>el?el.textContent.trim().split(/\s+/).map(x=>x.split(',').map(Number)):[],out=[],tx=(pm,tag)=>{const e=pm.getElementsByTagName(tag)[0];return e?e.textContent.trim():''};
+  [...d.getElementsByTagName('Placemark')].forEach(pm=>{
+    let cat='',side='';[...pm.getElementsByTagName('Data')].forEach(x=>{const v=x.getElementsByTagName('value')[0];if(x.getAttribute('name')==='ocoka_cat'&&v)cat=v.textContent.trim();if(x.getAttribute('name')==='ocoka_side'&&v)side=v.textContent.trim()});
+    const name=tx(pm,'name'),note=tx(pm,'description').replace(/<[^>]+>/g,' ').replace(/\s*\|?\s*MGRS .*$/,'').trim();
+    if(name==='Rejon oceny'&&!cat)return;
+    [...pm.getElementsByTagName('Point')].forEach(g=>out.push({t:'pt',c:cs(g.getElementsByTagName('coordinates')[0]),name,note,cat,side}));
+    [...pm.getElementsByTagName('LineString')].forEach(g=>out.push({t:'line',c:cs(g.getElementsByTagName('coordinates')[0]),name,note,cat,side}));
+    [...pm.getElementsByTagName('Polygon')].forEach(g=>{const o=g.getElementsByTagName('outerBoundaryIs')[0]||g;out.push({t:'poly',c:cs(o.getElementsByTagName('coordinates')[0]),name,note,cat,side})});
+  });
+  return out;
+}
+function parseGPX(txt){
+  const d=new DOMParser().parseFromString(txt,'application/xml');if(d.querySelector('parsererror'))throw new Error('xml');
+  const out=[],nm=e=>{const x=[...e.children].find(c=>c.localName==='name');const s=x?x.textContent.trim():'',m=/^\[(\w+)\]\s*(.*)$/.exec(s);return m?{name:m[2],cat:m[1]}:{name:s,cat:''}},ds=e=>{const x=[...e.children].find(c=>c.localName==='desc');return x?x.textContent.trim():''};
+  const pt=e=>[+e.getAttribute('lon'),+e.getAttribute('lat')];
+  [...d.getElementsByTagName('wpt')].forEach(e=>out.push({t:'pt',c:[pt(e)],...nm(e),note:ds(e)}));
+  [...d.getElementsByTagName('trk')].forEach(e=>{const c=[...e.getElementsByTagName('trkpt')].map(pt);const closed=c.length>3&&c[0][0]===c[c.length-1][0]&&c[0][1]===c[c.length-1][1];out.push({t:closed?'poly':'line',c,...nm(e),note:ds(e)})});
+  [...d.getElementsByTagName('rte')].forEach(e=>out.push({t:'line',c:[...e.getElementsByTagName('rtept')].map(pt),...nm(e),note:ds(e)}));
+  return out;
+}
+function parsePlainGeoJSON(j){
+  const out=[],fs=j.type==='FeatureCollection'?j.features:j.type==='Feature'?[j]:[{type:'Feature',properties:{},geometry:j}];
+  (fs||[]).forEach(f=>{const g=f&&f.geometry,p=(f&&f.properties)||{};if(!g)return;const b={name:p.name||p.Name||p.title||'',note:p.note||p.description||p.desc||'',cat:p.cat||'',side:p.side||''};
+    const one=(t,c)=>out.push({t,c,...b});
+    if(g.type==='Point')one('pt',[g.coordinates]);else if(g.type==='MultiPoint')g.coordinates.forEach(c=>one('pt',[c]));
+    else if(g.type==='LineString')one('line',g.coordinates);else if(g.type==='MultiLineString')g.coordinates.forEach(c=>one('line',c));
+    else if(g.type==='Polygon')one('poly',g.coordinates[0]);else if(g.type==='MultiPolygon')g.coordinates.forEach(c=>one('poly',c[0]))});
+  return out;
+}
+function importFile(name,txt){
+  const ext=(name.split('.').pop()||'').toLowerCase();
+  try{
+    if(ext==='kml'||/^\s*<\?xml[\s\S]{0,400}<kml/i.test(txt)||/^\s*<kml/i.test(txt)){const n=importFeatures(parseKML(txt));toast(n?`Dodano ${n} obiektów z pliku KML`:'W pliku KML nie znaleziono obiektów');return}
+    if(ext==='gpx'||/<gpx[\s>]/i.test(txt.slice(0,600))){const n=importFeatures(parseGPX(txt));toast(n?`Dodano ${n} obiektów z pliku GPX`:'W pliku GPX nie znaleziono obiektów');return}
+    const j=JSON.parse(txt);
+    if(j&&j.ocoka){load(j);save();if(drawn.getLayers().length||MC){showWelcome(false);showManual(true)}toast('Wczytano '+drawn.getLayers().length+' obiektów');return}
+    const n=importFeatures(parsePlainGeoJSON(j));toast(n?`Dodano ${n} obiektów z pliku GeoJSON`:'W pliku nie znaleziono obiektów');
+  }catch(e){console.error(e);toast('Nie udało się odczytać pliku. Obsługiwane formaty: GeoJSON, KML, GPX.')}
+}
+async function packState(o){
+  const s=JSON.stringify(o),url=x=>x.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  if(window.CompressionStream){const u=new Uint8Array(await new Response(new Blob([s]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer());return 'z'+url(b64e(u))}
+  return 'j'+url(b64e(new TextEncoder().encode(s)));
+}
+async function unpackState(t){
+  const u=b64d(t.slice(1).replace(/-/g,'+').replace(/_/g,'/'));
+  if(t[0]==='z')return JSON.parse(await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text());
+  return JSON.parse(new TextDecoder().decode(u));
+}
+async function shareLink(){
+  const fc=toGeoJSON();delete fc.ocoka.gx;delete fc.ocoka.wx;delete fc.ocoka.train;if(fc.ocoka.ops&&fc.ocoka.ops.en)fc.ocoka.ops.en={...fc.ocoka.ops.en,mask:undefined};
+  const base=/^https?:/.test(location.protocol)?location.origin+location.pathname:'https://piwojold.github.io/ocoka.html';
+  let cut=[],link=base+'#s='+await packState(fc);
+  if(link.length>24000&&fc.ocoka.mc){fc.ocoka.mc=null;cut.push('warstwy MCOO i martwych pól');link=base+'#s='+await packState(fc)}
+  if(link.length>24000){fc.features=fc.features.filter(f=>f.properties.cat!=='I');cut.push('obiekty infrastruktury');link=base+'#s='+await packState(fc)}
+  const box=$('shareOut');box.hidden=false;
+  box.innerHTML=`<input type="text" readonly id="shareUrl"><div class="hint">Link ma ${link.length.toLocaleString('pl-PL')} znaków i zawiera rejon, obiekty, wnioski i ustawienia.${cut.length?' Żeby go skrócić, pominięto: '+cut.join(', ')+'.':''} Odbiorca zobaczy analizę od razu; aby liczyć u siebie czasy ruchu i obserwację przeciwnika, musi ponownie uruchomić ocenę rejonu.${link.length>8000?' Część komunikatorów obcina długie linki – wtedy wyślij plik („Zapisz plik”).':''}</div>`;
+  $('shareUrl').value=link;$('shareUrl').onclick=e=>e.target.select();
+  copyText(link,'Link skopiowany do schowka');
+  return link;
+}
+async function openShared(){
+  const m=/[#&]s=([A-Za-z0-9_-]+)/.exec(location.hash);if(!m)return false;
+  try{const fc=await unpackState(m[1]);if(!fc||!fc.ocoka)throw new Error('fmt');
+    load(fc);showWelcome(false);showManual(true);save();histPush();updOcenaBtn();
+    try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+    toast('Wczytano analizę z linku'+(fc.ocoka.area?': '+fc.ocoka.area:''));return true}
+  catch(e){console.error(e);toast('Link do analizy jest uszkodzony lub niepełny.');return false}
+}
+// praca offline
+let swReady=false;
+function initOffline(){
+  const st=$('offState'),ok='serviceWorker' in navigator&&/^https?:/.test(location.protocol)&&window.caches;
+  if(!ok){st.textContent=location.protocol==='file:'?'Zapis offline działa tylko w wersji otwieranej z adresu internetowego (np. piwojold.github.io/ocoka.html), nie z pliku na dysku.':'Ta przeglądarka nie obsługuje zapisu offline.';$('offSave').disabled=true;$('offClear').disabled=true;return}
+  navigator.serviceWorker.register('ocoka-sw.js',{scope:location.pathname}).then(()=>navigator.serviceWorker.ready).then(()=>{swReady=true;offCount();caches.open('ocoka-page-v1').then(c=>c.add(location.origin+location.pathname)).catch(()=>{})}).catch(()=>{st.textContent='Nie udało się włączyć zapisu offline (brak pliku ocoka-sw.js obok strony).';$('offSave').disabled=true});
+  $('offSave').onclick=offSave;
+  $('offClear').onclick=async()=>{await caches.delete('ocoka-tiles-v1');offCount();toast('Usunięto zapisane podkłady')};
+}
+async function offCount(){
+  try{const c=await caches.open('ocoka-tiles-v1'),n=(await c.keys()).length;$('offState').textContent=n?`Zapisane kafle i biblioteki: ${n}. Strona uruchomi się bez internetu; analiza zapisana w przeglądarce pozostaje dostępna.`:'Podkłady oglądane na mapie zapisują się automatycznie. Przycisk poniżej pobiera cały rejon z wyprzedzeniem.';return n}catch(e){return 0}
+}
+function tileUrlsFor(layer,b,zs){
+  const urls=[];if(!layer||!layer.getTileUrl)return urls;const keep=layer._tileZoom;
+  zs.forEach(z=>{const ts=layer.getTileSize?layer.getTileSize().x:256,nw=map.project(b.getNorthWest(),z).divideBy(ts).floor(),se=map.project(b.getSouthEast(),z).divideBy(ts).floor();
+    layer._tileZoom=z;for(let x=nw.x;x<=se.x;x++)for(let y=nw.y;y<=se.y;y++){const c=L.point(x,y);c.z=z;try{urls.push(layer.getTileUrl(c))}catch(e){}}});
+  layer._tileZoom=keep;return urls;
+}
+async function offSave(){
+  if(!swReady){toast('Zapis offline nie jest jeszcze gotowy – odśwież stronę i spróbuj ponownie.');return}
+  const b=autoBox||map.getBounds(),z0=Math.max(8,Math.min(15,map.getBoundsZoom(b))),maxZ=Math.min(curBase.options.maxNativeZoom||curBase.options.maxZoom||17,16);
+  let zs=[z0-1,z0,z0+1,z0+2].filter(z=>z>=6&&z<=maxZ),urls=tileUrlsFor(curBase,b.pad(.15),zs);
+  while(urls.length>240&&zs.length>1){zs.pop();urls=tileUrlsFor(curBase,b.pad(.15),zs)}
+  if(urls.length>240){toast('Rejon jest za duży do zapisu z wyprzedzeniem. Przybliż mapę lub zaznacz mniejszy rejon.');return}
+  if(map.hasLayer(relief))urls.push(...tileUrlsFor(relief,b,zs.filter(z=>z<=14)).slice(0,80));
+  const st=$('offState');let done=0,fail=0;$('offSave').disabled=true;
+  const q=urls.slice(),work=async()=>{while(q.length){const u=q.shift();await new Promise(r=>{const im=new Image();im.onload=()=>{done++;r()};im.onerror=()=>{fail++;r()};im.src=u});st.textContent=`Pobieram podkład „${baseSel.value}”: ${done+fail} z ${urls.length}…`}};
+  await Promise.all([work(),work(),work(),work()]);
+  $('offSave').disabled=false;await offCount();
+  toast(`Zapisano ${done} kafli (poziomy ${zs[0]}–${zs[zs.length-1]})`+(fail?`, ${fail} nie udało się pobrać`:''));
+}
+
+function opsRestore(){
+  enMask=null;try{if(OPS.en&&OPS.en.mask&&GX){const m=b64d(OPS.en.mask);if(m.length===GX.n*GX.n)enMask=m}}catch(e){}
+  OPS._T=null;
+  if(OPS.res&&gxOk()&&DIRS[OPS.res.dir]){const az=DIRS[OPS.res.dir][0],v=speedField(OPS.res.mode),src=edgeCells(OPS.res.task==='nat'?(az+180)%360:az).map(k=>nearPassable(k,v)).filter(k=>k>=0);OPS._T=timeField(v,src).T}
+  drawIso();drawEnemy();renderOps();
+}
+
 // ================= Start =================
 renderCatBar();
 let saved=null;try{saved=JSON.parse(localStorage.getItem('ocoka-v2')||'null')}catch(e){}
@@ -4195,7 +4858,7 @@ if(saved&&saved.features&&saved.features.length){
 (function(){const box=$('igList');Object.entries(IG).forEach(([g,[c,n]])=>{const l=document.createElement('label');l.className='check';
   l.innerHTML=`<input type="checkbox" id="ig-${g}"> <span class="iico" style="background:${c};width:16px;height:16px;font-size:8px;display:inline-grid"></span> ${n}`;box.appendChild(l);
   l.querySelector('input').onchange=e=>{e.target.checked?igHide.delete(g):igHide.add(g);applyIgHide();save()}});applyIgHide()})();
-initCoordDialog();initReport();initMgrsDialog();
+initCoordDialog();initReport();initMgrsDialog();initOps();initOffline();openShared();
 buildLinks('wxLinks',WXLINKS);buildLinks('byLinks',BYLINKS);
 map.on('moveend',()=>{[['wxLinks',WXLINKS],['byLinks',BYLINKS]].forEach(([id,list])=>{const as=$(id).querySelectorAll('a');list.forEach(([n,fn],i)=>{if(as[i])as[i].href=fn(id==='wxLinks'?wxPoint():map.getCenter())})})});
 $('wxGo').onclick=()=>loadWx(wxPoint());
