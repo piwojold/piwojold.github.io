@@ -21,4 +21,5 @@ jobs:
       - shell: bash
         run: |
           set -euo pipefail
-          { echo '## Kanały'; echo '```'; node tools/sprawdz.mjs "${{ inputs.plik || 'tools/kandydaci.txt' }}"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          node tools/sprawdz.mjs "${{ inputs.plik || 'tools/kandydaci.txt' }}" | tee "$RUNNER_TEMP/wynik.txt"
+          { echo '## Kanały'; echo '```'; cat "$RUNNER_TEMP/wynik.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
