@@ -1,5 +1,751 @@
 window.BRIEF_EDITIONS = [
  {
+  "date": "2026-11-13",
+  "win": "12.11.2026 09:30 – 13.11.2026 21:09 CET",
+  "stop": "13 listopada 2026, 21:09 CET",
+  "obraz": [
+   "Dobę zdominował kolejny odcinek sporu prezydenta z rządem. Prezydent zawetował ustawę o blokowaniu nielegalnych treści w sieci, podpisując równocześnie sześć innych ustaw, a jego kancelaria zaprosiła kluby parlamentarne na poniedziałkowe rozmowy o Trybunale Konstytucyjnym. Lewica odmówiła udziału, a premier uważa sprawę kierowania Trybunałem za rozstrzygniętą.",
+   "W cyberprzestrzeni ePUAP pozostaje wyłączony i nie ma terminu jego przywrócenia. Minister cyfryzacji mówi o ataku z zagranicy i o planie sparaliżowania administracji w grudniu, bez wskazania sprawców. Na to nałożyła się globalna awaria usług Microsoftu, którą resort wykorzystał do zapowiedzi szerszego użycia otwartego oprogramowania.",
+   "Po zamachu w Krakowie śledztwo postępuje powoli: prokuratura zna trasę sprawcy, ale nie motyw. Policja zatrzymała 11 osób za wpisy w sieci, prokuratura bada relację Telewizji Republika, a w Trzebnicy pojawiły się napisy na biurze poselskim wiceministra. W samym Krakowie doszło do osobnego zdarzenia ze strzałami w kierunku policjantów. W obszarze wojskowym nie odnotowano nowych komunikatów o naruszeniach przestrzeni powietrznej.",
+   "W gospodarce TSUE oddalił wszystkie polskie skargi na pakiet Fit for 55, a GUS podał wzrost PKB o 3,5 proc. w III kwartale i inflację 3,5 proc. w październiku, obniżoną głównie przez program tańszych paliw. W dyplomacji premier rozmawiał w Dublinie o negocjacjach pokojowych, a Polska weszła do Wspólnej Jednostki Kontrolnej ONZ, pokonując Rosję. Związkowcy zapowiedzieli przedświąteczny protest w handlu."
+  ],
+  "events": [
+   {
+    "id": "dsa-weto",
+    "dim": "P",
+    "sec": [
+     "I"
+    ],
+    "top": 1,
+    "rel": "Wysoka",
+    "label": "Potwierdzona decyzja",
+    "follow": false,
+    "date": "13.11",
+    "region": "Cała Polska",
+    "scope": "kraj",
+    "woj": [],
+    "title": "Prezydent zawetował ustawę o blokowaniu nielegalnych treści w sieci (DSA)",
+    "lead": "Drugie w tym roku weto wobec przepisów wdrażających unijny akt o usługach cyfrowych. Minister cyfryzacji ocenił decyzję jako przyzwolenie na hejt.",
+    "summary": "Prezydent odmówił 13 listopada podpisania nowelizacji ustawy o świadczeniu usług drogą elektroniczną, która miała wdrożyć część aktu o usługach cyfrowych i określić zasady blokowania nielegalnych treści. Nakazy blokady miał wydawać co do zasady prezes UKE, a w sprawach platform wideo przewodniczący KRRiT, z możliwością sprzeciwu do sądu. Poprzednią ustawę wdrażającą DSA prezydent zawetował 9 stycznia, wskazując na zagrożenie dla wolności słowa. Według PAP minister cyfryzacji nazwał weto przyzwoleniem na hejt.",
+    "why": "Według Polsat News Polska pozostaje ostatnim państwem UE bez wdrożenia tych przepisów i naraża się na kary finansowe. Źródła różnią się co do drugiej, wcześniej podpisanej ustawy o koordynatorze usług cyfrowych: Interia podaje, że weszła w życie 6 listopada, Polsat News, że wchodzi w życie w piątek. Do obserwacji: pełne uzasadnienie weta, próba jego odrzucenia w Sejmie albo kolejny projekt rządu.",
+    "sources": [
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/ustawa-o-uslugach-cyfrowych-prezydent-podjal-decyzje/",
+      "PL"
+     ],
+     [
+      "Interia",
+      "https://wydarzenia.interia.pl/kraj/news-ustawa-o-blokowaniu-nielegalnych-tresci-jest-decyzja-prezyde,nId,23572893",
+      "PL"
+     ],
+     [
+      "Niedziela",
+      "https://www.niedziela.pl/artykul/129820/Prezydent-Karol-Nawrocki-zawetowal-ustawe-o-DSA",
+      "PL"
+     ],
+     [
+      "Strefa Inwestorów (skrót PAP)",
+      "https://strefainwestorow.pl/wiadomosci/20261113/skrot-wiadomosci-piatek-13-listopada-1700",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "epuap",
+    "dim": "I",
+    "sec": [
+     "X"
+    ],
+    "top": 2,
+    "rel": "Wysoka",
+    "label": "Informacja urzędowa",
+    "follow": false,
+    "date": "12–13.11",
+    "region": "Cała Polska",
+    "woj": [],
+    "scope": "kraj",
+    "title": "ePUAP nadal wyłączony. Minister: atak z zagranicy, celem był paraliż administracji w grudniu",
+    "lead": "Przerwa trwa, terminu przywrócenia nie podano. Minister cyfryzacji mówi o potwierdzonym zagranicznym źródle ataku, bez wskazania sprawców.",
+    "summary": "Według stanu z 13 listopada wieczorem ePUAP pozostaje niedostępny i nie podano terminu przywrócenia. Nie działają elektroniczne skrzynki podawcze urzędów ani formularze osadzone na platformie. Minister cyfryzacji powiedział 12 listopada w TVP Info, że atak przyszedł z zagranicy, a analiza logów wskazuje na przygotowania do szerszej operacji, która miała sparaliżować administrację w grudniu. Nie wskazał sprawców ani państwa, z którego działano.",
+    "why": "Twierdzenia o zagranicznym źródle i planie na grudzień to stanowisko ministra, bez opublikowanych szczegółów technicznych. Źródła różnią się co do dnia ataku: PAP pisze o komunikacie z wtorku wieczorem, „Rzeczpospolita” o środzie. Otwarte źródła nie wspominają o terminach urzędowych biegnących w czasie przerwy. Do obserwacji: komunikat o przywróceniu usługi i ewentualna atrybucja ze strony ABW.",
+    "sources": [
+     [
+      "Rzeczpospolita Cyfrowa",
+      "https://cyfrowa.rp.pl/bezpieczenstwo/art45478321-epuap-nie-dziala-atak-hakerski-mial-sparalizowac-polske-dopiero-za-miesiac",
+      "PL"
+     ],
+     [
+      "Serwis Samorządowy PAP",
+      "https://samorzad.pap.pl/kategoria/e-urzad/udaremniono-cyberatak-na-epuap-trwa-przerwa-w-dostepie-do-systemu",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "tsue",
+    "dim": "E",
+    "sec": [
+     "P"
+    ],
+    "top": 3,
+    "rel": "Wysoka",
+    "label": "Potwierdzona decyzja",
+    "follow": false,
+    "date": "12–13.11",
+    "region": "Luksemburg, skutki dla całej Polski",
+    "scope": "zagr",
+    "woj": [],
+    "title": "TSUE oddalił wszystkie siedem polskich skarg na pakiet Fit for 55",
+    "lead": "Trybunał uznał, że akty klimatyczne mogły być przyjęte większością kwalifikowaną. Rzecznik rządu obarcza winą jakość skarg z 2023 r.",
+    "summary": "Trybunał Sprawiedliwości UE wydał 12 listopada siedem wyroków i oddalił wszystkie skargi złożone przez Polskę w 2023 r. Dotyczyły m.in. norm emisji CO2 dla nowych aut, reformy ETS i ETS2, CBAM oraz dyrektywy o efektywności energetycznej. Trybunał nie zgodził się, że przepisy wymagały jednomyślności, i pominął argumenty o wzroście cen energii oraz utracie miejsc pracy. Rzecznik rządu ocenił 13 listopada, że skargi były źle przygotowane, a minister klimatu i środowiska zapowiedziała dalsze zabiegi o rewizję ETS.",
+    "why": "Zaskarżone przepisy pozostają w mocy, więc ewentualne złagodzenie obciążeń wymaga osobnej drogi legislacyjnej w UE. Według minister klimatu Komisja Europejska ma finalizować rozmowy o rewizji ETS w grudniu. W otwartych źródłach nie znaleziono informacji o zapowiadanym na ten sam dzień wyroku w sprawie terminów w postępowaniach pobytowych cudzoziemców.",
+    "sources": [
+     [
+      "Money.pl",
+      "https://www.money.pl/gospodarka/porazka-polski-przed-tsue-jest-decyzja-ws-skarg-na-fit-for-55-7350163714763200a.html",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-12/polska-przegrywa-przed-tsue-chodzi-o-fit-for-55/",
+      "PL"
+     ],
+     [
+      "Money.pl (rzecznik rządu)",
+      "https://www.money.pl/finanse/skargi-z-czasow-morawieckiego-odrzucone-szlapka-nieudolnie-przygotowane-7350550840334368a.html",
+      "PL"
+     ],
+     [
+      "Money.pl (minister klimatu)",
+      "https://www.money.pl/gospodarka/tsue-odrzucil-skargi-polski-ws-fit-for-55-to-nie-bylo-duze-zaskoczenie-7350567133464608a.html",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "tk-belweder",
+    "dim": "P",
+    "sec": [],
+    "top": 4,
+    "rel": "Wysoka",
+    "label": "Zapowiedź",
+    "follow": false,
+    "date": "12–16.11",
+    "region": "Warszawa",
+    "woj": [
+     "mazowieckie"
+    ],
+    "pts": [
+     [
+      52.23,
+      21.01,
+      "Warszawa",
+      "l"
+     ]
+    ],
+    "title": "Kancelaria Prezydenta zaprasza kluby na rozmowy o Trybunale Konstytucyjnym, Lewica odmawia",
+    "lead": "Spotkanie w poniedziałek w Belwederze poprowadzi szef Kancelarii Prezydenta. Premier uważa sprawę kierowania Trybunałem za rozstrzygniętą.",
+    "summary": "Rzecznik prezydenta poinformował, że spotkanie w sprawie sytuacji w Trybunale Konstytucyjnym odbędzie się w poniedziałek 16 listopada o 14:00 w Belwederze. Zaproszono wszystkie kluby i koła parlamentarne, rozmowy poprowadzi szef Kancelarii Prezydenta, a sam prezydent nie weźmie w nich udziału. Według PAP udział zapowiedziały PiS, Konfederacja, Polska 2050, Razem, PSL i Rozwój Plus. Lewica nie przyjdzie, a KO nie podała oficjalnej decyzji.",
+    "why": "Tłem jest spór z 30 października, gdy grupa sędziów wybranych w obecnej kadencji Sejmu uznała, że Trybunałem kieruje najstarsza stażem sędzia, i zawiesiła prezesa oraz wiceprezesa. Prezydent mówił o naruszeniu porządku konstytucyjnego, premier 12 listopada uznał sprawę za rozstrzygniętą. Do obserwacji: decyzja KO i to, czy spotkanie przyniesie jakąkolwiek wspólną propozycję.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/polska/spotkanie-u-prezydenta-w-sprawie-trybunalu-konstytucyjnego-rafal-leskiewicz-o-terminie-i-miejscu-spotkania-st9336961",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/sady-i-trybunaly/art45483901-prezydent-zaprasza-do-rozmowy-o-sytuacji-w-trybunale-konstytucyjnym-spotkanie-w-poniedzialek",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "krakow",
+    "dim": "S",
+    "sec": [
+     "M",
+     "I"
+    ],
+    "top": 5,
+    "rel": "Wysoka",
+    "label": "Informacja urzędowa",
+    "follow": false,
+    "date": "12–13.11",
+    "region": "Kraków, Ostrowiec Świętokrzyski",
+    "woj": [
+     "małopolskie",
+     "świętokrzyskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ],
+     [
+      50.93,
+      21.39,
+      "Ostrowiec Św.",
+      "l"
+     ]
+    ],
+    "title": "Po zamachu w Krakowie: ustalono trasę sprawcy, 11 zatrzymanych za wpisy, śledztwo w sprawie relacji TV Republika",
+    "lead": "Prokuratura Krajowa nadal ustala motyw i szuka nagrań. Policja zatrzymała w kraju 11 osób za wpisy pochwalające zamach lub zapowiadające kolejne ataki.",
+    "summary": "Prokuratura Krajowa podała 13 listopada, że ustaliła trasę przejazdu sprawcy, ale nie ujawniła szczegółów i nadal szuka nagrań z monitoringu. Motyw pozostaje nieustalony, trwa badanie broni. Rzecznik Komendy Głównej Policji poinformował 12 listopada o zatrzymaniu w całym kraju 11 osób w wieku od 15 do 68 lat za wpisy wychwalające zamach lub sugerujące kolejne ataki. Prokuratura Okręgowa w Krakowie wszczęła śledztwo dotyczące wypowiedzi z transmisji Telewizji Republika, a do KRRiT wpłynęło ponad 5 tys. zgłoszeń. Według wojewody 11 rannych nadal przebywa w pięciu szpitalach.",
+    "why": "Depesza PAP z 13 listopada mówi o 15 rannych, wcześniejsze doniesienia o 16. Zatrzymania i zarzuty za wpisy nie przesądzają o winie. Postępowanie wobec stacji telewizyjnej dotyczy m.in. zniesławienia i nakłada się na spór polityczny, czego przykładem są napisy na biurze poselskim w Trzebnicy.",
+    "sources": [
+     [
+      "Rzeczpospolita (PAP), trasa sprawcy",
+      "https://www.rp.pl/przestepczosc/art45485501-zamach-w-krakowie-sledczy-ustalili-trase-sprawcy-ale-nadal-szukaja-waznych-nagran",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita (PAP), zatrzymania",
+      "https://www.rp.pl/przestepczosc/art45479071-11-osob-zatrzymanych-za-wpisy-chwalace-sprawce-zamachu-w-krakowie-prokuratura-zajela-sie-tez-telewizja-republika",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "krakow-strzaly",
+    "dim": "S",
+    "sec": [
+     "M"
+    ],
+    "rel": "Średnia",
+    "label": "Doniesienie medialne",
+    "follow": false,
+    "date": "12–13.11",
+    "region": "Kraków",
+    "woj": [
+     "małopolskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ]
+    ],
+    "title": "Kraków: mężczyzna strzelał w kierunku policjantów, został zatrzymany",
+    "summary": "W czwartek 12 listopada w Krakowie mężczyzna strzelał w kierunku policjantów i został zatrzymany. Według TVP Info ma odpowiedzieć za czynną napaść na funkcjonariuszy, zmuszanie do określonego zachowania i posiadanie mefedronu, a wcześniej odbył karę za zabójstwo.",
+    "why": "Zdarzenie nastąpiło pięć dni po zamachu na Rynku Głównym, ale otwarte źródła nie wskazują na związek między sprawami. Szczegóły przebiegu i stanowisko prokuratury znane są tylko częściowo, bo dwóch z trzech sprawdzanych relacji nie udało się otworzyć.",
+    "sources": [
+     [
+      "TVP Info",
+      "https://www.tvp.info/96461021/strzelal-do-policjantow-w-krakowie-mezczyzna-wyszedl-rok-temu-z-wiezienia-za-zabojstwo",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "ustawy",
+    "dim": "P",
+    "sec": [
+     "M",
+     "X"
+    ],
+    "rel": "Średnia",
+    "label": "Potwierdzona decyzja",
+    "follow": false,
+    "date": "13.11",
+    "region": "Cała Polska",
+    "scope": "kraj",
+    "woj": [],
+    "title": "Prezydent podpisał sześć ustaw, w tym o działaniach antyterrorystycznych, CPK i reklamie aptek",
+    "summary": "Równolegle z wetem prezydent podpisał 13 listopada sześć ustaw uchwalonych 22 października: o wychowaniu patriotycznym, o działaniach antyterrorystycznych, o wspieraniu produkcji audiowizualnej, Prawo farmaceutyczne, o VAT oraz o Centralnym Porcie Komunikacyjnym. Według PAP nowela antyterrorystyczna zobowiązuje organizatorów wydarzeń specjalnych do informowania uczestników o możliwej weryfikacji przez policję i ABW. Nowela o CPK wydłuża do 8 lat okres szczególnych zasad gospodarowania nieruchomościami, a zmiana prawa farmaceutycznego znosi całkowity zakaz reklamy aptek.",
+    "why": "Pakiet pokazuje, że spór prezydenta z rządem nie blokuje całej legislacji, a weto dotyczyło jednej, politycznie najbardziej spornej ustawy. Opisy treści ustaw pochodzą ze skrótu depesz, nie z tekstów aktów.",
+    "sources": [
+     [
+      "Interia",
+      "https://wydarzenia.interia.pl/kraj/news-ustawa-o-blokowaniu-nielegalnych-tresci-jest-decyzja-prezyde,nId,23572893",
+      "PL"
+     ],
+     [
+      "Strefa Inwestorów (skrót PAP)",
+      "https://strefainwestorow.pl/wiadomosci/20261113/skrot-wiadomosci-piatek-13-listopada-1700",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "dublin",
+    "dim": "P",
+    "sec": [
+     "M"
+    ],
+    "rel": "Wysoka",
+    "label": "Doniesienie medialne",
+    "follow": false,
+    "date": "12–13.11",
+    "region": "Dublin, Irlandia",
+    "woj": [],
+    "scope": "zagr",
+    "title": "Premier w Dublinie rozmawiał z prezydentem Ukrainy, szefem NATO i kanclerzem Niemiec",
+    "summary": "Na marginesie szczytu Europejskiej Wspólnoty Politycznej 12 listopada premier spotkał się z przewodniczącym Rady Europejskiej, sekretarzem generalnym NATO i kanclerzem Niemiec oraz uczestniczył w spotkaniu koalicji chętnych. Rozmowa z prezydentem Ukrainy dotyczyła negocjacji z Rosją w Abu Zabi, prowadzonych przy pośrednictwie USA, oraz ukraińskiej akcesji do UE. Według relacji premier opowiadał się za tym, by Europę w rozmowach reprezentowały instytucje UE z jednolitym stanowiskiem 27 państw. Na 13 listopada zaplanowano nieformalne posiedzenie Rady Europejskiej.",
+    "why": "Sporną kwestią jest to, kto ma reprezentować Europę w rozmowach pokojowych. W oknie nie znaleziono relacji z wynikami piątkowego posiedzenia przywódców UE. Strona ukraińska mówiła też o rozpoczęciu w Polsce pierwszego etapu szkoleń żołnierzy koalicji chętnych, co warto potwierdzić w źródłach MON.",
+    "sources": [
+     [
+      "WNP (PAP)",
+      "https://www.wnp.pl/rynki/premier-tusk-spotkal-sie-na-marginesie-szczytu-w-dublinie-z-costa-ruttem-i-merzem,1119355.html",
+      "PL"
+     ],
+     [
+      "Nasza Gazeta w Irlandii",
+      "https://www.ng24.ie/premier-tusk-po-spotkaniu-z-zelenskim-w-dublinie-pokoj-musi-gwarantowac-bezpieczenstwo-europy/",
+      "IE"
+     ],
+     [
+      "Farmer.pl (PAP)",
+      "https://www.farmer.pl/fakty/szczyt-europejskiej-wspolnoty-politycznej-w-dublinie-bezpieczenstwo-europy-i-wsparcie-ukrainy,187028.html",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "onz-jiu",
+    "dim": "P",
+    "sec": [],
+    "rel": "Średnia",
+    "label": "Informacja urzędowa",
+    "follow": false,
+    "date": "11–13.11",
+    "region": "Nowy Jork, ONZ",
+    "scope": "zagr",
+    "woj": [],
+    "title": "Polska wybrana do Wspólnej Jednostki Kontrolnej ONZ, w głosowaniu pokonała Rosję",
+    "summary": "MSZ poinformowało, że Zgromadzenie Ogólne ONZ w tajnym głosowaniu wybrało Polskę z Grupy Wschodnioeuropejskiej do Wspólnej Jednostki Kontrolnej. Polskę poparło 95 państw, a według stałego przedstawiciela RP przy ONZ o wyniku zdecydował jeden głos. Rosja zasiadała w tym organie nieprzerwanie od 60 lat. Polski przedstawiciel ma pełnić funkcję w kadencji 2028–2032.",
+    "why": "Organ liczy 11 inspektorów i prowadzi inspekcje oraz ewaluacje w systemie ONZ, więc znaczenie jest głównie prestiżowe i dyplomatyczne. Według MSZ kampanię koordynowano w ramach UE.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/polska/polska-pokonala-rosje-w-wyborach-do-jednostki-kontrolnej-onz-st9336709",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/polska-pokonala-rosje-w-onz-po-60-latach-przewazyl-jeden-glos/",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "rogalin",
+    "dim": "P",
+    "sec": [
+     "I"
+    ],
+    "rel": "Średnia",
+    "label": "Doniesienie medialne",
+    "follow": false,
+    "date": "12.11",
+    "region": "Rogalin, Poznań",
+    "woj": [
+     "wielkopolskie"
+    ],
+    "pts": [
+     [
+      52.41,
+      16.93,
+      "Poznań"
+     ]
+    ],
+    "title": "Prezydenci Polski i Słowacji spotkali się w Rogalinie, potem pojechali na forum cyfrowe w Poznaniu",
+    "summary": "12 listopada w pałacu w Rogalinie odbyło się robocze spotkanie prezydentów Polski i Słowacji poświęcone współpracy dwustronnej. Po rozmowie w cztery oczy i roboczym śniadaniu prezydenci udali się do Poznania na Poznański Kongres Gospodarczy, w ramach którego zaplanowano otwarcie forum cyfrowego Trójmorza.",
+    "why": "Lokalna relacja nie podaje żadnych ustaleń z rozmów. Nie znaleziono w oknie relacji z treści wystąpień w Poznaniu.",
+    "sources": [
+     [
+      "Gazeta Mosińsko-Puszczykowska",
+      "https://www.gazeta-mosina.pl/2026/prezydenci-spotkanie-rogalin/",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "komisje",
+    "dim": "P",
+    "sec": [
+     "S"
+    ],
+    "rel": "Średnia",
+    "label": "Informacja urzędowa",
+    "follow": false,
+    "date": "13.11",
+    "region": "Siedlce i miejscowości we wschodniej części Mazowsza oraz na Lubelszczyźnie",
+    "woj": [
+     "mazowieckie",
+     "lubelskie"
+    ],
+    "pts": [
+     [
+      52.17,
+      22.29,
+      "Siedlce"
+     ]
+    ],
+    "title": "Ponad 130 członków komisji wyborczych z zarzutami po wyborach prezydenckich 2025",
+    "summary": "Prokuratura Okręgowa w Siedlcach podała 13 listopada, że zarzuty nieumyślnego niedopełnienia obowiązków usłyszało już ponad 130 członków obwodowych komisji wyborczych. Według śledczych nierzetelnie przeliczyli głosy w drugiej turze wyborów prezydenckich w 2025 r. i błędnie sporządzili protokoły. Zarzuty objęły członków komisji m.in. w Mińsku Mazowieckim, Radomiu, Lublinie, Bychawie, Magnuszewie i Łaskarzewie. Grozi za to grzywna, ograniczenie wolności albo do dwóch lat więzienia.",
+    "why": "Źródło nie podaje skali błędów ani tego, by wpłynęły na końcowy wynik wyborów. Zarzuty nie oznaczają winy. Wcześniej, według tego samego źródła, zarzuty miało 68 osób, więc liczba podejrzanych niemal się podwoiła.",
+    "sources": [
+     [
+      "Portal Samorządowy (PAP)",
+      "https://www.portalsamorzadowy.pl/polityka-i-spoleczenstwo/siedlce-ponad-130-czlonkow-komisji-z-zarzutami-po-wyborach-prezydenckich-w-2025-r,684272.html",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "trzebnica",
+    "dim": "S",
+    "sec": [
+     "P"
+    ],
+    "rel": "Średnia",
+    "label": "Informacja urzędowa",
+    "follow": false,
+    "date": "13.11",
+    "region": "Trzebnica",
+    "woj": [
+     "dolnośląskie"
+    ],
+    "pts": [
+     [
+      51.31,
+      17.06,
+      "Trzebnica"
+     ]
+    ],
+    "title": "Trzebnica: napisy na biurze poselskim wiceministra, policja szuka sprawców",
+    "summary": "13 listopada około 9:00 policja w Trzebnicy otrzymała zgłoszenie o napisach na oknie i elewacji budynku, w którym mieści się biuro poselskie wiceministra rozwoju z KO. Napisy odnosiły się do premiera i do Telewizji Republika. Policjanci zabezpieczyli ślady i nagrania z monitoringu, a postępowanie prowadzą w kierunku uszkodzenia mienia.",
+    "why": "Sprawcy są nieustaleni. Media łączą treść napisów ze śledztwem krakowskiej prokuratury dotyczącym relacji stacji po zamachu, ale policja takiego związku nie potwierdziła. To kolejny po serii napisów na pomnikach przypadek politycznie motywowanego wandalizmu w ostatnich dniach.",
+    "sources": [
+     [
+      "TVN24 Wrocław",
+      "https://tvn24.pl/wroclaw/trzebnica-zdewastowano-elewacje-biura-posla-koalicji-obywatelskiej-rece-precz-od-republiki-st9337376",
+      "PL"
+     ],
+     [
+      "Radio Wrocław",
+      "https://www.radiowroclaw.pl/articles/view/165575/Tusk-precz-i-Rece-precz-od-Republiki-Ktos-zdewastowal-biuro-poselskie-Michala-Jarosa",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "dron",
+    "dim": "M",
+    "sec": [],
+    "rel": "Średnia",
+    "label": "Twierdzenie strony",
+    "follow": true,
+    "date": "11.11",
+    "region": "Pogranicze PL–LT–BY",
+    "woj": [
+     "podlaskie"
+    ],
+    "pts": [
+     [
+      54.05,
+      23.55,
+      "rejon Sejn / Druskienik"
+     ]
+    ],
+    "title": "Spór o drona z 11 listopada: brak nowych komunikatów Dowództwa Operacyjnego",
+    "summary": "W oknie nie znaleziono nowego komunikatu Dowództwa Operacyjnego w sprawie zgłoszonego przez Litwę możliwego krótkiego wlotu drona nad Polskę w nocy z 10 na 11 listopada. Ostatnie znane stanowisko wojska to brak potwierdzenia naruszenia i trwająca analiza danych radarowych. Według opisu Defence24 strona litewska nie wskazała, do kogo należał obiekt.",
+    "why": "Wątek utrzymany jako istotny dla obrazu bezpieczeństwa powietrznego, bez nowych faktów. Defence24 przytacza doniesienia, że mógł to być ukraiński dron, który zboczył z kursu, co pozostaje niepotwierdzone. Do obserwacji: wynik analizy radarowej.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/dron-naruszyl-polska-przestrzen-powietrzna-sprzeczne-glosy-z-polski-i-litwy",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "strefa",
+    "dim": "M",
+    "sec": [],
+    "rel": "Średnia",
+    "label": "Projekt",
+    "follow": true,
+    "date": "10–12.11",
+    "region": "Granica z Białorusią",
+    "woj": [
+     "podlaskie",
+     "lubelskie"
+    ],
+    "pts": [
+     [
+      52.7,
+      23.8,
+      "granica z Białorusią"
+     ]
+    ],
+    "title": "Strefa buforowa: MSWiA wskazuje na balony i drony z Białorusi, zakaz ma obowiązywać do 27 lutego",
+    "summary": "Z uzasadnienia projektu rozporządzenia wynika, że nowy zakaz przebywania przy granicy z Białorusią ma obowiązywać od 30 listopada 2026 r. do 27 lutego 2027 r. na niezmienionym odcinku 78,29 km. MSWiA wskazuje na rosnącą liczbę naruszeń przestrzeni powietrznej przez balony meteorologiczne i bezzałogowce z Białorusi, które obecnie służą głównie przemytowi. Od początku roku do 8 listopada odnotowano 482 próby nielegalnego przekroczenia granicy.",
+    "why": "Projekt opisano już w poprzednich wydaniach, nowe są szczegóły uzasadnienia opisane 12 listopada. Resort nie wyklucza, że obiekty latające mogą posłużyć działaniom destabilizującym, co jest oceną ryzyka, a nie opisem zdarzenia. Bieżącego dobowego komunikatu Straży Granicznej nie udało się otworzyć.",
+    "sources": [
+     [
+      "InfoSecurity24",
+      "https://infosecurity24.pl/sluzby-mundurowe/straz-graniczna/drony-i-balony-nadlatuja-z-bialorusi-mswia-przedluzy-strefe-buforowa",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "microsoft",
+    "dim": "I",
+    "sec": [
+     "X"
+    ],
+    "rel": "Średnia",
+    "label": "Doniesienie medialne",
+    "follow": false,
+    "date": "12–13.11",
+    "region": "Cała Polska, awaria globalna",
+    "scope": "kraj",
+    "woj": [],
+    "title": "Globalna awaria usług Microsoftu, minister cyfryzacji zapowiada więcej open source w administracji",
+    "summary": "Czwartkowa awaria usług Microsoftu, m.in. Outlooka i Teams, zakłóciła pracę instytucji i firm w ponad 70 krajach. Firma przyznała, że pierwsze działania naprawcze nie dały trwałej poprawy. Minister cyfryzacji ocenił 13 listopada, że zdarzenie pokazuje ryzyko uzależnienia od globalnych dostawców, i zapowiedział dywersyfikację oraz konkurs na pilotażowe wdrożenia otwartego oprogramowania w samorządach.",
+    "why": "Otwarte źródła nie wymieniają z nazwy polskich instytucji dotkniętych awarią ani nie potwierdzają jej usunięcia. Banki i uczelnie ostrzegają przed fałszywymi ofertami pomocy technicznej. Zbieg z przerwą ePUAP zwiększa wagę tematu ciągłości usług cyfrowych, choć nic nie wskazuje na związek obu zdarzeń.",
+    "sources": [
+     [
+      "Portal Samorządowy (PAP)",
+      "https://www.portalsamorzadowy.pl/polityka-i-spoleczenstwo/gawkowski-awaria-microsoftu-pokazuje-ryzyko-cyfrowego-uzaleznienia-od-globalnych-firm,684219.html",
+      "PL"
+     ],
+     [
+      "Interia Biznes",
+      "https://biznes.interia.pl/gospodarka/news-awaria-microsoftu-obnazyla-slabosc-systemu-gawkowski-zapowia,nId,23573005",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "gus",
+    "dim": "E",
+    "sec": [],
+    "rel": "Wysoka",
+    "label": "Informacja urzędowa",
+    "follow": false,
+    "date": "13.11",
+    "region": "Cała Polska",
+    "scope": "kraj",
+    "woj": [],
+    "title": "GUS: PKB w III kwartale wzrósł o 3,5 proc., inflacja w październiku 3,5 proc.",
+    "summary": "Według szybkiego szacunku GUS z 13 listopada PKB w III kwartale 2026 r. wzrósł o 3,5 proc. rok do roku, po 4,1 proc. w II kwartale, i o 0,8 proc. kwartał do kwartału. Finalny odczyt inflacji za październik to 3,5 proc. rok do roku i spadek cen o 0,4 proc. wobec września, gdy inflacja wynosiła 4,1 proc. Paliwa potaniały w miesiąc o 9,7 proc. po powrocie programu obniżonych cen, a węgiel i podobne opały podrożały o 11,2 proc.",
+    "why": "Wzrost PKB był nieco niższy od konsensusu 3,6 proc. Spadek inflacji wynika w dużej mierze z czasowego programu paliwowego, który obowiązuje do 31 grudnia, więc jego wygaśnięcie może odwrócić efekt. Strukturę PKB GUS poda 30 listopada, a NBP dane o inflacji bazowej 16 listopada.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/dane-gospodarcze/art45483701-gus-potwierdzil-inflacja-w-pazdzierniku-powrocila-do-przedzialu-celu-nbp",
+      "PL"
+     ],
+     [
+      "Forex Club",
+      "https://forexclub.pl/inflacja-w-polsce-35-i-pkb-35-gus-paliwa-tanieja-wegiel-drozeje-gospodarka-zwalnia-w-iii-kwartale",
+      "PL"
+     ],
+     [
+      "Finwire",
+      "https://finwire.pl/artykuly/inflacja-pazdziernik-2026-odczyt-finalny-gus",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "zloty",
+    "dim": "E",
+    "sec": [],
+    "rel": "Średnia",
+    "label": "Doniesienie medialne",
+    "follow": false,
+    "date": "13.11",
+    "region": "Cała Polska",
+    "scope": "kraj",
+    "woj": [],
+    "title": "Euro po 4,41 zł, dolar po 3,98 zł. Deficyt na rachunku bieżącym mniejszy od prognoz",
+    "summary": "W piątek rano euro kosztowało 4,4056 zł, dolar 3,9821 zł, a frank 4,7639 zł. Rentowność obligacji dziesięcioletnich wzrosła do 6,28 proc. z 6,19 proc. dzień wcześniej. NBP podał, że deficyt na rachunku bieżącym we wrześniu wyniósł 718 mln euro przy konsensusie 2579 mln euro, eksport wzrósł o 9,7 proc., a import o 11,9 proc. rok do roku.",
+    "why": "Według analityków PKO BP cytowanych przez Forsal rynek w pełni wycenia podwyżkę stóp NBP w styczniu, co kontrastuje ze spadkiem bieżącej inflacji. Członek RPP dopuszcza utrzymanie stóp w grudniu. Najbliższe posiedzenie Rady zaplanowano na 2 grudnia.",
+    "sources": [
+     [
+      "Forsal",
+      "https://forsal.pl/finanse/waluty/artykuly/11344111,cena-euro-dolara-i-franka-kursy-walut-13112026.html",
+      "PL"
+     ],
+     [
+      "Strefa Inwestorów (skrót PAP)",
+      "https://strefainwestorow.pl/wiadomosci/20261113/skrot-wiadomosci-piatek-13-listopada-1700",
+      "PL"
+     ],
+     [
+      "Finwire",
+      "https://finwire.pl/artykuly/inflacja-pazdziernik-2026-odczyt-finalny-gus",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "paliwa",
+    "dim": "E",
+    "sec": [],
+    "rel": "Średnia",
+    "label": "Potwierdzona decyzja",
+    "follow": false,
+    "date": "13–16.11",
+    "region": "Cała Polska",
+    "woj": [],
+    "scope": "kraj",
+    "title": "Maksymalne ceny paliw na 14–16 listopada: Pb95 6,02 zł, diesel 7,52 zł",
+    "summary": "Minister energii ogłosił maksymalne ceny detaliczne na 14–16 listopada: 6,02 zł za litr Pb95, 6,66 zł za Pb98 i 7,52 zł za olej napędowy. W piątek 13 listopada limity wynosiły odpowiednio 6,06 zł, 6,68 zł i 7,54 zł, a diesel był o 12 groszy tańszy niż 11–12 listopada. Orlen obniżył 13 listopada ceny hurtowe wobec 11 listopada o 30 zł na metrze sześciennym benzyny 95 i o 18 zł na oleju napędowym.",
+    "why": "To najniższe limity w obecnej edycji programu, która obowiązuje do 31 grudnia 2026 r. Ceny paliw są głównym czynnikiem spadku październikowej inflacji, więc decyzja o przedłużeniu lub wygaszeniu programu będzie miała znaczenie makroekonomiczne.",
+    "sources": [
+     [
+      "TVN24 Biznes",
+      "https://tvn24.pl/biznes/pieniadze/ceny-paliw-w-polsce-14-16-listopada-2026-ile-kierowcy-zaplaca-za-litr-pb95-pb98-oraz-on-st9336990",
+      "PL"
+     ],
+     [
+      "MotoGuru (14–16.11)",
+      "https://motoguru.pl/na-czasie/ceny-paliw-14-16-listopada-nowe-minima-cpn-diesel-mocno-tanieje/",
+      "PL"
+     ],
+     [
+      "MotoGuru (13.11)",
+      "https://motoguru.pl/na-czasie/ceny-paliw-dzis-13-listopada-orlen-obniza-ceny-diesel-bije-rekord/",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "handel",
+    "dim": "S",
+    "sec": [
+     "E"
+    ],
+    "rel": "Średnia",
+    "label": "Zapowiedź",
+    "follow": false,
+    "date": "13.11",
+    "region": "Cała Polska",
+    "scope": "kraj",
+    "woj": [],
+    "title": "Związkowcy zapowiadają strajk w Dino i protest w sieciach handlowych 20–23 grudnia",
+    "summary": "OPZZ Konfederacja Pracy w Handlu zapowiedziała akcję pod hasłem „czarny tydzień w handlu” w dniach 20–23 grudnia. Strajk ma objąć pracowników Dino, a w innych sieciach, m.in. w Biedronce, Lidlu i Kauflandzie, zaplanowano protest polegający na pracy ściśle według procedur, bez pośpiechu. Związek domaga się podwyżek, stabilnych grafików, pełnej obsady sklepów i zmian w przepisach o sporach zbiorowych.",
+    "why": "Termin przypada na szczyt zakupów przedświątecznych. Nie wiadomo, ilu pracowników weźmie udział, a relacje różnią się listą sieci objętych protestem. Brak w źródłach stanowiska pracodawców.",
+    "sources": [
+     [
+      "My Company Polska",
+      "https://mycompanypolska.pl/artykul/strajk-w-dino-i-protesty-w-biedronce-oraz-lidlu-przedswiateczna-akcja-pracownikow/21513",
+      "PL"
+     ],
+     [
+      "Farmer.pl",
+      "https://www.farmer.pl/fakty/wloskie-strajki-w-handlu-przed-swiatami-opzz-wzywa-do-protestow,187057.html",
+      "PL"
+     ],
+     [
+      "Asta24 (Piła)",
+      "https://www.asta24.pl/2026/11/13/strajk-i-protesty-w-handlu-tuz-przed-swietami",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "narkotyki-bialystok",
+    "dim": "S",
+    "sec": [],
+    "rel": "Średnia",
+    "label": "Informacja urzędowa",
+    "follow": false,
+    "date": "13.11",
+    "region": "Warmia i Mazury, śledztwo w Białymstoku",
+    "woj": [
+     "warmińsko-mazurskie",
+     "podlaskie"
+    ],
+    "pts": [
+     [
+      53.13,
+      23.16,
+      "Białystok"
+     ]
+    ],
+    "title": "Trzy osoby z Warmii i Mazur z zarzutami w białostockim śledztwie narkotykowym, przejęto blisko 20 kg",
+    "summary": "Prokuratura Okręgowa w Białymstoku poinformowała 13 listopada o zarzutach dla trzech osób zatrzymanych na Warmii i Mazurach. Policja przejęła u nich blisko 20 kg narkotyków, m.in. amfetaminy i klofedronu. W całym śledztwie podejrzanych jest 17 osób, z których 11 przebywa w areszcie. Według prokuratury grupa wprowadziła do obrotu co najmniej 53 kg substancji.",
+    "why": "Sprawa o znaczeniu regionalnym, pokazuje skalę obrotu syntetycznymi narkotykami w północno-wschodniej Polsce. Opis to stanowisko prokuratury, zarzuty nie oznaczają winy.",
+    "sources": [
+     [
+      "Radio Olsztyn",
+      "https://radioolsztyn.pl/trzy-osoby-z-regionu-zatrzymane-znaleziono-u-nich-20-kg-narkotykow/01901193",
+      "PL"
+     ]
+    ]
+   },
+   {
+    "id": "snieg",
+    "dim": "X",
+    "sec": [],
+    "rel": "Średnia",
+    "label": "Informacja urzędowa",
+    "follow": false,
+    "date": "13–14.11",
+    "region": "Wybrzeże, Podkarpacie, góry Małopolski i Śląska",
+    "woj": [
+     "zachodniopomorskie",
+     "pomorskie",
+     "podkarpackie",
+     "małopolskie",
+     "śląskie"
+    ],
+    "pts": [
+     [
+      53.91,
+      14.25,
+      "Świnoujście"
+     ],
+     [
+      54.46,
+      17.03,
+      "Słupsk"
+     ],
+     [
+      49.69,
+      21.77,
+      "Krosno"
+     ],
+     [
+      49.3,
+      19.95,
+      "Zakopane"
+     ]
+    ],
+    "title": "IMGW: wiatr do 80 km/h na wybrzeżu do soboty rano, ulewy na Podkarpaciu i śnieg w górach",
+    "summary": "W piątek obowiązywały trzy ostrzeżenia pierwszego stopnia. Na wybrzeżu województw zachodniopomorskiego i pomorskiego prognozowano wiatr średnio do 55 km/h i w porywach do 80 km/h, z ważnością do soboty 6:00. Na Podkarpaciu do 13:00 obowiązywało ostrzeżenie przed deszczem z sumą 30–45 mm, a powyżej 500 m n.p.m. w części Małopolski, Śląska i Podkarpacia przed opadami śniegu.",
+    "why": "Sprawdzone źródła nie opisują interwencji straży, przerw w dostawie prądu ani zamknięć dróg. Podają różne przyrosty pokrywy śnieżnej: około 5 cm albo 5–10 cm. W sobotę aktywne pozostaje tylko ostrzeżenie przed wiatrem.",
+    "sources": [
+     [
+      "Rynek Zdrowia",
+      "https://www.rynekzdrowia.pl/Polska-i-swiat/IMGW-ostrzega-bedzie-mocno-wialo-Ekstremalne-podmuchy-w-kilku-regionach,291215,15.html",
+      "PL"
+     ],
+     [
+      "Biznesinfo",
+      "https://www.biznesinfo.pl/pogoda-na-13-listopada-w-tych-regionach-sypnie-sniegiem-wazny-komunikat-dla-kierowcow-wc-wksw-131126",
+      "PL"
+     ],
+     [
+      "Trybuna Polska",
+      "https://trybunapolska.pl/kraj/pogoda-w-polsce-na-13-listopada-2026-alerty-imgw-ulewy-podkarpacie-wiatr-80-km-h",
+      "PL"
+     ]
+    ]
+   }
+  ]
+ },
+ {
   "date": "2026-11-12",
   "win": "11.11.2026 09:30 – 12.11.2026 09:30 CET",
   "stop": "12 listopada 2026, 09:30 CET",
@@ -1593,7 +2339,7 @@ window.BRIEF_EDITIONS = [
     "pts": [
      [
       53.12,
-      18.0,
+      18,
       "Bydgoszcz"
      ],
      [
@@ -2040,7 +2786,7 @@ window.BRIEF_EDITIONS = [
      ],
      [
       50.04,
-      22.0,
+      22,
       "Podkarpacie"
      ]
     ]
