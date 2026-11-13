@@ -1,14 +1,14 @@
 window.BRIEF_EDITIONS = [
  {
   "date": "2026-11-13",
-  "win": "12.11.2026 22:09 – 13.11.2026 22:09 CET",
-  "stop": "13 listopada 2026, 22:09 CET",
+  "win": "12.11.2026 22:19 – 13.11.2026 22:19 CET",
+  "stop": "13 listopada 2026, 22:19 CET",
   "kind": "auto",
   "note": "Wydanie automatyczne: zgrupowane nagłówki z kanałów RSS, bez analizy i bez redakcji człowieka.",
   "obraz": [
-   "To wydanie powstało automatycznie. Skrypt odpytał 36 kanałów RSS, odpowiedziało 17, i zebrał 360 pozycji opublikowanych w ciągu ostatnich 24 godzin. Powtarzające się tematy zostały połączone w 234 wątków, z których w wydaniu znalazło się 25 najszerzej relacjonowanych.",
-   "Rozkład wątków po przypisaniu słowami kluczowymi: wojsko i bezpieczeństwo: 10, społeczeństwo: 6, polityka: 6, gospodarka: 2, infrastruktura: 1. Przypisanie wymiaru PMESII i regionu jest mechaniczne i bywa błędne, a kolejność wątków odzwierciedla tylko liczbę kanałów, które podały temat, a nie jego wagę.",
-   "Czego tu nie ma: zbiorczej oceny sytuacji, weryfikacji informacji, wskazania rozbieżności między źródłami ani wniosków analitycznych. Każdy wpis to zestaw nagłówków z linkami, które trzeba otworzyć i ocenić samodzielnie. W tym przebiegu nie odpowiedziało 19 kanałów: PAP, Gazeta Prawna, Rynek Infrastruktury, Rynek Kolejowy, CERT Polska (posty), RCB, MON, MSWiA, MSZ, Ministerstwo Cyfryzacji, KPRM, Ministerstwo Finansów, Ministerstwo Infrastruktury, Ministerstwo Energii, ABW, Straż Graniczna, Policja, NBP, Sejm RP."
+   "To wydanie powstało automatycznie. Skrypt odpytał 29 kanałów RSS, odpowiedziało 29, i zebrał 421 pozycji opublikowanych w ciągu ostatnich 24 godzin. Powtarzające się tematy zostały połączone w 268 wątków, z których w wydaniu znalazło się 25 najszerzej relacjonowanych.",
+   "Rozkład wątków po przypisaniu słowami kluczowymi: wojsko i bezpieczeństwo: 8, polityka: 7, społeczeństwo: 5, gospodarka: 5. Przypisanie wymiaru PMESII i regionu jest mechaniczne i bywa błędne, a kolejność wątków odzwierciedla tylko liczbę kanałów, które podały temat, a nie jego wagę.",
+   "Czego tu nie ma: zbiorczej oceny sytuacji, weryfikacji informacji, wskazania rozbieżności między źródłami ani wniosków analitycznych. Każdy wpis to zestaw nagłówków z linkami, które trzeba otworzyć i ocenić samodzielnie."
   ],
   "events": [
    {
@@ -51,6 +51,45 @@ window.BRIEF_EDITIONS = [
     "lead": "Zgłoszone przez 4 kanały: Onet Wiadomości, Bankier.pl, Rzeczpospolita, Interia Fakty."
    },
    {
+    "id": "polska-wsrod-panstw-ktore",
+    "dim": "M",
+    "sec": [],
+    "title": "Polska wśród państw, które wezmą udział w negocjacjach ws. zakończenia wojny w Ukrainie - Costa",
+    "summary": "Temat zgłoszony przez 9 kanałów między 05:41 a 21:21. Inne nagłówki: „Costa: Polska w europejskim zespole ds. negocjacji pokojowych w sprawie Ukrainy” (Defence24); „„Absolutnie nie do przyjęcia”. Tusk o Putinie i negocjacjach pokojowych” (Defence24); „Polska weźmie udział w negocjacjach dotyczących zakończenia wojny w Ukrainie” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 13 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/geopolityka/absolutnie-nie-do-przyjecia-tusk-o-putinie-i-negocjacjach-pokojowych",
+      "PL"
+     ],
+     [
+      "PAP Biznes",
+      "https://biznes.pap.pl/wiadomosci/polska-wsrod-panstw-ktore-wezma-udzial-w-negocjacjach-ws-zakonczenia-wojny-w-ukrainie",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/konflikty-zbrojne/art45487371-polska-wezmie-udzial-w-negocjacjach-dotyczacych-zakonczenia-wojny-w-ukrainie",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/polska-wsrod-panstw-negocjujacych-z-rosja-w-sprawie-ukrainy-jest-decyzja/5s1fwm0",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr",
+    "top": 2,
+    "lead": "Zgłoszone przez 4 kanały: Defence24, PAP Biznes, Rzeczpospolita, Onet Wiadomości."
+   },
+   {
     "id": "ponad-20-osob-nie",
     "dim": "S",
     "sec": [],
@@ -86,7 +125,7 @@ window.BRIEF_EDITIONS = [
     "follow": false,
     "woj": [],
     "scope": "kraj",
-    "top": 2,
+    "top": 3,
     "lead": "Zgłoszone przez 4 kanały: Rzeczpospolita, Onet Wiadomości, RMF24 Polska, TVN24."
    },
    {
@@ -125,47 +164,61 @@ window.BRIEF_EDITIONS = [
     "follow": false,
     "woj": [],
     "scope": "zagr",
-    "top": 3,
+    "top": 4,
     "lead": "Zgłoszone przez 4 kanały: Rzeczpospolita, Bankier.pl, RMF24 Polska, CyberDefence24."
    },
    {
-    "id": "polska-wsrod-krajow-ue",
+    "id": "doniosl-na-policjanta-ktory",
     "dim": "M",
     "sec": [],
-    "title": "Polska wśród krajów UE negocjujących w sprawie wojny Rosji przeciwko Ukrainie. \"Ucieszyłem się\"",
-    "summary": "Temat zgłoszony przez 5 kanałów między 05:41 a 21:21. Inne nagłówki: „Costa: Polska w europejskim zespole ds. negocjacji pokojowych w sprawie Ukrainy” (Defence24); „„Absolutnie nie do przyjęcia”. Tusk o Putinie i negocjacjach pokojowych” (Defence24); „Polska przy stole negocjacyjnym w sprawie wojny w Ukrainie. Premier potwierdza” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
-    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 9 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "title": "Doniósł na policjanta, który zatrzymał zamachowca w Krakowie. Prokuratura zajmie się zawiadomieniem",
+    "summary": "Temat zgłoszony przez 5 kanałów między 08:59 a 21:32. Inne nagłówki: „Strzelał do policjantów w Krakowie. Nowy ruch prokuratury i sądu” (Interia Fakty); „Strzelał w stronę policjantów, wcześniej był skazany za zabójstwo. Usłyszał zarzuty” (TVN24); „Kraków: Zarzuty za strzały w kierunku policji. Nowe informacje ws. 39-latka” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
-      "Defence24",
-      "https://defence24.pl/geopolityka/absolutnie-nie-do-przyjecia-tusk-o-putinie-i-negocjacjach-pokojowych",
-      "PL"
-     ],
-     [
-      "Onet Wiadomości",
-      "https://wiadomosci.onet.pl/swiat/polska-wsrod-panstw-negocjujacych-z-rosja-w-sprawie-ukrainy-jest-decyzja/5s1fwm0",
-      "PL"
-     ],
-     [
       "Interia Fakty",
-      "https://wydarzenia.interia.pl/ukraina-rosja/news-rosja-i-ukraina-sie-zgodzily-europa-dolaczy-do-negocjacji-po,nId,23572832",
+      "https://wydarzenia.interia.pl/malopolskie/news-strzelal-w-strone-policjantow-w-krakowie-ledwie-rok-temu-wys,nId,23572901",
       "PL"
      ],
      [
       "TVN24",
-      "https://tvn24.pl/swiat/polska-wsrod-krajow-ue-negocjujacych-z-rosja-w-sprawie-wojny-w-ukrainie-st9338400?source=rss",
+      "https://tvn24.pl/krakow/krakow-strzelal-do-policjantow-uslyszal-zarzuty-wczesniej-byl-skazany-za-zabojstwo-st9338306?source=rss",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/regiony/krakow/news-krakow-zarzuty-za-strzaly-w-kierunku-policji-nowe-informacje,nIdn,1026038",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/strzelal-do-policjantow-w-krakowie-byl-skazany-za-zabojstwo/",
       "PL"
      ]
     ],
     "date": "13.11",
-    "region": "Poza Polską",
+    "region": "małopolskie, dolnośląskie",
     "label": "Doniesienie medialne",
     "rel": "Wysoka",
     "follow": false,
-    "woj": [],
-    "scope": "zagr",
-    "top": 4,
-    "lead": "Zgłoszone przez 4 kanały: Defence24, Onet Wiadomości, Interia Fakty, TVN24."
+    "woj": [
+     "małopolskie",
+     "dolnośląskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ],
+     [
+      51.21,
+      16.16,
+      "Legnic"
+     ]
+    ],
+    "top": 5,
+    "lead": "Zgłoszone przez 4 kanały: Interia Fakty, TVN24, RMF24, Polsat News."
    },
    {
     "id": "rzad-zamrozi-ceny-gazu",
@@ -202,9 +255,7 @@ window.BRIEF_EDITIONS = [
     "rel": "Wysoka",
     "follow": false,
     "woj": [],
-    "scope": "kraj",
-    "top": 5,
-    "lead": "Zgłoszone przez 4 kanały: Rzeczpospolita, Bankier.pl, Business Insider Polska, TVN24."
+    "scope": "kraj"
    },
    {
     "id": "panstwo-rezygnuje-z-podatku",
@@ -258,7 +309,7 @@ window.BRIEF_EDITIONS = [
     "sec": [],
     "title": "Weto Nawrockiego wywołało burzę. Gawkowski stawia prezydentowi „publiczny akt oskarżenia”",
     "summary": "Temat zgłoszony przez 4 kanały między 16:22 a 21:05. Inne nagłówki: „Weto prezydenta. Minister Krzysztof Gawkowski zwrócił się do posła, ten odpowiedział” (TVN24); „\"Publiczny akt oskarżenia\" po wecie prezydenta. Reakcja ministra cyfryzacji” (TVN24); „Poruszenie po wecie Nawrockiego. \"Akt oskarżenia\", \"nie można\"” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
-    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 6 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
       "TVN24",
@@ -267,7 +318,7 @@ window.BRIEF_EDITIONS = [
      ],
      [
       "Rzeczpospolita",
-      "https://www.rp.pl/kraj/art45486421-nielegalne-tresci-mialy-znikac-z-internetu-szybciej-nawrocki-zawetowal-przepisy",
+      "https://www.rp.pl/kraj/art45487201-weto-nawrockiego-wywolalo-burze-gawkowski-stawia-prezydentowi-publiczny-akt-oskarzenia",
       "PL"
      ],
      [
@@ -288,57 +339,6 @@ window.BRIEF_EDITIONS = [
     "follow": false,
     "woj": [],
     "scope": "kraj"
-   },
-   {
-    "id": "strzelal-w-strone-policjantow",
-    "dim": "M",
-    "sec": [],
-    "title": "Strzelał w stronę policjantów, wcześniej był skazany za zabójstwo. Usłyszał zarzuty",
-    "summary": "Temat zgłoszony przez 4 kanały między 10:15 a 21:32. Inne nagłówki: „Strzelał do policjantów w Krakowie. Nowy ruch prokuratury i sądu” (Interia Fakty); „Kraków: Zarzuty za strzały w kierunku policji. Nowe informacje ws. 39-latka” (RMF24); „Strzelał do policjantów w Krakowie. Był skazany za zabójstwo” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
-    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 6 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
-    "sources": [
-     [
-      "Interia Fakty",
-      "https://wydarzenia.interia.pl/malopolskie/news-strzelal-w-strone-policjantow-w-krakowie-ledwie-rok-temu-wys,nId,23572901",
-      "PL"
-     ],
-     [
-      "TVN24",
-      "https://tvn24.pl/krakow/krakow-strzelal-do-policjantow-uslyszal-zarzuty-wczesniej-byl-skazany-za-zabojstwo-st9338306?source=rss",
-      "PL"
-     ],
-     [
-      "RMF24",
-      "https://www.rmf24.pl/regiony/krakow/news-krakow-zarzuty-za-strzaly-w-kierunku-policji-nowe-informacje,nIdn,1026038",
-      "PL"
-     ],
-     [
-      "Polsat News",
-      "https://www.polsatnews.pl/wiadomosc/2026-11-13/strzelal-do-policjantow-w-krakowie-byl-skazany-za-zabojstwo/",
-      "PL"
-     ]
-    ],
-    "date": "13.11",
-    "region": "małopolskie, dolnośląskie",
-    "label": "Doniesienie medialne",
-    "rel": "Wysoka",
-    "follow": false,
-    "woj": [
-     "małopolskie",
-     "dolnośląskie"
-    ],
-    "pts": [
-     [
-      50.06,
-      19.94,
-      "Kraków"
-     ],
-     [
-      51.21,
-      16.16,
-      "Legnic"
-     ]
-    ]
    },
    {
     "id": "zapadla-kluczowa-decyzja-prezydenta",
@@ -376,6 +376,126 @@ window.BRIEF_EDITIONS = [
     "follow": false,
     "woj": [],
     "scope": "kraj"
+   },
+   {
+    "id": "nie-bede-ulegal-szantazom",
+    "dim": "P",
+    "sec": [],
+    "title": "\"Nie będę ulegał szantażom\". Prezydent podjął decyzję ws. \"kontrowersyjnej\" ustawy",
+    "summary": "Temat zgłoszony przez 4 kanały między 16:21 a 18:05. Inne nagłówki: „Prezydent zawetował ustawę o blokowaniu nielegalnych treści w internecie” (OKO.press); „Prezydent Nawrocki zawetował ustawę o blokowaniu treści. \"Nadużycie władzy\"” (Business Insider Polska); „Jest decyzja Prezydenta ws. ustawy o blokowaniu treści w sieci” (CyberDefence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/prezydent-zawetowal-ustawe-o-blokowaniu-nielegalnych-tresci-w-internecie",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/prawo/nie-bede-ulegal-szantazom-weto-prezydenta-do-ustawy-o-blokowaniu-tresci/bjfm3dz",
+      "PL"
+     ],
+     [
+      "CyberDefence24",
+      "https://cyberdefence24.pl/polityka-i-prawo/polska/jest-decyzja-prezydenta-ws-ustawy-o-blokowaniu-tresci-w-sieci",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/ustawa-o-uslugach-cyfrowych-prezydent-podjal-decyzje/",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "weglowy-potentat-bedzie-potrzebowal",
+    "dim": "S",
+    "sec": [],
+    "title": "Węglowy potentat będzie potrzebował dla siebie więcej czarnego złota",
+    "summary": "Temat zgłoszony przez 4 kanały między 07:00 a 17:22. Inne nagłówki: „Uwaga na okiść w części Polski. Problemów z pogodą będzie więcej” (Interia Fakty); „Antycyklon Lennox dojdzie do głosu. Taka będzie pogoda w weekend” (TVN24); „Ile zapłacisz za paliwo w weekend? Będzie taniej niż w piątek” (Energetyka24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-wladze-miasta-ostrzegaja-przed-okiscia-zagrozenie-dla-osob-i,nId,23573184",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/tvnmeteo/prognoza/antycyklon-lennox-dojdzie-do-glosu-taka-bedzie-pogoda-w-weekend-st9338058?source=rss",
+      "PL"
+     ],
+     [
+      "Energetyka24",
+      "https://energetyka24.com/surowce/ropa/ile-zaplacisz-za-paliwo-w-weekend-bedzie-taniej-niz-w-piatek",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/weglowy-potentat-bedzie-potrzebowal-dla-siebie-wiecej-czarnego-zlota,1119098.html",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "przelomowy-wyrok-w-norwegii",
+    "dim": "E",
+    "sec": [],
+    "title": "Przełomowy wyrok w Norwegii: plany wydobycia ropy i gazu bezprawne. Co ze złożami Orlenu?",
+    "summary": "Temat zgłoszony przez 4 kanały między 15:16 a 16:38. Inne nagłówki: „Precedensowy w Polsce wyrok w sprawie AI. Znany lektor wygrał prawo do swojego głosu” (Business Insider Polska); „AI wygenerowała głos lektora. Przełomowy wyrok warszawskiego sądu” (RMF24); „Norweski Sąd Najwyższy uznał pozwolenia na wydobycie ropy i gazu za niezgodne z prawem” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/prawo/sztuczna-inteligencja-przegrala-w-sadzie-glos-lektora-wykorzystany-bezprawnie/l7q0lge",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-ai-wygenerowala-glos-lektora-przelomowy-wyrok-warszawskiego-,nIdn,1026031",
+      "PL"
+     ],
+     [
+      "Energetyka24",
+      "https://energetyka24.com/surowce/ropa/przelomowy-wyrok-w-norwegii-plany-wydobycia-ropy-i-gazu-bezprawne-co-ze-zlozami-orlenu",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Sad-Najwyzszy-Norwegii-orzekl-iz-podstawy-prawne-eksploatacji-na-czesci-norweskiego-szelfu-sa-niewazne-9228518.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "mazowieckie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "mazowieckie"
+    ],
+    "pts": [
+     [
+      52.23,
+      21.01,
+      "Warszawa",
+      "l"
+     ]
+    ]
    },
    {
     "id": "rece-precz-od-republiki",
@@ -455,46 +575,6 @@ window.BRIEF_EDITIONS = [
     ]
    },
    {
-    "id": "po-zamachu-w-krakowie",
-    "dim": "M",
-    "sec": [],
-    "title": "Po zamachu w Krakowie: Kolejna osoba wyszła ze szpitala, ustalono trasę przejazdu sprawcy",
-    "summary": "Temat zgłoszony przez 3 kanały między 09:44 a 18:59. Inne nagłówki: „Została ranna w zamachu, wyszła ze szpitala” (TVN24); „Dobre wieści z Krakowa. Kolejna osoba ranna w ataku na Rynku Głównym opuściła szpital” (Onet Wiadomości); „Pochwalili zamach w Krakowie. Kolejne osoby zatrzymane” (RMF24 Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
-    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
-    "sources": [
-     [
-      "RMF24 Polska",
-      "https://www.rmf24.pl/regiony/krakow/news-pochwalili-zamach-w-krakowie-kolejne-osoby-zatrzymane,nIdn,1025951",
-      "PL"
-     ],
-     [
-      "TVN24",
-      "https://tvn24.pl/krakow/krakow-kolejna-osoba-ranna-w-zamachu-opuscila-szpital-st9338310?source=rss",
-      "PL"
-     ],
-     [
-      "Onet Wiadomości",
-      "https://wiadomosci.onet.pl/krakow/zamach-w-krakowie-jedna-z-poszkodowanych-wyszla-ze-szpitala/91vlctz",
-      "PL"
-     ]
-    ],
-    "date": "13.11",
-    "region": "małopolskie",
-    "label": "Doniesienie medialne",
-    "rel": "Wysoka",
-    "follow": false,
-    "woj": [
-     "małopolskie"
-    ],
-    "pts": [
-     [
-      50.06,
-      19.94,
-      "Kraków"
-     ]
-    ]
-   },
-   {
     "id": "ukraina-uderzyla-w-ogromny",
     "dim": "M",
     "sec": [],
@@ -559,90 +639,26 @@ window.BRIEF_EDITIONS = [
     "scope": "kraj"
    },
    {
-    "id": "tusk-nie-wybiera-sie",
-    "dim": "M",
+    "id": "awaria-microsoftu-uderzyla-w",
+    "dim": "E",
     "sec": [],
-    "title": "Tusk „nie wybiera się” do Pałacu Prezydenckiego. „Sprawa TK jest rozstrzygnięta”",
-    "summary": "Temat zgłoszony przez 3 kanały między 19:04 a 20:11. Inne nagłówki: „Tusk nie weźmie udziału w poniedziałkowym spotkaniu ws. TK w Pałacu Prezydenckim” (Bankier.pl); „Polska weźmie udział w negocjacjach dotyczących zakończenia wojny w Ukrainie” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "title": "Awaria Microsoftu uderzyła w działanie europejskich giełd. Komunikaty przesyłane przez SMS-y",
+    "summary": "Temat zgłoszony przez 3 kanały między 12:16 a 15:24. Inne nagłówki: „Awaria Microsoftu. Polskie banki uspokajają” (Business Insider Polska); „Światowa awaria systemu Microsoft” (OKO.press). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
     "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
-     [
-      "RMF24",
-      "https://www.rmf24.pl/fakty/polska/news-tusk-nie-wybiera-sie-do-palacu-prezydenckiego-sprawa-tk-jest,nIdn,1026055",
-      "PL"
-     ],
-     [
-      "Bankier.pl",
-      "https://www.bankier.pl/wiadomosc/Tusk-nie-wezmie-udzialu-w-poniedzialkowym-spotkaniu-ws-TK-w-Palacu-Prezydenckim-9228756.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
-      "PL"
-     ],
-     [
-      "Rzeczpospolita",
-      "https://www.rp.pl/konflikty-zbrojne/art45487371-polska-wezmie-udzial-w-negocjacjach-dotyczacych-zakonczenia-wojny-w-ukrainie",
-      "PL"
-     ]
-    ],
-    "date": "13.11",
-    "region": "Polska, bez przypisanego regionu",
-    "label": "Doniesienie medialne",
-    "rel": "Wysoka",
-    "follow": false,
-    "woj": [],
-    "scope": "kraj"
-   },
-   {
-    "id": "weglowy-potentat-bedzie-potrzebowal",
-    "dim": "S",
-    "sec": [],
-    "title": "Węglowy potentat będzie potrzebował dla siebie więcej czarnego złota",
-    "summary": "Temat zgłoszony przez 3 kanały między 07:00 a 17:22. Inne nagłówki: „Uwaga na okiść w części Polski. Problemów z pogodą będzie więcej” (Interia Fakty); „Antycyklon Lennox dojdzie do głosu. Taka będzie pogoda w weekend” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
-    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
-    "sources": [
-     [
-      "Interia Fakty",
-      "https://wydarzenia.interia.pl/kraj/news-wladze-miasta-ostrzegaja-przed-okiscia-zagrozenie-dla-osob-i,nId,23573184",
-      "PL"
-     ],
-     [
-      "TVN24",
-      "https://tvn24.pl/tvnmeteo/prognoza/antycyklon-lennox-dojdzie-do-glosu-taka-bedzie-pogoda-w-weekend-st9338058?source=rss",
-      "PL"
-     ],
      [
       "WNP.pl",
-      "https://www.wnp.pl/energia/weglowy-potentat-bedzie-potrzebowal-dla-siebie-wiecej-czarnego-zlota,1119098.html",
+      "https://www.wnp.pl/rynki/awaria-microsoftu-uderzyla-w-dzialanie-europejskich-gield-komunikaty-przesylane-przez-sms-y,1119583.html",
       "PL"
-     ]
-    ],
-    "date": "13.11",
-    "region": "Polska, bez przypisanego regionu",
-    "label": "Doniesienie medialne",
-    "rel": "Wysoka",
-    "follow": false,
-    "woj": [],
-    "scope": "kraj"
-   },
-   {
-    "id": "nie-bede-ulegal-szantazom",
-    "dim": "P",
-    "sec": [],
-    "title": "\"Nie będę ulegał szantażom\". Prezydent podjął decyzję ws. \"kontrowersyjnej\" ustawy",
-    "summary": "Temat zgłoszony przez 3 kanały między 16:21 a 17:18. Inne nagłówki: „Prezydent Nawrocki zawetował ustawę o blokowaniu treści. \"Nadużycie władzy\"” (Business Insider Polska); „Jest decyzja Prezydenta ws. ustawy o blokowaniu treści w sieci” (CyberDefence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
-    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
-    "sources": [
+     ],
      [
       "Business Insider Polska",
-      "https://businessinsider.com.pl/prawo/nie-bede-ulegal-szantazom-weto-prezydenta-do-ustawy-o-blokowaniu-tresci/bjfm3dz",
+      "https://businessinsider.com.pl/gospodarka/polskie-banki-uspokajaja-w-sprawie-microsoftu/1y9w7m8",
       "PL"
      ],
      [
-      "CyberDefence24",
-      "https://cyberdefence24.pl/polityka-i-prawo/polska/jest-decyzja-prezydenta-ws-ustawy-o-blokowaniu-tresci-w-sieci",
-      "PL"
-     ],
-     [
-      "Polsat News",
-      "https://www.polsatnews.pl/wiadomosc/2026-11-13/ustawa-o-uslugach-cyfrowych-prezydent-podjal-decyzje/",
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/swiatowa-awaria-systemu-microsoft",
       "PL"
      ]
     ],
@@ -727,6 +743,82 @@ window.BRIEF_EDITIONS = [
     "scope": "zagr"
    },
    {
+    "id": "ponad-220-milionow-zlotych",
+    "dim": "E",
+    "sec": [],
+    "title": "Ponad 220 milionów złotych długu. Co dalej z mieszkaniami komunalnymi w Katowicach?",
+    "summary": "Temat zgłoszony przez 2 kanały między 09:34 a 20:13. Inne nagłówki: „Kraków apeluje o pieniądze na bezpieczeństwo. Chodzi o 10 milionów złotych” (InfoSecurity24); „Rajdowy mistrz Polski prawomocnie skazany. Sąd nakazał zapłatę 6,2 miliona złotych” (RMF24 Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/poznan/news-rajdowy-mistrz-polski-prawomocnie-skazany-sad-nakazal-zaplat,nIdn,1025950",
+      "PL"
+     ],
+     [
+      "InfoSecurity24",
+      "https://infosecurity24.pl/bezpieczenstwo-wewnetrzne/krakow-apeluje-o-pieniadze-na-bezpieczenstwo-chodzi-o-10-milionow-zlotych",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "małopolskie, śląskie",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [
+     "małopolskie",
+     "śląskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ],
+     [
+      50.26,
+      19.02,
+      "Katowic"
+     ]
+    ]
+   },
+   {
+    "id": "po-zamachu-w-krakowie",
+    "dim": "M",
+    "sec": [],
+    "title": "Po zamachu w Krakowie: Kolejna osoba wyszła ze szpitala, ustalono trasę przejazdu sprawcy",
+    "summary": "Temat zgłoszony przez 2 kanały między 09:44 a 18:59. Inne nagłówki: „Została ranna w zamachu, wyszła ze szpitala” (TVN24); „Pochwalili zamach w Krakowie. Kolejne osoby zatrzymane” (RMF24 Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/krakow/news-pochwalili-zamach-w-krakowie-kolejne-osoby-zatrzymane,nIdn,1025951",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/krakow/krakow-kolejna-osoba-ranna-w-zamachu-opuscila-szpital-st9338310?source=rss",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "małopolskie",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [
+     "małopolskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ]
+    ]
+   },
+   {
     "id": "przemyslaw-wipler-w-programie",
     "dim": "E",
     "sec": [],
@@ -789,75 +881,21 @@ window.BRIEF_EDITIONS = [
     "scope": "kraj"
    },
    {
-    "id": "korwin-piotrowska-nie-przyjela",
+    "id": "czy-stala-baza-wojsk",
     "dim": "M",
     "sec": [],
-    "title": "Korwin-Piotrowska nie przyjęła wniosku Żurka ws. uchylenia immunitetu Święczkowskiemu",
-    "summary": "Temat zgłoszony przez 2 kanały między 21:35 a 22:03. Inne nagłówki: „Korwin-Piotrowska odmawia przyjęcia wniosku prokuratury. Nowe oświadczenie” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "title": "Czy stała baza wojsk USA w Polsce to już fakt? O to zapytamy Michała Dworczyka i Piotra Stracha",
+    "summary": "Temat zgłoszony przez 2 kanały między 15:24 a 22:14. Inne nagłówki: „Drony nad bazą wojsk USA w Wielkiej Brytanii. Zawyły syreny” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
     "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
-     [
-      "Rzeczpospolita",
-      "https://www.rp.pl/sady-i-trybunaly/art45487731-korwin-piotrowska-nie-przyjela-wniosku-zurka-ws-uchylenia-immunitetu-swieczkowskiemu",
-      "PL"
-     ],
-     [
-      "Interia Fakty",
-      "https://wydarzenia.interia.pl/kraj/news-korwin-piotrowska-odmawia-przyjecia-wniosku-prokuratury-nowe,nId,23573351",
-      "PL"
-     ]
-    ],
-    "date": "13.11",
-    "region": "Polska, bez przypisanego regionu",
-    "label": "Doniesienie medialne",
-    "rel": "Średnia",
-    "follow": false,
-    "woj": [],
-    "scope": "kraj"
-   },
-   {
-    "id": "akcja-ratunkowa-w-porcie",
-    "dim": "X",
-    "sec": [],
-    "title": "Akcja ratunkowa w porcie w Nowym Orleanie. Tonie statek z prawie 150 osobami",
-    "summary": "Temat zgłoszony przez 2 kanały między 21:09 a 21:48. Inne nagłówki: „Tankowiec uderzył w statek wycieczkowy. Akcja służb w USA” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
-    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
-    "sources": [
-     [
-      "TVN24",
-      "https://tvn24.pl/swiat/statek-wycieczkowy-zderzyl-sie-z-tankowcem-w-nowym-orleanie-st9338558?source=rss",
-      "PL"
-     ],
      [
       "Onet Wiadomości",
-      "https://wiadomosci.onet.pl/swiat/akcja-ratunkowa-w-porcie-w-nowym-orleanie-tonie-statek-z-prawie-150-pasazerami/9z3d6r7",
-      "PL"
-     ]
-    ],
-    "date": "13.11",
-    "region": "Poza Polską",
-    "label": "Doniesienie medialne",
-    "rel": "Średnia",
-    "follow": false,
-    "woj": [],
-    "scope": "zagr"
-   },
-   {
-    "id": "dane-polakow-znow-wyciekly",
-    "dim": "M",
-    "sec": [],
-    "title": "Dane Polaków znów wyciekły? Przez ten serwis przechodzi wiele płatności - stał się celem cyberataku",
-    "summary": "Temat zgłoszony przez 2 kanały między 05:30 a 21:15. Inne nagłówki: „Tylu Polaków zginęło na wojnie na Ukrainie. Ujawniono poufne dane” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
-    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
-    "sources": [
-     [
-      "WNP.pl",
-      "https://www.wnp.pl/tech/dane-polakow-znow-wyciekly-przez-ten-serwis-przechodzi-wiele-platnosci-stal-sie-celem-cyberataku,1119735.html",
+      "https://wiadomosci.onet.pl/swiat/drony-nad-baza-wojsk-usa-w-wielkiej-brytanii-zawyly-syreny/sknr4qy",
       "PL"
      ],
      [
-      "Defence24",
-      "https://defence24.pl/wojna-na-ukrainie-raport-specjalny-defence24/tylu-polakow-zginelo-na-wojnie-na-ukrainie-ujawniono-poufne-dane",
+      "RMF24",
+      "https://www.rmf24.pl/rozmowy/sprawdzam/news-czy-stala-baza-wojsk-usa-w-polsce-to-juz-fakt-o-to-zapytamy-,nIdn,1026022",
       "PL"
      ]
     ],
@@ -870,21 +908,21 @@ window.BRIEF_EDITIONS = [
     "scope": "kraj"
    },
    {
-    "id": "polacy-za-rozwojem-broni",
-    "dim": "S",
+    "id": "czarzasty-nie-mial-litosci",
+    "dim": "P",
     "sec": [],
-    "title": "Polacy za rozwojem broni jądrowej w Europie. Najwyższe poparcie w badaniu GLOBSEC",
-    "summary": "Temat zgłoszony przez 2 kanały między 20:05 a 21:06. Inne nagłówki: „61 proc. Polaków za rozwojem broni jądrowej przez więcej państw Europy” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "title": "Czarzasty nie miał litości. Kusznieruk zawieszony w prawach członka partii",
+    "summary": "Temat zgłoszony przez 2 kanały między 21:32 a 22:12. Inne nagłówki: „Poseł Kusznieruk wykluczony z Nowej Lewicy. Miał \"rażąco naruszyć statut\"” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
     "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
-      "RMF24",
-      "https://www.rmf24.pl/fakty/polska/news-polacy-za-rozwojem-broni-jadrowej-w-europie-najwyzsze-poparc,nIdn,1026060",
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/posel-wykluczony-z-nowej-lewicy-mial-razaco-naruszyc-statut/",
       "PL"
      ],
      [
-      "Bankier.pl",
-      "https://www.bankier.pl/wiadomosc/61-proc-Polakow-za-rozwojem-broni-jadrowej-przez-wiecej-panstw-Europy-9228771.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polityka/news-czarzasty-nie-mial-litosci-kusznieruk-zawieszony-w-prawach-c,nIdn,1026064",
       "PL"
      ]
     ],
