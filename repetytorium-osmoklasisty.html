@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repetytorium Ósmoklasisty — Program nauki</title>
+<style>
+:root{
+  --bg:#0f1720;--panel:#16212d;--panel2:#1d2b3a;--line:#2a3b4d;
+  --text:#e6edf3;--muted:#93a4b5;--accent:#f2c94c;--accent2:#5ec2a6;
+  --ok:#4caf7d;--bad:#e5645a;--radius:12px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"DejaVu Sans",sans-serif}
+a{color:var(--accent2)}
+header{position:sticky;top:0;z-index:10;background:rgba(15,23,32,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;gap:12px}
+header .brand{font-weight:700;letter-spacing:.3px}
+header .brand small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+header .bar{flex:1;height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;min-width:60px}
+header .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));width:0}
+header .pct{font-size:13px;color:var(--muted);min-width:42px;text-align:right}
+#menuBtn{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 10px;font-size:18px;cursor:pointer}
+.layout{display:flex;min-height:calc(100vh - 56px)}
+nav{width:290px;flex-shrink:0;border-right:1px solid var(--line);background:var(--panel);padding:12px;overflow-y:auto;height:calc(100vh - 56px);position:sticky;top:56px}
+nav h4{margin:14px 6px 6px;font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted)}
+nav button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;color:var(--text);padding:8px 10px;border-radius:8px;cursor:pointer;font-size:14px}
+nav button:hover{background:var(--panel2)}
+nav button.active{background:var(--panel2);outline:1px solid var(--accent)}
+nav .num{width:24px;height:24px;border-radius:50%;background:var(--panel2);display:grid;place-items:center;font-size:12px;flex-shrink:0;border:1px solid var(--line)}
+nav .done .num{background:var(--ok);border-color:var(--ok);color:#06140c}
+main{flex:1;padding:20px 22px 80px;max-width:900px}
+h1{font-size:26px;margin:4px 0 6px}
+h2{font-size:20px;margin:24px 0 10px;color:var(--accent)}
+h3{font-size:16px;margin:16px 0 8px}
+.sub{color:var(--muted);margin:0 0 16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin:12px 0}
+.tags span{display:inline-block;font-size:12px;background:var(--panel2);border:1px solid var(--line);border-radius:99px;padding:2px 10px;margin:2px 4px 2px 0;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 4px}
+.tabs button{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:14px}
+.tabs button.active{background:var(--accent);color:#1b1500;border-color:var(--accent);font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:13px}
+.ex{color:var(--accent2);font-style:italic}
+.gram p{margin:8px 0}
+.gram ul{margin:6px 0 6px 18px;padding:0}
+.gram code{background:var(--panel2);padding:1px 6px;border-radius:5px;font-size:14px}
+.tip{border-left:3px solid var(--accent);padding:8px 12px;background:rgba(242,201,76,.06);border-radius:0 8px 8px 0;margin:10px 0}
+.flash{perspective:1000px;height:200px;margin:12px 0;cursor:pointer;user-select:none}
+.flash .inner{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.flash.flip .inner{transform:rotateY(180deg)}
+.flash .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:grid;place-items:center;text-align:center;padding:16px;border-radius:var(--radius);border:1px solid var(--line);background:var(--panel2);font-size:24px;font-weight:600}
+.flash .back{transform:rotateY(180deg);background:#20384a;color:var(--accent)}
+.flash small{display:block;font-size:12px;color:var(--muted);font-weight:400;margin-top:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 14px;border-radius:8px;cursor:pointer;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:#1b1500;border-color:var(--accent);font-weight:600}
+.btn.ok{border-color:var(--ok)}
+.btn.bad{border-color:var(--bad)}
+.q{margin:14px 0}
+.q .stem{font-weight:600;margin-bottom:8px}
+.opt{display:block;width:100%;text-align:left;margin:5px 0;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:9px 12px;border-radius:8px;cursor:pointer;font-size:15px}
+.opt.right{border-color:var(--ok);background:rgba(76,175,125,.15)}
+.opt.wrong{border-color:var(--bad);background:rgba(229,100,90,.15)}
+.expl{font-size:14px;color:var(--muted);margin-top:6px;display:none}
+.q.answered .expl{display:block}
+.score{font-size:18px;font-weight:700}
+textarea{width:100%;min-height:160px;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:10px;font:inherit}
+.wc{font-size:13px;color:var(--muted)}
+.model{white-space:pre-wrap;background:var(--panel2);border-radius:8px;padding:12px;font-size:15px;display:none}
+.check label{display:flex;gap:10px;align-items:flex-start;padding:6px 0;cursor:pointer}
+.check input{margin-top:4px;transform:scale(1.2)}
+.week{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.week b{color:var(--accent)}
+.week.rev b{color:var(--accent2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.unitcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;cursor:pointer}
+.unitcard:hover{border-color:var(--accent)}
+.unitcard .t{font-weight:700}
+.unitcard .m{font-size:13px;color:var(--muted);margin-top:4px}
+.badge{font-size:11px;padding:2px 8px;border-radius:99px;background:var(--ok);color:#06140c;font-weight:700;margin-left:6px}
+footer{color:var(--muted);font-size:12px;margin-top:40px}
+@media (max-width:820px){
+  nav{position:fixed;left:0;top:56px;z-index:20;transform:translateX(-100%);transition:transform .25s;box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  nav.open{transform:none}
+  main{padding:16px 14px 80px}
+  .week{grid-template-columns:90px 1fr}
+}
+@media (min-width:821px){#menuBtn{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <button id="menuBtn" aria-label="Menu">☰</button>
+  <div class="brand">Repetytorium Ósmoklasisty<small>Program nauki · angielski · A2/A2+</small></div>
+  <div class="bar"><i id="pbar"></i></div><div class="pct" id="pct">0%</div>
+</header>
+<div class="layout">
+  <nav id="nav"></nav>
+  <main id="main"></main>
+</div>
+
+<script>
+/* ===================== DANE KURSU ===================== */
+const UNITS = [
+{ id:1, pl:"Człowiek", en:"People",
+  grammar:["Present simple: to be","have got","there is / there are"], writing:"E-mail",
+  vocab:[["curly hair","kręcone włosy"],["slim","szczupły"],["well-built","dobrze zbudowany"],["in his twenties","po dwudziestce (20–29 lat)"],["freckles","piegi"],["generous","hojny"],["reliable","niezawodny, solidny"],["shy","nieśmiały"],["bossy","apodyktyczny, rządzący się"],["cheerful","pogodny, wesoły"],["confident","pewny siebie"],["upset","zmartwiony, zdenerwowany"],["proud of","dumny z"],["embarrassed","zawstydzony"]],
+  gram:`<p><b>to be</b> – <code>I am / you are / he, she, it is / we, they are</code>. Pytanie: przestawiamy szyk – <span class="ex">Is she tall?</span> Przeczenie: <span class="ex">He isn't shy.</span></p>
+<p><b>have got</b> – posiadanie i wygląd: <code>I/you/we/they have got</code>, <code>he/she/it has got</code>.</p>
+<ul><li><span class="ex">She has got blue eyes.</span> – Ona ma niebieskie oczy.</li><li>Pytanie: <span class="ex">Have you got a brother?</span> – <span class="ex">Yes, I have. / No, I haven't.</span></li></ul>
+<p><b>there is / there are</b> – „jest / są” (istnienie czegoś w miejscu): <span class="ex">There is a new girl in our class. There are two dogs in the garden.</span></p>
+<div class="tip">Pułapka: „Mam 14 lat” to <b>I am 14</b>, nie <s>I have 14</s>.</div>`,
+  phrases:[["What does she look like?","Jak ona wygląda?"],["What is he like?","Jaki on jest (charakter)?"],["She's in her early teens.","Ona jest nastolatką (13–15)."],["Nice to meet you.","Miło cię poznać."],["Let me introduce my friend…","Pozwól, że przedstawię mojego przyjaciela…"]],
+  quiz:[
+   {q:"My sister ___ got long, curly hair.",o:["have","has","is"],a:1,e:"he/she/it → has got."},
+   {q:"There ___ two new students in our class.",o:["is","are","be"],a:1,e:"Liczba mnoga → there are."},
+   {q:"___ your brother tall?",o:["Has","Are","Is"],a:2,e:"to be dla he → Is."},
+   {q:"— What does she look like?  — ___",o:["She's tall and slim.","She likes reading.","She's fine, thanks."],a:0,e:"look like = wygląd."},
+   {q:"— What's he like?  — ___",o:["He likes pizza.","He's friendly and funny.","He's 180 cm tall."],a:1,e:"What's he like? = pytanie o charakter."},
+   {q:"I haven't ___ any brothers or sisters.",o:["got","get","have"],a:0,e:"haven't got."}
+  ],
+  task:"Napisz e-mail do kolegi z Anglii, w którym: przedstawisz nową osobę w swojej klasie, opiszesz jej wygląd, napiszesz, dlaczego ją polubiłeś/-aś.",
+  model:`Hi Jack,
+How are you? There's a new boy in my class. His name is Kuba and he's from Kraków. He's quite tall and slim, and he has got short dark hair and a lot of freckles. I like him because he's really cheerful and generous – yesterday he shared his lunch with me when I forgot mine! He's also very good at football, so we play together after school.
+Write soon,
+Ola` },
+
+{ id:2, pl:"Miejsce zamieszkania", en:"Home",
+  grammar:["Present simple vs present continuous","Czasowniki statyczne","Rzeczowniki złożone"], writing:"List",
+  vocab:[["detached house","dom wolnostojący"],["block of flats","blok mieszkalny"],["suburbs","przedmieścia"],["attic","strych"],["basement","piwnica"],["chest of drawers","komoda"],["wardrobe","szafa na ubrania"],["armchair","fotel"],["rent","czynsz; wynajmować"],["neighbour","sąsiad"],["cosy","przytulny"],["spacious","przestronny"],["move house","przeprowadzić się"],["do the washing-up","zmywać naczynia"]],
+  gram:`<p><b>Present simple</b> – zwyczaje, fakty, rozkłady: <span class="ex">We usually have dinner at 7.</span> Słowa-klucze: <i>always, usually, often, never, every day</i>.</p>
+<p><b>Present continuous</b> (am/is/are + -ing) – teraz, chwilowo: <span class="ex">Look! Dad is painting the fence.</span> Słowa-klucze: <i>now, at the moment, look!, listen!, this week</i>.</p>
+<p><b>Czasowniki statyczne</b> (like, love, hate, want, know, need, believe, own) zwykle <b>nie</b> mają formy -ing: <span class="ex">I want a bigger room</span>, nie <s>I'm wanting</s>.</p>
+<p><b>Rzeczowniki złożone</b>: <span class="ex">bedroom, bookcase, washing machine, living room</span> – pierwszy wyraz opisuje drugi.</p>`,
+  phrases:[["Would you like to come round?","Wpadniesz do mnie?"],["Make yourself at home.","Czuj się jak u siebie."],["Can you give me a hand?","Pomożesz mi?"],["Whose turn is it to…?","Czyja kolej, żeby…?"],["It's my turn to do the washing-up.","Moja kolej zmywać."]],
+  quiz:[
+   {q:"Look! The neighbours ___ a new fence.",o:["build","are building","builds"],a:1,e:"Look! → teraz → present continuous."},
+   {q:"We usually ___ dinner at 7 o'clock.",o:["have","are having","has"],a:0,e:"usually → present simple."},
+   {q:"I ___ this flat – it's too small.",o:["am not liking","don't like","not like"],a:1,e:"like to czasownik statyczny."},
+   {q:"We keep old things in the ___ under the house.",o:["attic","basement","balcony"],a:1,e:"Pod domem = basement."},
+   {q:"My brother ___ for his exams this week, so he's very busy.",o:["revises","is revising","revise"],a:1,e:"this week (sytuacja chwilowa) → continuous."},
+   {q:"— Would you like to come round on Saturday? — ___",o:["I'd love to!","Yes, I come.","You're welcome."],a:0,e:"Przyjęcie zaproszenia: I'd love to."}
+  ],
+  task:"Przeprowadziłeś/-aś się. Napisz list do kolegi z zagranicy: opisz nowe mieszkanie, napisz, co robisz w tej chwili, żeby je urządzić, i zaproś go w odwiedziny.",
+  model:`Dear Sam,
+Guess what? We have moved house! Our new flat is in a block of flats in the suburbs. It's quite spacious and my bedroom is really cosy – it has got a big wardrobe and a desk by the window. At the moment I'm painting the walls blue and my dad is putting up shelves. Would you like to come round in the summer holidays? There's a lot to do here!
+Best wishes,
+Kasia` },
+
+{ id:3, pl:"Edukacja", en:"School",
+  grammar:["Past simple vs past continuous","used to","Czasowniki/przymiotniki + przyimki"], writing:"E-mail",
+  vocab:[["subject","przedmiot szkolny"],["timetable","plan lekcji"],["break","przerwa"],["take an exam","przystępować do egzaminu"],["pass an exam","zdać egzamin"],["fail an exam","oblać egzamin"],["revise for","powtarzać do (egzaminu)"],["get a good mark","dostać dobrą ocenę"],["canteen","stołówka"],["headteacher","dyrektor szkoły"],["school uniform","mundurek szkolny"],["be good at","być dobrym w"],["be interested in","interesować się"],["after-school club","kółko pozalekcyjne"]],
+  gram:`<p><b>Past simple</b> – zakończone czynności w przeszłości: <span class="ex">I passed the test yesterday.</span> (czasowniki nieregularne – patrz tabela na końcu podręcznika!)</p>
+<p><b>Past continuous</b> (was/were + -ing) – czynność w toku w przeszłości: <span class="ex">I was doing my homework at 8 pm.</span></p>
+<ul><li>Przerwana czynność: <span class="ex">I was reading <b>when</b> the phone rang.</span></li><li>Dwie równoległe: <span class="ex"><b>While</b> we were playing, it started to rain.</span></li></ul>
+<p><b>used to</b> – dawne zwyczaje, których już nie ma: <span class="ex">I used to walk to school.</span> Pytanie: <span class="ex">Did you use to…?</span></p>
+<p><b>Przyimki</b>: good <b>at</b>, interested <b>in</b>, afraid <b>of</b>, proud <b>of</b>, listen <b>to</b>, depend <b>on</b>, worry <b>about</b>.</p>`,
+  phrases:[["Can I borrow your pen?","Mogę pożyczyć twój długopis?"],["Could you repeat that, please?","Czy może pan/pani powtórzyć?"],["What does … mean?","Co znaczy …?"],["How do you spell it?","Jak to się pisze?"],["Good luck with your exam!","Powodzenia na egzaminie!"]],
+  quiz:[
+   {q:"I ___ my homework when the phone rang.",o:["did","was doing","have done"],a:1,e:"Czynność przerwana → past continuous."},
+   {q:"When I was younger, I ___ walk to school.",o:["used to","use to","was used"],a:0,e:"Dawny zwyczaj → used to."},
+   {q:"She's very good ___ maths.",o:["in","at","on"],a:1,e:"good at."},
+   {q:"Did you ___ the test yesterday?",o:["pass","passed","passing"],a:0,e:"Po did – forma podstawowa."},
+   {q:"While we ___ football, it started to rain.",o:["played","were playing","play"],a:1,e:"while + past continuous."},
+   {q:"— Can I borrow your ruler? — ___",o:["Sure, here you are.","You're welcome.","Never mind."],a:0,e:"Zgoda na pożyczenie: Sure, here you are."}
+  ],
+  task:"Napisz e-mail do kolegi: opisz, jak wyglądał Twój pierwszy dzień w nowym roku szkolnym, co Cię zaskoczyło, i zapytaj o jego szkołę.",
+  model:`Hi Tom,
+I had my first day at school last Monday. When I was walking into the classroom, I saw that we had a new teacher! She teaches English and she's really nice. I was surprised because our timetable is completely different this year – we have maths every day! I used to hate maths, but now I'm interested in it. What about your school? Do you have any new subjects?
+Bye for now,
+Michał` },
+
+{ id:4, pl:"Praca", en:"Work",
+  grammar:["Past simple vs present perfect","Zaimki nieokreślone (some-/any-/no-/every-)"], writing:"Wpis na blogu",
+  vocab:[["earn","zarabiać"],["salary","pensja"],["part-time job","praca na pół etatu"],["full-time job","praca na pełen etat"],["apply for","ubiegać się o"],["job interview","rozmowa kwalifikacyjna"],["employee","pracownik"],["employer","pracodawca"],["firefighter","strażak"],["vet","weterynarz"],["mechanic","mechanik"],["retire","przejść na emeryturę"],["work overtime","pracować w nadgodzinach"],["experience","doświadczenie"]],
+  gram:`<p><b>Present perfect</b> (have/has + III forma) – skutek widoczny teraz, doświadczenie życiowe, okres trwający do teraz:</p>
+<ul><li><span class="ex">I have just finished my report.</span> (just, already, yet)</li><li><span class="ex">Have you ever worked abroad?</span> (ever, never)</li><li><span class="ex">She has worked here since 2020 / for six years.</span></li></ul>
+<p><b>Past simple</b> – gdy podajemy konkretny czas w przeszłości: <span class="ex">She got a new job <b>last month</b>.</span></p>
+<div class="tip">Pytanie z <i>When…?</i> zawsze w past simple: <span class="ex">When did you start?</span></div>
+<p><b>Zaimki nieokreślone</b>: <code>someone/something/somewhere</code> (zdania twierdzące), <code>anyone/anything</code> (pytania, przeczenia), <code>no one/nothing/nowhere</code> (znaczenie przeczące, czasownik twierdzący!), <code>everyone/everything</code>.</p>`,
+  phrases:[["What do you do (for a living)?","Czym się zajmujesz?"],["Have you got any experience?","Masz doświadczenie?"],["I'd like to apply for…","Chciał(a)bym się ubiegać o…"],["What are the working hours?","Jakie są godziny pracy?"],["I'm good at working in a team.","Dobrze pracuję w zespole."]],
+  quiz:[
+   {q:"I ___ in this company since 2020.",o:["work","have worked","worked"],a:1,e:"since → present perfect."},
+   {q:"She ___ a new job last month.",o:["has got","got","gets"],a:1,e:"last month → past simple."},
+   {q:"Have you ever ___ abroad?",o:["work","worked","working"],a:1,e:"have + III forma."},
+   {q:"Is there ___ in the office? The lights are on.",o:["anybody","nobody","somebody else"],a:0,e:"Pytanie → anybody."},
+   {q:"There's ___ to eat – the fridge is empty.",o:["anything","nothing","something"],a:1,e:"Czasownik twierdzący + nothing."},
+   {q:"— Have you got any experience? — ___",o:["Yes, I worked in a café last summer.","Yes, I'm going to work.","No, thank you."],a:0,e:"Odpowiedź o doświadczeniu."}
+  ],
+  task:"Napisz wpis na blogu o pracy wakacyjnej: gdzie pracowałeś/-aś, czego się nauczyłeś/-aś, czy poleciłbyś/-abyś ją innym.",
+  model:`My summer job
+Last July I worked part-time in my uncle's bike shop. I helped customers, cleaned the bikes and answered the phone. I have never worked so hard before! I learnt how to repair a flat tyre and how to talk to people politely. I didn't earn much money, but I got a lot of experience. Would I recommend it? Definitely – if you like bikes, it's the perfect job for you!` },
+
+{ id:5, pl:"Życie prywatne", en:"Private life",
+  grammar:["Rzeczowniki policzalne i niepoliczalne","some/any, much/many, a few/a little","Przyimki czasu, miejsca, sposobu"], writing:"E-mail",
+  vocab:[["relatives","krewni"],["cousin","kuzyn/kuzynka"],["only child","jedynak/jedynaczka"],["get married","wziąć ślub"],["wedding","wesele, ślub"],["anniversary","rocznica"],["get on well with","dobrze się dogadywać z"],["argue","kłócić się"],["spend time","spędzać czas"],["hang out","spędzać czas razem (pot.)"],["invite","zaprosić"],["celebrate","świętować"],["stepfather","ojczym"],["grandparents","dziadkowie"]],
+  gram:`<p><b>Policzalne</b> (a friend, two friends) vs <b>niepoliczalne</b> (money, time, advice, information, homework – bez liczby mnogiej!).</p>
+<ul><li><code>many</code> + policzalne, <code>much</code> + niepoliczalne: <span class="ex">How much time? How many cousins?</span></li><li><code>a few</code> (kilka) + policzalne, <code>a little</code> (trochę) + niepoliczalne.</li><li><code>some</code> w twierdzeniach, <code>any</code> w pytaniach i przeczeniach.</li></ul>
+<p><b>Przyimki czasu</b>: <code>at</code> 7 o'clock, at the weekend · <code>on</code> Monday, on 5th May, on my birthday · <code>in</code> May, in 2012, in the morning, in summer.</p>
+<p><b>Miejsca</b>: at home / at school, in the kitchen, on the wall. <b>Sposobu</b>: by bus, on foot, in a hurry.</p>`,
+  phrases:[["Happy birthday! / Congratulations!","Wszystkiego najlepszego! / Gratulacje!"],["Shall we meet at…?","Spotkamy się o/w…?"],["What about going to…?","Może pójdziemy do…?"],["Sorry, I can't make it.","Przykro mi, nie dam rady."],["Thanks for inviting me.","Dzięki za zaproszenie."]],
+  quiz:[
+   {q:"How ___ money do you need?",o:["many","much","few"],a:1,e:"money – niepoliczalne."},
+   {q:"The party is ___ Saturday.",o:["in","at","on"],a:2,e:"Dni tygodnia → on."},
+   {q:"We met ___ 7 o'clock.",o:["at","on","in"],a:0,e:"Godzina → at."},
+   {q:"There isn't ___ milk left.",o:["some","any","many"],a:1,e:"Przeczenie → any."},
+   {q:"I was born ___ 2012.",o:["on","at","in"],a:2,e:"Rok → in."},
+   {q:"— Shall we meet at the cinema at six? — ___",o:["Good idea, see you there!","Yes, I shall meet.","It's my pleasure."],a:0,e:"Zgoda na propozycję."}
+  ],
+  task:"Napisz e-mail do kuzyna z zaproszeniem na rodzinną uroczystość: co świętujecie, kiedy i gdzie, co należy przynieść.",
+  model:`Hi Adam,
+I hope you're well! My grandparents are celebrating their 40th wedding anniversary on Saturday 12th June. The party starts at 5 pm in our garden. All our relatives are coming, so it will be great fun! Could you bring a few photos of grandma and grandpa? We want to make a surprise album for them. Let me know if you can make it.
+Love,
+Ewa` },
+
+{ id:6, pl:"Żywienie", en:"Food",
+  grammar:["will / be going to / present continuous (przyszłość)","there vs it/they"], writing:"List",
+  vocab:[["dairy products","nabiał"],["fizzy drink","napój gazowany"],["recipe","przepis"],["boil","gotować (w wodzie)"],["fry","smażyć"],["bake","piec"],["slice","plaster; kroić w plastry"],["portion","porcja"],["healthy diet","zdrowa dieta"],["takeaway","jedzenie na wynos"],["bill","rachunek"],["tip","napiwek"],["spicy","ostry, pikantny"],["starter / main course / dessert","przystawka / danie główne / deser"]],
+  gram:`<p><b>will</b> – decyzja podjęta w chwili mówienia, przewidywanie (opinia): <span class="ex">I think I'll have the soup.</span></p>
+<p><b>be going to</b> – plan/zamiar; przewidywanie na podstawie dowodu: <span class="ex">Look at those clouds! It's going to rain.</span></p>
+<p><b>present continuous</b> – ustalone spotkania: <span class="ex">We're having dinner with grandma tomorrow.</span></p>
+<p><b>there</b> – wprowadza nową informację: <span class="ex">There's a new café near school.</span> <b>it/they</b> – mówi o czymś już wspomnianym: <span class="ex">It's very cheap.</span></p>`,
+  phrases:[["Are you ready to order?","Czy mogę przyjąć zamówienie?"],["I'd like…, please.","Poproszę…"],["Could we have the bill, please?","Poprosimy rachunek."],["Help yourself!","Częstuj się!"],["It tastes delicious.","Smakuje wyśmienicie."]],
+  quiz:[
+   {q:"Look at those clouds! It ___ rain.",o:["will","is going to","is raining"],a:1,e:"Dowód (chmury) → going to."},
+   {q:"— What would you like? — I think I ___ the chicken.",o:["'ll have","'m having","have"],a:0,e:"Decyzja w chwili mówienia → will."},
+   {q:"We ___ dinner with grandma tomorrow – it's all arranged.",o:["have","are having","will having"],a:1,e:"Ustalone spotkanie → present continuous."},
+   {q:"___ is a new pizzeria near my school.",o:["It","There","They"],a:1,e:"Nowa informacja → there."},
+   {q:"Can I have the ___, please? We'd like to pay.",o:["recipe","bill","tip"],a:1,e:"Rachunek = bill."},
+   {q:"— Are you ready to order? — ___",o:["Yes, I'd like the salad, please.","Yes, help yourself.","No, it's delicious."],a:0,e:"Zamawianie: I'd like…"}
+  ],
+  task:"Napisz list do kolegi z zagranicy: opisz typowe polskie danie, podaj krótko, jak się je przygotowuje, i napisz, co zamierzasz ugotować w weekend.",
+  model:`Dear Lucy,
+You asked me about Polish food, so let me tell you about pierogi. They are dumplings filled with potatoes and cheese, meat or fruit. First you make the dough, then you cut it into circles, fill them and boil them for a few minutes. Some people fry them afterwards. This weekend I'm going to make pierogi with blueberries with my grandma – they're my favourite dessert! Next time you visit, I'll cook some for you.
+Take care,
+Bartek` },
+
+{ id:7, pl:"Zakupy i usługi", en:"Shopping and services",
+  grammar:["Strona bierna (present/past/present perfect/future)"], writing:"E-mail",
+  vocab:[["shop assistant","sprzedawca"],["receipt","paragon"],["refund","zwrot pieniędzy"],["discount","zniżka"],["on sale","na wyprzedaży"],["try on","przymierzać"],["size","rozmiar"],["fit","pasować (rozmiarem)"],["suit","pasować (stylem), pasować komuś"],["exchange","wymienić"],["pay by card","płacić kartą"],["in cash","gotówką"],["cash machine","bankomat"],["delivery","dostawa"]],
+  gram:`<p><b>Strona bierna</b> = <code>be</code> (w odpowiednim czasie) + <b>III forma</b>. Używamy, gdy ważniejsze jest, <i>co się dzieje</i>, a nie <i>kto</i> to robi.</p>
+<ul><li>Present simple: <span class="ex">This bag <b>is made</b> in Italy.</span></li><li>Past simple: <span class="ex">The parcel <b>was delivered</b> yesterday.</span></li><li>Present perfect: <span class="ex">My phone <b>has been repaired</b>.</span></li><li>Future: <span class="ex">The new mall <b>will be opened</b> next year.</span></li></ul>
+<p>Wykonawca z <code>by</code>: <span class="ex">The shop was opened by a famous actor.</span></p>`,
+  phrases:[["Can I help you?","W czym mogę pomóc?"],["I'm just looking, thanks.","Tylko się rozglądam."],["Can I try it on?","Mogę przymierzyć?"],["Have you got it in a smaller size?","Ma pan/pani mniejszy rozmiar?"],["I'd like to return this.","Chciał(a)bym to zwrócić."]],
+  quiz:[
+   {q:"This bag ___ in Italy.",o:["makes","is made","made"],a:1,e:"Strona bierna, present simple."},
+   {q:"The parcel ___ yesterday.",o:["was delivered","delivered","is delivered"],a:0,e:"yesterday → past simple passive."},
+   {q:"The new shopping centre ___ next year.",o:["will open","will be opened","is opened"],a:1,e:"Future passive."},
+   {q:"Our car has ___ repaired.",o:["be","been","being"],a:1,e:"has been + III forma."},
+   {q:"These jeans don't ___ me – they're too big.",o:["fit","suit","try"],a:0,e:"Rozmiar → fit."},
+   {q:"— Can I help you? — ___",o:["Yes, I'm looking for trainers.","Yes, you can.","Here you are."],a:0,e:"Klient mówi, czego szuka."}
+  ],
+  task:"Kupiłeś/-aś przez internet bluzę, która okazała się za mała. Napisz e-mail do sklepu: co kupiłeś/-aś i kiedy, na czym polega problem, czego oczekujesz.",
+  model:`Dear Sir or Madam,
+I am writing about a hoodie which I ordered from your website on 3rd March. It was delivered yesterday, but unfortunately it doesn't fit me – it is much too small, although I ordered size L. I would like to exchange it for a bigger one. If this is not possible, I would like a refund. I have kept the receipt.
+Yours faithfully,
+Piotr Nowak` },
+
+{ id:8, pl:"Podróżowanie i turystyka", en:"Travel",
+  grammar:["should","must / mustn't / have to / don't have to","Zdania względne definiujące (who/which/that/where)"], writing:"E-mail",
+  vocab:[["book a room","zarezerwować pokój"],["check in","zameldować się / odprawić się"],["luggage","bagaż"],["boarding pass","karta pokładowa"],["departure","odjazd, odlot"],["arrival","przyjazd, przylot"],["delay","opóźnienie"],["return ticket","bilet powrotny"],["single ticket","bilet w jedną stronę"],["sightseeing","zwiedzanie"],["guidebook","przewodnik (książka)"],["campsite","kemping"],["abroad","za granicą"],["platform","peron"]],
+  gram:`<p><b>should</b> – rada: <span class="ex">You should take a jacket.</span></p>
+<p><b>must</b> – obowiązek (często od mówiącego), <b>have to</b> – obowiązek z zewnątrz (przepisy): <span class="ex">You have to show your passport.</span></p>
+<div class="tip"><b>mustn't</b> = nie wolno! &nbsp;|&nbsp; <b>don't have to</b> = nie musisz (ale możesz).</div>
+<p><b>Zdania względne</b>: <code>who</code> – ludzie, <code>which</code> – rzeczy, <code>that</code> – ludzie i rzeczy, <code>where</code> – miejsca: <span class="ex">That's the hotel where we stayed.</span></p>`,
+  phrases:[["Excuse me, how do I get to…?","Przepraszam, jak dojść do…?"],["Go straight on and turn left.","Idź prosto i skręć w lewo."],["A return ticket to…, please.","Bilet powrotny do…, proszę."],["What time does the train leave?","O której odjeżdża pociąg?"],["I'd like to book a double room.","Chciał(a)bym zarezerwować pokój dwuosobowy."]],
+  quiz:[
+   {q:"You ___ smoke on the plane – it's forbidden.",o:["don't have to","mustn't","shouldn't to"],a:1,e:"Zakaz → mustn't."},
+   {q:"You don't ___ buy a ticket – the museum is free.",o:["must","have to","should"],a:1,e:"don't have to = nie musisz."},
+   {q:"It might be cold. You ___ take a jacket.",o:["should","mustn't","don't have to"],a:0,e:"Rada → should."},
+   {q:"That's the hotel ___ we stayed last year.",o:["which","who","where"],a:2,e:"Miejsce → where."},
+   {q:"The man ___ sold us the tickets was very helpful.",o:["who","which","where"],a:0,e:"Osoba → who."},
+   {q:"— Excuse me, how do I get to the station? — ___",o:["Go straight on and turn left at the lights.","It's a return ticket.","Have a nice trip!"],a:0,e:"Wskazanie drogi."}
+  ],
+  task:"Napisz e-mail do kolegi, który przyjeżdża do Polski: jak dojechać z lotniska do Twojego domu, co powinien zabrać, co razem zwiedzicie.",
+  model:`Hi Daniel,
+I can't wait to see you! When you land in Katowice, you should take the airport bus to the main station. Then you have to buy a single ticket to Rybnik – the train leaves every hour from platform 2. I'll meet you there. You don't have to bring a sleeping bag, but you should pack good shoes because we're going sightseeing in the mountains. There's a castle there which you will love!
+See you soon,
+Kuba` },
+
+{ id:9, pl:"Kultura", en:"Culture",
+  grammar:["Zdania warunkowe: 0, 1, 2","Zdania czasowe (when, as soon as, before, after, until)"], writing:"List",
+  vocab:[["exhibition","wystawa"],["art gallery","galeria sztuki"],["audience","publiczność"],["performance","występ, przedstawienie"],["novel","powieść"],["author","autor"],["plot","fabuła"],["director","reżyser"],["soundtrack","ścieżka dźwiękowa"],["on stage","na scenie"],["play an instrument","grać na instrumencie"],["best-seller","bestseller"],["review","recenzja"],["festival","festiwal"]],
+  gram:`<p><b>Zero conditional</b> – prawdy ogólne: <code>If + present, present</code>: <span class="ex">If you heat ice, it melts.</span></p>
+<p><b>First conditional</b> – realna przyszłość: <code>If + present, will</code>: <span class="ex">If it rains, we'll go to the museum.</span></p>
+<p><b>Second conditional</b> – sytuacja nierealna/wymyślona: <code>If + past simple, would</code>: <span class="ex">If I were rich, I'd buy a piano.</span></p>
+<div class="tip">Po <b>if, when, as soon as, before, after, until</b> o przyszłości używamy czasu <b>teraźniejszego</b>: <span class="ex">I'll call you when the film ends</span>, nie <s>will end</s>.</div>`,
+  phrases:[["What did you think of the film?","Co myślisz o filmie?"],["I really enjoyed it.","Bardzo mi się podobało."],["It wasn't my cup of tea.","To nie w moim guście."],["I'd recommend it to…","Polecił(a)bym to…"],["Have you seen / read…?","Widziałeś / czytałeś…?"]],
+  quiz:[
+   {q:"If it ___ tomorrow, we'll go to the museum.",o:["will rain","rains","rained"],a:1,e:"First conditional: if + present."},
+   {q:"If I ___ rich, I'd buy a piano.",o:["am","were","will be"],a:1,e:"Second conditional: if + past (were)."},
+   {q:"If you heat ice, it ___.",o:["melts","will melt","would melt"],a:0,e:"Zero conditional – fakt."},
+   {q:"I'll call you as soon as the film ___.",o:["will end","ends","ended"],a:1,e:"Po as soon as – present."},
+   {q:"What ___ you do if you met a famous actor?",o:["will","would","do"],a:1,e:"Second conditional."},
+   {q:"— What did you think of the concert? — ___",o:["It was brilliant!","I'd like to.","Yes, I did."],a:0,e:"Wyrażanie opinii."}
+  ],
+  task:"Napisz list do kolegi o festiwalu/koncercie, na którym byłeś/-aś: co to było, co najbardziej Ci się podobało, co zrobisz, jeśli festiwal odbędzie się w przyszłym roku.",
+  model:`Dear Mia,
+Last weekend I went to a film festival in my town. We watched three films, but the best one was an animated film about a robot. The plot was really exciting and the soundtrack was amazing. The director talked to the audience after the film, which I really enjoyed. If the festival takes place next year, I'll definitely buy a ticket for all the days – and if you came with me, it would be even better!
+Hugs,
+Zosia` },
+
+{ id:10, pl:"Sport", en:"Sport",
+  grammar:["Stopniowanie przymiotników i przysłówków","too / enough","so / such, how / what"], writing:"Wpis na blogu",
+  vocab:[["score a goal","strzelić gola"],["win a match","wygrać mecz"],["lose a match","przegrać mecz"],["beat","pokonać (kogoś)"],["referee","sędzia"],["coach","trener"],["fans","kibice"],["stadium","stadion"],["court","kort, boisko (do koszykówki)"],["pitch","boisko (do piłki)"],["competition","zawody"],["train","trenować"],["work out","ćwiczyć (na siłowni)"],["draw","remis; zremisować"]],
+  gram:`<p><b>Stopniowanie</b>: krótkie: <code>fast – faster – the fastest</code>, <code>easy – easier – the easiest</code>; długie: <code>exciting – more exciting – the most exciting</code>; nieregularne: <code>good – better – the best</code>, <code>bad – worse – the worst</code>, <code>far – further – the furthest</code>.</p>
+<p>Porównania: <span class="ex">as fast as</span> (tak szybki jak), <span class="ex">not as tall as</span>.</p>
+<p><b>too</b> + przymiotnik = za (bardzo): <span class="ex">too difficult</span>. Przymiotnik + <b>enough</b> = wystarczająco: <span class="ex">tall enough</span>.</p>
+<p><b>so</b> + przymiotnik: <span class="ex">so exciting</span>; <b>such (a)</b> + przymiotnik + rzeczownik: <span class="ex">such an exciting match</span>. Wykrzyknienia: <span class="ex">How exciting! What a match!</span></p>`,
+  phrases:[["Do you fancy playing tennis?","Masz ochotę zagrać w tenisa?"],["Why not? / I'm up for it.","Czemu nie? / Wchodzę w to."],["Who won?","Kto wygrał?"],["What's the score?","Jaki jest wynik?"],["Well done! / Bad luck!","Brawo! / Pech!"]],
+  quiz:[
+   {q:"Swimming is ___ than running for me.",o:["easyer","easier","more easy"],a:1,e:"easy → easier."},
+   {q:"He's the ___ player in the team.",o:["better","best","goodest"],a:1,e:"good – better – the best."},
+   {q:"I'm not tall ___ to play basketball.",o:["too","enough","so"],a:1,e:"przymiotnik + enough."},
+   {q:"It was ___ exciting match!",o:["so an","such an","such"],a:1,e:"such + a/an + przymiotnik + rzeczownik."},
+   {q:"This game is ___ difficult for me – I can't play it.",o:["too","enough","such"],a:0,e:"too = za bardzo."},
+   {q:"— Do you fancy playing volleyball? — ___",o:["Sure, why not?","Well done!","What's the score?"],a:0,e:"Przyjęcie propozycji."}
+  ],
+  task:"Napisz wpis na blogu o meczu/zawodach, w których brałeś/-aś udział lub które oglądałeś/-aś: kto grał, jak przebiegał, co poczułeś/-aś.",
+  model:`The best match ever!
+On Saturday our school team played against the team from the next town. They were taller and stronger than us, so we were really nervous. At half-time the score was 0:1, but then our best player scored two goals! The fans were so loud that we couldn't hear the referee. We won 2:1 – it was such an amazing day! Next month we're playing in the regional competition. Wish us luck!` },
+
+{ id:11, pl:"Zdrowie", en:"Health",
+  grammar:["Past perfect","Konstrukcje czasownikowe (-ing / to + bezokolicznik)"], writing:"Notatka / wiadomość",
+  vocab:[["headache","ból głowy"],["sore throat","ból gardła"],["have a temperature","mieć gorączkę"],["cough","kaszel; kaszleć"],["sneeze","kichać"],["catch a cold","przeziębić się"],["break a leg","złamać nogę"],["prescription","recepta"],["chemist's","apteka"],["get better","wyzdrowieć"],["injury","uraz, kontuzja"],["painkiller","środek przeciwbólowy"],["make an appointment","umówić się (na wizytę)"],["healthy lifestyle","zdrowy styl życia"]],
+  gram:`<p><b>Past perfect</b> (had + III forma) – czynność wcześniejsza od innej czynności w przeszłości: <span class="ex">When we arrived, the film <b>had</b> already <b>started</b>.</span></p>
+<p><b>Czasownik + -ing</b>: enjoy, stop, finish, mind, avoid, practise, can't stand: <span class="ex">He enjoys running.</span></p>
+<p><b>Czasownik + to</b>: decide, want, hope, plan, agree, refuse, need, learn: <span class="ex">I decided to do more exercise.</span></p>
+<div class="tip"><i>stop doing</i> = przestać coś robić; <i>stop to do</i> = zatrzymać się, żeby coś zrobić.</div>`,
+  phrases:[["What's the matter?","Co się stało? / Co ci jest?"],["I've got a terrible headache.","Strasznie boli mnie głowa."],["You should see a doctor.","Powinieneś iść do lekarza."],["I hope you get better soon.","Mam nadzieję, że szybko wyzdrowiejesz."],["How are you feeling now?","Jak się teraz czujesz?"]],
+  quiz:[
+   {q:"When we arrived, the film ___ already started.",o:["has","had","was"],a:1,e:"Wcześniejsza czynność → past perfect."},
+   {q:"She stopped ___ fast food last year.",o:["to eat","eating","eat"],a:1,e:"stop doing = przestać."},
+   {q:"I decided ___ more exercise.",o:["doing","to do","do"],a:1,e:"decide + to."},
+   {q:"He enjoys ___ in the morning.",o:["to run","running","run"],a:1,e:"enjoy + -ing."},
+   {q:"I felt sick because I ___ too much chocolate.",o:["had eaten","have eaten","was eating"],a:0,e:"Przyczyna wcześniejsza → past perfect."},
+   {q:"— What's the matter? — ___",o:["I've got a sore throat.","I hope you get better.","Nothing to eat."],a:0,e:"Opis dolegliwości."}
+  ],
+  task:"Zostawiasz wiadomość dla rodzica/kolegi: nie przyjdziesz na trening, bo jesteś chory/-a; opisz objawy i poproś o jedną rzecz.",
+  model:`Hi Coach,
+I'm sorry, but I can't come to training today. I caught a cold at the weekend and now I've got a sore throat and a temperature. Mum has made an appointment with the doctor for this afternoon. Could you tell me what exercises I should practise at home when I get better?
+Thanks,
+Filip` },
+
+{ id:12, pl:"Nauka i technika", en:"Science and technology",
+  grammar:["Mowa zależna (twierdzenia, pytania, polecenia)"], writing:"List",
+  vocab:[["invention","wynalazek"],["inventor","wynalazca"],["discover","odkryć"],["experiment","eksperyment"],["scientist","naukowiec"],["device","urządzenie"],["download","pobrać"],["charge a phone","naładować telefon"],["password","hasło"],["log in","zalogować się"],["app","aplikacja"],["screen","ekran"],["battery","bateria"],["research","badania"]],
+  gram:`<p><b>Mowa zależna</b> – czas cofamy o jeden „krok” w przeszłość, gdy czasownik wprowadzający jest w przeszłości (<i>said, told, asked</i>):</p>
+<table><tr><th>Mowa niezależna</th><th>Mowa zależna</th></tr>
+<tr><td>present simple: "I <b>am</b> tired."</td><td>She said she <b>was</b> tired.</td></tr>
+<tr><td>present continuous: "I'm working."</td><td>He said he <b>was working</b>.</td></tr>
+<tr><td>past simple / present perfect</td><td>past perfect: he said he <b>had lost</b>…</td></tr>
+<tr><td>will</td><td>would</td></tr><tr><td>can</td><td>could</td></tr></table>
+<p>Pytania: <span class="ex">He asked me <b>if</b> I liked science.</span> / <span class="ex">She asked where I lived.</span> (szyk zdania twierdzącego!)</p>
+<p>Polecenia: <span class="ex">She told me <b>to close</b> the window. / <b>not to</b> touch it.</span></p>
+<p>Zmiany: now → then, today → that day, tomorrow → the next day, here → there.</p>`,
+  phrases:[["How does this work?","Jak to działa?"],["You just need to click…","Wystarczy kliknąć…"],["My battery is dead.","Rozładowała mi się bateria."],["I've forgotten my password.","Zapomniałem hasła."],["Can you show me how to…?","Pokażesz mi, jak…?"]],
+  quiz:[
+   {q:"\"I am tired.\" → She said she ___ tired.",o:["is","was","has been"],a:1,e:"am → was."},
+   {q:"\"We will help.\" → They said they ___ help.",o:["will","would","can"],a:1,e:"will → would."},
+   {q:"\"Do you like science?\" → He asked me if I ___ science.",o:["like","liked","do like"],a:1,e:"Cofnięcie czasu, szyk twierdzący."},
+   {q:"\"Close the window.\" → She told me ___ the window.",o:["close","to close","closing"],a:1,e:"Polecenie → told + to."},
+   {q:"\"I lost my phone.\" → Tom said he ___ his phone.",o:["had lost","has lost","loses"],a:0,e:"past simple → past perfect."},
+   {q:"— How does this app work? — ___",o:["You just log in and click 'Start'.","My battery is dead.","Yes, it works."],a:0,e:"Wyjaśnienie działania."}
+  ],
+  task:"Napisz list do kolegi o warsztatach naukowych/wizycie w centrum nauki: co tam robiłeś/-aś, co powiedział prowadzący, jaki wynalazek najbardziej Cię zaciekawił.",
+  model:`Dear Alex,
+Last week my class visited a science centre. We did some experiments with electricity and built a simple robot! The guide told us that the first computers were as big as a room. She also asked us if we could imagine life without smartphones – nobody could! The invention which I liked most was a device that turns plastic waste into 3D printing material. I'd love to become a scientist one day.
+All the best,
+Igor` },
+
+{ id:13, pl:"Świat przyrody", en:"Nature",
+  grammar:["Przedimki a/an/the/brak przedimka","can / could / be able to","this/that/these/those"], writing:"E-mail",
+  vocab:[["environment","środowisko"],["pollution","zanieczyszczenie"],["recycle","poddawać recyklingowi"],["climate","klimat"],["weather forecast","prognoza pogody"],["storm","burza"],["flood","powódź"],["endangered species","zagrożony gatunek"],["rainforest","las deszczowy"],["desert","pustynia"],["waste","odpady; marnować"],["protect","chronić"],["save energy","oszczędzać energię"],["litter","śmieci (porzucone)"]],
+  gram:`<p><b>a/an</b> – coś wspomniane pierwszy raz, jedno z wielu: <span class="ex">I saw an elephant.</span> <b>the</b> – coś znanego, jedynego: <span class="ex">the sun, the Earth, the elephant I told you about</span>.</p>
+<p><b>Brak przedimka</b> – ogólnie o rzeczownikach niepoliczalnych i liczbie mnogiej: <span class="ex">Pollution is a big problem. Dogs are friendly.</span></p>
+<p><b>can</b> (teraz), <b>could</b> (przeszłość – umiejętność ogólna), <b>be able to</b> (inne czasy): <span class="ex">I will be able to help tomorrow. I've never been able to ski.</span></p>
+<p><b>this/these</b> – blisko, <b>that/those</b> – daleko.</p>`,
+  phrases:[["What's the weather like?","Jaka jest pogoda?"],["It's cloudy and a bit windy.","Jest pochmurno i trochę wieje."],["What can we do to help?","Co możemy zrobić, żeby pomóc?"],["We should recycle more.","Powinniśmy więcej segregować."],["I couldn't agree more.","Całkowicie się zgadzam."]],
+  quiz:[
+   {q:"___ sun is shining today.",o:["A","The","—"],a:1,e:"Jedyny obiekt → the."},
+   {q:"I saw ___ elephant at the zoo.",o:["a","an","the"],a:1,e:"Przed samogłoską → an."},
+   {q:"___ pollution is a serious problem in big cities.",o:["The","A","—"],a:2,e:"Ogólnie, niepoliczalne → bez przedimka."},
+   {q:"When I was five, I ___ swim.",o:["can","could","am able"],a:1,e:"Przeszłość → could."},
+   {q:"Will you ___ to help us tomorrow?",o:["can","could","be able"],a:2,e:"Przyszłość → be able to."},
+   {q:"— What's the weather like? — ___",o:["It's sunny but cold.","I like weather.","It's a storm forecast."],a:0,e:"Opis pogody."}
+  ],
+  task:"Napisz e-mail do kolegi o akcji ekologicznej w Twojej szkole: co zrobiliście, dlaczego to ważne, i zaproponuj, co mógłby zrobić u siebie.",
+  model:`Hi Emma,
+Last Saturday my class took part in a clean-up in the park near our school. We collected twenty bags of litter! Our teacher told us that plastic waste can stay in the environment for hundreds of years, so it's really important to recycle. Next month we're planting trees. Maybe you could organise something similar at your school? I'm sure your friends would be able to help.
+Bye,
+Natalia` },
+
+{ id:14, pl:"Życie społeczne", en:"Society",
+  grammar:["Powtórzenie czasów","Zaimki (osobowe, dzierżawcze, zwrotne)"], writing:"Ogłoszenie",
+  vocab:[["charity","organizacja charytatywna"],["volunteer","wolontariusz; być wolontariuszem"],["donate","przekazać, ofiarować"],["homeless","bezdomny"],["community","społeczność"],["citizen","obywatel"],["government","rząd"],["election","wybory"],["vote","głosować; głos"],["rule","zasada"],["crime","przestępstwo"],["steal","kraść"],["thief","złodziej"],["police officer","policjant"]],
+  gram:`<p><b>Powtórzenie czasów</b> – patrz słowa-klucze: <i>usually</i> (present simple), <i>now</i> (present continuous), <i>yesterday/ago</i> (past simple), <i>since/for/just/ever</i> (present perfect), <i>when/while</i> (past continuous), <i>tomorrow/next</i> (will / going to).</p>
+<p><b>Zaimki</b>:</p>
+<table><tr><th>osobowe</th><th>dopełnienie</th><th>przymiotnik dzierż.</th><th>zaimek dzierż.</th><th>zwrotne</th></tr>
+<tr><td>I</td><td>me</td><td>my</td><td>mine</td><td>myself</td></tr>
+<tr><td>you</td><td>you</td><td>your</td><td>yours</td><td>yourself</td></tr>
+<tr><td>he / she</td><td>him / her</td><td>his / her</td><td>his / hers</td><td>himself / herself</td></tr>
+<tr><td>we / they</td><td>us / them</td><td>our / their</td><td>ours / theirs</td><td>ourselves / themselves</td></tr></table>`,
+  phrases:[["Would you like to join us?","Chcesz do nas dołączyć?"],["Everyone is welcome!","Wszyscy są mile widziani!"],["For more information, contact…","Więcej informacji: …"],["What do you think about…?","Co sądzisz o…?"],["In my opinion…","Moim zdaniem…"]],
+  quiz:[
+   {q:"She made the cake ___.",o:["herself","her","hers"],a:0,e:"Sama → herself."},
+   {q:"Is this book yours or ___?",o:["my","mine","me"],a:1,e:"Zaimek dzierżawczy samodzielny → mine."},
+   {q:"Right now volunteers ___ food to the homeless.",o:["give","are giving","gave"],a:1,e:"Right now → present continuous."},
+   {q:"I ___ money to this charity since last year.",o:["donate","have donated","donated"],a:1,e:"since → present perfect."},
+   {q:"Last week the police ___ the thief.",o:["catched","caught","have caught"],a:1,e:"catch – caught – caught."},
+   {q:"— Would you like to join our charity event? — ___",o:["I'd love to! When is it?","Yes, I'd like.","Everyone is welcome."],a:0,e:"Przyjęcie zaproszenia + pytanie o szczegóły."}
+  ],
+  task:"Napisz ogłoszenie na szkolną stronę: szukasz wolontariuszy do akcji charytatywnej; podaj cel, termin i miejsce, sposób kontaktu.",
+  model:`VOLUNTEERS WANTED!
+Do you want to help others? Our school is organising a charity fair to collect money for the local animal shelter. We need volunteers who can bake cakes, sell tickets or help with decorations. The fair will take place on Saturday 20th May from 10 am to 2 pm in the school gym. Everyone is welcome!
+For more information, contact Julia from class 8b or write to the school council.` }
+];
+
+/* ===================== STRUKTURA WG PODRĘCZNIKA ===================== */
+// Spis treści: Repetytorium Ósmoklasisty, Macmillan, nr MEN 925/2018 (content map wydawnictwa)
+const META={
+ 1:{pl:"Człowiek",p:4,rlf:["Dobieranie (zdań do ogłoszeń)","Uzupełnianie luk","Dobieranie","Uzupełnianie luk","Dobieranie"],uoe:["Tłumaczenie fragmentów zdań","Parafraza"],pv:[["grow up","dorastać"],["take after","być podobnym do (rodzica)"],["get on with","dogadywać się z"],["look after","opiekować się"],["put on","założyć (ubranie)"]]},
+ 2:{pl:"Dom",p:12,rlf:["Uzupełnianie luk (w języku polskim)","Wybór wielokrotny","Uzupełnianie luk","Wybór wielokrotny"],uoe:["Układanie fragmentów zdań","Dobieranie"]},
+ 3:{pl:"Szkoła",p:22,rlf:["Dobieranie (zdań do luk)","Dobieranie","Uzupełnianie luk","Uzupełnianie luk","Dobieranie"],uoe:["Tłumaczenie fragmentów zdań","Wybór wielokrotny"]},
+ 4:{pl:"Praca",p:30,rlf:["Uzupełnianie luk (w języku polskim)","Uzupełnianie luk","Wybór wielokrotny","Wybór wielokrotny"],uoe:["Parafraza","Dobieranie"]},
+ 5:{pl:"Życie prywatne",p:40,rlf:["Wybór wielokrotny","Dobieranie","Uzupełnianie luk","Dobieranie","Uzupełnianie luk"],uoe:["Wybór wielokrotny","Tłumaczenie fragmentów zdań"]},
+ 6:{pl:"Żywienie",p:48,rlf:["Dobieranie (nagłówków)","Uzupełnianie luk","Wybór wielokrotny","Wybór wielokrotny"],uoe:["Układanie fragmentów zdań","Dobieranie"],pv:[["eat out","jeść na mieście"],["cut down on","ograniczać (np. cukier)"],["run out of","skończyć się (zapas)"],["warm up","podgrzać"],["throw away","wyrzucić"]]},
+ 7:{pl:"Zakupy i usługi",p:58,rlf:["Uzupełnianie luk (w języku polskim)","Wybór wielokrotny","Uzupełnianie luk","Uzupełnianie luk","Dobieranie"],uoe:["Parafraza","Wybór wielokrotny"],cn:true},
+ 8:{pl:"Podróżowanie i turystyka",p:66,rlf:["Dobieranie (zdań do luk)","Uzupełnianie luk","Uzupełnianie luk","Dobieranie","Wybór wielokrotny"],uoe:["Uzupełnianie luk","Tłumaczenie fragmentów zdań"],pv:[["set off","wyruszyć"],["check in / check out","zameldować się / wymeldować się"],["get on / get off","wsiąść / wysiąść"],["look around","rozejrzeć się, zwiedzić"],["pick up","odebrać (kogoś)"]]},
+ 9:{pl:"Kultura",p:76,rlf:["Wybór wielokrotny","Uzupełnianie luk (w języku polskim)","Wybór wielokrotny","Uzupełnianie luk","Uzupełnianie luk","Dobieranie"],uoe:["Wybór wielokrotny","Układanie fragmentów zdań"]},
+ 10:{pl:"Sport",p:84,rlf:["Wybór wielokrotny","Uzupełnianie luk","Dobieranie","Odpowiadanie na pytania","Wybór wielokrotny"],uoe:["Parafraza","Tłumaczenie fragmentów zdań","Dobieranie"]},
+ 11:{pl:"Zdrowie",p:94,rlf:["Uzupełnianie luk (w języku polskim)","Wybór wielokrotny","Uzupełnianie luk","Uzupełnianie luk","Dobieranie"],uoe:["Układanie fragmentów zdań","Wybór wielokrotny"],pv:[["get over","wyzdrowieć z, dojść do siebie"],["come down with","zachorować na"],["lie down","położyć się"],["pass out","zemdleć"],["give up","rzucić (nałóg)"]]},
+ 12:{pl:"Nauka i technika",p:102,rlf:["Dobieranie","Dobieranie","Uzupełnianie luk","Wybór wielokrotny"],uoe:["Parafraza","Tłumaczenie fragmentów zdań","Dobieranie"]},
+ 13:{pl:"Świat przyrody",p:112,rlf:["Uzupełnianie luk","Wybór wielokrotny","Uzupełnianie luk","Wybór wielokrotny"],uoe:["Wybór wielokrotny","Układanie fragmentów zdań"]},
+ 14:{pl:"Życie społeczne",p:120,rlf:["Wybór wielokrotny","Dobieranie","Uzupełnianie luk","Dobieranie","Uzupełnianie luk"],uoe:["Parafraza","Tłumaczenie fragmentów zdań","Dobieranie"]}
+};
+const REVIEWS=[{a:1,b:2,p:20},{a:3,b:4,p:38},{a:5,b:6,p:56},{a:7,b:8,p:74},{a:9,b:10,p:92},{a:11,b:12,p:110},{a:13,b:14,p:128}];
+const BACK=[["Grammar bank",130],["Post-exam",176],["Functions bank",184],["Writing bank",187],["Irregular verbs",190]];
+UNITS.forEach(u=>{const m=META[u.id];u.pl=m.pl;u.page=m.p;u.rlf=m.rlf;u.uoe=m.uoe;
+  if(m.pv){u.grammar.push("Phrasal verbs");u.gram+=`<h3>Phrasal verbs</h3><table>${m.pv.map(v=>`<tr><td><b>${v[0]}</b></td><td>${v[1]}</td></tr>`).join('')}</table>`;}
+  if(m.cn&&!u.grammar.includes("Rzeczowniki złożone")){u.grammar.push("Compound nouns");u.gram+=`<h3>Compound nouns</h3><p>Np. <span class="ex">shopping centre, credit card, shop window, post office, price tag</span> – pierwszy rzeczownik określa drugi i nie ma liczby mnogiej: <span class="ex">two credit cards</span>.</p>`;}
+});
+
+/* Strategie do typów zadań (autorskie) */
+const TIPS={
+ "Dobieranie":"Najpierw przeczytaj wszystkie opcje, potem tekst. Szukaj synonimów, nie identycznych słów. Skreślaj wykorzystane opcje – jedna zwykle zostaje nadmiarowa.",
+ "Wybór wielokrotny":"Odpowiedź musi wynikać z tekstu/nagrania, nie z Twojej wiedzy. Uważaj na opcje, które zawierają słowo z tekstu, ale zmieniają sens.",
+ "Uzupełnianie luk":"Sprawdź, jaka część mowy pasuje (rzeczownik? czasownik w jakim czasie?). Przeczytaj całe zdanie przed i po luce.",
+ "Uzupełnianie luk (w języku polskim)":"Odpowiadasz po polsku, krótko i konkretnie – liczy się informacja, nie tłumaczenie słowo w słowo.",
+ "Tłumaczenie fragmentów zdań":"Dopasuj czas do reszty zdania i pamiętaj o szyku. Wymagana pełna poprawność ortograficzna – sprawdzaj końcówki -s, -ed.",
+ "Parafraza":"Zdanie ma znaczyć to samo, co oryginał. Najczęściej sprawdzane: strona bierna, stopniowanie, too/enough, mowa zależna, used to.",
+ "Układanie fragmentów zdań":"Użyj wszystkich podanych wyrazów, zmieniając ich formę, jeśli trzeba; dodaj brakujące słowa (przedimki, przyimki, operatory).",
+ "Odpowiadanie na pytania":"Odpowiadaj pełnym, ale krótkim zdaniem na podstawie tekstu; sprawdź czas w pytaniu."
+};
+function tipFor(t){const k=Object.keys(TIPS).find(k=>t===k)||Object.keys(TIPS).find(k=>t.startsWith(k));return k?TIPS[k]:"";}
+function taskList(arr){const uniq=[...new Set(arr)];return `<table><tr><th>Typ zadania</th><th>Strategia</th></tr>${uniq.map(t=>`<tr><td><b>${t}</b></td><td>${tipFor(t)}</td></tr>`).join('')}</table>`;}
+
+/* ===================== HARMONOGRAM (kolejność podręcznika) ===================== */
+// Start: poniedziałek 16.11.2026; egzamin ósmoklasisty – maj 2027 (dokładną datę sprawdź w komunikacie CKE)
+const PLAN=[
+ ["u1","Unit 1 – Człowiek (s. 4)"],["u2","Unit 2 – Dom (s. 12)"],["r0","Review: Units 1–2 (s. 20)"],
+ ["u3","Unit 3 – Szkoła (s. 22)"],["u4","Unit 4 – Praca (s. 30)"],["r1","Review: Units 3–4 (s. 38) – lżejszy tydzień przedświąteczny"],
+ ["x","Przerwa świąteczna – tylko fiszki 10 min dziennie"],
+ ["u5","Unit 5 – Życie prywatne (s. 40)"],["u6","Unit 6 – Żywienie (s. 48)"],["r2","Review: Units 5–6 (s. 56)"],
+ ["u7","Unit 7 – Zakupy i usługi (s. 58)"],["u8","Unit 8 – Podróżowanie i turystyka (s. 66)"],["r3","Review: Units 7–8 (s. 74) + test końcowy z kursu"],
+ ["u9","Unit 9 – Kultura (s. 76)"],["u10","Unit 10 – Sport (s. 84)"],["r4","Review: Units 9–10 (s. 92)"],
+ ["u11","Unit 11 – Zdrowie (s. 94)"],["u12","Unit 12 – Nauka i technika (s. 102)"],["r5","Review: Units 11–12 (s. 110)"],
+ ["u13","Unit 13 – Świat przyrody (s. 112)"],["u14","Unit 14 – Życie społeczne (s. 120)"],["r6","Review: Units 13–14 (s. 128)"],
+ ["e","Arkusz próbny CKE nr 1 + analiza błędów"],["e","Grammar bank (s. 130) – działy z najsłabszymi wynikami quizów"],
+ ["e","Arkusz próbny CKE nr 2 + Writing bank (s. 187)"],["e","Arkusz próbny CKE nr 3 + Functions bank (s. 184) – lekka powtórka"]
+];
+
+/* ===================== STAN / POSTĘP ===================== */
+const KEY="rep8_progress_v1";
+let S={done:{},best:{},known:{},checks:{}};
+try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}updateBar();}
+function updateBar(){
+  const total=UNITS.length+REVIEWS.length;
+  const d=UNITS.filter(u=>S.done[u.id]).length+REVIEWS.filter((r,i)=>S.done['r'+i]).length;
+  const p=Math.round(d/total*100);
+  document.getElementById('pbar').style.width=p+'%';document.getElementById('pct').textContent=p+'%';
+}
+
+/* ===================== NAWIGACJA ===================== */
+const nav=document.getElementById('nav'),main=document.getElementById('main');
+let current='home';
+function renderNav(){
+  let h=`<h4>Start</h4>
+  <button data-go="home"><span class="num">⌂</span>Przegląd kursu</button>
+  <button data-go="plan"><span class="num">📅</span>Harmonogram</button>
+  <button data-go="exam"><span class="num">ℹ</span>Format egzaminu</button>
+  <button data-go="method"><span class="num">✓</span>Jak się uczyć</button>
+  <h4>Units (kolejność podręcznika)</h4>`;
+  UNITS.forEach(u=>{
+    h+=`<button data-go="u${u.id}" class="${S.done[u.id]?'done':''}"><span class="num">${u.id}</span>${u.pl}<span style="margin-left:auto;color:var(--muted);font-size:12px">s.${u.page}</span></button>`;
+    const ri=REVIEWS.findIndex(r=>r.b===u.id);
+    if(ri>-1){const r=REVIEWS[ri];h+=`<button data-go="r${ri}" class="${S.done['r'+ri]?'done':''}"><span class="num">R</span><i>Review ${r.a}–${r.b}</i><span style="margin-left:auto;color:var(--muted);font-size:12px">s.${r.p}</span></button>`;}
+  });
+  h+=`<h4>Na końcu podręcznika</h4>
+  <button data-go="gbank"><span class="num">G</span>Grammar bank<span style="margin-left:auto;color:var(--muted);font-size:12px">s.130</span></button>
+  <button data-go="fbank"><span class="num">F</span>Functions bank<span style="margin-left:auto;color:var(--muted);font-size:12px">s.184</span></button>
+  <button data-go="wbank"><span class="num">W</span>Writing bank<span style="margin-left:auto;color:var(--muted);font-size:12px">s.187</span></button>
+  <button data-go="irr"><span class="num">≡</span>Irregular verbs<span style="margin-left:auto;color:var(--muted);font-size:12px">s.190</span></button>
+  <h4>Sprawdzian</h4>
+  <button data-go="final"><span class="num">★</span>Test końcowy (losowy)</button>`;
+  nav.innerHTML=h;
+  nav.querySelectorAll('button').forEach(b=>{
+    if(b.dataset.go===current)b.classList.add('active');
+    b.onclick=()=>{go(b.dataset.go);nav.classList.remove('open');};
+  });
+}
+function go(where){current=where;renderNav();window.scrollTo(0,0);
+  if(where==='home')home();else if(where==='plan')plan();else if(where==='exam')exam();
+  else if(where==='method')method();else if(where==='final')finalTest();else if(where==='irr')irregular();
+  else if(where==='gbank')gbank();else if(where==='fbank')fbank();else if(where==='wbank')wbank();
+  else if(where.startsWith('r'))review(+where.slice(1));
+  else if(where.startsWith('u'))unit(+where.slice(1));
+}
+document.getElementById('menuBtn').onclick=()=>nav.classList.toggle('open');
+
+/* ===================== WIDOKI ===================== */
+function home(){
+  let h=`<h1>Program nauki do egzaminu ósmoklasisty</h1>
+  <p class="sub">Kurs ułożony według spisu treści <i>Repetytorium Ósmoklasisty</i> (Macmillan, M. Mann, S. Taylore-Knowles, nr MEN 925/2018): 14 unitów w kolejności z podręcznika, Review po każdych dwóch unitach i odwołania do banków na końcu książki. Numery stron = strony podręcznika. Ćwiczenia, słówka i wzory w kursie są autorskie – pracuj z książką otwartą obok.</p>
+  <div class="card"><b>Każdy unit – w kolejności sekcji z podręcznika:</b>
+  <div class="check" style="margin-top:6px">
+  <label><input type="checkbox" disabled checked> 1. Vocabulary – lista + fiszki (codziennie 10 min)</label>
+  <label><input type="checkbox" disabled checked> 2. Reading – zadania w książce + strategie</label>
+  <label><input type="checkbox" disabled checked> 3. Language functions – zwroty</label>
+  <label><input type="checkbox" disabled checked> 4. Listening – nagrania z książki + strategie</label>
+  <label><input type="checkbox" disabled checked> 5. Use of English – gramatyka + quiz (cel ≥ 5/6)</label>
+  <label><input type="checkbox" disabled checked> 6. Writing – napisz, porównaj z wzorem</label></div></div>
+  <h2>Units</h2><div class="grid">`;
+  UNITS.forEach(u=>{
+    const b=S.best[u.id]!=null?` · quiz: ${S.best[u.id]}/${u.quiz.length}`:'';
+    h+=`<div class="unitcard" onclick="go('u${u.id}')"><div class="t">${u.id}. ${u.pl}${S.done[u.id]?'<span class="badge">✓</span>':''}</div>
+    <div class="m">od s. ${u.page} · ${u.grammar.join(' · ')}</div><div class="m">✍ ${u.writing}${b}</div></div>`;
+    const ri=REVIEWS.findIndex(r=>r.b===u.id);
+    if(ri>-1){const r=REVIEWS[ri];h+=`<div class="unitcard" style="border-style:dashed" onclick="go('r${ri}')"><div class="t">Review: Units ${r.a}–${r.b}${S.done['r'+ri]?'<span class="badge">✓</span>':''}</div><div class="m">s. ${r.p} · quiz mieszany z obu unitów</div></div>`;}
+  });
+  h+=`</div><footer>Postęp zapisuje się w tej przeglądarce. Materiał autorski do użytku własnego – nie zastępuje podręcznika.</footer>`;
+  main.innerHTML=h;
+}
+
+function plan(){
+  const start=new Date(2026,10,16);
+  let h=`<h1>Harmonogram</h1><p class="sub">26 tygodni w kolejności podręcznika: 16.11.2026 → maj 2027. Rytm: unit – unit – Review. Ok. 4 sesje po 30–40 min tygodniowo + codziennie 10 min fiszek. Termin egzaminu sprawdź w komunikacie dyrektora CKE.</p><div class="card">`;
+  PLAN.forEach((p,i)=>{
+    const d=new Date(start);d.setDate(d.getDate()+i*7);
+    const lab=d.toLocaleDateString('pl-PL',{day:'2-digit',month:'2-digit'});
+    const link=(p[0][0]==='u'||p[0][0]==='r')?` – <a href="#" onclick="go('${p[0]}');return false">otwórz</a>`:'';
+    const ck=S.checks['w'+i]?'checked':'';
+    h+=`<div class="week ${p[0][0]==='u'?'':'rev'}"><b>Tydz. ${i+1}<br><small style="color:var(--muted);font-weight:400">od ${lab}</small></b>
+    <label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" ${ck} onchange="S.checks['w${i}']=this.checked;save()"> <span>${p[1]}${link}</span></label></div>`;
+  });
+  h+=`</div>`;main.innerHTML=h;
+}
+
+function exam(){
+  main.innerHTML=`<h1>Format egzaminu – język angielski</h1>
+  <p class="sub">Egzamin pisemny, ok. 90 minut. Sprawdź aktualny <b>Informator CKE</b> i arkusze z lat ubiegłych na cke.gov.pl – od 2025 r. obowiązują zmienione wymagania.</p>
+  <div class="card"><table>
+  <tr><th>Część</th><th>Gdzie w podręczniku / kursie</th></tr>
+  <tr><td>Rozumienie ze słuchu</td><td>sekcja Listening w każdym unicie</td></tr>
+  <tr><td>Znajomość funkcji językowych</td><td>sekcja Language functions + Functions bank (s. 184)</td></tr>
+  <tr><td>Rozumienie tekstów pisanych</td><td>sekcja Reading w każdym unicie</td></tr>
+  <tr><td>Znajomość środków językowych</td><td>sekcja Use of English + Grammar bank (s. 130)</td></tr>
+  <tr><td>Wypowiedź pisemna</td><td>sekcja Writing + Writing bank (s. 187)</td></tr>
+  </table></div>
+  <h2>Typy zadań w podręczniku – strategie</h2><div class="card">${taskList(Object.keys(TIPS))}</div>
+  <div class="tip"><b>Zasada pisania:</b> każdy z 3 podpunktów polecenia musi być rozwinięty (nie tylko wspomniany).</div>`;
+}
+
+function method(){
+  main.innerHTML=`<h1>Jak się uczyć</h1>
+  <div class="card"><h3>Tydzień z unitem (kolejność jak w książce)</h3>
+  <p><b>Dzień 1:</b> Vocabulary – strony słownictwa w podręczniku + fiszki EN→PL i PL→EN.<br>
+  <b>Dzień 2:</b> Reading + Language functions – zadania z książki, zwroty z kursu.<br>
+  <b>Dzień 3:</b> Listening + Use of English – nagrania, gramatyka (kurs + Grammar bank), zadania z książki.<br>
+  <b>Dzień 4:</b> quiz w kursie + Writing; zaznacz unit jako ukończony.<br>
+  <b>Codziennie:</b> 10 min fiszek – karty „nie znam” wracają częściej.</p></div>
+  <div class="card"><h3>Tydzień z Review</h3><p>Review z podręcznika (na czas, bez podglądania) → quiz mieszany w kursie → zeszyt błędów → powtórka fiszek „nie znam” z obu unitów.</p></div>
+  <div class="card"><h3>Zeszyt błędów</h3><p>Każdy błąd: zdanie błędne → poprawne → reguła (+ strona w Grammar bank). Przed arkuszem próbnym przeczytaj cały zeszyt.</p></div>
+  <div class="card"><h3>Kryterium ukończenia unitu</h3><p>Quiz ≥ 5/6, ≥ 80% fiszek „znam”, zadania z książki zrobione, zadanie pisemne z wszystkimi 3 podpunktami.</p></div>`;
+}
+
+/* ---- Unit ---- */
+function unit(id){
+  const u=UNITS.find(x=>x.id===id);
+  const ri=REVIEWS.findIndex(r=>r.b===id);
+  const next=ri>-1?`go('r${ri}')`:(id<14?`go('u${id+1}')`:'');
+  const nextLab=ri>-1?`Review ${REVIEWS[ri].a}–${REVIEWS[ri].b} →`:`Unit ${id+1} →`;
+  const pri=REVIEWS.findIndex(r=>r.b===id-1);
+  const prev=id>1?(pri>-1?`go('r${pri}')`:`go('u${id-1}')`):'';
+  main.innerHTML=`<h1>Unit ${u.id}. ${u.pl} <span style="color:var(--muted);font-weight:400;font-size:18px">/ ${u.en}</span></h1>
+  <p class="sub">Podręcznik: od s. ${u.page}</p>
+  <div class="tags">${u.grammar.map(g=>`<span>${g}</span>`).join('')}<span>✍ ${u.writing}</span></div>
+  <div class="tabs" id="tabs">
+   <button data-t="vocab" class="active">1 Vocabulary</button><button data-t="read">2 Reading</button>
+   <button data-t="phr">3 Language functions</button><button data-t="listen">4 Listening</button>
+   <button data-t="uoe">5 Use of English</button><button data-t="write">6 Writing</button></div>
+  <div id="tab"></div>
+  <div class="card row" style="justify-content:space-between">
+   <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="doneCk" ${S.done[id]?'checked':''}> Unit ukończony</label>
+   <div class="row">${prev?`<button class="btn" onclick="${prev}">← wstecz</button>`:''}${next?`<button class="btn" onclick="${next}">${nextLab}</button>`:''}</div></div>`;
+  document.getElementById('doneCk').onchange=e=>{S.done[id]=e.target.checked;save();renderNav();};
+  const tabs=document.getElementById('tabs');
+  tabs.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    tabs.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active');showTab(u,b.dataset.t);});
+  showTab(u,'vocab');
+}
+function bookChecklist(u,key,label){
+  const k=`b${u.id}_${key}`;
+  return `<div class="card check"><label><input type="checkbox" ${S.checks[k]?'checked':''} onchange="S.checks['${k}']=this.checked;save()"> ${label}</label></div>`;
+}
+function showTab(u,t){
+  const el=document.getElementById('tab');
+  if(t==='vocab'){
+    el.innerHTML=`<div class="card"><table><tr><th>English</th><th>Polski</th></tr>${u.vocab.map(v=>`<tr><td><b>${v[0]}</b></td><td>${v[1]}</td></tr>`).join('')}</table></div>
+    <div class="tip">Dopisz 5–10 nieznanych słów ze stron słownictwa unitu ${u.id} (od s. ${u.page}).</div>
+    <h2>Fiszki</h2><div id="fcwrap"></div>`;
+    flashcards(u,document.getElementById('fcwrap'));
+  }
+  if(t==='read'||t==='listen'){
+    const what=t==='read'?'Reading':'Listening';
+    el.innerHTML=`<div class="card"><p>Wykonaj zadania z sekcji <b>${what}</b> w podręczniku (unit ${u.id}, od s. ${u.page}). Typy zadań, które pojawiają się w tym unicie w części czytanie / funkcje / słuchanie:</p>${taskList(u.rlf)}</div>
+    ${bookChecklist(u,t,`Zadania ${what} z podręcznika zrobione i sprawdzone z kluczem`)}
+    <div class="tip">${t==='read'?'Najpierw przeczytaj polecenia i pytania, potem tekst. Podkreślaj fragmenty, które uzasadniają odpowiedź.':'Przed nagraniem przeczytaj pytania i przewiduj, czego słuchasz. Pierwsze odtworzenie – zaznacz odpowiedzi, drugie – sprawdź.'}</div>`;
+  }
+  if(t==='phr'){el.innerHTML=`<div class="card"><table><tr><th>Zwrot</th><th>Znaczenie</th></tr>${u.phrases.map(v=>`<tr><td class="ex" style="font-style:normal">${v[0]}</td><td>${v[1]}</td></tr>`).join('')}</table></div>
+    ${bookChecklist(u,'phr','Zadania Language functions z podręcznika zrobione')}
+    <div class="tip">Więcej zwrotów: Functions bank, s. 184.</div>`;}
+  if(t==='uoe'){
+    el.innerHTML=`<div class="card gram"><h3 style="margin-top:0">Grammar</h3>${u.gram}<div class="tip">Pełne tabele: Grammar bank, od s. 130.</div></div>
+    <div class="card"><b>Typy zadań Use of English w tym unicie:</b>${taskList(u.uoe)}</div>
+    ${bookChecklist(u,'uoe','Zadania Use of English z podręcznika zrobione')}
+    <h2>Quiz</h2><div id="qwrap"></div>`;
+    quiz(u.quiz,document.getElementById('qwrap'),score=>{if(S.best[u.id]==null||score>S.best[u.id]){S.best[u.id]=score;save();}});
+  }
+  if(t==='write'){
+    el.innerHTML=`<div class="card"><b>Zadanie (${u.writing}):</b><p>${u.task}</p>
+    <p class="wc">Długość: ok. 50–120 słów. Rozwiń każdy podpunkt. Wzorce: Writing bank, s. 187.</p>
+    <textarea id="wr" placeholder="Pisz tutaj…"></textarea><div class="row" style="justify-content:space-between;margin-top:6px">
+    <span class="wc" id="wcount">0 słów</span><button class="btn primary" id="showM">Pokaż wzór</button></div>
+    <div class="model" id="model" style="margin-top:10px">${u.model}</div></div>`;
+    const ta=document.getElementById('wr');
+    try{ta.value=localStorage.getItem('rep8_write_'+u.id)||'';}catch(e){}
+    const cnt=()=>{document.getElementById('wcount').textContent=(ta.value.trim()?ta.value.trim().split(/\s+/).length:0)+' słów';};
+    cnt();ta.oninput=()=>{cnt();try{localStorage.setItem('rep8_write_'+u.id,ta.value);}catch(e){}};
+    document.getElementById('showM').onclick=()=>{const m=document.getElementById('model');m.style.display=m.style.display==='block'?'none':'block';};
+  }
+}
+
+/* ---- Review ---- */
+function review(i){
+  const r=REVIEWS[i];const A=UNITS.find(u=>u.id===r.a),B=UNITS.find(u=>u.id===r.b);
+  const qs=[...A.quiz,...B.quiz].map((q,ix)=>Object.assign({},q,{q:`[${ix<A.quiz.length?r.a:r.b}] `+q.q}));
+  for(let j=qs.length-1;j>0;j--){const k=Math.floor(Math.random()*(j+1));[qs[j],qs[k]]=[qs[k],qs[j]];}
+  const unk=[A,B].map(u=>u.vocab.filter((_,ix)=>!S.known[u.id+'_'+ix]).length).reduce((a,b)=>a+b,0);
+  main.innerHTML=`<h1>Review: Units ${r.a}–${r.b}</h1><p class="sub">Podręcznik: s. ${r.p} · ${A.pl} + ${B.pl}</p>
+  <div class="card check">
+   <label><input type="checkbox" ${S.checks['rv'+i+'a']?'checked':''} onchange="S.checks['rv${i}a']=this.checked;save()"> Review z podręcznika (s. ${r.p}) zrobione na czas, bez podglądania</label>
+   <label><input type="checkbox" ${S.checks['rv'+i+'b']?'checked':''} onchange="S.checks['rv${i}b']=this.checked;save()"> Błędy przepisane do zeszytu błędów</label>
+   <label><input type="checkbox" ${S.checks['rv'+i+'c']?'checked':''} onchange="S.checks['rv${i}c']=this.checked;save()"> Fiszki „nie znam” z obu unitów powtórzone (zostało: ${unk})</label></div>
+  <h2>Quiz mieszany (12 pytań)</h2><div id="rq"></div>
+  <div class="card row" style="justify-content:space-between">
+   <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="rdone" ${S.done['r'+i]?'checked':''}> Review ukończone</label>
+   ${r.b<14?`<button class="btn" onclick="go('u${r.b+1}')">Unit ${r.b+1} →</button>`:`<button class="btn" onclick="go('final')">Test końcowy →</button>`}</div>`;
+  document.getElementById('rdone').onchange=e=>{S.done['r'+i]=e.target.checked;save();renderNav();};
+  quiz(qs,document.getElementById('rq'),sc=>{S.best['r'+i]=Math.max(S.best['r'+i]||0,sc);save();});
+}
+
+/* ---- Banki ---- */
+function gbank(){
+  main.innerHTML=`<h1>Grammar bank</h1><p class="sub">W podręczniku od s. 130. Poniżej gramatyka z kursu w kolejności unitów.</p>`+
+  UNITS.map(u=>`<div class="card gram"><h3 style="margin-top:0">Unit ${u.id} – ${u.grammar.join(', ')}</h3>${u.gram}</div>`).join('');
+}
+function fbank(){
+  main.innerHTML=`<h1>Functions bank</h1><p class="sub">W podręczniku s. 184. Wszystkie zwroty z kursu.</p>`+
+  UNITS.map(u=>`<div class="card"><h3 style="margin-top:0">Unit ${u.id} – ${u.pl}</h3><table>${u.phrases.map(v=>`<tr><td class="ex" style="font-style:normal">${v[0]}</td><td>${v[1]}</td></tr>`).join('')}</table></div>`).join('');
+}
+function wbank(){
+  const types=[...new Set(UNITS.map(u=>u.writing))];
+  main.innerHTML=`<h1>Writing bank</h1><p class="sub">W podręczniku s. 187. Zadania pisemne z kursu pogrupowane według formy.</p>`+
+  types.map(t=>`<div class="card"><h3 style="margin-top:0">${t}</h3>${UNITS.filter(u=>u.writing===t).map(u=>`<p><a href="#" onclick="go('u${u.id}');return false">Unit ${u.id} – ${u.pl}</a>: ${u.task}</p>`).join('')}</div>`).join('')+
+  `<div class="card"><h3 style="margin-top:0">Przydatne zwroty do e-maila/listu</h3><table>
+  <tr><td>Hi … / Dear …,</td><td>powitanie (nieformalne / grzeczniejsze)</td></tr>
+  <tr><td>Thanks for your e-mail. / How are you?</td><td>rozpoczęcie</td></tr>
+  <tr><td>Guess what? / I'm writing to tell you…</td><td>wprowadzenie tematu</td></tr>
+  <tr><td>Write soon! / Let me know… / Can't wait to see you!</td><td>zakończenie</td></tr>
+  <tr><td>Best wishes, / Bye for now, / Love,</td><td>pożegnanie</td></tr></table></div>`;
+}
+
+/* ---- Fiszki ---- */
+function flashcards(u,el){
+  let dir='en',deck=[],i=0;
+  const build=(onlyUnknown)=>{deck=u.vocab.map((v,ix)=>({v,ix})).filter(c=>!onlyUnknown||!S.known[u.id+'_'+c.ix]);
+    for(let j=deck.length-1;j>0;j--){const r=Math.floor(Math.random()*(j+1));[deck[j],deck[r]]=[deck[r],deck[j]];}i=0;draw();};
+  const draw=()=>{
+    const knownCount=u.vocab.filter((_,ix)=>S.known[u.id+'_'+ix]).length;
+    if(!deck.length||i>=deck.length){el.innerHTML=`<div class="card"><p class="score">Koniec talii! Znasz ${knownCount}/${u.vocab.length}.</p>
+      <div class="row"><button class="btn primary" id="again">Jeszcze raz (wszystkie)</button><button class="btn" id="unk">Tylko „nie znam”</button></div></div>`;
+      el.querySelector('#again').onclick=()=>build(false);el.querySelector('#unk').onclick=()=>build(true);return;}
+    const c=deck[i];const f=dir==='en'?c.v[0]:c.v[1],b=dir==='en'?c.v[1]:c.v[0];
+    el.innerHTML=`<div class="row" style="justify-content:space-between"><span class="wc">Karta ${i+1}/${deck.length} · znasz ${knownCount}/${u.vocab.length}</span>
+      <button class="btn" id="dir">Kierunek: ${dir==='en'?'EN → PL':'PL → EN'}</button></div>
+      <div class="flash" id="fc"><div class="inner"><div class="face">${f}<small>dotknij, aby odwrócić</small></div><div class="face back">${b}</div></div></div>
+      <div class="row"><button class="btn bad" id="no">✗ Nie znam</button><button class="btn ok" id="yes">✓ Znam</button></div>`;
+    el.querySelector('#fc').onclick=e=>e.currentTarget.classList.toggle('flip');
+    el.querySelector('#dir').onclick=()=>{dir=dir==='en'?'pl':'en';draw();};
+    el.querySelector('#yes').onclick=()=>{S.known[u.id+'_'+c.ix]=true;save();i++;draw();};
+    el.querySelector('#no').onclick=()=>{delete S.known[u.id+'_'+c.ix];save();deck.push(c);i++;draw();};
+  };
+  build(false);
+}
+
+/* ---- Quiz ---- */
+function quiz(qs,el,onDone){
+  let answered=0,correct=0;
+  el.innerHTML=`<div class="card">${qs.map((q,qi)=>`<div class="q" data-i="${qi}"><div class="stem">${qi+1}. ${q.q}</div>
+    ${q.o.map((o,oi)=>`<button class="opt" data-o="${oi}">${String.fromCharCode(65+oi)}. ${o}</button>`).join('')}
+    <div class="expl">${q.e}</div></div>`).join('')}
+    <div class="score qres"></div><button class="btn qreset" style="margin-top:8px">Rozwiąż ponownie</button></div>`;
+  el.querySelectorAll('.q').forEach(qd=>{
+    const q=qs[+qd.dataset.i];
+    qd.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      if(qd.classList.contains('answered'))return;qd.classList.add('answered');answered++;
+      const o=+b.dataset.o;if(o===q.a){correct++;b.classList.add('right');}else{b.classList.add('wrong');qd.querySelectorAll('.opt')[q.a].classList.add('right');}
+      if(answered===qs.length){el.querySelector('.qres').textContent=`Wynik: ${correct}/${qs.length}`;onDone&&onDone(correct);}
+    });
+  });
+  el.querySelector('.qreset').onclick=()=>quiz(qs,el,onDone);
+}
+
+function finalTest(){
+  const all=[];UNITS.forEach(u=>u.quiz.forEach(q=>all.push(Object.assign({},q,{q:`[${u.id}] `+q.q}))));
+  for(let j=all.length-1;j>0;j--){const r=Math.floor(Math.random()*(j+1));[all[j],all[r]]=[all[r],all[j]];}
+  const pick=all.slice(0,20);
+  main.innerHTML=`<h1>Test końcowy</h1><p class="sub">20 losowych pytań ze wszystkich unitów. Numer w nawiasie = unit do powtórki przy błędzie.</p>
+  <div class="row"><button class="btn primary" onclick="finalTest()">Nowy zestaw</button></div><div id="ft"></div>`;
+  quiz(pick,document.getElementById('ft'),sc=>{S.best.final=Math.max(S.best.final||0,sc);save();});
+}
+
+function irregular(){
+  const V=[["be","was/were","been","być"],["become","became","become","stawać się"],["begin","began","begun","zaczynać"],["break","broke","broken","łamać"],["bring","brought","brought","przynosić"],["build","built","built","budować"],["buy","bought","bought","kupować"],["catch","caught","caught","łapać"],["choose","chose","chosen","wybierać"],["come","came","come","przychodzić"],["cost","cost","cost","kosztować"],["do","did","done","robić"],["drink","drank","drunk","pić"],["drive","drove","driven","prowadzić (auto)"],["eat","ate","eaten","jeść"],["fall","fell","fallen","upadać"],["feel","felt","felt","czuć"],["find","found","found","znajdować"],["fly","flew","flown","latać"],["forget","forgot","forgotten","zapominać"],["get","got","got","dostawać"],["give","gave","given","dawać"],["go","went","gone","iść, jechać"],["have","had","had","mieć"],["hear","heard","heard","słyszeć"],["keep","kept","kept","trzymać"],["know","knew","known","wiedzieć, znać"],["leave","left","left","wyjeżdżać, zostawiać"],["lose","lost","lost","gubić, przegrywać"],["make","made","made","robić, wytwarzać"],["meet","met","met","spotykać"],["pay","paid","paid","płacić"],["put","put","put","kłaść"],["read","read","read","czytać"],["ride","rode","ridden","jeździć (rowerem, konno)"],["run","ran","run","biegać"],["say","said","said","mówić"],["see","saw","seen","widzieć"],["sell","sold","sold","sprzedawać"],["send","sent","sent","wysyłać"],["sing","sang","sung","śpiewać"],["sit","sat","sat","siedzieć"],["sleep","slept","slept","spać"],["speak","spoke","spoken","mówić"],["spend","spent","spent","spędzać, wydawać"],["steal","stole","stolen","kraść"],["swim","swam","swum","pływać"],["take","took","taken","brać"],["teach","taught","taught","uczyć"],["tell","told","told","powiedzieć"],["think","thought","thought","myśleć"],["understand","understood","understood","rozumieć"],["wear","wore","worn","nosić (ubranie)"],["win","won","won","wygrywać"],["write","wrote","written","pisać"]];
+  let h=`<h1>Irregular verbs</h1><p class="sub">55 najczęstszych. Zakryj kolumny II i III i odpytuj się. Pełna lista – podręcznik, s. 190.</p>
+  <div class="row" style="margin-bottom:8px"><button class="btn" id="hide">Ukryj II i III formę</button></div>
+  <div class="card"><table id="irr"><tr><th>I</th><th>II</th><th>III</th><th>PL</th></tr>`;
+  V.forEach(v=>h+=`<tr><td><b>${v[0]}</b></td><td class="h">${v[1]}</td><td class="h">${v[2]}</td><td>${v[3]}</td></tr>`);
+  h+=`</table></div>`;main.innerHTML=h;
+  let hidden=false;document.getElementById('hide').onclick=e=>{hidden=!hidden;
+    document.querySelectorAll('#irr .h').forEach(td=>{td.style.color=hidden?'transparent':'';td.style.background=hidden?'var(--panel2)':'';td.onclick=()=>{td.style.color='';td.style.background='';};});
+    e.target.textContent=hidden?'Pokaż wszystko':'Ukryj II i III formę';};
+}
+
+/* ===================== START ===================== */
+renderNav();updateBar();home();
+</script>
+</body>
+</html>
