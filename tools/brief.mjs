@@ -17,6 +17,9 @@ function check(ed) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(ed.date || "")) bad("date musi mieć format RRRR-MM-DD");
   if (!str(ed.win)) bad("brak win"); if (!str(ed.stop)) bad("brak stop");
   if (!Array.isArray(ed.obraz) || ed.obraz.length < 2 || !ed.obraz.every(str)) bad("obraz: co najmniej 2 akapity");
+  if (ed.kind !== undefined && !["auto","redakcja"].includes(ed.kind)) bad("kind: auto albo redakcja");
+  if (ed.note !== undefined && !str(ed.note)) bad("note: niepusty tekst albo brak pola");
+  const auto = ed.kind === "auto";
   if (!Array.isArray(ed.events) || ed.events.length < 8) { bad("events: co najmniej 8 wątków"); return err; }
   const ids = new Set(), tops = [];
   for (const e of ed.events) {
@@ -25,7 +28,9 @@ function check(ed) {
     if (ids.has(e.id)) b("powtórzone id"); ids.add(e.id);
     if (!DIMS.includes(e.dim)) b("dim spoza P,M,E,S,I,X");
     if (!Array.isArray(e.sec) || !e.sec.every(x => DIMS.includes(x))) b("sec: tablica wymiarów");
-    for (const k of ["title","summary","why","date","region"]) if (!str(e[k])) b(`brak ${k}`);
+    for (const k of ["title","summary","date","region"]) if (!str(e[k])) b(`brak ${k}`);
+    if (auto) { if (!str(e.prov)) b("wydanie auto wymaga prov"); }
+    else if (!str(e.why)) b("brak why");
     if (!LABELS.includes(e.label)) b("label spoza listy etykiet");
     if (!["Wysoka","Średnia"].includes(e.rel)) b("rel: Wysoka albo Średnia");
     if (typeof e.follow !== "boolean") b("follow: true/false");
