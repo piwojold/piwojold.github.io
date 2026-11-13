@@ -1,179 +1,245 @@
 window.BRIEF_EDITIONS = [
  {
   "date": "2026-11-13",
-  "win": "12.11.2026 09:30 – 13.11.2026 21:09 CET",
-  "stop": "13 listopada 2026, 21:09 CET",
+  "win": "12.11.2026 22:09 – 13.11.2026 22:09 CET",
+  "stop": "13 listopada 2026, 22:09 CET",
+  "kind": "auto",
+  "note": "Wydanie automatyczne: zgrupowane nagłówki z kanałów RSS, bez analizy i bez redakcji człowieka.",
   "obraz": [
-   "Dobę zdominował kolejny odcinek sporu prezydenta z rządem. Prezydent zawetował ustawę o blokowaniu nielegalnych treści w sieci, podpisując równocześnie sześć innych ustaw, a jego kancelaria zaprosiła kluby parlamentarne na poniedziałkowe rozmowy o Trybunale Konstytucyjnym. Lewica odmówiła udziału, a premier uważa sprawę kierowania Trybunałem za rozstrzygniętą.",
-   "W cyberprzestrzeni ePUAP pozostaje wyłączony i nie ma terminu jego przywrócenia. Minister cyfryzacji mówi o ataku z zagranicy i o planie sparaliżowania administracji w grudniu, bez wskazania sprawców. Na to nałożyła się globalna awaria usług Microsoftu, którą resort wykorzystał do zapowiedzi szerszego użycia otwartego oprogramowania.",
-   "Po zamachu w Krakowie śledztwo postępuje powoli: prokuratura zna trasę sprawcy, ale nie motyw. Policja zatrzymała 11 osób za wpisy w sieci, prokuratura bada relację Telewizji Republika, a w Trzebnicy pojawiły się napisy na biurze poselskim wiceministra. W samym Krakowie doszło do osobnego zdarzenia ze strzałami w kierunku policjantów. W obszarze wojskowym nie odnotowano nowych komunikatów o naruszeniach przestrzeni powietrznej.",
-   "W gospodarce TSUE oddalił wszystkie polskie skargi na pakiet Fit for 55, a GUS podał wzrost PKB o 3,5 proc. w III kwartale i inflację 3,5 proc. w październiku, obniżoną głównie przez program tańszych paliw. W dyplomacji premier rozmawiał w Dublinie o negocjacjach pokojowych, a Polska weszła do Wspólnej Jednostki Kontrolnej ONZ, pokonując Rosję. Związkowcy zapowiedzieli przedświąteczny protest w handlu."
+   "To wydanie powstało automatycznie. Skrypt odpytał 36 kanałów RSS, odpowiedziało 17, i zebrał 360 pozycji opublikowanych w ciągu ostatnich 24 godzin. Powtarzające się tematy zostały połączone w 234 wątków, z których w wydaniu znalazło się 25 najszerzej relacjonowanych.",
+   "Rozkład wątków po przypisaniu słowami kluczowymi: wojsko i bezpieczeństwo: 10, społeczeństwo: 6, polityka: 6, gospodarka: 2, infrastruktura: 1. Przypisanie wymiaru PMESII i regionu jest mechaniczne i bywa błędne, a kolejność wątków odzwierciedla tylko liczbę kanałów, które podały temat, a nie jego wagę.",
+   "Czego tu nie ma: zbiorczej oceny sytuacji, weryfikacji informacji, wskazania rozbieżności między źródłami ani wniosków analitycznych. Każdy wpis to zestaw nagłówków z linkami, które trzeba otworzyć i ocenić samodzielnie. W tym przebiegu nie odpowiedziało 19 kanałów: PAP, Gazeta Prawna, Rynek Infrastruktury, Rynek Kolejowy, CERT Polska (posty), RCB, MON, MSWiA, MSZ, Ministerstwo Cyfryzacji, KPRM, Ministerstwo Finansów, Ministerstwo Infrastruktury, Ministerstwo Energii, ABW, Straż Graniczna, Policja, NBP, Sejm RP."
   ],
   "events": [
    {
-    "id": "dsa-weto",
-    "dim": "P",
-    "sec": [
-     "I"
-    ],
-    "top": 1,
-    "rel": "Wysoka",
-    "label": "Potwierdzona decyzja",
-    "follow": false,
-    "date": "13.11",
-    "region": "Cała Polska",
-    "scope": "kraj",
-    "woj": [],
-    "title": "Prezydent zawetował ustawę o blokowaniu nielegalnych treści w sieci (DSA)",
-    "lead": "Drugie w tym roku weto wobec przepisów wdrażających unijny akt o usługach cyfrowych. Minister cyfryzacji ocenił decyzję jako przyzwolenie na hejt.",
-    "summary": "Prezydent odmówił 13 listopada podpisania nowelizacji ustawy o świadczeniu usług drogą elektroniczną, która miała wdrożyć część aktu o usługach cyfrowych i określić zasady blokowania nielegalnych treści. Nakazy blokady miał wydawać co do zasady prezes UKE, a w sprawach platform wideo przewodniczący KRRiT, z możliwością sprzeciwu do sądu. Poprzednią ustawę wdrażającą DSA prezydent zawetował 9 stycznia, wskazując na zagrożenie dla wolności słowa. Według PAP minister cyfryzacji nazwał weto przyzwoleniem na hejt.",
-    "why": "Według Polsat News Polska pozostaje ostatnim państwem UE bez wdrożenia tych przepisów i naraża się na kary finansowe. Źródła różnią się co do drugiej, wcześniej podpisanej ustawy o koordynatorze usług cyfrowych: Interia podaje, że weszła w życie 6 listopada, Polsat News, że wchodzi w życie w piątek. Do obserwacji: pełne uzasadnienie weta, próba jego odrzucenia w Sejmie albo kolejny projekt rządu.",
-    "sources": [
-     [
-      "Polsat News",
-      "https://www.polsatnews.pl/wiadomosc/2026-11-13/ustawa-o-uslugach-cyfrowych-prezydent-podjal-decyzje/",
-      "PL"
-     ],
-     [
-      "Interia",
-      "https://wydarzenia.interia.pl/kraj/news-ustawa-o-blokowaniu-nielegalnych-tresci-jest-decyzja-prezyde,nId,23572893",
-      "PL"
-     ],
-     [
-      "Niedziela",
-      "https://www.niedziela.pl/artykul/129820/Prezydent-Karol-Nawrocki-zawetowal-ustawe-o-DSA",
-      "PL"
-     ],
-     [
-      "Strefa Inwestorów (skrót PAP)",
-      "https://strefainwestorow.pl/wiadomosci/20261113/skrot-wiadomosci-piatek-13-listopada-1700",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "epuap",
-    "dim": "I",
-    "sec": [
-     "X"
-    ],
-    "top": 2,
-    "rel": "Wysoka",
-    "label": "Informacja urzędowa",
-    "follow": false,
-    "date": "12–13.11",
-    "region": "Cała Polska",
-    "woj": [],
-    "scope": "kraj",
-    "title": "ePUAP nadal wyłączony. Minister: atak z zagranicy, celem był paraliż administracji w grudniu",
-    "lead": "Przerwa trwa, terminu przywrócenia nie podano. Minister cyfryzacji mówi o potwierdzonym zagranicznym źródle ataku, bez wskazania sprawców.",
-    "summary": "Według stanu z 13 listopada wieczorem ePUAP pozostaje niedostępny i nie podano terminu przywrócenia. Nie działają elektroniczne skrzynki podawcze urzędów ani formularze osadzone na platformie. Minister cyfryzacji powiedział 12 listopada w TVP Info, że atak przyszedł z zagranicy, a analiza logów wskazuje na przygotowania do szerszej operacji, która miała sparaliżować administrację w grudniu. Nie wskazał sprawców ani państwa, z którego działano.",
-    "why": "Twierdzenia o zagranicznym źródle i planie na grudzień to stanowisko ministra, bez opublikowanych szczegółów technicznych. Źródła różnią się co do dnia ataku: PAP pisze o komunikacie z wtorku wieczorem, „Rzeczpospolita” o środzie. Otwarte źródła nie wspominają o terminach urzędowych biegnących w czasie przerwy. Do obserwacji: komunikat o przywróceniu usługi i ewentualna atrybucja ze strony ABW.",
-    "sources": [
-     [
-      "Rzeczpospolita Cyfrowa",
-      "https://cyfrowa.rp.pl/bezpieczenstwo/art45478321-epuap-nie-dziala-atak-hakerski-mial-sparalizowac-polske-dopiero-za-miesiac",
-      "PL"
-     ],
-     [
-      "Serwis Samorządowy PAP",
-      "https://samorzad.pap.pl/kategoria/e-urzad/udaremniono-cyberatak-na-epuap-trwa-przerwa-w-dostepie-do-systemu",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "tsue",
-    "dim": "E",
-    "sec": [
-     "P"
-    ],
-    "top": 3,
-    "rel": "Wysoka",
-    "label": "Potwierdzona decyzja",
-    "follow": false,
-    "date": "12–13.11",
-    "region": "Luksemburg, skutki dla całej Polski",
-    "scope": "zagr",
-    "woj": [],
-    "title": "TSUE oddalił wszystkie siedem polskich skarg na pakiet Fit for 55",
-    "lead": "Trybunał uznał, że akty klimatyczne mogły być przyjęte większością kwalifikowaną. Rzecznik rządu obarcza winą jakość skarg z 2023 r.",
-    "summary": "Trybunał Sprawiedliwości UE wydał 12 listopada siedem wyroków i oddalił wszystkie skargi złożone przez Polskę w 2023 r. Dotyczyły m.in. norm emisji CO2 dla nowych aut, reformy ETS i ETS2, CBAM oraz dyrektywy o efektywności energetycznej. Trybunał nie zgodził się, że przepisy wymagały jednomyślności, i pominął argumenty o wzroście cen energii oraz utracie miejsc pracy. Rzecznik rządu ocenił 13 listopada, że skargi były źle przygotowane, a minister klimatu i środowiska zapowiedziała dalsze zabiegi o rewizję ETS.",
-    "why": "Zaskarżone przepisy pozostają w mocy, więc ewentualne złagodzenie obciążeń wymaga osobnej drogi legislacyjnej w UE. Według minister klimatu Komisja Europejska ma finalizować rozmowy o rewizji ETS w grudniu. W otwartych źródłach nie znaleziono informacji o zapowiadanym na ten sam dzień wyroku w sprawie terminów w postępowaniach pobytowych cudzoziemców.",
-    "sources": [
-     [
-      "Money.pl",
-      "https://www.money.pl/gospodarka/porazka-polski-przed-tsue-jest-decyzja-ws-skarg-na-fit-for-55-7350163714763200a.html",
-      "PL"
-     ],
-     [
-      "Polsat News",
-      "https://www.polsatnews.pl/wiadomosc/2026-11-12/polska-przegrywa-przed-tsue-chodzi-o-fit-for-55/",
-      "PL"
-     ],
-     [
-      "Money.pl (rzecznik rządu)",
-      "https://www.money.pl/finanse/skargi-z-czasow-morawieckiego-odrzucone-szlapka-nieudolnie-przygotowane-7350550840334368a.html",
-      "PL"
-     ],
-     [
-      "Money.pl (minister klimatu)",
-      "https://www.money.pl/gospodarka/tsue-odrzucil-skargi-polski-ws-fit-for-55-to-nie-bylo-duze-zaskoczenie-7350567133464608a.html",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "tk-belweder",
-    "dim": "P",
+    "id": "tusk-apeluje-do-prezydenta",
+    "dim": "M",
     "sec": [],
-    "top": 4,
-    "rel": "Wysoka",
-    "label": "Zapowiedź",
-    "follow": false,
-    "date": "12–16.11",
-    "region": "Warszawa",
-    "woj": [
-     "mazowieckie"
-    ],
-    "pts": [
-     [
-      52.23,
-      21.01,
-      "Warszawa",
-      "l"
-     ]
-    ],
-    "title": "Kancelaria Prezydenta zaprasza kluby na rozmowy o Trybunale Konstytucyjnym, Lewica odmawia",
-    "lead": "Spotkanie w poniedziałek w Belwederze poprowadzi szef Kancelarii Prezydenta. Premier uważa sprawę kierowania Trybunałem za rozstrzygniętą.",
-    "summary": "Rzecznik prezydenta poinformował, że spotkanie w sprawie sytuacji w Trybunale Konstytucyjnym odbędzie się w poniedziałek 16 listopada o 14:00 w Belwederze. Zaproszono wszystkie kluby i koła parlamentarne, rozmowy poprowadzi szef Kancelarii Prezydenta, a sam prezydent nie weźmie w nich udziału. Według PAP udział zapowiedziały PiS, Konfederacja, Polska 2050, Razem, PSL i Rozwój Plus. Lewica nie przyjdzie, a KO nie podała oficjalnej decyzji.",
-    "why": "Tłem jest spór z 30 października, gdy grupa sędziów wybranych w obecnej kadencji Sejmu uznała, że Trybunałem kieruje najstarsza stażem sędzia, i zawiesiła prezesa oraz wiceprezesa. Prezydent mówił o naruszeniu porządku konstytucyjnego, premier 12 listopada uznał sprawę za rozstrzygniętą. Do obserwacji: decyzja KO i to, czy spotkanie przyniesie jakąkolwiek wspólną propozycję.",
+    "title": "Tusk apeluje do prezydenta o pilne podpisanie zmian w rządzie. Wskazuje na rozmowy o funduszach UE",
+    "summary": "Temat zgłoszony przez 11 kanałów między 08:39 a 20:44. Inne nagłówki: „Donald Tusk apeluje do Karola Nawrockiego. \"Szkoda każdego dnia\"” (Onet Wiadomości); „Donald Tusk: Polska będzie odgrywała kluczową rolę w rozmowach USA, Ukrainy i Rosji” (Rzeczpospolita); „\"Trudno sobie wyobrazić\". Tusk odpowiada Nawrockiemu” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 12 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
-      "TVN24",
-      "https://tvn24.pl/polska/spotkanie-u-prezydenta-w-sprawie-trybunalu-konstytucyjnego-rafal-leskiewicz-o-terminie-i-miejscu-spotkania-st9336961",
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/donald-tusk-komentuje-prezydenckie-weto-a-jednak/rcg2mm4",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Tusk-apeluje-do-prezydenta-o-pilne-podpisanie-zmian-w-rzadzie-Wskazuje-na-rozmowy-o-funduszach-UE-9228768.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
       "PL"
      ],
      [
       "Rzeczpospolita",
-      "https://www.rp.pl/sady-i-trybunaly/art45483901-prezydent-zaprasza-do-rozmowy-o-sytuacji-w-trybunale-konstytucyjnym-spotkanie-w-poniedzialek",
+      "https://www.rp.pl/swiat/art45487381-donald-tusk-polska-bedzie-odgrywala-kluczowa-role-w-rozmowach-usa-ukrainy-i-rosji",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-trudno-sobie-wyobrazic-tusk-odpowiada-nawrockiemu,nId,23573320",
       "PL"
      ]
-    ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 1,
+    "lead": "Zgłoszone przez 4 kanały: Onet Wiadomości, Bankier.pl, Rzeczpospolita, Interia Fakty."
    },
    {
-    "id": "krakow",
+    "id": "ponad-20-osob-nie",
     "dim": "S",
-    "sec": [
-     "M",
-     "I"
+    "sec": [],
+    "title": "Ponad 20 osób nie żyje, w tym dzieci. Ciężarówka zderzyła się z mikrobusem w Indiach",
+    "summary": "Temat zgłoszony przez 6 kanałów między 09:45 a 20:53. Inne nagłówki: „Tragiczny wypadek na S12. Zderzyło się sześć pojazdów, w tym wojskowe ciężarówki” (Rzeczpospolita); „Karambol z udziałem wojskowych ciężarówek. Nie żyje jedna osoba” (Onet Wiadomości); „Makabryczny wypadek na S12 w Janówku. Zderzyło się sześć pojazdów” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 10 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/wypadki/art45487611-tragiczny-wypadek-na-s12-zderzylo-sie-szesc-pojazdow-w-tym-wojskowe-ciezarowki",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/lublin/grozny-wypadek-na-s12-w-lubelskiem-zderzylo-sie-szesc-aut/lww1hwz",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/trojmiasto/news-karambol-na-ekspresowej-szostce-piec-aut-rozbitych-sa-poszko,nIdn,1025955",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/tvnwarszawa/okolice/ksiezyki-zderzenie-samochodu-i-ciezarowki-sa-utrudnienia-w-ruchu-st9338331?source=rss",
+      "PL"
+     ]
     ],
-    "top": 5,
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
     "rel": "Wysoka",
-    "label": "Informacja urzędowa",
     "follow": false,
-    "date": "12–13.11",
-    "region": "Kraków, Ostrowiec Świętokrzyski",
+    "woj": [],
+    "scope": "kraj",
+    "top": 2,
+    "lead": "Zgłoszone przez 4 kanały: Rzeczpospolita, Onet Wiadomości, RMF24 Polska, TVN24."
+   },
+   {
+    "id": "nawrocki-podpisal-ustawe-znoszaca",
+    "dim": "P",
+    "sec": [],
+    "title": "Nawrocki podpisał ustawę znoszącą całkowity zakaz reklamy aptek. Za złamanie zasad kara do 1 mln zł",
+    "summary": "Temat zgłoszony przez 5 kanałów między 07:00 a 20:46. Inne nagłówki: „Zakaz reklamy aptek zniesiony, ale kary będą wyższe. Decyzja prezydenta” (Rzeczpospolita); „Nagła decyzja w Białym Domu. Nowy szef personelu wprowadza zakaz dla urzędników” (Bankier.pl); „Nawrocki podpisał nowelizację ustawy o VAT. Zmiany ułatwią sprzedaż za granicę” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 10 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/prawo-w-polsce/art45487551-zakaz-reklamy-aptek-zniesiony-ale-kary-beda-wyzsze-decyzja-prezydenta",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Cyfrowy-paraliz-w-biurach-Microsoft-walczy-ze-skutkami-awarii-chmury-9228168.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polska/news-globalne-problemy-z-uslugami-microsoftu-gawkowski-o-cyfrowym,nIdn,1025964",
+      "PL"
+     ],
+     [
+      "CyberDefence24",
+      "https://cyberdefence24.pl/cyberbezpieczenstwo/problemy-z-teamsami-outlookiem-copilotem-i-innymi-uslugami-microsoftu-co-sie-dzieje",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr",
+    "top": 3,
+    "lead": "Zgłoszone przez 4 kanały: Rzeczpospolita, Bankier.pl, RMF24 Polska, CyberDefence24."
+   },
+   {
+    "id": "polska-wsrod-krajow-ue",
+    "dim": "M",
+    "sec": [],
+    "title": "Polska wśród krajów UE negocjujących w sprawie wojny Rosji przeciwko Ukrainie. \"Ucieszyłem się\"",
+    "summary": "Temat zgłoszony przez 5 kanałów między 05:41 a 21:21. Inne nagłówki: „Costa: Polska w europejskim zespole ds. negocjacji pokojowych w sprawie Ukrainy” (Defence24); „„Absolutnie nie do przyjęcia”. Tusk o Putinie i negocjacjach pokojowych” (Defence24); „Polska przy stole negocjacyjnym w sprawie wojny w Ukrainie. Premier potwierdza” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 9 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/geopolityka/absolutnie-nie-do-przyjecia-tusk-o-putinie-i-negocjacjach-pokojowych",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/polska-wsrod-panstw-negocjujacych-z-rosja-w-sprawie-ukrainy-jest-decyzja/5s1fwm0",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/ukraina-rosja/news-rosja-i-ukraina-sie-zgodzily-europa-dolaczy-do-negocjacji-po,nId,23572832",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/swiat/polska-wsrod-krajow-ue-negocjujacych-z-rosja-w-sprawie-wojny-w-ukrainie-st9338400?source=rss",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr",
+    "top": 4,
+    "lead": "Zgłoszone przez 4 kanały: Defence24, Onet Wiadomości, Interia Fakty, TVN24."
+   },
+   {
+    "id": "rzad-zamrozi-ceny-gazu",
+    "dim": "P",
+    "sec": [],
+    "title": "Rząd zamrozi ceny gazu na 2027 rok. Maksymalna stawka wyniesie 197,29 zł/MWh",
+    "summary": "Temat zgłoszony przez 5 kanałów między 12:49 a 19:52. Inne nagłówki: „Ceny gazu zamrożone na kolejny rok. Jest projekt ustawy” (Rzeczpospolita); „Rząd zamrozi ceny gazu na 2027 r. Oszczędności nawet 1,9 tys. zł” (Business Insider Polska); „Maksymalne ceny gazu. Takie będą stawki w przyszłym roku” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 6 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://energia.rp.pl/gaz/art45487461-ceny-gazu-zamrozone-na-kolejny-rok-jest-projekt-ustawy",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Rzad-zamrozi-ceny-gazu-na-2027-rok-Maksymalna-stawka-wyniesie-197-29-zl-MWh-9228764.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gospodarka/miliony-polakow-odetchna-z-ulga-rachunki-za-gaz-nie-wzrosna-w-2027/tqz8ybw",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/biznes/z-kraju/propozycja-ustawy-ministerstwa-energii-o-maksymalnych-cenach-gazu-taka-ma-byc-stawka-w-2027-roku-st9338436?source=rss",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 5,
+    "lead": "Zgłoszone przez 4 kanały: Rzeczpospolita, Bankier.pl, Business Insider Polska, TVN24."
+   },
+   {
+    "id": "panstwo-rezygnuje-z-podatku",
+    "dim": "S",
+    "sec": [],
+    "title": "Państwo rezygnuje z podatku od pomocy dla ofiar tragedii w Krakowie i Ostrowcu Świętokrzyskim",
+    "summary": "Temat zgłoszony przez 5 kanałów między 19:13 a 21:41. Inne nagłówki: „Darowizny dla ofiar ataku w Krakowie i ich rodzin. Jest decyzja o podatku” (Business Insider Polska); „Darowizny na rzecz ofiar ataku w Krakowie i ich rodzin – bez podatku” (Rzeczpospolita); „Darowizny na rzecz ofiar ataku w Krakowie zwolnione z podatku” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/prawo/podatki/darowizny-dla-ofiar-ataku-w-krakowie-i-ich-rodzin-jest-decyzja-o-podatku/8rgmfvv",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/podatki/art45487481-darowizny-na-rzecz-ofiar-ataku-w-krakowie-i-ich-rodzin-bez-podatku",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-darowizny-na-rzecz-ofiar-ataku-w-krakowie-zwolnione-z-podatk,nIdn,1026056",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Panstwo-rezygnuje-z-podatku-od-pomocy-dla-ofiar-tragedii-w-Krakowie-i-Ostrowcu-Swietokrzyskim-9228754.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "małopolskie, świętokrzyskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
     "woj": [
      "małopolskie",
      "świętokrzyskie"
@@ -183,42 +249,240 @@ window.BRIEF_EDITIONS = [
       50.06,
       19.94,
       "Kraków"
-     ],
-     [
-      50.93,
-      21.39,
-      "Ostrowiec Św.",
-      "l"
-     ]
-    ],
-    "title": "Po zamachu w Krakowie: ustalono trasę sprawcy, 11 zatrzymanych za wpisy, śledztwo w sprawie relacji TV Republika",
-    "lead": "Prokuratura Krajowa nadal ustala motyw i szuka nagrań. Policja zatrzymała w kraju 11 osób za wpisy pochwalające zamach lub zapowiadające kolejne ataki.",
-    "summary": "Prokuratura Krajowa podała 13 listopada, że ustaliła trasę przejazdu sprawcy, ale nie ujawniła szczegółów i nadal szuka nagrań z monitoringu. Motyw pozostaje nieustalony, trwa badanie broni. Rzecznik Komendy Głównej Policji poinformował 12 listopada o zatrzymaniu w całym kraju 11 osób w wieku od 15 do 68 lat za wpisy wychwalające zamach lub sugerujące kolejne ataki. Prokuratura Okręgowa w Krakowie wszczęła śledztwo dotyczące wypowiedzi z transmisji Telewizji Republika, a do KRRiT wpłynęło ponad 5 tys. zgłoszeń. Według wojewody 11 rannych nadal przebywa w pięciu szpitalach.",
-    "why": "Depesza PAP z 13 listopada mówi o 15 rannych, wcześniejsze doniesienia o 16. Zatrzymania i zarzuty za wpisy nie przesądzają o winie. Postępowanie wobec stacji telewizyjnej dotyczy m.in. zniesławienia i nakłada się na spór polityczny, czego przykładem są napisy na biurze poselskim w Trzebnicy.",
-    "sources": [
-     [
-      "Rzeczpospolita (PAP), trasa sprawcy",
-      "https://www.rp.pl/przestepczosc/art45485501-zamach-w-krakowie-sledczy-ustalili-trase-sprawcy-ale-nadal-szukaja-waznych-nagran",
-      "PL"
-     ],
-     [
-      "Rzeczpospolita (PAP), zatrzymania",
-      "https://www.rp.pl/przestepczosc/art45479071-11-osob-zatrzymanych-za-wpisy-chwalace-sprawce-zamachu-w-krakowie-prokuratura-zajela-sie-tez-telewizja-republika",
-      "PL"
      ]
     ]
    },
    {
-    "id": "krakow-strzaly",
-    "dim": "S",
-    "sec": [
-     "M"
+    "id": "weto-nawrockiego-wywolalo-burze",
+    "dim": "P",
+    "sec": [],
+    "title": "Weto Nawrockiego wywołało burzę. Gawkowski stawia prezydentowi „publiczny akt oskarżenia”",
+    "summary": "Temat zgłoszony przez 4 kanały między 16:22 a 21:05. Inne nagłówki: „Weto prezydenta. Minister Krzysztof Gawkowski zwrócił się do posła, ten odpowiedział” (TVN24); „\"Publiczny akt oskarżenia\" po wecie prezydenta. Reakcja ministra cyfryzacji” (TVN24); „Poruszenie po wecie Nawrockiego. \"Akt oskarżenia\", \"nie można\"” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/biznes/z-kraju/weto-prezydenta-do-ustawy-cyfrowej-reakcja-ministra-cyfryzacja-krzysztofa-gawkowskiego-st9338301?source=rss",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/kraj/art45486421-nielegalne-tresci-mialy-znikac-z-internetu-szybciej-nawrocki-zawetowal-przepisy",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-ustawa-o-blokowaniu-nielegalnych-tresci-jest-decyzja-prezyde,nId,23572893",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polityka/news-weto-prezydenta-nawrockiego-chodzi-o-blokowanie-tresci-w-int,nIdn,1026035",
+      "PL"
+     ]
     ],
-    "rel": "Średnia",
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
     "label": "Doniesienie medialne",
+    "rel": "Wysoka",
     "follow": false,
-    "date": "12–13.11",
-    "region": "Kraków",
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "strzelal-w-strone-policjantow",
+    "dim": "M",
+    "sec": [],
+    "title": "Strzelał w stronę policjantów, wcześniej był skazany za zabójstwo. Usłyszał zarzuty",
+    "summary": "Temat zgłoszony przez 4 kanały między 10:15 a 21:32. Inne nagłówki: „Strzelał do policjantów w Krakowie. Nowy ruch prokuratury i sądu” (Interia Fakty); „Kraków: Zarzuty za strzały w kierunku policji. Nowe informacje ws. 39-latka” (RMF24); „Strzelał do policjantów w Krakowie. Był skazany za zabójstwo” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 6 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/malopolskie/news-strzelal-w-strone-policjantow-w-krakowie-ledwie-rok-temu-wys,nId,23572901",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/krakow/krakow-strzelal-do-policjantow-uslyszal-zarzuty-wczesniej-byl-skazany-za-zabojstwo-st9338306?source=rss",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/regiony/krakow/news-krakow-zarzuty-za-strzaly-w-kierunku-policji-nowe-informacje,nIdn,1026038",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/strzelal-do-policjantow-w-krakowie-byl-skazany-za-zabojstwo/",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "małopolskie, dolnośląskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "małopolskie",
+     "dolnośląskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ],
+     [
+      51.21,
+      16.16,
+      "Legnic"
+     ]
+    ]
+   },
+   {
+    "id": "zapadla-kluczowa-decyzja-prezydenta",
+    "dim": "P",
+    "sec": [],
+    "title": "Zapadła kluczowa decyzja prezydenta. Nawrocki mówi o cenzurze, rząd ma plan \"B\"",
+    "summary": "Temat zgłoszony przez 4 kanały między 12:59 a 19:52. Inne nagłówki: „Karol Nawrocki wydał 62 decyzje. Większość dotyczyła Ukraińców” (Interia Fakty); „Morawiecki o kluczowej decyzji ws. wyborów. \"Mamy zupełnie inne podejście\"” (Polsat News); „Morawiecki odrzuca wspólną listę prawicy. „Idziemy do wyborów sami”” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-karol-nawrocki-wydal-62-decyzje-wiekszosc-dotyczyla-ukrainco,nId,23573166",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/tech/kolejne-weto-ws-blokowania-tresci-w-internecie-prezydent-mowi-o-cenzurze-rzad-ma-plan-b,1119115.html",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/morawiecki-o-kluczowej-decyzji-ws-wyborow-mamy-zupelnie-inne-podejscie/",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Morawiecki-odrzuca-wspolna-liste-prawicy-Idziemy-do-wyborow-sami-9228429.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "rece-precz-od-republiki",
+    "dim": "S",
+    "sec": [],
+    "title": "„Ręce precz od Republiki”. Wandale zdewastowali biuro wiceministra z KO",
+    "summary": "Temat zgłoszony przez 4 kanały między 12:43 a 13:19. Inne nagłówki: „Zdewastowane biuro wiceministra Jarosa. \"Ręce precz od Republiki\"” (Polsat News); „Biuro wiceministra zdewastowane. Ogromny napis, \"ręce precz\"” (Interia Fakty); „„Ręce precz od Republiki”. Atak na biuro posła KO” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Rece-precz-od-Republiki-Wandale-zdewastowali-biuro-wiceministra-z-KO-9228439.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/zdewastowane-biuro-wiceministra-jarosa-rece-precz-od-republiki/",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/dolnoslaskie/news-biuro-wiceministra-zdewastowane-ogromny-napis-rece-precz,nId,23573074",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-rece-precz-od-republiki-atak-na-biuro-posla-ko,nIdn,1025994",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "coraz-blizej-wielkiej-fuzji",
+    "dim": "E",
+    "sec": [],
+    "title": "Coraz bliżej wielkiej fuzji firm Elona Muska. Za sterami giganta były szef Nvidii?",
+    "summary": "Temat zgłoszony przez 3 kanały między 10:07 a 14:07. Inne nagłówki: „Poduszka bezpieczeństwa dla przemysłu coraz bliżej. Jest porozumienie w Brukseli” (WNP.pl); „Tankowce z powietrza dla Polski coraz bliżej. Ważna umowa” (Defence24); „Dolar coraz bliżej 4 złotych. Polska waluta pod presją po danych o PKB i inflacji” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/tech/coraz-blizej-wielkiej-fuzji-firm-elona-muska-za-sterami-giganta-byly-szef-nvidii,1119428.html",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/przemysl/tankowce-z-powietrza-dla-polski-coraz-blizej-wazna-umowa",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Latajace-cysterny-dla-Polski-coraz-blizej-Hiszpania-podpisala-umowe-z-Airbusem-9228360.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "podkarpackie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "podkarpackie"
+    ],
+    "pts": [
+     [
+      49.78,
+      22.77,
+      "Przemyśl"
+     ]
+    ]
+   },
+   {
+    "id": "po-zamachu-w-krakowie",
+    "dim": "M",
+    "sec": [],
+    "title": "Po zamachu w Krakowie: Kolejna osoba wyszła ze szpitala, ustalono trasę przejazdu sprawcy",
+    "summary": "Temat zgłoszony przez 3 kanały między 09:44 a 18:59. Inne nagłówki: „Została ranna w zamachu, wyszła ze szpitala” (TVN24); „Dobre wieści z Krakowa. Kolejna osoba ranna w ataku na Rynku Głównym opuściła szpital” (Onet Wiadomości); „Pochwalili zamach w Krakowie. Kolejne osoby zatrzymane” (RMF24 Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/krakow/news-pochwalili-zamach-w-krakowie-kolejne-osoby-zatrzymane,nIdn,1025951",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/krakow/krakow-kolejna-osoba-ranna-w-zamachu-opuscila-szpital-st9338310?source=rss",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/krakow/zamach-w-krakowie-jedna-z-poszkodowanych-wyszla-ze-szpitala/91vlctz",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "małopolskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
     "woj": [
      "małopolskie"
     ],
@@ -228,520 +492,409 @@ window.BRIEF_EDITIONS = [
       19.94,
       "Kraków"
      ]
-    ],
-    "title": "Kraków: mężczyzna strzelał w kierunku policjantów, został zatrzymany",
-    "summary": "W czwartek 12 listopada w Krakowie mężczyzna strzelał w kierunku policjantów i został zatrzymany. Według TVP Info ma odpowiedzieć za czynną napaść na funkcjonariuszy, zmuszanie do określonego zachowania i posiadanie mefedronu, a wcześniej odbył karę za zabójstwo.",
-    "why": "Zdarzenie nastąpiło pięć dni po zamachu na Rynku Głównym, ale otwarte źródła nie wskazują na związek między sprawami. Szczegóły przebiegu i stanowisko prokuratury znane są tylko częściowo, bo dwóch z trzech sprawdzanych relacji nie udało się otworzyć.",
-    "sources": [
-     [
-      "TVP Info",
-      "https://www.tvp.info/96461021/strzelal-do-policjantow-w-krakowie-mezczyzna-wyszedl-rok-temu-z-wiezienia-za-zabojstwo",
-      "PL"
-     ]
     ]
    },
    {
-    "id": "ustawy",
-    "dim": "P",
-    "sec": [
-     "M",
-     "X"
-    ],
-    "rel": "Średnia",
-    "label": "Potwierdzona decyzja",
-    "follow": false,
-    "date": "13.11",
-    "region": "Cała Polska",
-    "scope": "kraj",
-    "woj": [],
-    "title": "Prezydent podpisał sześć ustaw, w tym o działaniach antyterrorystycznych, CPK i reklamie aptek",
-    "summary": "Równolegle z wetem prezydent podpisał 13 listopada sześć ustaw uchwalonych 22 października: o wychowaniu patriotycznym, o działaniach antyterrorystycznych, o wspieraniu produkcji audiowizualnej, Prawo farmaceutyczne, o VAT oraz o Centralnym Porcie Komunikacyjnym. Według PAP nowela antyterrorystyczna zobowiązuje organizatorów wydarzeń specjalnych do informowania uczestników o możliwej weryfikacji przez policję i ABW. Nowela o CPK wydłuża do 8 lat okres szczególnych zasad gospodarowania nieruchomościami, a zmiana prawa farmaceutycznego znosi całkowity zakaz reklamy aptek.",
-    "why": "Pakiet pokazuje, że spór prezydenta z rządem nie blokuje całej legislacji, a weto dotyczyło jednej, politycznie najbardziej spornej ustawy. Opisy treści ustaw pochodzą ze skrótu depesz, nie z tekstów aktów.",
-    "sources": [
-     [
-      "Interia",
-      "https://wydarzenia.interia.pl/kraj/news-ustawa-o-blokowaniu-nielegalnych-tresci-jest-decyzja-prezyde,nId,23572893",
-      "PL"
-     ],
-     [
-      "Strefa Inwestorów (skrót PAP)",
-      "https://strefainwestorow.pl/wiadomosci/20261113/skrot-wiadomosci-piatek-13-listopada-1700",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "dublin",
-    "dim": "P",
-    "sec": [
-     "M"
-    ],
-    "rel": "Wysoka",
-    "label": "Doniesienie medialne",
-    "follow": false,
-    "date": "12–13.11",
-    "region": "Dublin, Irlandia",
-    "woj": [],
-    "scope": "zagr",
-    "title": "Premier w Dublinie rozmawiał z prezydentem Ukrainy, szefem NATO i kanclerzem Niemiec",
-    "summary": "Na marginesie szczytu Europejskiej Wspólnoty Politycznej 12 listopada premier spotkał się z przewodniczącym Rady Europejskiej, sekretarzem generalnym NATO i kanclerzem Niemiec oraz uczestniczył w spotkaniu koalicji chętnych. Rozmowa z prezydentem Ukrainy dotyczyła negocjacji z Rosją w Abu Zabi, prowadzonych przy pośrednictwie USA, oraz ukraińskiej akcesji do UE. Według relacji premier opowiadał się za tym, by Europę w rozmowach reprezentowały instytucje UE z jednolitym stanowiskiem 27 państw. Na 13 listopada zaplanowano nieformalne posiedzenie Rady Europejskiej.",
-    "why": "Sporną kwestią jest to, kto ma reprezentować Europę w rozmowach pokojowych. W oknie nie znaleziono relacji z wynikami piątkowego posiedzenia przywódców UE. Strona ukraińska mówiła też o rozpoczęciu w Polsce pierwszego etapu szkoleń żołnierzy koalicji chętnych, co warto potwierdzić w źródłach MON.",
-    "sources": [
-     [
-      "WNP (PAP)",
-      "https://www.wnp.pl/rynki/premier-tusk-spotkal-sie-na-marginesie-szczytu-w-dublinie-z-costa-ruttem-i-merzem,1119355.html",
-      "PL"
-     ],
-     [
-      "Nasza Gazeta w Irlandii",
-      "https://www.ng24.ie/premier-tusk-po-spotkaniu-z-zelenskim-w-dublinie-pokoj-musi-gwarantowac-bezpieczenstwo-europy/",
-      "IE"
-     ],
-     [
-      "Farmer.pl (PAP)",
-      "https://www.farmer.pl/fakty/szczyt-europejskiej-wspolnoty-politycznej-w-dublinie-bezpieczenstwo-europy-i-wsparcie-ukrainy,187028.html",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "onz-jiu",
-    "dim": "P",
+    "id": "ukraina-uderzyla-w-ogromny",
+    "dim": "M",
     "sec": [],
-    "rel": "Średnia",
-    "label": "Informacja urzędowa",
+    "title": "Ukraina uderzyła w ogromny węzeł transportu ropy naftowej. Ma ponad 200 hektarów",
+    "summary": "Temat zgłoszony przez 3 kanały między 13:51 a 21:28. Inne nagłówki: „Bliski Wschód uderza w Rosję ropą. Urals z największymi zniżkami” (Rzeczpospolita); „Zwrot na rynku ropy naftowej. Bliski Wschód zwiększa dostawy” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://energia.rp.pl/ropa/art45487681-bliski-wschod-uderza-w-rosje-ropa-urals-z-najwiekszymi-znizkami",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/ekonomia/news-zwrot-na-rynku-ropy-naftowej-bliski-wschod-zwieksza-dostawy,nIdn,1026015",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/wojna-na-ukrainie-raport-specjalny-defence24/ukraina-uderzyla-w-ogromny-wezel-transportu-ropy-naftowej-ma-ponad-200-hektarow",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
     "follow": false,
-    "date": "11–13.11",
-    "region": "Nowy Jork, ONZ",
-    "scope": "zagr",
     "woj": [],
-    "title": "Polska wybrana do Wspólnej Jednostki Kontrolnej ONZ, w głosowaniu pokonała Rosję",
-    "summary": "MSZ poinformowało, że Zgromadzenie Ogólne ONZ w tajnym głosowaniu wybrało Polskę z Grupy Wschodnioeuropejskiej do Wspólnej Jednostki Kontrolnej. Polskę poparło 95 państw, a według stałego przedstawiciela RP przy ONZ o wyniku zdecydował jeden głos. Rosja zasiadała w tym organie nieprzerwanie od 60 lat. Polski przedstawiciel ma pełnić funkcję w kadencji 2028–2032.",
-    "why": "Organ liczy 11 inspektorów i prowadzi inspekcje oraz ewaluacje w systemie ONZ, więc znaczenie jest głównie prestiżowe i dyplomatyczne. Według MSZ kampanię koordynowano w ramach UE.",
+    "scope": "kraj"
+   },
+   {
+    "id": "zaslynal-z-wlamania-sie",
+    "dim": "M",
+    "sec": [],
+    "title": "Zasłynął z włamania się do sklepu monopolowego, pomógł zebrać setki tysięcy dolarów na dobry cel",
+    "summary": "Temat zgłoszony przez 3 kanały między 12:42 a 20:57. Inne nagłówki: „Odbudowa Ukrainy za setki miliardów dolarów. Polska chce być przy stole” (WNP.pl); „Trump apeluje o dodatkowe 350 mld dolarów na obronność. Chce zdążyć przed Demokratami” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
       "TVN24",
-      "https://tvn24.pl/polska/polska-pokonala-rosje-w-wyborach-do-jednostki-kontrolnej-onz-st9336709",
+      "https://tvn24.pl/tvnmeteo/ciekawostki/szop-w-usa-zaslynal-z-wlamania-sie-do-sklepu-monopolowego-pomogl-zebrac-setki-tysiecy-dolarow-na-dobry-cel-st9338526?source=rss",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/rynki/odbudowa-ukrainy-za-setki-miliardow-dolarow-polska-chce-byc-przy-stole,1119628.html",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/trump-apeluje-o-dodatkowe-350-mld-dolarow-na-obronnosc-chce-zdazyc-przed-demokratami",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "tusk-nie-wybiera-sie",
+    "dim": "M",
+    "sec": [],
+    "title": "Tusk „nie wybiera się” do Pałacu Prezydenckiego. „Sprawa TK jest rozstrzygnięta”",
+    "summary": "Temat zgłoszony przez 3 kanały między 19:04 a 20:11. Inne nagłówki: „Tusk nie weźmie udziału w poniedziałkowym spotkaniu ws. TK w Pałacu Prezydenckim” (Bankier.pl); „Polska weźmie udział w negocjacjach dotyczących zakończenia wojny w Ukrainie” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-tusk-nie-wybiera-sie-do-palacu-prezydenckiego-sprawa-tk-jest,nIdn,1026055",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Tusk-nie-wezmie-udzialu-w-poniedzialkowym-spotkaniu-ws-TK-w-Palacu-Prezydenckim-9228756.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/konflikty-zbrojne/art45487371-polska-wezmie-udzial-w-negocjacjach-dotyczacych-zakonczenia-wojny-w-ukrainie",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "weglowy-potentat-bedzie-potrzebowal",
+    "dim": "S",
+    "sec": [],
+    "title": "Węglowy potentat będzie potrzebował dla siebie więcej czarnego złota",
+    "summary": "Temat zgłoszony przez 3 kanały między 07:00 a 17:22. Inne nagłówki: „Uwaga na okiść w części Polski. Problemów z pogodą będzie więcej” (Interia Fakty); „Antycyklon Lennox dojdzie do głosu. Taka będzie pogoda w weekend” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-wladze-miasta-ostrzegaja-przed-okiscia-zagrozenie-dla-osob-i,nId,23573184",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/tvnmeteo/prognoza/antycyklon-lennox-dojdzie-do-glosu-taka-bedzie-pogoda-w-weekend-st9338058?source=rss",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/weglowy-potentat-bedzie-potrzebowal-dla-siebie-wiecej-czarnego-zlota,1119098.html",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "nie-bede-ulegal-szantazom",
+    "dim": "P",
+    "sec": [],
+    "title": "\"Nie będę ulegał szantażom\". Prezydent podjął decyzję ws. \"kontrowersyjnej\" ustawy",
+    "summary": "Temat zgłoszony przez 3 kanały między 16:21 a 17:18. Inne nagłówki: „Prezydent Nawrocki zawetował ustawę o blokowaniu treści. \"Nadużycie władzy\"” (Business Insider Polska); „Jest decyzja Prezydenta ws. ustawy o blokowaniu treści w sieci” (CyberDefence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/prawo/nie-bede-ulegal-szantazom-weto-prezydenta-do-ustawy-o-blokowaniu-tresci/bjfm3dz",
+      "PL"
+     ],
+     [
+      "CyberDefence24",
+      "https://cyberdefence24.pl/polityka-i-prawo/polska/jest-decyzja-prezydenta-ws-ustawy-o-blokowaniu-tresci-w-sieci",
       "PL"
      ],
      [
       "Polsat News",
-      "https://www.polsatnews.pl/wiadomosc/2026-11-13/polska-pokonala-rosje-w-onz-po-60-latach-przewazyl-jeden-glos/",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/ustawa-o-uslugach-cyfrowych-prezydent-podjal-decyzje/",
       "PL"
      ]
-    ]
-   },
-   {
-    "id": "rogalin",
-    "dim": "P",
-    "sec": [
-     "I"
     ],
-    "rel": "Średnia",
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
     "label": "Doniesienie medialne",
+    "rel": "Wysoka",
     "follow": false,
-    "date": "12.11",
-    "region": "Rogalin, Poznań",
-    "woj": [
-     "wielkopolskie"
-    ],
-    "pts": [
-     [
-      52.41,
-      16.93,
-      "Poznań"
-     ]
-    ],
-    "title": "Prezydenci Polski i Słowacji spotkali się w Rogalinie, potem pojechali na forum cyfrowe w Poznaniu",
-    "summary": "12 listopada w pałacu w Rogalinie odbyło się robocze spotkanie prezydentów Polski i Słowacji poświęcone współpracy dwustronnej. Po rozmowie w cztery oczy i roboczym śniadaniu prezydenci udali się do Poznania na Poznański Kongres Gospodarczy, w ramach którego zaplanowano otwarcie forum cyfrowego Trójmorza.",
-    "why": "Lokalna relacja nie podaje żadnych ustaleń z rozmów. Nie znaleziono w oknie relacji z treści wystąpień w Poznaniu.",
-    "sources": [
-     [
-      "Gazeta Mosińsko-Puszczykowska",
-      "https://www.gazeta-mosina.pl/2026/prezydenci-spotkanie-rogalin/",
-      "PL"
-     ]
-    ]
+    "woj": [],
+    "scope": "kraj"
    },
    {
-    "id": "komisje",
-    "dim": "P",
-    "sec": [
-     "S"
-    ],
-    "rel": "Średnia",
-    "label": "Informacja urzędowa",
-    "follow": false,
-    "date": "13.11",
-    "region": "Siedlce i miejscowości we wschodniej części Mazowsza oraz na Lubelszczyźnie",
-    "woj": [
-     "mazowieckie",
-     "lubelskie"
-    ],
-    "pts": [
-     [
-      52.17,
-      22.29,
-      "Siedlce"
-     ]
-    ],
-    "title": "Ponad 130 członków komisji wyborczych z zarzutami po wyborach prezydenckich 2025",
-    "summary": "Prokuratura Okręgowa w Siedlcach podała 13 listopada, że zarzuty nieumyślnego niedopełnienia obowiązków usłyszało już ponad 130 członków obwodowych komisji wyborczych. Według śledczych nierzetelnie przeliczyli głosy w drugiej turze wyborów prezydenckich w 2025 r. i błędnie sporządzili protokoły. Zarzuty objęły członków komisji m.in. w Mińsku Mazowieckim, Radomiu, Lublinie, Bychawie, Magnuszewie i Łaskarzewie. Grozi za to grzywna, ograniczenie wolności albo do dwóch lat więzienia.",
-    "why": "Źródło nie podaje skali błędów ani tego, by wpłynęły na końcowy wynik wyborów. Zarzuty nie oznaczają winy. Wcześniej, według tego samego źródła, zarzuty miało 68 osób, więc liczba podejrzanych niemal się podwoiła.",
-    "sources": [
-     [
-      "Portal Samorządowy (PAP)",
-      "https://www.portalsamorzadowy.pl/polityka-i-spoleczenstwo/siedlce-ponad-130-czlonkow-komisji-z-zarzutami-po-wyborach-prezydenckich-w-2025-r,684272.html",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "trzebnica",
+    "id": "gibala-zwrocil-sie-do",
     "dim": "S",
-    "sec": [
-     "P"
-    ],
-    "rel": "Średnia",
-    "label": "Informacja urzędowa",
-    "follow": false,
-    "date": "13.11",
-    "region": "Trzebnica",
-    "woj": [
-     "dolnośląskie"
-    ],
-    "pts": [
-     [
-      51.31,
-      17.06,
-      "Trzebnica"
-     ]
-    ],
-    "title": "Trzebnica: napisy na biurze poselskim wiceministra, policja szuka sprawców",
-    "summary": "13 listopada około 9:00 policja w Trzebnicy otrzymała zgłoszenie o napisach na oknie i elewacji budynku, w którym mieści się biuro poselskie wiceministra rozwoju z KO. Napisy odnosiły się do premiera i do Telewizji Republika. Policjanci zabezpieczyli ślady i nagrania z monitoringu, a postępowanie prowadzą w kierunku uszkodzenia mienia.",
-    "why": "Sprawcy są nieustaleni. Media łączą treść napisów ze śledztwem krakowskiej prokuratury dotyczącym relacji stacji po zamachu, ale policja takiego związku nie potwierdziła. To kolejny po serii napisów na pomnikach przypadek politycznie motywowanego wandalizmu w ostatnich dniach.",
+    "sec": [],
+    "title": "Gibała zwrócił się do Tuska, \"pilna prośba\". Ma poparcie parlamentarzystów",
+    "summary": "Temat zgłoszony przez 3 kanały między 10:25 a 12:16. Inne nagłówki: „Łukasz Gibała z \"pilną prośbą\" do Donalda Tuska. Padła kwota 10 mln” (Polsat News); „Gibała z pilną prośbą do Tuska. Chodzi o zabezpieczenie Krakowa” (RMF24 Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
-      "TVN24 Wrocław",
-      "https://tvn24.pl/wroclaw/trzebnica-zdewastowano-elewacje-biura-posla-koalicji-obywatelskiej-rece-precz-od-republiki-st9337376",
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/lukasz-gibala-z-pilna-prosba-do-donalda-tuska-padla-kwota-10-mln/",
       "PL"
      ],
      [
-      "Radio Wrocław",
-      "https://www.radiowroclaw.pl/articles/view/165575/Tusk-precz-i-Rece-precz-od-Republiki-Ktos-zdewastowal-biuro-poselskie-Michala-Jarosa",
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/malopolskie/news-gibala-zwrocil-sie-do-tuska-pilna-prosba-ma-poparcie-parlame,nId,23573009",
       "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/krakow/news-gibala-z-pilna-prosba-do-tuska-chodzi-o-zabezpieczenie-krako,nIdn,1025960",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "małopolskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "małopolskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
      ]
     ]
    },
    {
-    "id": "dron",
-    "dim": "M",
+    "id": "czarny-dzien-w-historii",
+    "dim": "P",
     "sec": [],
+    "title": "Czarny dzień w historii PiS, takiego wyniku dawno nie widzieli. Zacięta walka w nowym sondażu",
+    "summary": "Temat zgłoszony przez 3 kanały między 07:47 a 09:06. Inne nagłówki: „PiS z historycznym spadkiem poparcia. Najnowsze sondaże” (RMF24 Polska); „Rośnie przewaga Tuska, PiS z wielkim spadkiem. Nowy sondaż” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/czarny-dzien-w-historii-pis-takiego-wyniku-nie-widzieli-zacieta-walka-w-nowym-sondazu/",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polityka/news-pis-z-historycznym-spadkiem-poparcia-najnowsze-sondaze,nIdn,1025940",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-rosnie-przewaga-tuska-pis-z-wielkim-spadkiem-nowy-sondaz,nId,23572845",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "przemyslaw-wipler-w-programie",
+    "dim": "E",
+    "sec": [],
+    "title": "Przemysław Wipler w programie \"Graffiti\". Oglądaj od 7:40",
+    "summary": "Temat zgłoszony przez 2 kanały między 07:19 a 14:55. Inne nagłówki: „Miłosz Motyka w programie \"Gość Wydarzeń\" [OGLĄDAJ]” (Polsat News); „Litwa chce opodatkować Orlen. Miłosz Motyka odpowiada” (Business Insider Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-13/przemyslaw-wipler-w-programie-graffiti-ogladaj-od-740-2/",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gospodarka/spor-o-orlen-lietuva-wilno-szykuje-nowy-podatek/jtyvrmz",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "podkarpackie",
+    "label": "Doniesienie medialne",
     "rel": "Średnia",
-    "label": "Twierdzenie strony",
-    "follow": true,
-    "date": "11.11",
-    "region": "Pogranicze PL–LT–BY",
+    "follow": false,
     "woj": [
-     "podlaskie"
+     "podkarpackie"
     ],
     "pts": [
      [
-      54.05,
-      23.55,
-      "rejon Sejn / Druskienik"
+      49.78,
+      22.77,
+      "Przemyśl"
      ]
-    ],
-    "title": "Spór o drona z 11 listopada: brak nowych komunikatów Dowództwa Operacyjnego",
-    "summary": "W oknie nie znaleziono nowego komunikatu Dowództwa Operacyjnego w sprawie zgłoszonego przez Litwę możliwego krótkiego wlotu drona nad Polskę w nocy z 10 na 11 listopada. Ostatnie znane stanowisko wojska to brak potwierdzenia naruszenia i trwająca analiza danych radarowych. Według opisu Defence24 strona litewska nie wskazała, do kogo należał obiekt.",
-    "why": "Wątek utrzymany jako istotny dla obrazu bezpieczeństwa powietrznego, bez nowych faktów. Defence24 przytacza doniesienia, że mógł to być ukraiński dron, który zboczył z kursu, co pozostaje niepotwierdzone. Do obserwacji: wynik analizy radarowej.",
+    ]
+   },
+   {
+    "id": "amerykanscy-zolnierze-i-inwestycje",
+    "dim": "M",
+    "sec": [],
+    "title": "Amerykańscy żołnierze i inwestycje zbrojeniowe w Polsce. „Czekają nas naprawdę interesujące wydarzenia”",
+    "summary": "Temat zgłoszony przez 2 kanały między 23:08 a 10:16. Inne nagłówki: „Amerykański żołnierz zatrzymany za szpiegostwo” (Defence24); „Kraj NATO idzie w ślady Polski. \"Chcemy więcej amerykańskich żołnierzy\"” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
       "Defence24",
-      "https://defence24.pl/polityka-obronna/dron-naruszyl-polska-przestrzen-powietrzna-sprzeczne-glosy-z-polski-i-litwy",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "strefa",
-    "dim": "M",
-    "sec": [],
-    "rel": "Średnia",
-    "label": "Projekt",
-    "follow": true,
-    "date": "10–12.11",
-    "region": "Granica z Białorusią",
-    "woj": [
-     "podlaskie",
-     "lubelskie"
-    ],
-    "pts": [
-     [
-      52.7,
-      23.8,
-      "granica z Białorusią"
-     ]
-    ],
-    "title": "Strefa buforowa: MSWiA wskazuje na balony i drony z Białorusi, zakaz ma obowiązywać do 27 lutego",
-    "summary": "Z uzasadnienia projektu rozporządzenia wynika, że nowy zakaz przebywania przy granicy z Białorusią ma obowiązywać od 30 listopada 2026 r. do 27 lutego 2027 r. na niezmienionym odcinku 78,29 km. MSWiA wskazuje na rosnącą liczbę naruszeń przestrzeni powietrznej przez balony meteorologiczne i bezzałogowce z Białorusi, które obecnie służą głównie przemytowi. Od początku roku do 8 listopada odnotowano 482 próby nielegalnego przekroczenia granicy.",
-    "why": "Projekt opisano już w poprzednich wydaniach, nowe są szczegóły uzasadnienia opisane 12 listopada. Resort nie wyklucza, że obiekty latające mogą posłużyć działaniom destabilizującym, co jest oceną ryzyka, a nie opisem zdarzenia. Bieżącego dobowego komunikatu Straży Granicznej nie udało się otworzyć.",
-    "sources": [
-     [
-      "InfoSecurity24",
-      "https://infosecurity24.pl/sluzby-mundurowe/straz-graniczna/drony-i-balony-nadlatuja-z-bialorusi-mswia-przedluzy-strefe-buforowa",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "microsoft",
-    "dim": "I",
-    "sec": [
-     "X"
-    ],
-    "rel": "Średnia",
-    "label": "Doniesienie medialne",
-    "follow": false,
-    "date": "12–13.11",
-    "region": "Cała Polska, awaria globalna",
-    "scope": "kraj",
-    "woj": [],
-    "title": "Globalna awaria usług Microsoftu, minister cyfryzacji zapowiada więcej open source w administracji",
-    "summary": "Czwartkowa awaria usług Microsoftu, m.in. Outlooka i Teams, zakłóciła pracę instytucji i firm w ponad 70 krajach. Firma przyznała, że pierwsze działania naprawcze nie dały trwałej poprawy. Minister cyfryzacji ocenił 13 listopada, że zdarzenie pokazuje ryzyko uzależnienia od globalnych dostawców, i zapowiedział dywersyfikację oraz konkurs na pilotażowe wdrożenia otwartego oprogramowania w samorządach.",
-    "why": "Otwarte źródła nie wymieniają z nazwy polskich instytucji dotkniętych awarią ani nie potwierdzają jej usunięcia. Banki i uczelnie ostrzegają przed fałszywymi ofertami pomocy technicznej. Zbieg z przerwą ePUAP zwiększa wagę tematu ciągłości usług cyfrowych, choć nic nie wskazuje na związek obu zdarzeń.",
-    "sources": [
-     [
-      "Portal Samorządowy (PAP)",
-      "https://www.portalsamorzadowy.pl/polityka-i-spoleczenstwo/gawkowski-awaria-microsoftu-pokazuje-ryzyko-cyfrowego-uzaleznienia-od-globalnych-firm,684219.html",
+      "https://defence24.pl/przemysl/amerykanscy-zolnierze-i-inwestycje-zbrojeniowe-w-polsce-czekaja-nas-naprawde-interesujace-wydarzenia",
       "PL"
      ],
      [
-      "Interia Biznes",
-      "https://biznes.interia.pl/gospodarka/news-awaria-microsoftu-obnazyla-slabosc-systemu-gawkowski-zapowia,nId,23573005",
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-kraj-nato-idzie-w-slady-polski-chcemy-wiecej-amerykanskich-z,nId,23572825",
       "PL"
      ]
-    ]
+    ],
+    "date": "12.11–13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
    },
    {
-    "id": "gus",
-    "dim": "E",
+    "id": "korwin-piotrowska-nie-przyjela",
+    "dim": "M",
     "sec": [],
-    "rel": "Wysoka",
-    "label": "Informacja urzędowa",
-    "follow": false,
-    "date": "13.11",
-    "region": "Cała Polska",
-    "scope": "kraj",
-    "woj": [],
-    "title": "GUS: PKB w III kwartale wzrósł o 3,5 proc., inflacja w październiku 3,5 proc.",
-    "summary": "Według szybkiego szacunku GUS z 13 listopada PKB w III kwartale 2026 r. wzrósł o 3,5 proc. rok do roku, po 4,1 proc. w II kwartale, i o 0,8 proc. kwartał do kwartału. Finalny odczyt inflacji za październik to 3,5 proc. rok do roku i spadek cen o 0,4 proc. wobec września, gdy inflacja wynosiła 4,1 proc. Paliwa potaniały w miesiąc o 9,7 proc. po powrocie programu obniżonych cen, a węgiel i podobne opały podrożały o 11,2 proc.",
-    "why": "Wzrost PKB był nieco niższy od konsensusu 3,6 proc. Spadek inflacji wynika w dużej mierze z czasowego programu paliwowego, który obowiązuje do 31 grudnia, więc jego wygaśnięcie może odwrócić efekt. Strukturę PKB GUS poda 30 listopada, a NBP dane o inflacji bazowej 16 listopada.",
+    "title": "Korwin-Piotrowska nie przyjęła wniosku Żurka ws. uchylenia immunitetu Święczkowskiemu",
+    "summary": "Temat zgłoszony przez 2 kanały między 21:35 a 22:03. Inne nagłówki: „Korwin-Piotrowska odmawia przyjęcia wniosku prokuratury. Nowe oświadczenie” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
       "Rzeczpospolita",
-      "https://www.rp.pl/dane-gospodarcze/art45483701-gus-potwierdzil-inflacja-w-pazdzierniku-powrocila-do-przedzialu-celu-nbp",
+      "https://www.rp.pl/sady-i-trybunaly/art45487731-korwin-piotrowska-nie-przyjela-wniosku-zurka-ws-uchylenia-immunitetu-swieczkowskiemu",
       "PL"
      ],
      [
-      "Forex Club",
-      "https://forexclub.pl/inflacja-w-polsce-35-i-pkb-35-gus-paliwa-tanieja-wegiel-drozeje-gospodarka-zwalnia-w-iii-kwartale",
-      "PL"
-     ],
-     [
-      "Finwire",
-      "https://finwire.pl/artykuly/inflacja-pazdziernik-2026-odczyt-finalny-gus",
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-korwin-piotrowska-odmawia-przyjecia-wniosku-prokuratury-nowe,nId,23573351",
       "PL"
      ]
-    ]
-   },
-   {
-    "id": "zloty",
-    "dim": "E",
-    "sec": [],
-    "rel": "Średnia",
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
     "label": "Doniesienie medialne",
-    "follow": false,
-    "date": "13.11",
-    "region": "Cała Polska",
-    "scope": "kraj",
-    "woj": [],
-    "title": "Euro po 4,41 zł, dolar po 3,98 zł. Deficyt na rachunku bieżącym mniejszy od prognoz",
-    "summary": "W piątek rano euro kosztowało 4,4056 zł, dolar 3,9821 zł, a frank 4,7639 zł. Rentowność obligacji dziesięcioletnich wzrosła do 6,28 proc. z 6,19 proc. dzień wcześniej. NBP podał, że deficyt na rachunku bieżącym we wrześniu wyniósł 718 mln euro przy konsensusie 2579 mln euro, eksport wzrósł o 9,7 proc., a import o 11,9 proc. rok do roku.",
-    "why": "Według analityków PKO BP cytowanych przez Forsal rynek w pełni wycenia podwyżkę stóp NBP w styczniu, co kontrastuje ze spadkiem bieżącej inflacji. Członek RPP dopuszcza utrzymanie stóp w grudniu. Najbliższe posiedzenie Rady zaplanowano na 2 grudnia.",
-    "sources": [
-     [
-      "Forsal",
-      "https://forsal.pl/finanse/waluty/artykuly/11344111,cena-euro-dolara-i-franka-kursy-walut-13112026.html",
-      "PL"
-     ],
-     [
-      "Strefa Inwestorów (skrót PAP)",
-      "https://strefainwestorow.pl/wiadomosci/20261113/skrot-wiadomosci-piatek-13-listopada-1700",
-      "PL"
-     ],
-     [
-      "Finwire",
-      "https://finwire.pl/artykuly/inflacja-pazdziernik-2026-odczyt-finalny-gus",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "paliwa",
-    "dim": "E",
-    "sec": [],
     "rel": "Średnia",
-    "label": "Potwierdzona decyzja",
     "follow": false,
-    "date": "13–16.11",
-    "region": "Cała Polska",
     "woj": [],
-    "scope": "kraj",
-    "title": "Maksymalne ceny paliw na 14–16 listopada: Pb95 6,02 zł, diesel 7,52 zł",
-    "summary": "Minister energii ogłosił maksymalne ceny detaliczne na 14–16 listopada: 6,02 zł za litr Pb95, 6,66 zł za Pb98 i 7,52 zł za olej napędowy. W piątek 13 listopada limity wynosiły odpowiednio 6,06 zł, 6,68 zł i 7,54 zł, a diesel był o 12 groszy tańszy niż 11–12 listopada. Orlen obniżył 13 listopada ceny hurtowe wobec 11 listopada o 30 zł na metrze sześciennym benzyny 95 i o 18 zł na oleju napędowym.",
-    "why": "To najniższe limity w obecnej edycji programu, która obowiązuje do 31 grudnia 2026 r. Ceny paliw są głównym czynnikiem spadku październikowej inflacji, więc decyzja o przedłużeniu lub wygaszeniu programu będzie miała znaczenie makroekonomiczne.",
-    "sources": [
-     [
-      "TVN24 Biznes",
-      "https://tvn24.pl/biznes/pieniadze/ceny-paliw-w-polsce-14-16-listopada-2026-ile-kierowcy-zaplaca-za-litr-pb95-pb98-oraz-on-st9336990",
-      "PL"
-     ],
-     [
-      "MotoGuru (14–16.11)",
-      "https://motoguru.pl/na-czasie/ceny-paliw-14-16-listopada-nowe-minima-cpn-diesel-mocno-tanieje/",
-      "PL"
-     ],
-     [
-      "MotoGuru (13.11)",
-      "https://motoguru.pl/na-czasie/ceny-paliw-dzis-13-listopada-orlen-obniza-ceny-diesel-bije-rekord/",
-      "PL"
-     ]
-    ]
+    "scope": "kraj"
    },
    {
-    "id": "handel",
-    "dim": "S",
-    "sec": [
-     "E"
-    ],
-    "rel": "Średnia",
-    "label": "Zapowiedź",
-    "follow": false,
-    "date": "13.11",
-    "region": "Cała Polska",
-    "scope": "kraj",
-    "woj": [],
-    "title": "Związkowcy zapowiadają strajk w Dino i protest w sieciach handlowych 20–23 grudnia",
-    "summary": "OPZZ Konfederacja Pracy w Handlu zapowiedziała akcję pod hasłem „czarny tydzień w handlu” w dniach 20–23 grudnia. Strajk ma objąć pracowników Dino, a w innych sieciach, m.in. w Biedronce, Lidlu i Kauflandzie, zaplanowano protest polegający na pracy ściśle według procedur, bez pośpiechu. Związek domaga się podwyżek, stabilnych grafików, pełnej obsady sklepów i zmian w przepisach o sporach zbiorowych.",
-    "why": "Termin przypada na szczyt zakupów przedświątecznych. Nie wiadomo, ilu pracowników weźmie udział, a relacje różnią się listą sieci objętych protestem. Brak w źródłach stanowiska pracodawców.",
-    "sources": [
-     [
-      "My Company Polska",
-      "https://mycompanypolska.pl/artykul/strajk-w-dino-i-protesty-w-biedronce-oraz-lidlu-przedswiateczna-akcja-pracownikow/21513",
-      "PL"
-     ],
-     [
-      "Farmer.pl",
-      "https://www.farmer.pl/fakty/wloskie-strajki-w-handlu-przed-swiatami-opzz-wzywa-do-protestow,187057.html",
-      "PL"
-     ],
-     [
-      "Asta24 (Piła)",
-      "https://www.asta24.pl/2026/11/13/strajk-i-protesty-w-handlu-tuz-przed-swietami",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "narkotyki-bialystok",
-    "dim": "S",
-    "sec": [],
-    "rel": "Średnia",
-    "label": "Informacja urzędowa",
-    "follow": false,
-    "date": "13.11",
-    "region": "Warmia i Mazury, śledztwo w Białymstoku",
-    "woj": [
-     "warmińsko-mazurskie",
-     "podlaskie"
-    ],
-    "pts": [
-     [
-      53.13,
-      23.16,
-      "Białystok"
-     ]
-    ],
-    "title": "Trzy osoby z Warmii i Mazur z zarzutami w białostockim śledztwie narkotykowym, przejęto blisko 20 kg",
-    "summary": "Prokuratura Okręgowa w Białymstoku poinformowała 13 listopada o zarzutach dla trzech osób zatrzymanych na Warmii i Mazurach. Policja przejęła u nich blisko 20 kg narkotyków, m.in. amfetaminy i klofedronu. W całym śledztwie podejrzanych jest 17 osób, z których 11 przebywa w areszcie. Według prokuratury grupa wprowadziła do obrotu co najmniej 53 kg substancji.",
-    "why": "Sprawa o znaczeniu regionalnym, pokazuje skalę obrotu syntetycznymi narkotykami w północno-wschodniej Polsce. Opis to stanowisko prokuratury, zarzuty nie oznaczają winy.",
-    "sources": [
-     [
-      "Radio Olsztyn",
-      "https://radioolsztyn.pl/trzy-osoby-z-regionu-zatrzymane-znaleziono-u-nich-20-kg-narkotykow/01901193",
-      "PL"
-     ]
-    ]
-   },
-   {
-    "id": "snieg",
+    "id": "akcja-ratunkowa-w-porcie",
     "dim": "X",
     "sec": [],
-    "rel": "Średnia",
-    "label": "Informacja urzędowa",
-    "follow": false,
-    "date": "13–14.11",
-    "region": "Wybrzeże, Podkarpacie, góry Małopolski i Śląska",
-    "woj": [
-     "zachodniopomorskie",
-     "pomorskie",
-     "podkarpackie",
-     "małopolskie",
-     "śląskie"
-    ],
-    "pts": [
-     [
-      53.91,
-      14.25,
-      "Świnoujście"
-     ],
-     [
-      54.46,
-      17.03,
-      "Słupsk"
-     ],
-     [
-      49.69,
-      21.77,
-      "Krosno"
-     ],
-     [
-      49.3,
-      19.95,
-      "Zakopane"
-     ]
-    ],
-    "title": "IMGW: wiatr do 80 km/h na wybrzeżu do soboty rano, ulewy na Podkarpaciu i śnieg w górach",
-    "summary": "W piątek obowiązywały trzy ostrzeżenia pierwszego stopnia. Na wybrzeżu województw zachodniopomorskiego i pomorskiego prognozowano wiatr średnio do 55 km/h i w porywach do 80 km/h, z ważnością do soboty 6:00. Na Podkarpaciu do 13:00 obowiązywało ostrzeżenie przed deszczem z sumą 30–45 mm, a powyżej 500 m n.p.m. w części Małopolski, Śląska i Podkarpacia przed opadami śniegu.",
-    "why": "Sprawdzone źródła nie opisują interwencji straży, przerw w dostawie prądu ani zamknięć dróg. Podają różne przyrosty pokrywy śnieżnej: około 5 cm albo 5–10 cm. W sobotę aktywne pozostaje tylko ostrzeżenie przed wiatrem.",
+    "title": "Akcja ratunkowa w porcie w Nowym Orleanie. Tonie statek z prawie 150 osobami",
+    "summary": "Temat zgłoszony przez 2 kanały między 21:09 a 21:48. Inne nagłówki: „Tankowiec uderzył w statek wycieczkowy. Akcja służb w USA” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
     "sources": [
      [
-      "Rynek Zdrowia",
-      "https://www.rynekzdrowia.pl/Polska-i-swiat/IMGW-ostrzega-bedzie-mocno-wialo-Ekstremalne-podmuchy-w-kilku-regionach,291215,15.html",
+      "TVN24",
+      "https://tvn24.pl/swiat/statek-wycieczkowy-zderzyl-sie-z-tankowcem-w-nowym-orleanie-st9338558?source=rss",
       "PL"
      ],
      [
-      "Biznesinfo",
-      "https://www.biznesinfo.pl/pogoda-na-13-listopada-w-tych-regionach-sypnie-sniegiem-wazny-komunikat-dla-kierowcow-wc-wksw-131126",
-      "PL"
-     ],
-     [
-      "Trybuna Polska",
-      "https://trybunapolska.pl/kraj/pogoda-w-polsce-na-13-listopada-2026-alerty-imgw-ulewy-podkarpacie-wiatr-80-km-h",
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/akcja-ratunkowa-w-porcie-w-nowym-orleanie-tonie-statek-z-prawie-150-pasazerami/9z3d6r7",
       "PL"
      ]
-    ]
+    ],
+    "date": "13.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "dane-polakow-znow-wyciekly",
+    "dim": "M",
+    "sec": [],
+    "title": "Dane Polaków znów wyciekły? Przez ten serwis przechodzi wiele płatności - stał się celem cyberataku",
+    "summary": "Temat zgłoszony przez 2 kanały między 05:30 a 21:15. Inne nagłówki: „Tylu Polaków zginęło na wojnie na Ukrainie. Ujawniono poufne dane” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/tech/dane-polakow-znow-wyciekly-przez-ten-serwis-przechodzi-wiele-platnosci-stal-sie-celem-cyberataku,1119735.html",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/wojna-na-ukrainie-raport-specjalny-defence24/tylu-polakow-zginelo-na-wojnie-na-ukrainie-ujawniono-poufne-dane",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "polacy-za-rozwojem-broni",
+    "dim": "S",
+    "sec": [],
+    "title": "Polacy za rozwojem broni jądrowej w Europie. Najwyższe poparcie w badaniu GLOBSEC",
+    "summary": "Temat zgłoszony przez 2 kanały między 20:05 a 21:06. Inne nagłówki: „61 proc. Polaków za rozwojem broni jądrowej przez więcej państw Europy” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-polacy-za-rozwojem-broni-jadrowej-w-europie-najwyzsze-poparc,nIdn,1026060",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/61-proc-Polakow-za-rozwojem-broni-jadrowej-przez-wiecej-panstw-Europy-9228771.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "13.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
    }
   ]
  },
