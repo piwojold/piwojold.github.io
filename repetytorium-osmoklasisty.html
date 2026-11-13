@@ -503,6 +503,7 @@ function renderNav(){
   <button data-go="gbank"><span class="num">G</span>Grammar bank<span style="margin-left:auto;color:var(--muted);font-size:12px">s.130</span></button>
   <button data-go="fbank"><span class="num">F</span>Functions bank<span style="margin-left:auto;color:var(--muted);font-size:12px">s.184</span></button>
   <button data-go="wbank"><span class="num">W</span>Writing bank<span style="margin-left:auto;color:var(--muted);font-size:12px">s.187</span></button>
+  <button data-go="slow"><span class="num">Aa</span>Słowniczek (wszystkie unity)</button>
   <button data-go="irr"><span class="num">≡</span>Irregular verbs<span style="margin-left:auto;color:var(--muted);font-size:12px">s.190</span></button>
   <h4>Sprawdzian</h4>
   <button data-go="final"><span class="num">★</span>Test końcowy (losowy)</button>`;
@@ -515,7 +516,7 @@ function renderNav(){
 function go(where){current=where;renderNav();window.scrollTo(0,0);
   if(where==='home')home();else if(where==='plan')plan();else if(where==='exam')exam();
   else if(where==='method')method();else if(where==='final')finalTest();else if(where==='irr')irregular();
-  else if(where==='gbank')gbank();else if(where==='fbank')fbank();else if(where==='wbank')wbank();
+  else if(where==='gbank')gbank();else if(where==='slow')slownik();else if(where==='fbank')fbank();else if(where==='wbank')wbank();
   else if(where.startsWith('r'))review(+where.slice(1));
   else if(where.startsWith('u'))unit(+where.slice(1));
 }
@@ -692,6 +693,69 @@ function wbank(){
   <tr><td>Guess what? / I'm writing to tell you…</td><td>wprowadzenie tematu</td></tr>
   <tr><td>Write soon! / Let me know… / Can't wait to see you!</td><td>zakończenie</td></tr>
   <tr><td>Best wishes, / Bye for now, / Love,</td><td>pożegnanie</td></tr></table></div>`;
+}
+
+
+/* ---- Słowniczek ---- */
+let MYW=null;
+function myWords(){if(MYW)return MYW.slice();try{MYW=JSON.parse(localStorage.getItem('rep8_mywords')||'[]');}catch(e){MYW=[];}return MYW.slice();}
+function saveMyWords(a){MYW=a.slice();try{localStorage.setItem('rep8_mywords',JSON.stringify(a));}catch(e){}}
+function glossary(){
+  const g=[];
+  UNITS.forEach(u=>{
+    u.vocab.forEach(v=>g.push({u:u.id,en:v[0],pl:v[1],k:'słowo'}));
+    const m=META[u.id];if(m.pv)m.pv.forEach(v=>g.push({u:u.id,en:v[0],pl:v[1],k:'phrasal verb'}));
+    u.phrases.forEach(v=>g.push({u:u.id,en:v[0],pl:v[1],k:'zwrot'}));
+  });
+  myWords().forEach(w=>g.push({u:w.u,en:w.en,pl:w.pl,k:'moje',mine:true}));
+  return g;
+}
+function slownik(){
+  let unitF='all',kindF='all',qF='';
+  main.innerHTML=`<h1>Słowniczek</h1>
+  <p class="sub">Całe słownictwo z kursu w jednym miejscu, według unitów: słowa, phrasal verbs i zwroty. Dopisuj tu słowa z podręcznika – zapisują się w tej przeglądarce i trafiają do fiszek.</p>
+  <div class="card row">
+   <input id="gq" type="search" placeholder="Szukaj (EN lub PL)…" style="flex:1;min-width:160px;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px">
+   <select id="gu" class="btn"><option value="all">Wszystkie unity</option>${UNITS.map(u=>`<option value="${u.id}">${u.id}. ${u.pl}</option>`).join('')}</select>
+   <select id="gk" class="btn"><option value="all">Wszystko</option><option value="słowo">Słowa</option><option value="phrasal verb">Phrasal verbs</option><option value="zwrot">Zwroty</option><option value="moje">Moje słowa</option></select>
+  </div>
+  <div class="card"><b>Dodaj słowo z podręcznika</b>
+   <div class="row" style="margin-top:8px">
+    <input id="nen" placeholder="English" style="flex:1;min-width:120px;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px">
+    <input id="npl" placeholder="Polski" style="flex:1;min-width:120px;background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:9px">
+    <select id="nu" class="btn">${UNITS.map(u=>`<option value="${u.id}">Unit ${u.id}</option>`).join('')}</select>
+    <button class="btn primary" id="nadd">Dodaj</button></div></div>
+  <div class="row" style="justify-content:space-between"><span class="wc" id="gcount"></span><button class="btn" id="gfc">Fiszki z wyświetlonych słów</button></div>
+  <div id="gfcwrap"></div>
+  <div class="card"><table id="gt"></table></div>`;
+  const draw=()=>{
+    const s=qF.toLowerCase();
+    const list=glossary().filter(w=>(unitF==='all'||w.u==unitF)&&(kindF==='all'||w.k===kindF)&&(!s||(w.en+' '+w.pl).toLowerCase().includes(s)));
+    document.getElementById('gcount').textContent='Pozycji: '+list.length;
+    let h='<tr><th>Unit</th><th>English</th><th>Polski</th><th></th></tr>',last=null;
+    list.forEach(w=>{
+      if(w.u!==last&&unitF==='all'){const u=UNITS.find(x=>x.id==w.u);h+=`<tr><td colspan="4" style="color:var(--accent);font-weight:700;padding-top:14px">Unit ${u.id} – ${u.pl}</td></tr>`;last=w.u;}
+      const del=w.mine?`<button class="btn" style="padding:2px 8px" data-del="${encodeURIComponent(w.en)}|${w.u}">✕</button>`:`<span class="wc">${w.k}</span>`;
+      h+=`<tr><td>${w.u}</td><td><b>${w.en}</b></td><td>${w.pl}</td><td>${del}</td></tr>`;
+    });
+    const t=document.getElementById('gt');t.innerHTML=h;
+    t.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{const [en,u]=b.dataset.del.split('|');
+      saveMyWords(myWords().filter(w=>!(w.en===decodeURIComponent(en)&&String(w.u)===u)));draw();});
+    return list;
+  };
+  const esc=x=>x.replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+  document.getElementById('gq').oninput=e=>{qF=e.target.value;draw();};
+  document.getElementById('gu').onchange=e=>{unitF=e.target.value;draw();};
+  document.getElementById('gk').onchange=e=>{kindF=e.target.value;draw();};
+  document.getElementById('nadd').onclick=()=>{
+    const en=esc(document.getElementById('nen').value.trim()),pl=esc(document.getElementById('npl').value.trim());
+    if(!en||!pl)return;const a=myWords();a.push({en,pl,u:+document.getElementById('nu').value});saveMyWords(a);
+    document.getElementById('nen').value='';document.getElementById('npl').value='';draw();};
+  document.getElementById('gfc').onclick=()=>{
+    const list=draw();if(!list.length)return;
+    flashcards({id:'g',vocab:list.map(w=>[w.en,w.pl])},document.getElementById('gfcwrap'));
+    try{document.getElementById('gfcwrap').scrollIntoView({behavior:'smooth'});}catch(e){}};
+  draw();
 }
 
 /* ---- Fiszki ---- */
