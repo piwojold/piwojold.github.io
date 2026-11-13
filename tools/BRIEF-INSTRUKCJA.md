@@ -1,5 +1,12 @@
 # Dobowy brief OSINT Polska: instrukcja przygotowania wydania
 
+> **Dwa tryby.** Codziennie o 06:40 czasu polskiego workflow `.github/workflows/brief.yml`
+> uruchamia `tools/agreguj.mjs`, który buduje **wydanie automatyczne** z kanałów RSS
+> (`tools/zrodla.json`): grupuje nagłówki, przypisuje PMESII i region po słowach kluczowych,
+> niczego nie analizuje. Poniższa instrukcja opisuje **wydanie redagowane**, pisane przez
+> człowieka lub model. Wydanie redagowane ma pierwszeństwo: jeśli dla danej daty już istnieje,
+> agregator go nie nadpisuje. Kanały sprawdza `.github/workflows/sprawdz-kanaly.yml`.
+
 Strona `dobowy-brief.html` czyta wydania z pliku `dobowy-brief-data.js`. Nowe wydanie to jeden obiekt JSON dodany narzędziem `tools/brief.mjs`. Samej strony HTML nie trzeba zmieniać.
 
 ## Kroki
@@ -9,7 +16,7 @@ Strona `dobowy-brief.html` czyta wydania z pliku `dobowy-brief-data.js`. Nowe wy
 3. Przeczytaj dwa najnowsze wydania w `dobowy-brief-data.js`, żeby znać trwające wątki i ich `id`.
 4. Zbierz materiał wyszukiwarką (lista tematów niżej). Sprawdzaj datę publikacji w treści artykułu.
 5. Zapisz wydanie do pliku poza repozytorium, np. `/tmp/wydanie.json`.
-6. `node tools/brief.mjs add /tmp/wydanie.json`. Popraw wszystkie zgłoszone błędy i powtórz.
+6. `node tools/brief.mjs add /tmp/wydanie.json` (wydanie redagowane pomija pole `kind` albo ustawia `"kind": "redakcja"`). Popraw wszystkie zgłoszone błędy i powtórz.
 7. `git add dobowy-brief-data.js`, commit „Brief dobowy RRRR-MM-DD”, `git push origin main`.
 
 Jeśli nie udaje się zebrać co najmniej 8 wątków z wiarygodnymi źródłami albo walidacja nie przechodzi, nie publikuj niczego.

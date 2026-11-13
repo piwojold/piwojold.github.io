@@ -50,6 +50,12 @@ let eds = load(), errs = [];
 if (cmd === "add") {
   const ed = JSON.parse(fs.readFileSync(arg, "utf8"));
   errs = check(ed);
+  const istnieje = eds.find(x => x.date === ed.date);
+  if (istnieje && (istnieje.kind || "redakcja") !== "auto" && ed.kind === "auto") {
+    // Wydanie redagowane ręcznie ma pierwszeństwo: agregator go nie nadpisuje.
+    console.log(`Wydanie ${ed.date} jest redagowane, zostawiam je bez zmian.`);
+    process.exit(0);
+  }
   if (!errs.length) { eds = [ed, ...eds.filter(x => x.date !== ed.date)].sort((a, b) => b.date.localeCompare(a.date)).slice(0, KEEP); save(eds); }
 } else if (cmd !== "validate") { console.error("użycie: validate | add plik.json"); process.exit(2); }
 errs = errs.concat(eds.flatMap(check));
