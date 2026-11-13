@@ -275,7 +275,7 @@ footer{padding:24px 0 48px;font-size:13px;color:var(--muted)}
     <li><b>Waga redakcyjna</b> (wysoka lub średnia) opisuje znaczenie wątku dla obrazu doby. Nie jest zmierzonym poziomem zagrożenia.</li>
     <li><b>PMESII</b> służy jako podział tematyczny. Nie klasyfikuje aktorów ani odpowiedzialności.</li>
     <li><b>Atrybucja:</b> żadne zdarzenie nie jest tu przedstawione jako operacja państwowa bez podstawy w źródle. Tam, gdzie atrybucja pochodzi od prokuratury lub służb, jest to zaznaczone jako ich stanowisko, a zarzuty nie oznaczają winy.</li>
-    <li><b>Tryb powstawania:</b> od 13 listopada 2026 wydania są przygotowywane automatycznie przez model AI według tej metody i publikowane bez redakcji człowieka. Każdą informację przed użyciem sprawdź w podlinkowanym źródle.</li>
+    <li><b>Dwa tryby wydań.</b> Wydania <b>redagowane</b> (10–13 listopada 2026) mają własne streszczenia, ocenę znaczenia i wskazane rozbieżności między źródłami. Wydania <b>automatyczne</b>, oznaczone adnotacją pod tytułem, powstają codziennie rano bez udziału człowieka: skrypt w repozytorium strony odpytuje kanały RSS urzędów i redakcji, grupuje powtarzające się nagłówki i publikuje je z linkami. W trybie automatycznym nie ma streszczeń artykułów, oceny wiarygodności ani wniosków, wymiar PMESII i region są przypisywane po słowach kluczowych i bywają błędne, a waga „wysoka” oznacza tylko, że temat podały co najmniej trzy kanały. Każdą informację sprawdź w podlinkowanym źródle.</li>
     <li>Brief nie jest kompletny. Wybór daty, filtry i mapa działają bez połączenia z siecią, linki do źródeł wymagają połączenia.</li>
   </ul>
   <h3 class="sub">Etykiety epistemiczne</h3>
@@ -344,7 +344,7 @@ function card(e){
       <span class="tag ${e.rel==="Wysoka"?"hi":""}">Waga: ${e.rel.toLowerCase()}</span><span class="tag">${esc(e.label)}</span>${e.follow?'<span class="tag follow">Kontynuacja</span>':''}</div>
     <h3>${esc(e.title)}</h3>
     <p>${esc(e.summary)}</p>
-    <p class="why"><b>Znaczenie analityczne.</b> ${esc(e.why)}</p>
+    ${e.why?`<p class="why"><b>Znaczenie analityczne.</b> ${esc(e.why)}</p>`:e.prov?`<p class="why"><b>Jak powstał ten wpis.</b> ${esc(e.prov)}</p>`:""}
     ${thr}
     <p class="src">Źródła: ${e.sources.map(([n,u,c])=>`<a href="${esc(u)}" target="_blank" rel="noopener noreferrer">${esc(n)}</a><span>[${c}]</span>`).join(" · ")}</p>
   </article>`;
