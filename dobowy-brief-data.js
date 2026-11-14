@@ -1,5 +1,861 @@
 window.BRIEF_EDITIONS = [
  {
+  "date": "2026-11-14",
+  "win": "13.11.2026 13:29 – 14.11.2026 13:29 CET",
+  "stop": "14 listopada 2026, 13:29 CET",
+  "kind": "auto",
+  "note": "Wydanie automatyczne: zgrupowane nagłówki z kanałów RSS, bez analizy i bez redakcji człowieka.",
+  "obraz": [
+   "To wydanie powstało automatycznie. Skrypt odpytał 29 kanałów RSS, odpowiedziało 28, i zebrał 344 pozycji opublikowanych w ciągu ostatnich 24 godzin. Powtarzające się tematy zostały połączone w 222 wątków, z których w wydaniu znalazło się 25 najszerzej relacjonowanych.",
+   "Rozkład wątków po przypisaniu słowami kluczowymi: społeczeństwo: 8, polityka: 7, wojsko i bezpieczeństwo: 5, gospodarka: 3, infrastruktura: 2. Przypisanie wymiaru PMESII i regionu jest mechaniczne i bywa błędne, a kolejność wątków odzwierciedla tylko liczbę kanałów, które podały temat, a nie jego wagę.",
+   "Czego tu nie ma: zbiorczej oceny sytuacji, weryfikacji informacji, wskazania rozbieżności między źródłami ani wniosków analitycznych. Każdy wpis to zestaw nagłówków z linkami, które trzeba otworzyć i ocenić samodzielnie. W tym przebiegu nie odpowiedziało 1 kanałów: Polsat News."
+  ],
+  "events": [
+   {
+    "id": "tysiace-lotow-odwolanych-i",
+    "dim": "X",
+    "sec": [],
+    "title": "Tysiące lotów odwołanych i opóźnionych mimo wznowienia ruchu w USA. LOT raportuje problemy",
+    "summary": "Temat zgłoszony przez 8 kanałów między 05:52 a 13:20. Inne nagłówki: „Paraliż lotów w USA, liczby idą w tysiące. Zakłócenia dotknęły Europę, w tym Polskę” (Onet Wiadomości); „Po zakłóceniach w ruchu lotniczym w USA część rejsów LOT-u opóźniona” (Rzeczpospolita); „Paraliż lotniczy w USA. Utrudnienia dotknęły także LOT” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 10 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/chaos-i-odwolane-loty-jak-piatkowa-awaria-sparalizowala-usa/bjgfe4l",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/wiadomosci/opoznienia-lotow-pll-lot-po-awarii-w-usa-pasazerowie-musza-byc-czujni/1ghkpkn",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://turystyka.rp.pl/linie-lotnicze/art45488191-po-zakloceniach-w-ruchu-lotniczym-w-usa-czesc-rejsow-lot-u-opozniona",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/biznes/ze-swiata/paraliz-lotniczy-w-usa-utrudnienia-dotknely-takze-lot-samoloty-pll-lot-opoznione-po-awarii-amerykanskiego-systemu-lacznosci-st9338755?source=rss",
+      "PL"
+     ]
+    ],
+    "date": "14.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr",
+    "top": 1,
+    "lead": "Zgłoszone przez 4 kanały: Onet Wiadomości, Business Insider Polska, Rzeczpospolita, TVN24."
+   },
+   {
+    "id": "zelenski-usa-po-raz",
+    "dim": "M",
+    "sec": [],
+    "title": "Zełenski: USA po raz pierwszy zaproponowały Ukrainie członkostwo w NATO … w zamian za wycofanie się z Donbasu",
+    "summary": "Temat zgłoszony przez 8 kanałów między 10:41 a 12:38. Inne nagłówki: „NATO za Donbas? USA z propozycją dla Ukrainy” (Defence24); „Wejście do NATO w zamian za terytoria. Nowa oferta USA dla Ukrainy” (Business Insider Polska); „Ukraina w NATO w zamian za rezygnację z Donbasu. Zełenski o propozycji USA” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 8 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/zelenski-usa-po-raz-pierwszy-zaproponowaly-ukrainie-czlonkostwo-nato-w-zamian-za-wycofanie-sie-z-donbasu",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/wojna-na-ukrainie-raport-specjalny-defence24/nato-za-donbas-usa-z-propozycja-dla-ukrainy",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/wiadomosci/waszyngton-rozwaza-nowa-strategie-wobec-ukrainy-donbas-w-zamian-za-nato/j52x8qy",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/dyplomacja/art45488151-ukraina-w-nato-w-zamian-za-rezygnacje-z-donbasu-zelenski-o-propozycji-usa",
+      "PL"
+     ]
+    ],
+    "date": "14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 2,
+    "lead": "Zgłoszone przez 4 kanały: OKO.press, Defence24, Business Insider Polska, Rzeczpospolita."
+   },
+   {
+    "id": "nawrocki-podpisal-ustawe-znoszaca",
+    "dim": "P",
+    "sec": [],
+    "title": "Nawrocki podpisał ustawę znoszącą całkowity zakaz reklamy aptek. Za złamanie zasad kara do 1 mln zł",
+    "summary": "Temat zgłoszony przez 7 kanałów między 16:22 a 10:55. Inne nagłówki: „Paweł Rożyński: Kolejna pułapka na prezydenta? Weto, które może pomóc rządowi” (Rzeczpospolita); „„Stawiam prezydentowi publiczny akt oskarżenia”. Gawkowski zapowiada kolejną ustawę” (RMF24); „Prezydent zawetował ustawę o blokowaniu nielegalnych treści w internecie” (OKO.press). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 12 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/komentarze/art45487811-pawel-rozynski-kolejna-pulapka-na-prezydenta-weto-ktore-moze-pomoc-rzadowi",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polityka/news-weto-prezydenta-nawrockiego-chodzi-o-blokowanie-tresci-w-int,nIdn,1026035",
+      "PL"
+     ],
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/prezydent-zawetowal-ustawe-o-blokowaniu-nielegalnych-tresci-w-internecie",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/prawo/nie-bede-ulegal-szantazom-weto-prezydenta-do-ustawy-o-blokowaniu-tresci/bjfm3dz",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 3,
+    "lead": "Zgłoszone przez 4 kanały: Rzeczpospolita, RMF24 Polska, OKO.press, Business Insider Polska."
+   },
+   {
+    "id": "awaria-microsoftu-uderzyla-w",
+    "dim": "E",
+    "sec": [],
+    "title": "Awaria Microsoftu uderzyła w działanie europejskich giełd. Komunikaty przesyłane przez SMS-y",
+    "summary": "Temat zgłoszony przez 7 kanałów między 15:24 a 10:42. Inne nagłówki: „Microsoft wskazał przyczyny wielkiej awarii. Takie były skutki na całym świecie” (Business Insider Polska); „Microsoft przywrócił wszystkie usługi po globalnej awarii. Problemy były w 74 krajach” (Rzeczpospolita); „Microsoft poinformował o całkowitym przywróceniu usług” (PAP Biznes). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 8 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gospodarka/banki-sady-szpitale-sparalizowane-microsoft-zalicza-historyczna-wpadke/ys70n61",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://cyfrowa.rp.pl/technologie/art45488051-microsoft-przywrocil-wszystkie-uslugi-po-globalnej-awarii-problemy-byly-w-74-krajach",
+      "PL"
+     ],
+     [
+      "PAP Biznes",
+      "https://biznes.pap.pl/wiadomosci/gry-i-technologie/microsoft-poinformowal-o-calkowitym-przywroceniu-uslug",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-nowe-informacje-w-sprawie-awarii-microsoftu-firma-wydala-kom,nId,23573391",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 4,
+    "lead": "Zgłoszone przez 4 kanały: Business Insider Polska, Rzeczpospolita, PAP Biznes, Interia Fakty."
+   },
+   {
+    "id": "szef-wydawcow-tv-republika",
+    "dim": "S",
+    "sec": [],
+    "title": "Szef wydawców TV Republika usłyszał zarzut prokuratorski. Chodzi o wtargnięcie do prokuratury",
+    "summary": "Temat zgłoszony przez 6 kanałów między 19:52 a 12:24. Inne nagłówki: „Jak telewizja Republika manipulowała widzami po ataku w Krakowie – fałsz po fałszu” (OKO.press); „Darowizny na rzecz ofiar ataku w Krakowie. Ministerstwo podjęło działania” (TVN24); „\"Rozważał podobne działania\" jak w Krakowie. Usłyszał zarzut” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "OKO.press",
+      "https://oko.press/jak-telewizja-republika-manipulowala-widzami-po-ataku-w-krakowie-falsz-po-falszu",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/tvnwarszawa/mokotow/warszawa-zadzwonil-do-fundacji-i-mowil-o-ataku-w-krakowie-zostal-zatrzymany-st9338682?source=rss",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/przestepczosc/art45488011-szef-wydawcow-tv-republika-uslyszal-zarzut-prokuratorski-chodzi-o-wtargniecie-do-prokuratury",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-pracownik-telewizji-republika-uslyszal-zarzut-zurek-wdarcie,nId,23573378",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "małopolskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "małopolskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ]
+    ],
+    "top": 5,
+    "lead": "Zgłoszone przez 4 kanały: OKO.press, TVN24, Rzeczpospolita, Interia Fakty."
+   },
+   {
+    "id": "bron-dluga-kamizelki-balistyczne",
+    "dim": "M",
+    "sec": [],
+    "title": "Broń długa, kamizelki balistyczne i nowe procedury. Jak inne państwa zmieniały wyposażenie policji po zamachach?",
+    "summary": "Temat zgłoszony przez 5 kanałów między 13:42 a 12:55. Inne nagłówki: „Stan rannych po zamachu w Krakowie. Rzecznik wojewody przekazał nowy komunikat” (Onet Wiadomości); „\"Jego stan, dzięki Bogu, jest już lepszy\". Nowe doniesienia z Krakowa” (Interia Fakty); „Były antyterrorysta o zamachu w Krakowie. \"Gdy uciekamy, stajemy się potencjalnym celem\"” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 9 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/warszawa/sugerowal-powtorzenie-zamachu-z-krakowa-policja-zatrzymala-57-latka/sxv47sq",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/malopolskie/news-strzelal-do-policjantow-w-krakowie-nowy-ruch-prokuratury-i-s,nId,23573356",
+      "PL"
+     ],
+     [
+      "InfoSecurity24",
+      "https://infosecurity24.pl/za-granica/bron-dluga-kamizelki-balistyczne-i-nowe-procedury-jak-inne-panstwa-zmienialy-wyposazenie-policji-po-zamachach",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/krakow/news-krakow-zarzuty-za-strzaly-w-kierunku-policji-nowe-informacje,nIdn,1026038",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "małopolskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "małopolskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ]
+    ]
+   },
+   {
+    "id": "wlodzimierz-czarzasty-zawiesil-polityka",
+    "dim": "P",
+    "sec": [],
+    "title": "Włodzimierz Czarzasty zawiesił polityka Lewicy. Piotr Kusznieruk może zostać wyrzucony z partii",
+    "summary": "Temat zgłoszony przez 4 kanały między 21:32 a 12:10. Inne nagłówki: „Polityk Lewicy zawieszony po występie na antenie TV Republika. \"Czarzasty sam zadzwonił\"” (Onet Wiadomości); „Polityk Lewicy zawieszony przez Czarzastego. W tle spór o Trybunał” (Interia Fakty); „Czarzasty nie miał litości. Kusznieruk zawieszony w prawach członka partii” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/czarzasty-zawiesil-kusznieruka-po-wystepie-w-tv-republika-partia-chce-go-usunac/qhhct55",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/polityka/art45488161-wlodzimierz-czarzasty-zawiesil-polityka-lewicy-piotr-kusznieruk-moze-zostac-wyrzucony-z-partii",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-polityk-lewicy-zawieszony-przez-czarzastego-w-tle-spor-o-try,nId,23573370",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polityka/news-czarzasty-nie-mial-litosci-kusznieruk-zawieszony-w-prawach-c,nIdn,1026064",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "za-kulisami-negocjacji-pokojowych",
+    "dim": "M",
+    "sec": [],
+    "title": "Za kulisami negocjacji pokojowych. Europa dostała głos, ale może wpaść w pułapkę",
+    "summary": "Temat zgłoszony przez 3 kanały między 16:17 a 11:13. Inne nagłówki: „Costa: Polska w europejskim zespole ds. negocjacji pokojowych w sprawie Ukrainy” (Defence24); „„Absolutnie nie do przyjęcia”. Tusk o Putinie i negocjacjach pokojowych” (Defence24); „Polska wśród państw negocjujących w sprawie wojny Rosji. Bruksela ogłasza” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/politico/rozmowy-w-sprawie-rosji-i-ukrainy-oto-kto-bedzie-reprezentowal-europe/zs68gjb",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/geopolityka/absolutnie-nie-do-przyjecia-tusk-o-putinie-i-negocjacjach-pokojowych",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/ukraina-rosja/news-zapytali-pieskowa-o-negocjacje-pokojowe-tak-mowil-o-wkladzie,nId,23573195",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "afera-na-wegrzech-minister",
+    "dim": "P",
+    "sec": [],
+    "title": "Afera na Węgrzech. Minister Orbana miał sprowadzać z Rosji fałszywe haki na konkurencję",
+    "summary": "Temat zgłoszony przez 3 kanały między 07:50 a 11:37. Inne nagłówki: „Tusk zwrócił się do Orbana. \"Jestem pod wrażeniem jak nigdy wcześniej\"” (Interia Fakty); „Afera na Węgrzech, Tusk drwi z Orbana. \"Drogi Viktorze, jestem pod wrażeniem\"” (Onet Wiadomości); „Afera na Węgrzech z udziałem ministra z rządu Orbana. Miliony euro zakopał w lesie” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-tusk-zwrocil-sie-do-orbana-jestem-pod-wrazeniem-jak-nigdy-wc,nId,23573427",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/afera-na-wegrzech-z-udzialem-ministra-z-rzadu-orbana-miliony-euro-w-lesie/2mcz7gz",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-afera-na-wegrzech-minister-orbana-mial-sprowadzac-z-rosji-fa,nIdn,1026079",
+      "PL"
+     ]
+    ],
+    "date": "14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "tankowiec-uderzyl-w-wycieczkowiec",
+    "dim": "S",
+    "sec": [],
+    "title": "Tankowiec uderzył w wycieczkowiec na Missisipi. Nowe informacje o akcji ratunkowej",
+    "summary": "Temat zgłoszony przez 3 kanały między 22:19 a 09:40. Inne nagłówki: „Tankowiec uderzył w statek wycieczkowy. Już mówią o „cudzie na Missisipi”” (RMF24); „Tankowiec zderzył się z wycieczkowcem w USA. \"Przechylił się na bok\"” (Interia Fakty); „Zderzenie tankowca z wycieczkowcem na rzece Missisipi” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/tankowiec-uderzyl-w-wycieczkowiec-na-missisipi-prawdziwy-cud/yd2yfxh",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-zderzenie-tankowca-z-wycieczkowcem-na-rzece-missisipi,nIdn,1026068",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-tankowiec-zderzyl-sie-z-wycieczkowcem-w-usa-przechylil-sie-n,nId,23573372",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "tusk-apeluje-do-prezydenta",
+    "dim": "P",
+    "sec": [],
+    "title": "Tusk apeluje do prezydenta o pilne podpisanie zmian w rządzie. Wskazuje na rozmowy o funduszach UE",
+    "summary": "Temat zgłoszony przez 3 kanały między 19:08 a 20:11. Inne nagłówki: „Tusk „nie wybiera się” do Pałacu Prezydenckiego. „Sprawa TK jest rozstrzygnięta”” (RMF24); „Tusk nie weźmie udziału w poniedziałkowym spotkaniu ws. TK w Pałacu Prezydenckim” (Bankier.pl); „Prezydent podpisał ustawę podatkową. Nowe zasady będą prostsze” (Business Insider Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-tusk-nie-wybiera-sie-do-palacu-prezydenckiego-sprawa-tk-jest,nIdn,1026055",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Tusk-nie-wezmie-udzialu-w-poniedzialkowym-spotkaniu-ws-TK-w-Palacu-Prezydenckim-9228756.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/prawo/podatki/vat-uproszczony-dla-firm-prezydent-podpisal-nowelizacje/7tc9n4p",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "demokrata-wygral-wybory-na",
+    "dim": "P",
+    "sec": [],
+    "title": "Demokrata wygrał wybory na gubernatora Alaski. Pierwsze takie zwycięstwo od 1998 roku",
+    "summary": "Temat zgłoszony przez 3 kanały między 09:31 a 11:35. Inne nagłówki: „Wyborcza klęska Republikanów na Alasce. Demokraci zwyciężają po 30 latach” (Onet Wiadomości); „Donald Trump traci kolejny stan. Media: gubernatorem Alaski zostanie demokrata” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/wybory-w-usa-kleska-republikanow-na-alasce-demokraci-zwyciezaja-po-30-latach/2wqzbq8",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Zmiana-wladzy-na-Alasce-po-osmiu-latach-rzadow-Republikanow-9228907.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/polityka/art45488061-donald-trump-traci-kolejny-stan-media-gubernatorem-alaski-zostanie-demokrata",
+      "PL"
+     ]
+    ],
+    "date": "14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "trump-spotka-sie-z",
+    "dim": "S",
+    "sec": [],
+    "title": "Trump spotka się z Putinem i Xi Jinpingiem. Jest data i miejsce rozmów USA-Rosja-Chiny",
+    "summary": "Temat zgłoszony przez 3 kanały między 06:23 a 09:41. Inne nagłówki: „Szykuje się spotkanie przywódców trzech mocarstw. Biały Dom potwierdza” (Business Insider Polska); „Spotkanie Trump-Xi-Putin. Podano datę i miejsce, Biały Dom o szczegółach” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gospodarka/donald-trump-spotka-sie-z-wladimirem-putinem-i-xi-jinpingiem-kluczowe-rozmowy-w/pbrf1xf",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-spotkanie-trump-xi-putin-podano-date-i-miejsce-bialy-dom-o-s,nId,23573382",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-trump-spotka-sie-z-putinem-i-xi-jinpingiem-jest-data-i-miejs,nIdn,1026074",
+      "PL"
+     ]
+    ],
+    "date": "14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "wstrzymano-starty-wszystkich-samolotow",
+    "dim": "X",
+    "sec": [],
+    "title": "Wstrzymano starty wszystkich samolotów w USA. Poważna awaria łączności",
+    "summary": "Temat zgłoszony przez 3 kanały między 22:25 a 08:16. Inne nagłówki: „USA wstrzymały loty w całym kraju. Co było powodem?” (Defence24); „Loty samolotów wstrzymane w całych USA. Pierwsze informacje” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/usa-wstrzymaly-loty-w-calym-kraju-co-bylo-powodem",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-loty-samolotow-wstrzymane-w-calych-usa-pierwsze-informacje,nId,23573373",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-wstrzymano-starty-wszystkich-samolotow-w-usa-powazna-awaria-,nIdn,1026069",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "rzad-zamrozi-ceny-gazu",
+    "dim": "P",
+    "sec": [],
+    "title": "Rząd zamrozi ceny gazu na 2027 rok. Maksymalna stawka wyniesie 197,29 zł/MWh",
+    "summary": "Temat zgłoszony przez 3 kanały między 19:22 a 19:51. Inne nagłówki: „Rząd zamrozi ceny gazu na 2027 r. Oszczędności nawet 1,9 tys. zł” (Business Insider Polska); „Dobre wieści dla milionów Polaków. Rząd pokazał projekt ustawy ws. cen gazu” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Rzad-zamrozi-ceny-gazu-na-2027-rok-Maksymalna-stawka-wyniesie-197-29-zl-MWh-9228764.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gospodarka/miliony-polakow-odetchna-z-ulga-rachunki-za-gaz-nie-wzrosna-w-2027/tqz8ybw",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/ekonomia/news-dobre-wiesci-dla-milionow-polakow-rzad-pokazal-projekt-ustaw,nIdn,1026052",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "przelomowy-wyrok-w-norwegii",
+    "dim": "E",
+    "sec": [],
+    "title": "Przełomowy wyrok w Norwegii: plany wydobycia ropy i gazu bezprawne. Co ze złożami Orlenu?",
+    "summary": "Temat zgłoszony przez 3 kanały między 15:16 a 15:49. Inne nagłówki: „AI wygenerowała głos lektora. Przełomowy wyrok warszawskiego sądu” (RMF24 Polska); „Norweski Sąd Najwyższy uznał pozwolenia na wydobycie ropy i gazu za niezgodne z prawem” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polska/news-ai-wygenerowala-glos-lektora-przelomowy-wyrok-warszawskiego-,nIdn,1026031",
+      "PL"
+     ],
+     [
+      "Energetyka24",
+      "https://energetyka24.com/surowce/ropa/przelomowy-wyrok-w-norwegii-plany-wydobycia-ropy-i-gazu-bezprawne-co-ze-zlozami-orlenu",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Sad-Najwyzszy-Norwegii-orzekl-iz-podstawy-prawne-eksploatacji-na-czesci-norweskiego-szelfu-sa-niewazne-9228518.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "mazowieckie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "mazowieckie"
+    ],
+    "pts": [
+     [
+      52.23,
+      21.01,
+      "Warszawa",
+      "l"
+     ]
+    ]
+   },
+   {
+    "id": "hall-nawrocki-i-tusk",
+    "dim": "P",
+    "sec": [],
+    "title": "Hall: Nawrocki i Tusk mają skłonność do pokazywania, kto jest „królem podwórka”",
+    "summary": "Temat zgłoszony przez 2 kanały między 18:08 a 11:09. Inne nagłówki: „Tusk zaprosił Nawrockiego do domu. Gawryluk: To jest groźniejszy premier” (Interia Fakty); „\"Trudno sobie wyobrazić\". Tusk odpowiada Nawrockiemu” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/plus-minus/art45484891-hall-nawrocki-i-tusk-maja-sklonnosc-do-pokazywania-kto-jest-krolem-podworka",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-trudno-sobie-wyobrazic-tusk-odpowiada-nawrockiemu,nId,23573320",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "bezzalogowy-lowca-okretow-podwodnych",
+    "dim": "M",
+    "sec": [],
+    "title": "Bezzałogowy łowca okrętów podwodnych. Arctic Hunter ma wzmocnić Royal Navy",
+    "summary": "Temat zgłoszony przez 2 kanały między 13:38 a 10:00. Inne nagłówki: „SSN(X) przyszłość sił podwodnych US Navy” (ZBiAM); „Royal Navy pozyska trzy nowe okręty przeciwminowe” (ZBiAM). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "ZBiAM",
+      "https://zbiam.pl/royal-navy-pozyska-trzy-nowe-okrety-przeciwminowe/",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/sily-zbrojne/bezzalogowy-lowca-okretow-podwodnych-arctic-hunter-ma-wzmocnic-royal-navy",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "mineli-piratow-i-rakiety",
+    "dim": "E",
+    "sec": [],
+    "title": "Minęli piratów i rakiety, dopłynęli do Świnoujścia. Pierwsza taka dostawa od miesięcy",
+    "summary": "Temat zgłoszony przez 2 kanały między 14:48 a 09:20. Inne nagłówki: „Zwrot na Alasce. Pierwsza taka sytuacja od 28 lat” (RMF24); „Orlen zmienia ceny paliw. Pierwsza taka sytuacja od miesięcy” (WNP.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-zwrot-na-alasce-pierwsza-taka-sytuacja-od-28-lat,nIdn,1026084",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/orlen-zmienia-ceny-paliw-pierwsza-taka-sytuacja-od-miesiecy,1119579.html",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "zachodniopomorskie",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [
+     "zachodniopomorskie"
+    ],
+    "pts": [
+     [
+      53.91,
+      14.25,
+      "Świnoujści"
+     ]
+    ]
+   },
+   {
+    "id": "historyczne-spotkanie-trumpa-putina",
+    "dim": "S",
+    "sec": [],
+    "title": "Historyczne spotkanie Trumpa, Putina i Xi. Głównym tematem redukcja broni jądrowej",
+    "summary": "Temat zgłoszony przez 2 kanały między 17:24 a 09:00. Inne nagłówki: „61 proc. Polaków za rozwojem broni jądrowej przez więcej państw Europy” (Bankier.pl); „\"Żadnych niespodzianek\". Niemcy z prośbą do Trumpa przed spotkaniem” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/61-proc-Polakow-za-rozwojem-broni-jadrowej-przez-wiecej-panstw-Europy-9228771.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-zadnych-niespodzianek-niemcy-z-prosba-do-trumpa-przed-spotka,nId,23573255",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "lekarze-bez-granic-pomagaja",
+    "dim": "S",
+    "sec": [],
+    "title": "Lekarze bez Granic pomagają polskim szpitalom przygotować się na kryzys [ROZMOWA]",
+    "summary": "Temat zgłoszony przez 2 kanały między 14:09 a 21:00. Inne nagłówki: „Polska tarcza antydronowa może trafić za granicę. Pierwsze rozmowy już trwają” (WNP.pl); „Polski producent ma problem. Kryzys w motoryzacji uderza w wyniki” (WNP.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/przemysl/polski-producent-ma-problem-kryzys-w-motoryzacji-uderza-w-wyniki,1119530.html",
+      "PL"
+     ],
+     [
+      "OKO.press",
+      "https://oko.press/lekarze-bez-granic-pomagaja-polskim-szpitalom-przygotowac-sie-na-kryzys-rozmowa",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "23-155-km-w",
+    "dim": "S",
+    "sec": [],
+    "title": "23 155 km w niemal 24,5 godz. Testowy lot Airbusa A350-1000ULR pobił rekord Guinnessa",
+    "summary": "Temat zgłoszony przez 2 kanały między 15:34 a 13:11. Inne nagłówki: „Charles pobił rekord. Najwyższe opady w historii kraju” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/tvnmeteo/swiat/portugalia-charles-pobil-rekord-najwyzsze-opady-w-historii-kraju-st9338917?source=rss",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/logistyka/23-155-km-w-niemal-24-5-godz-testowy-lot-airbusa-a350-1000ulr-pobil-rekord-guinnessa,1119592.html",
+      "PL"
+     ]
+    ],
+    "date": "13.11–14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "slava-upa-na-pomniku",
+    "dim": "M",
+    "sec": [],
+    "title": "„Slava UPA” na pomniku żołnierzy 1. Armii Wojska Polskiego w Warszawie. Kolejny akt wandalizmu",
+    "summary": "Temat zgłoszony przez 2 kanały między 12:26 a 13:09. Inne nagłówki: „Zniszczone dwa pomniki w Warszawie. Sprawą zajmuje się policja” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/tvnwarszawa/srodmiescie/napisy-dotyczace-ukrainy-na-pomnikach-w-warszawie-st9338937?source=rss",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/przestepczosc/art45488241-slava-upa-na-pomniku-zolnierzy-1-armii-wojska-polskiego-w-warszawie-kolejny-akt-wandalizmu",
+      "PL"
+     ]
+    ],
+    "date": "14.11",
+    "region": "mazowieckie",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [
+     "mazowieckie"
+    ],
+    "pts": [
+     [
+      52.23,
+      21.01,
+      "Warszawa",
+      "l"
+     ]
+    ]
+   },
+   {
+    "id": "wielki-pozar-hali-w",
+    "dim": "S",
+    "sec": [],
+    "title": "Wielki pożar hali w Lęborku. Dwaj strażacy ranni w czasie akcji",
+    "summary": "Temat zgłoszony przez 2 kanały między 10:58 a 11:52. Inne nagłówki: „Strażacy ranni w nocnym pożarze pustostanu” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/trojmiasto/wielki-pozar-hali-w-leborku-dwaj-strazacy-ranni-w-czasie-akcji/7l72tvk",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/regiony/trojmiasto/news-strazacy-ranni-w-nocnym-pozarze-pustostanu,nIdn,1026092",
+      "PL"
+     ]
+    ],
+    "date": "14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "epidemia-w-usa-wzrosla",
+    "dim": "S",
+    "sec": [],
+    "title": "Epidemia w USA. Wzrosła liczba śmiertelnych przypadków, wiele zakażeń",
+    "summary": "Temat zgłoszony przez 2 kanały między 08:52 a 11:19. Inne nagłówki: „Odra atakuje w USA. Dziesięć ofiar śmiertelnych i ponad 5400 zakażeń” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/swiat/stany-zjednoczone-odra-znowu-atakuje-dziesiec-ofiar-smiertelnych-i-ponad-5400-zakazen-st9338831?source=rss",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-epidemia-w-usa-wzrosla-liczba-smiertelnych-przypadkow-wiele,nId,23573387",
+      "PL"
+     ]
+    ],
+    "date": "14.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   }
+  ]
+ },
+ {
   "date": "2026-11-13",
   "win": "12.11.2026 09:30 – 13.11.2026 21:09 CET",
   "stop": "13 listopada 2026, 21:09 CET",
