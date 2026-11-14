@@ -2253,7 +2253,7 @@ function reliability(q){
   rows.push(['Pokrycie terenu (lasy, wody, zabudowa)',osmOk?'mid':'lo',osmOk?`OpenStreetMap, stan danych: ${q.osmTime?new Date(q.osmTime).toLocaleDateString('pl-PL'):'nieznany'}${q.osmRemark?' (serwer zgłosił: '+q.osmRemark+')':''}. Kompletność zależy od mapowania rejonu; w Polsce lasy i wody są zwykle dobrze odwzorowane.`:'Brak danych OSM – wnioski oparte tylko na rzeźbie.']);
   if(q.demSrc==='cop')rows.push(['Widoczność i martwe pola','mid',`Linie widoczności liczone na modelu powierzchni Copernicus GLO-30 (DSM, 30 m, dane radarowe z lat 2011–2015), który zawiera rzeczywistą wysokość lasu i zabudowy; obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję. Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.`]);
   else rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',(q.demSrc==='cop-failed'?'Model Copernicus był niedostępny – użyto SRTM. ':'')+(q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`)]);
-  rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
+  rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa, tory kolejowe i nasypy – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
   if(String(q.coverSrc||'').includes('wc'))rows.push(['Pokrycie terenu – ESA WorldCover',String(q.coverSrc).includes('niedost')?'lo':'mid',String(q.coverSrc).includes('niedost')?'Dane WorldCover były niedostępne – użyto samego OpenStreetMap.':'ESA WorldCover v200 (Sentinel-1/2, stan na 2021 r., 10 m, CC BY 4.0) uzupełnia lasy, zabudowę, wody i mokradła. Zmiany po 2021 r. (wycinki, nowa zabudowa) nie są odwzorowane; klasyfikacja satelitarna myli się zwykle w kilku–kilkunastu procentach pikseli.']);
   rows.push(['Kierunki podejścia (AA)',OPS.res?'mid':'lo',OPS.res?'Drogi najkrótszego czasu dla wskazanego kierunku działania i rodzaju ruchu (zakładka „Działania”), liczone po siatce z prędkościami orientacyjnymi zależnymi od dróg, klasy MCOO, nachylenia i pogody. Nie uwzględniają zapór, ognia ani stanu nawierzchni.':'Model najmniejszego oporu po klasach MCOO z preferencją dróg; wskazuje kandydatów w dwóch umownych kierunkach (S→N, W→E). Wskaż kierunek działania przeciwnika w zakładce „Działania”, aby je ukierunkować.']);
   if(OPS.res)rows.push(['Czasy ruchu i linie czasowe','lo','Prędkości orientacyjne (nie z konkretnego regulaminu): pieszo wg funkcji Toblera, pojazdy kołowe 40 km/h po drogach i 4–12 km/h w terenie, gąsienicowe 30 i 8–20 km/h, z poprawką na nachylenie i pogodę. Drogi w modelu to tylko drogi publiczne z OSM; drogi gruntowe i mosty na nich nie przyspieszają ruchu. Czasy służą do porównania wariantów, nie do planowania co do minuty.']);
@@ -2470,7 +2470,7 @@ function infraName(type,t){
   }
   if(type==='fire'){const nm=t.name||'';const osp=/ochotnicz|\bosp\b/i.test(nm);const rest=nm.replace(/^(Ochotnicza|Państwowa)\s+Straż\s+Pożarna\s*/i,'').replace(/^(OSP|PSP)\s*/i,'');return (osp?'OSP':'PSP')+(rest?' '+rest:'')}
   const nm=t.name||t.ref||t['name:pl']||'',extra=[];
-  if(type==='plant'){const src=t['plant:source']||t['generator:source'];if(src)extra.push({solar:'słoneczna',wind:'wiatrowa',gas:'gazowa',coal:'węglowa',hydro:'wodna',biomass:'biomasa',biogas:'biogazowa'}[src]||src);if(t['plant:output:electricity'])extra.push(t['plant:output:electricity'])}
+  if(type==='plant'){const src=t['plant:source']||t['generator:source'];if(src)extra.push({solar:'słoneczna',wind:'wiatrowa',gas:'gazowa',coal:'węglowa',hydro:'wodna',biomass:'biomasa',biogas:'biogazowa'}[src]||src);const po=String(t['plant:output:electricity']||'');if(/\d/.test(po))extra.push(po)}
   if(type==='powerline'&&t.voltage)extra.push(Math.round(+String(t.voltage).split(';')[0]/1000)+' kV');
   if(type==='pipeline'&&t.substance)extra.push({gas:'gaz',oil:'ropa',water:'woda',fuel:'paliwo'}[t.substance]||t.substance);
 
@@ -2505,12 +2505,15 @@ function parseInfra(d,b,avoid,ring){
   for(const it of items){
     sum[it.type]=sum[it.type]||{n:0,len:0};sum[it.type].n++;if(it.len)sum[it.type].len+=it.len;
     if(it.kind==='pt'){
-      const tooClose=out.some(o=>o.kind==='pt'&&o.type===it.type&&o.ll.distanceTo(it.ll)<(it.type==='bridge'?120:60))||(it.type==='bridge'&&avoid.some(a=>a.distanceTo(it.ll)<150));
-      if(tooClose){sum[it.type].n--;continue}
+      const R=['bridge','tunnel','station','plant','military','industry','airfield'].includes(it.type)?150:60;
+      const near=out.find(o=>o.kind==='pt'&&o.type===it.type&&o.ll.distanceTo(it.ll)<R);
+      const tooClose=near||(it.type==='bridge'&&avoid.some(a=>a.distanceTo(it.ll)<150));
+      if(tooClose){sum[it.type].n--;if(near)near.dup=(near.dup||1)+1;continue}
     }
     cnt[it.type]=(cnt[it.type]||0)+1;if(cnt[it.type]>IT[it.type].max)continue;
     out.push(it);
   }
+  out.forEach(o=>{if(o.dup>1)o.sig=(o.sig||IT[o.type].sig)+` W OpenStreetMap zmapowany jako ${o.dup} osobne obiekty w promieniu 150 m (np. kolejne tory lub nitki) – traktuj jako jedno miejsce.`});
   return {items:out,sum};
 }
 function infraNotes(inf,N){
@@ -3121,7 +3124,7 @@ function wxReportHTML(){
   return `<h2>W – Warunki meteorologiczne</h2><p>Stan na ${new Date(wxState.time).toLocaleString('pl-PL')} dla ${mgrs(wxState.lat,wxState.lng)}: ${Math.round(c.temperature_2m)}°C, ${WMO[c.weather_code]||'—'}, wiatr ${c.wind_speed_10m.toFixed(1)} m/s z ${dirTxt(c.wind_direction_10m)} (porywy ${c.wind_gusts_10m.toFixed(0)} m/s), zachmurzenie ${c.cloud_cover}%, widoczność ${c.visibility!=null?(c.visibility/1000).toFixed(1)+' km':'—'}.</p>`
    +tableHTML(['Wpływ na działania','Ocena'],wxState.a.imp.map(([l,t])=>[t,{ok:'korzystny',warn:'ograniczający',bad:'utrudniający'}[l]]))
    +wxMatrixReportHTML()
-   +`<p class="meta">Źródło: Open-Meteo (CC BY 4.0). Progi oceny są orientacyjne i wymagają weryfikacji z aktualnym komunikatem meteorologicznym.</p>`;
+   +`<p class="meta">Źródło: Open-Meteo (CC BY 4.0) – dane z modelu numerycznego dla punktu, a nie pomiar ze stacji. Wiatr, porywy i widzialność potrafią odbiegać od obserwacji najbliższej stacji synoptycznej (model zwykle zawyża wiatr w terenie osłoniętym), a podstawę chmur oszacowano z różnicy temperatury i punktu rosy. Progi oceny są orientacyjne. Przed decyzją zweryfikuj aktualnym komunikatem meteorologicznym (np. IMGW, depesza METAR najbliższego lotniska).</p>`;
 }
 // ================= Macierz wpływu pogody na działania (IPB – Weather Effects Matrix) =================
 const WXT_DEF={visHeliU:1500,visHeliM:5000,baseHeliU:150,baseHeliM:300,gustHeliU:18,gustHeliM:12,
@@ -3181,7 +3184,8 @@ const WXROWS=[
     [h.pr>1&&h.pr<=T.prIrU,'M',`opad ${h.pr.toFixed(1)} mm/h`],[h.soilT!=null&&h.temp!=null&&Math.abs(h.soilT-h.temp)<T.dtIrM,'M',`mały kontrast termiczny (grunt ${h.soilT.toFixed(1)}°C, powietrze ${h.temp.toFixed(1)}°C)`],
     [h.td!=null&&h.temp!=null&&h.temp-h.td<1&&h.vis!=null&&h.vis<3000,'M','wysoka wilgotność, zamglenie']])},
   {k:'art',n:'Artyleria – ogień obserwowany',f:(h,T)=>rate([[h.vis!=null&&h.vis<T.visArtU,'U',`widzialność ${fmtV(h.vis)} – brak obserwacji celu`],[h.vis!=null&&h.vis>=T.visArtU&&h.vis<T.visArtM,'M',`widzialność ${fmtV(h.vis)}`],
-    [h.gust>T.windArtM,'M',`silny wiatr ${h.gust?.toFixed(0)} m/s – potrzebna aktualna depesza meteo`]])},
+    [h.gust>T.windArtM,'M',`silny wiatr ${h.gust?.toFixed(0)} m/s – potrzebna aktualna depesza meteo`],
+    [h.isDay===0,'M','noc – obserwacja celu wymaga termowizji, noktowizji lub oświetlania']])},
   {k:'wh',n:'Przejezdność – pojazdy kołowe',f:(h,T)=>{const fr=h.frozen&&h.snowD*100<T.snowWhM;return rate([
     [!fr&&h.p72>T.p72WhU,'U',`opad 72 h ${h.p72.toFixed(0)} mm – grunt rozmokły`],[!fr&&h.p72>T.p72WhM&&h.p72<=T.p72WhU,'M',`opad 72 h ${h.p72.toFixed(0)} mm`],
     [h.snowD*100>T.snowWhU,'U',`śnieg ${Math.round(h.snowD*100)} cm`],[h.snowD*100>T.snowWhM&&h.snowD*100<=T.snowWhU,'M',`śnieg ${Math.round(h.snowD*100)} cm`],
@@ -3214,7 +3218,8 @@ function buildWxMatrix(d){
   const rows=WXROWS.map(r=>({k:r.k,n:r.n,cells:cols.map(c=>{
     const res=c.hs.map(h=>r.f(h,WXT,ctx)),cnt={F:0,M:0,U:0};res.forEach(([l])=>cnt[l]++);
     const crit=res.some(([l,w])=>l==='U'&&w.some(x=>CRIT.test(x)));
-    let lv=crit||cnt.U>=2?'U':(cnt.M+cnt.U)>=2?'M':'F';
+    const half=Math.max(2,Math.ceil(c.hs.length/2));
+    let lv=crit||cnt.U>=half?'U':(cnt.M+cnt.U)>=2?'M':'F';
     const why=new Set();res.forEach(([l,w])=>{if(LV.indexOf(l)>=LV.indexOf(lv)||l===lv)w.forEach(x=>{if(x[0]!=='K'||lv==='F')why.add(x)})});
     const part=lv!=='F'&&(lv==='U'?cnt.U:cnt.M+cnt.U)<c.hs.length;if(part)why.add(`(przez ${lv==='U'?cnt.U:cnt.M+cnt.U} z ${c.hs.length} h bloku)`);
     const ord={N:0,O:1,K:2,'(':3},wl=[...why].sort((a,b)=>(ord[a[0]]??3)-(ord[b[0]]??3));return {lv,why:wl.length?wl.slice(0,5):['brak ograniczeń']}})}));
@@ -3226,8 +3231,9 @@ function wxInsights(cols,rows,hrs){
     return out.map(([x,y])=>x===y?cols[x].label:`${cols[x].st} – ${cols[y].en}`)};
   const idxOf=(k,lv)=>R(k).cells.map((c,i)=>c.lv===lv||(lv==='MU'&&c.lv!=='F')?i:-1).filter(i=>i>=0);
   const blocks=(k,lv)=>spans(idxOf(k,lv));
-  const lowVis=blocks('obs','U');
-  if(lowVis.length)ins.push(['Ograniczona obserwacja',`${lowVis.join(', ')}: mgła lub ciemna noc. Sprzyja skrytemu przemieszczaniu, infiltracji i rozpoznaniu bliskiemu; utrudnia obserwację i ogień obserwowany obu stron. Przewagę ma strona z lepszą termowizją, noktowizją i radarami.`]);
+  const lowVis=blocks('obs','U'),obsWhy=R('obs').cells.filter(c=>c.lv==='U').flatMap(c=>c.why).join(' ');
+  const obsCause=/widzialno/.test(obsWhy)?(/noc/.test(obsWhy)?'mgła lub zamglenie oraz ciemne noce':'mgła lub zamglenie'):'ciemne noce (brak światła księżyca)';
+  if(lowVis.length)ins.push(['Ograniczona obserwacja',`${lowVis.join(', ')}: ${obsCause}. Sprzyja skrytemu przemieszczaniu, infiltracji i rozpoznaniu bliskiemu; utrudnia obserwację i ogień obserwowany obu stron. Przewagę ma strona z lepszą termowizją, noktowizją i radarami.`]);
   const uav=blocks('uav','U');
   if(uav.length)ins.push(['Przerwy w działaniu BSP',`${uav.join(', ')}: małe BSP obu stron praktycznie wyłączone. To okno ruchu bez dozoru z powietrza, ale też bez własnego rozpoznania i korekty ognia z BSP.`]);
   else if(blocks('uav','M').length)ins.push(['BSP ograniczone',`${blocks('uav','M').join(', ')}: loty małych BSP utrudnione (wiatr, opad, temperatura) – krótszy czas lotu i gorsza jakość obrazu po obu stronach.`]);
@@ -3710,7 +3716,7 @@ function parseOSM(d,b,g){
   const n=g.n,S=b.getSouth(),N=b.getNorth(),W=b.getWest(),E=b.getEast();
   const o={forests:[],waters:[],wets:[],forestMask:new Uint8Array(N2),waterMask:new Uint8Array(N2),
     wetMask:new Uint8Array(N2),builtMask:new Uint8Array(N2),roadMask:new Uint8Array(N2),riverMask:new Uint8Array(N2),
-    scrubMask:new Uint8Array(N2),orchMask:new Uint8Array(N2),quarryMask:new Uint8Array(N2),cliffMask:new Uint8Array(N2),embMask:new Uint8Array(N2),cliffKm:0,embKm:0,quarries:0,
+    railMask:new Uint8Array(N2),scrubMask:new Uint8Array(N2),orchMask:new Uint8Array(N2),quarryMask:new Uint8Array(N2),cliffMask:new Uint8Array(N2),embMask:new Uint8Array(N2),cliffKm:0,embKm:0,quarries:0,
     lines:{river:{},canal:{},stream:{}},roads:{},rail:{},bridges:[],cross:[],minorKm:0,trackKm:0,buildings:0};
   const polyCells=(ring,mask)=>{
     const bb=L.latLngBounds(ring);let cnt=0;
@@ -3756,7 +3762,7 @@ function parseOSM(d,b,g){
         if(r[0].equals(r[r.length-1]))r=r.slice(0,-1);
         const c=clipPoly(r,b);if(c.length<3)continue;
         const cells=polyCells(c,isF?o.forestMask:isW?o.waterMask:o.wetMask);
-        const item={ring:c,name:t.name||'',area:cells*cellA};
+        const item={ring:c,name:t.name||'',area:Math.abs(L.GeometryUtil.geodesicArea(c))};
         if(cells<1)continue;
         (isF?o.forests:isW?o.waters:o.wets).push(item);
       }
@@ -3783,6 +3789,7 @@ function parseOSM(d,b,g){
       }else if(t.highway==='track')o.trackKm+=len/1000;
       else o.minorKm+=len/1000;
     }else if(t.railway){
+      mark(runs,o.railMask);
       if(t.service){o.railSvcKm=(o.railSvcKm||0)+len/1000;continue}
       const lr=t['railway:ref']||t.ref;const k=lr?'linia nr '+lr:(t.name||'tory kolejowe');const grp=o.rail[k]||(o.rail[k]={name:k,len:0,runs:[]});grp.len+=len;grp.runs.push(...runs);
     }
@@ -3838,7 +3845,7 @@ function buildResults(b,g,t,o,km2){
   const mob=new Uint8Array(N2);let mU=0,mR=0,mS=0;const ins=g.inside||new Uint8Array(N2).fill(1),NI=t.NI||N2;
   for(let k=0;k<N2;k++){
     const s=t.slope[k];let c=s>=45?2:s>=30?1:0;
-    if(o){if(o.waterMask[k]||o.wetMask[k]||o.riverMask[k]||o.quarryMask[k]||o.cliffMask[k])c=2;else if(o.forestMask[k]||o.builtMask[k]||o.orchMask[k]||o.embMask[k])c=Math.max(c,1)}
+    if(o){if(o.waterMask[k]||o.wetMask[k]||o.riverMask[k]||o.quarryMask[k]||o.cliffMask[k])c=2;else if(o.forestMask[k]||o.builtMask[k]||o.orchMask[k]||o.embMask[k]||o.railMask[k])c=Math.max(c,1)}
     mob[k]=c;if(ins[k])c===0?mU++:c===1?mR++:mS++;
   }
   t.mob=mob;t.mU=mU/NI;t.mR=mR/NI;t.mS=mS/NI;t.inside=ins;
