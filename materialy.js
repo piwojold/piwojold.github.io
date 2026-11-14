@@ -58,6 +58,16 @@ const MATERIALY = [
     tagi: ["SOCMINT", "Warsztat", "Akademia"]
   },
   {
+    tytul: "TGMON — monitoring Telegrama",
+    rodzaj: "Narzędzie",
+    plik: "tgmon.html",
+    krotko: "TGMON",
+    skrot: "Telegram RU/BY, tłumaczenie, 5W",
+    haslo: true,
+    opis: "Program na Windows do monitorowania publicznych kanałów Telegram (RU/BY): tłumaczenie na polski obok oryginału, własne zapytania, karta 5W w układzie INTREP, raporty PDF/Word i tryb OPSEC. Paczka z instalatorem i instrukcją od zera.",
+    tagi: ["Telegram", "Windows", "5W / INTREP", "OPSEC"]
+  },
+  {
     tytul: "Trening OSINT",
     rodzaj: "Kurs",
     plik: "trening-osint.html",
