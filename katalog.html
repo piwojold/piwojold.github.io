@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wszystkie materiały — Biały Wywiad // Akademia OSINT</title>
+<meta name="description" content="Narzędzia i kursy OSINT po polsku: analiza terenu, Obsidian w pracy analityka i kolejne materiały.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#0f1210;--panel:#171b18;--panel2:#1d221e;--ink:#e3e8e0;--muted:#8d978b;
+  --line:#2a312b;--accent:#8fb573;--accent-ink:#0f1210;--tool:#8fb573;--course:#d9a441;--training:#7ea8ea;
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#eef0ec;--panel:#f8f9f6;--panel2:#ffffff;--ink:#1d221d;--muted:#5d665c;
+    --line:#cfd5cb;--accent:#3d5a3a;--accent-ink:#ffffff;--tool:#3d5a3a;--course:#8a5a00;--training:#1c4f96;}
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 'IBM Plex Sans',system-ui,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid var(--line);padding:44px 0 30px}
+.back{display:inline-block;margin-bottom:22px;font:500 12px/1 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.back:hover{color:var(--ink)}
+.brand{font:500 13px/1 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font:700 clamp(34px,6vw,54px)/1.05 'Barlow Condensed',sans-serif;letter-spacing:.01em;margin:14px 0 10px;text-transform:uppercase}
+.lead{color:var(--muted);max-width:60ch;margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:22px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 13px/1 'IBM Plex Mono',monospace;letter-spacing:.06em;text-transform:uppercase;
+  padding:9px 13px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:3px;cursor:pointer}
+.chip:hover{color:var(--ink);border-color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.search{flex:1 1 220px;min-width:0;margin-left:auto;max-width:320px;font:inherit;font-size:15px;padding:8px 12px;
+  background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:3px}
+.search::placeholder{color:var(--muted)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.count{font:400 12px/1 'IBM Plex Mono',monospace;color:var(--muted);letter-spacing:.06em;padding:10px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;padding-bottom:56px;list-style:none;margin:0;padding-left:0}
+.card{display:flex;flex-direction:column;height:100%;padding:20px 20px 18px;background:var(--panel);
+  border:1px solid var(--line);border-top:3px solid var(--kind);border-radius:3px;color:inherit;text-decoration:none;
+  transition:background .15s,transform .15s}
+.card:hover{background:var(--panel2);transform:translateY(-2px)}
+.kind{font:500 11px/1 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--kind)}
+.card h2{font:600 26px/1.15 'Barlow Condensed',sans-serif;letter-spacing:.01em;margin:12px 0 8px}
+.card p{margin:0 0 16px;color:var(--muted);font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding:0;list-style:none}
+.tags li{font:400 11px/1 'IBM Plex Mono',monospace;color:var(--muted);border:1px solid var(--line);padding:5px 7px;border-radius:2px}
+.go{margin-top:16px;font:500 13px/1 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--kind)}
+.empty{color:var(--muted);padding:30px 0 60px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font:400 12px/1.6 'IBM Plex Mono',monospace;letter-spacing:.04em}
+footer a{color:inherit}
+@media (max-width:640px){.search{flex-basis:100%;max-width:none;margin-left:0}}
+@media (prefers-reduced-motion: reduce){.card{transition:none}.card:hover{transform:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="./">← Strona główna</a>
+  <div class="brand">Biały Wywiad // Akademia OSINT</div>
+  <h1>Wszystkie materiały</h1>
+  <p class="lead">Wybierz materiał. Wszystko działa w przeglądarce, bez instalacji i bez logowania.</p>
+</div></header>
+
+<main class="wrap">
+  <div class="bar">
+    <div class="chips" id="chips" role="group" aria-label="Filtruj według rodzaju"></div>
+    <input class="search" id="q" type="search" placeholder="Szukaj…" aria-label="Szukaj w materiałach">
+  </div>
+  <div class="count" id="count" aria-live="polite"></div>
+  <ul class="grid" id="grid"></ul>
+  <noscript>
+    <ul>
+      <li><a href="ocoka.html">OCOKA Planer</a></li>
+      <li><a href="obsidian-kurs.html">Obsidian dla OSINT — Kompletny Kurs</a></li>
+      <li><a href="obsidian-osint-field-manual.html">Obsidian OSINT Field Manual</a></li>
+      <li><a href="dobowy-brief.html">Dobowy brief OSINT Polska</a></li>
+      <li><a href="platforma-osint.html">Biały Wywiad — Platforma OSINT (hasło)</a></li>
+      <li><a href="trening-osint.html">Trening OSINT (hasło)</a></li>
+      <li><a href="trening-slp-2222.html">Trening SLP 2222 (hasło)</a></li>
+      <li><a href="trening-slp-3333.html">Trening SLP 3333 (hasło)</a></li>
+      <li><a href="repetytorium-osmoklasisty.html">Repetytorium Ósmoklasisty — angielski</a></li>
+    </ul>
+  </noscript>
+</main>
+
+<footer><div class="wrap">Biały Wywiad // Akademia OSINT · <a href="https://github.com/piwojold">github.com/piwojold</a></div></footer>
+
+<script src="materialy.js"></script>
+<script>
+const MNOGA = Object.fromEntries(Object.entries(RODZAJE).map(([k,v])=>[k,v.mnoga]));
+const KOLORY = Object.fromEntries(Object.entries(RODZAJE).map(([k,v])=>[k,v.kolor]));
+const grid = document.getElementById("grid"), chips = document.getElementById("chips"),
+      q = document.getElementById("q"), count = document.getElementById("count");
+const zUrl = new URLSearchParams(location.search).get("rodzaj");
+let aktywny = (Object.entries(RODZAJE).find(([k,v]) => v.slug === zUrl) || ["Wszystko"])[0];
+
+function el(tag, cls, text){ const e = document.createElement(tag); if(cls) e.className = cls; if(text != null) e.textContent = text; return e; }
+
+["Wszystko", ...new Set(MATERIALY.map(m => m.rodzaj))].forEach(r => {
+  const b = el("button", "chip", r === "Wszystko" ? r : (MNOGA[r] || r) + " (" + MATERIALY.filter(m => m.rodzaj === r).length + ")");
+  b.type = "button"; b.setAttribute("aria-pressed", r === aktywny);
+  b.onclick = () => { aktywny = r; const u = new URL(location); if(r === "Wszystko") u.searchParams.delete("rodzaj"); else u.searchParams.set("rodzaj", RODZAJE[r] ? RODZAJE[r].slug : r); history.replaceState(null, "", u); [...chips.children].forEach(c => c.setAttribute("aria-pressed", c === b)); rysuj(); };
+  chips.appendChild(b);
+});
+
+function rysuj(){
+  const s = q.value.trim().toLowerCase();
+  const lista = MATERIALY.filter(m =>
+    (aktywny === "Wszystko" || m.rodzaj === aktywny) &&
+    (!s || [m.tytul, m.opis, m.rodzaj, ...(m.tagi || [])].join(" ").toLowerCase().includes(s)));
+  grid.replaceChildren(...lista.map(m => {
+    const li = el("li"), a = el("a", "card");
+    a.href = m.plik; a.style.setProperty("--kind", KOLORY[m.rodzaj] || "var(--accent)");
+    a.append(el("span", "kind", m.rodzaj + (m.haslo ? " · 🔒" : "")), el("h2", "", m.tytul), el("p", "", m.opis));
+    const t = el("ul", "tags"); (m.tagi || []).forEach(x => t.appendChild(el("li", "", x))); if(m.haslo) t.appendChild(el("li", "", "🔒 hasło")); a.appendChild(t);
+    a.appendChild(el("span", "go", "Otwórz →"));
+    li.appendChild(a); return li;
+  }));
+  count.textContent = lista.length ? "Pozycji: " + lista.length : "";
+  let e = document.getElementById("empty");
+  if(!lista.length && !e){ e = el("p", "empty", "Nic nie pasuje do wyszukiwania."); e.id = "empty"; grid.after(e); }
+  else if(lista.length && e) e.remove();
+}
+q.addEventListener("input", rysuj);
+rysuj();
+</script>
+</body>
+</html>
