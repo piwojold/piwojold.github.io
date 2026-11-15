@@ -4237,8 +4237,13 @@ let lsWarned=false;
 function writeLS(){
   const fc=toGeoJSON();
   if(!fc.features.length&&!autoBox&&!areaEl.value.trim()&&!Object.values(notes).some(x=>x.trim()))return;
-  try{localStorage.setItem('ocoka-v2',JSON.stringify(fc));lsWarned=false;}
-  catch(e){
+  try{
+    const next=JSON.stringify(fc),prev=localStorage.getItem('ocoka-v2');
+    // Kopia poprzedniego poprawnego stanu pozwala odzyskać analizę,
+    // jeśli główny wpis zostanie uszkodzony lub nadpisany niepełnymi danymi.
+    if(prev){try{const p=JSON.parse(prev);if(p&&p.type==='FeatureCollection')localStorage.setItem('ocoka-v2-backup',prev)}catch(e){console.warn('OCOKA: pominięto uszkodzony stan przy tworzeniu kopii',e)}}
+    localStorage.setItem('ocoka-v2',next);lsWarned=false;
+  }catch(e){
     console.warn('OCOKA: nie udało się zapisać analizy w localStorage',e);
     if(!lsWarned){lsWarned=true;toast('Nie zapisano zmian lokalnie. Pobierz kopię analizy (Zapisz plik) i sprawdź miejsce/prywatność przeglądarki.');}
   }
@@ -4879,7 +4884,8 @@ function opsRestore(){
 
 // ================= Start =================
 renderCatBar();
-let saved=null;try{saved=JSON.parse(localStorage.getItem('ocoka-v2')||'null')}catch(e){}
+let saved=null;try{saved=JSON.parse(localStorage.getItem('ocoka-v2')||'null')}catch(e){console.warn('OCOKA: główny zapis jest uszkodzony',e)}
+if(!saved){try{saved=JSON.parse(localStorage.getItem('ocoka-v2-backup')||'null');if(saved)console.info('OCOKA: przywrócono kopię zapasową analizy')}catch(e){console.warn('OCOKA: kopia zapasowa jest uszkodzona',e)}}
 load({type:'FeatureCollection',features:[],ocoka:{relief:saved&&saved.ocoka&&saved.ocoka.relief,base:saved&&saved.ocoka&&saved.ocoka.base}});
 map.setView([52.0,19.3],6);
 showWelcome(true);showManual(false);
