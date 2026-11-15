@@ -26,7 +26,7 @@ test('eksport analizy ma poprawny format GeoJSON', async ({ page }) => {
   // Interakcja przez UI: eksport nie powinien kończyć się wyjątkiem.
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
-  const exportButton = page.getByRole('button', { name: /geojson/i });
+  const exportButton = page.locator('#xGeo');
   if (await exportButton.count()) {
     const download = page.waitForEvent('download');
     await exportButton.first().click();
