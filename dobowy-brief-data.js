@@ -1,5 +1,840 @@
 window.BRIEF_EDITIONS = [
  {
+  "date": "2026-11-15",
+  "win": "14.11.2026 13:56 – 15.11.2026 13:56 CET",
+  "stop": "15 listopada 2026, 13:56 CET",
+  "kind": "auto",
+  "note": "Wydanie automatyczne: zgrupowane nagłówki z kanałów RSS, bez analizy i bez redakcji człowieka.",
+  "obraz": [
+   "To wydanie powstało automatycznie. Skrypt odpytał 29 kanałów RSS, odpowiedziało 28, i zebrał 270 pozycji opublikowanych w ciągu ostatnich 24 godzin. Powtarzające się tematy zostały połączone w 205 wątków, z których w wydaniu znalazło się 25 najszerzej relacjonowanych.",
+   "Rozkład wątków po przypisaniu słowami kluczowymi: wojsko i bezpieczeństwo: 10, społeczeństwo: 7, polityka: 5, infrastruktura: 2, gospodarka: 1. Przypisanie wymiaru PMESII i regionu jest mechaniczne i bywa błędne, a kolejność wątków odzwierciedla tylko liczbę kanałów, które podały temat, a nie jego wagę.",
+   "Czego tu nie ma: zbiorczej oceny sytuacji, weryfikacji informacji, wskazania rozbieżności między źródłami ani wniosków analitycznych. Każdy wpis to zestaw nagłówków z linkami, które trzeba otworzyć i ocenić samodzielnie. W tym przebiegu nie odpowiedziało 1 kanałów: PAP Biznes."
+  ],
+  "events": [
+   {
+    "id": "trump-towers-nie-powstana",
+    "dim": "E",
+    "sec": [],
+    "title": "Trump Towers nie powstaną. Europejski kraj zamyka drzwi przed kontrowersyjną inwestycją",
+    "summary": "Temat zgłoszony przez 7 kanałów między 17:41 a 12:15. Inne nagłówki: „Trump, Putin i Xi spotkają się w Chinach. Rozmowy o kontroli zbrojeń nuklearnych” (Defence24); „\"Trump Towers\" nie powstaną. Rząd Serbii rozwiązał umowę z firmą Jareda Kushnera” (TVN24); „„Trump Towers” nie powstaną w Belgradzie. Serbia zrywa umowę z zięciem Trumpa” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/biznes/belgrad-bez-kompleksu-trumpa-skandal-i-zarzuty-wobec-serbskich-urzednikow/ec67q90",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/geopolityka/trump-putin-i-xi-spotkaja-sie-w-chinach-rozmowy-o-kontroli-zbrojen-nuklearnych",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/swiat/serbia-umowa-na-budowe-w-belgradzie-z-firma-jareda-kushnera-rozwiazana-st9339598?source=rss",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/polityka/art45489581-trump-towers-nie-powstana-w-belgradzie-serbia-zrywa-umowe-z-zieciem-trumpa",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 1,
+    "lead": "Zgłoszone przez 4 kanały: Business Insider Polska, Defence24, TVN24, Rzeczpospolita."
+   },
+   {
+    "id": "sondaz-polacy-krytyczni-wobec",
+    "dim": "S",
+    "sec": [],
+    "title": "Sondaż: Polacy krytyczni wobec sposobu, w jaki Tomasz Sakiewicz relacjonował zamach w Krakowie",
+    "summary": "Temat zgłoszony przez 5 kanałów między 15:57 a 09:24. Inne nagłówki: „Duża część Polaków źle ocenia relację TV Republika po zamachu w Krakowie [SONDAŻ]” (Onet Wiadomości); „Incydent przed gdańską uczelnią. Napis nawiązywał do zamachu w Krakowie” (Interia Fakty); „Pogrzeby ofiar zamachu w Krakowie. \"Ten ból, jest bólem nas wszystkich\"” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 6 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/ponad-polowa-badanych-zle-ocenia-tv-republike-chodzi-o-zamach-w-krakowie/n8dpnhr",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/spoleczenstwo/art45489501-sondaz-polacy-krytyczni-wobec-sposobu-w-jaki-tomasz-sakiewicz-relacjonowal-zamach-w-krakowie",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-pozegnano-ofiary-zamachu-w-krakowie-ten-bol-jest-bolem-nas-w,nId,23573504",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-14/pogrzeby-ofiar-strzelaniny-w-krakowie-poruszajace-slowa-podczas-uroczystosci/",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "małopolskie, pomorskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "małopolskie",
+     "pomorskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ],
+     [
+      54.35,
+      18.65,
+      "Gdańsk"
+     ]
+    ],
+    "top": 2,
+    "lead": "Zgłoszone przez 4 kanały: Onet Wiadomości, Rzeczpospolita, Interia Fakty, Polsat News."
+   },
+   {
+    "id": "cialo-mlodej-kobiety-w",
+    "dim": "M",
+    "sec": [],
+    "title": "Ciało młodej kobiety w Darłowie. Makabryczne odkrycie w miejscu poszukiwań Emilii Koprowskiej",
+    "summary": "Temat zgłoszony przez 5 kanałów między 11:15 a 12:11. Inne nagłówki: „Znaleziono ciało kobiety. Ustalają, czy to zaginiona Emilia Koprowska” (TVN24); „W okolicy Darłowa znaleziono ciało. Prokuratura i policja na miejscu” (RMF24); „W Palczewicach znaleziono ciało. To może być zaginiona Emilia Koprowska” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/szczecin/palczewice-znaleziono-cialo-kobiety-czy-to-zaginiona-emilia-koprowska-st9339822?source=rss",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/regiony/szczecin/news-w-okolicy-darlowa-znaleziono-cialo-prokuratura-i-policja-na-,nIdn,1026168",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zachodniopomorskie/news-w-palczewicach-znaleziono-cialo-to-moze-byc-zaginiona-emilia,nId,23573635",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-15/cialo-mlodej-kobiety-w-darlowie-makabryczne-odkrycie-w-miejscu-poszukiwan-emilii-koprowskiej/",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 3,
+    "lead": "Zgłoszone przez 4 kanały: TVN24, RMF24, Interia Fakty, Polsat News."
+   },
+   {
+    "id": "zamiast-25-tysiecy-tylko",
+    "dim": "M",
+    "sec": [],
+    "title": "Zamiast 25 tysięcy - tylko 5 tysięcy żołnierzy. Redukcja wojsk USA w Europie mniejsza niż oczekiwano",
+    "summary": "Temat zgłoszony przez 4 kanały między 21:53 a 10:30. Inne nagłówki: „Bloomberg: USA ograniczą redukcję wojsk w Europie” (Defence24); „Media: USA zmieniają plany w sprawie wojsk w Europie. Ujawniono szczegóły” (Interia Fakty); „Redukcja wojsk USA w Europie mniejsza niż przewidywano?” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/bloomberg-usa-ogranicza-redukcje-wojsk-w-europie",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Zamiast-25-tysiecy-tylko-5-tysiecy-zolnierzy-Redukcja-wojsk-USA-w-Europie-mniejsza-niz-oczekiwano-9228995.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-media-usa-zmieniaja-plany-w-sprawie-wojsk-w-europie-ujawnion,nId,23573556",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-redukcja-wojsk-usa-w-europie-mniejsza-niz-przewidywano,nIdn,1026138",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 4,
+    "lead": "Zgłoszone przez 4 kanały: Defence24, Bankier.pl, Interia Fakty, RMF24."
+   },
+   {
+    "id": "wybuchu-nie-poczul-myslal",
+    "dim": "M",
+    "sec": [],
+    "title": "Wybuchu nie poczuł, myślał, że to coś innego. Jest raport po akcie terroru na polskiej kolei",
+    "summary": "Temat zgłoszony przez 4 kanały między 07:33 a 10:16. Inne nagłówki: „Raporty w sprawie dywersji gotowe. Komisja o \"potencjalnym zagrożeniu terrorystycznym\"” (TVN24); „Akt dywersji na Lubelszczyźnie. Jest kluczowy raport, mowa o terroryzmie” (Interia Fakty); „Komisja zbadała zdarzenia na torach w Polsce. \"Działania o charakterze terrorystycznym\"” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/polska/dywersja-na-kolei-w-2025-roku-komisja-badania-wypadkow-kolejowych-opublikowala-raporty-st9339627?source=rss",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-akty-dywersji-na-lubelszczyznie-opublikowano-kluczowy-raport,nId,23573592",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/komisja-badania-wypadkow-zbadala-zdarzenia-na-torach-w-polsce/tsywgl7",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-wybuchu-nie-poczul-myslal-ze-to-cos-innego-jest-raport-po-ak,nIdn,1026147",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "lubelskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "lubelskie"
+    ],
+    "top": 5,
+    "lead": "Zgłoszone przez 4 kanały: TVN24, Interia Fakty, Onet Wiadomości, RMF24."
+   },
+   {
+    "id": "premier-bulgarii-nie-bedziemy",
+    "dim": "M",
+    "sec": [],
+    "title": "Premier Bułgarii: Nie będziemy więcej przekazywać Ukrainie broni i amunicji",
+    "summary": "Temat zgłoszony przez 4 kanały między 14:00 a 09:24. Inne nagłówki: „Ten kraj już rezygnuje. „Nie przekażemy więcej broni ani amunicji”” (RMF24); „Takie inwestycje mogą się zwrócić już po roku. Będzie ich coraz więcej” (WNP.pl); „Polacy gromadzą coraz więcej w PPK. Aktywa funduszy biją rekordy” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/konflikty-zbrojne/art45489731-premier-bulgarii-nie-bedziemy-wiecej-przekazywac-ukrainie-broni-i-amunicji",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-ten-kraj-juz-rezygnuje-nie-przekazemy-wiecej-broni-ani-amuni,nIdn,1026145",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/takie-inwestycje-moga-sie-zwrocic-juz-po-roku-bedzie-ich-coraz-wiecej,1119045.html",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Polacy-gromadza-coraz-wiecej-w-PPK-Aktywa-funduszy-bija-rekordy-9227957.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "oburzajace-napisy-na-polskich",
+    "dim": "M",
+    "sec": [],
+    "title": "Oburzające napisy na polskich pomnikach. Ambasada Ukrainy reaguje i wskazuje na Rosję",
+    "summary": "Temat zgłoszony przez 3 kanały między 21:17 a 13:46. Inne nagłówki: „Graffiti chwalące UPA na polskich pomnikach. Ambasada Ukrainy reaguje” (Interia Fakty); „Ambasada Ukrainy wskazuje na Rosję. Chodzi o dewastacje pomników” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/napisy-slava-upa-na-dwoch-pomnikach-w-polsce-ambasada-ukrainy-reaguje/t3nxj1v",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-graffiti-chwalace-upa-na-polskich-pomnikach-ambasada-ukrainy,nId,23573597",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-14/upa-na-polskich-pomnikach-ambasada-ukrainy-apeluje/",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "emocje-w-studiu-wokol",
+    "dim": "P",
+    "sec": [],
+    "title": "Emocje w studiu wokół weta Karola Nawrockiego. \"Prezydent ma chore podejście do wolności\"",
+    "summary": "Temat zgłoszony przez 3 kanały między 10:45 a 13:35. Inne nagłówki: „Burza po wecie prezydenta. \"Klęknął przed wielkimi big techami\"” (TVN24); „\"Nawrocki uległ lobbingowi\". Burza po decyzji prezydenta” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/biznes/tech/burza-po-wecie-prezydenta-stanal-po-stronie-big-techow-st9340015?source=rss",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-15/nawrocki-ulegl-lobbingowi-nie-cichna-echa-po-wecie-prezydenta/",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/emocje-w-studiu-wokol-weta-karola-nawrockiego-ma-chore-podejscie-do-wolnosci/q21my8q",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "kradli-rope-z-rurociagow",
+    "dim": "P",
+    "sec": [],
+    "title": "Kradli ropę z rurociągów wartą dziesiątki milionów dolarów. Służby ujawniły wielki proceder",
+    "summary": "Temat zgłoszony przez 3 kanały między 20:00 a 12:48. Inne nagłówki: „Afera z ropą znikającą z rurociągów. Straty Iraku sięgały milionów dolarów” (Business Insider Polska); „Miliony dinarów w darowiznach. Serbskie służby zatrzymały byłego ministra” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gielda/surowce/afera-naftowa-w-iraku-premier-usuwa-dziewieciu-urzednikow-po-dochodzeniu/p6hmj3k",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/biznes/pieniadze/przemyt-ropy-w-iraku-przynosil-miliony-sledztwo-w-bastionie-kataib-hezbollah-st9339651?source=rss",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Miliony-dinarow-w-darowiznach-Serbskie-sluzby-zatrzymaly-bylego-ministra-9227452.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "ukrainskie-drony-trafily-w",
+    "dim": "M",
+    "sec": [],
+    "title": "Ukraińskie drony trafiły w rosyjską bazę lotniczą i zakłady petrochemiczne",
+    "summary": "Temat zgłoszony przez 3 kanały między 16:58 a 12:03. Inne nagłówki: „Iran informuje o ataku na bazę USA, duży pożar w rosyjskim Tatarstanie” (Rzeczpospolita); „Rosyjskie drony uderzyły w ważny obiekt. Cios w ukraińską infrastrukturę” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/ukrainskie-drony-trafily-w-rosyjska-baze-lotnicza-i-zaklady-petrochemiczne",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/przeglad-wydarzen-z-nocy/art45489511-iran-informuje-o-ataku-na-baze-usa-duzy-pozar-w-rosyjskim-tatarstanie",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/ukraina-rosja/news-rosyjskie-drony-uderzyly-w-wazny-obiekt-cios-w-ukrainska-inf,nId,23573499",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "waza-sie-losy-oplaty",
+    "dim": "S",
+    "sec": [],
+    "title": "Ważą się losy opłaty pielgrzymkowej. Wiadomo, jaka jest maksymalna stawka",
+    "summary": "Temat zgłoszony przez 3 kanały między 15:16 a 11:42. Inne nagłówki: „Komisarz Częstochowy zapowiedział wprowadzenie opłaty \"pielgrzymkowej\"” (TVN24); „„Opłata pielgrzymkowa” w Częstochowie coraz bliżej. Padła konkretna kwota” (RMF24 Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/biznes/czestochowa-moze-wprowadzic-oplate-dla-pielgrzymow-decyzja-jest-w-jego-rekach/4q5bg54",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/katowice/czestochowa-komisarz-chce-wprowadzenia-oplaty-pielgrzymkowej-st9339534?source=rss",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/slaskie/news-oplata-pielgrzymkowa-w-czestochowie-coraz-blizej-padla-konkr,nIdn,1026116",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "śląskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "śląskie"
+    ],
+    "pts": [
+     [
+      50.81,
+      19.12,
+      "Częstochow"
+     ]
+    ]
+   },
+   {
+    "id": "wysoki-ranga-dowodca-hamasu",
+    "dim": "S",
+    "sec": [],
+    "title": "Wysoki rangą dowódca Hamasu zginął w izraelskim nalocie. Pomagał w planowaniu ataku",
+    "summary": "Temat zgłoszony przez 3 kanały między 08:47 a 10:14. Inne nagłówki: „Nie żyje jeden z dowódców Hamasu. Odegrał kluczową rolę w ataku z 2023 r.” (Interia Fakty); „Izrael uderzył w Hamas. Nie żyje wysoki rangą dowódca” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/bliski-wschod/news-nie-zyje-jeden-z-dowodcow-hamasu-odegral-kluczowa-role-w-ata,nId,23573613",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-izrael-uderzyl-w-hamas-nie-zyje-wysoki-ranga-dowodca,nIdn,1026157",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Wysoki-ranga-dowodca-Hamasu-zginal-w-izraelskim-nalocie-Pomagal-w-planowaniu-ataku-9229028.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "zaskakujacy-kandydat-na-prezydenta",
+    "dim": "P",
+    "sec": [],
+    "title": "Zaskakujący kandydat na prezydenta Niemiec. AfD stawia na słynnego piłkarza",
+    "summary": "Temat zgłoszony przez 3 kanały między 19:26 a 09:50. Inne nagłówki: „Nowa książka Bidena. Były prezydent USA ostro rozlicza Trumpa” (Bankier.pl); „AfD ogłosiła kandydata na prezydenta. To były mistrz świata w piłce nożnej” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Nowa-ksiazka-Bidena-Byly-prezydent-USA-ostro-rozlicza-Trumpa-9226410.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-afd-oglosila-kandydata-na-prezydenta-to-byly-mistrz-swiata-w,nId,23573535",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-zaskakujacy-kandydat-na-prezydenta-niemiec-afd-stawia-na-sly,nIdn,1026133",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "rozlegly-pozar-pod-krakowem",
+    "dim": "S",
+    "sec": [],
+    "title": "Rozległy pożar pod Krakowem. Problemy podczas akcji, ranna druhna OSP",
+    "summary": "Temat zgłoszony przez 3 kanały między 22:10 a 08:51. Inne nagłówki: „Duży pożar pod Krakowem. Ranna druhna OSP” (Polsat News); „Potężny pożar warsztatu samochodowego. Straż pożarna w akcji” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/malopolskie/news-rozlegly-pozar-pod-krakowem-problemy-podczas-akcji-ranna-dru,nId,23573594",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-15/rozlegly-pozar-w-malopolsce-plonal-warsztat-samochodowy-ranna-druhna-osp/",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/regiony/krakow/news-potezny-pozar-warsztatu-samochodowego-straz-pozarna-w-akcji,nIdn,1026139",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "małopolskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "małopolskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ]
+    ]
+   },
+   {
+    "id": "przelom-w-misjach-kosmicznych",
+    "dim": "M",
+    "sec": [],
+    "title": "Przełom w misjach kosmicznych SpaceX. Rakieta Starship wróciła z orbity do bazy",
+    "summary": "Temat zgłoszony przez 3 kanały między 00:09 a 08:38. Inne nagłówki: „Historyczny wyczyn rakiety Starship. „To przełomowy moment”” (RMF24); „\"Przełomowy moment\". Rakieta Starship przechwycona przez wieżę startową” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Historyczne-ladowanie-statku-Starship-Po-raz-pierwszy-przechwycily-go-robotyczne-ramiona-wiezy-startowej-9228994.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-historyczny-wyczyn-rakiety-starship-to-przelomowy-moment,nIdn,1026143",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-przelomowy-moment-rakieta-starship-przechwycona-przez-wieze,nId,23573572",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "slava-upa-na-polskich",
+    "dim": "M",
+    "sec": [],
+    "title": "„Slava UPA” na polskich pomnikach. Policja szuka sprawców, jednego już zatrzymano",
+    "summary": "Temat zgłoszony przez 2 kanały między 19:45 a 10:57. Inne nagłówki: „Protesty we Francji przerodziły się w starcia z policją. Wielu zatrzymanych” (RMF24); „Banderowskie hasła na polskich pomnikach. Ukrainiec zatrzymany” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-protesty-we-francji-przerodzily-sie-w-starcia-z-policja-wiel,nIdn,1026136",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/geopolityka/banderowskie-hasla-na-polskich-pomnikach-ukrainiec-zatrzymany",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "eugeniusz-smolar-donald-trump",
+    "dim": "M",
+    "sec": [],
+    "title": "Eugeniusz Smolar: Donald Trump nie jest prorosyjski, choć mówi do Ukraińców jak Lord Farquaad",
+    "summary": "Temat zgłoszony przez 2 kanały między 08:08 a 10:18. Inne nagłówki: „Donald Trump wycofa żołnierzy z Europy. Zapowiedzi rozjeżdżają się z oczekiwaniami” (Business Insider Polska); „Bloomberg: USA mogą wycofać z Europy ok. 5 tys. żołnierzy. Ale wschodnia flanka ma zyskać” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/wiadomosci/donald-trump-wycofa-zolnierzy-z-europy-zapowiedzi-rozjezdzaja-sie-z-oczekiwaniami/2jt6t90",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/plus-minus/art45485881-eugeniusz-smolar-donald-trump-nie-jest-prorosyjski-choc-mowi-do-ukraincow-jak-lord-farquaad",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "spor-o-trybunal-konstytucyjny",
+    "dim": "P",
+    "sec": [],
+    "title": "Spór o Trybunał Konstytucyjny. Prezydent \"nie może być jednocześnie zawodnikiem i arbitrem\"",
+    "summary": "Temat zgłoszony przez 2 kanały między 15:42 a 13:26. Inne nagłówki: „Trybunał Konstytucyjny działa. Przegląda sto najstarszych spraw” (OKO.press). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/polska/spor-o-trybunal-konstytucyjny-bedzie-reset-politycy-komentuja-st9339687?source=rss",
+      "PL"
+     ],
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/trybunal-konstytucyjny-dziala-przeglada-sto-najstarszych-spraw",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "rekordowa-liczba-migrantow-z",
+    "dim": "S",
+    "sec": [],
+    "title": "Rekordowa liczba migrantów z Afryki dotarła na Wyspy Kanaryjskie. Najwięcej od 2020 roku",
+    "summary": "Temat zgłoszony przez 2 kanały między 12:53 a 13:23. Inne nagłówki: „Rekord na Wyspach Kanaryjskich. Prawie 1,5 tys. migrantów przypłynęło z Afryki” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/spoleczenstwo/art45490071-rekordowa-liczba-migrantow-z-afryki-dotarla-na-wyspy-kanaryjskie-najwiecej-od-2020-roku",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-rekord-na-wyspach-kanaryjskich-prawie-15-tys-migrantow-przyp,nIdn,1026174",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "wiemy-kiedy-moze-przyjsc",
+    "dim": "X",
+    "sec": [],
+    "title": "Wiemy, kiedy może przyjść zima ze śniegiem i mrozem. Prognozy wskazują datę [MAPY]",
+    "summary": "Temat zgłoszony przez 2 kanały między 20:51 a 13:09. Inne nagłówki: „Jaka pogoda zimą 2027? IMGW przygotowało eksperymentalną prognozę” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/pogoda/wiemy-kiedy-moze-przyjsc-zima-ze-sniegiem-i-mrozem-jednoznaczne-prognozy/5dkmpqt",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-jaka-pogoda-zima-2027-imgw-przygotowalo-eksperymentalna-prog,nId,23573530",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "tak-bedzie-wygladala-pogoda",
+    "dim": "X",
+    "sec": [],
+    "title": "Tak będzie wyglądała pogoda w Polsce za kilkadziesiąt lat. Specjaliści kreślą scenariusz",
+    "summary": "Temat zgłoszony przez 2 kanały między 10:50 a 13:00. Inne nagłówki: „Polskie lotniska czeka wielka zmiana. Tak będzie wyglądać latanie przyszłości” (WNP.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/logistyka/polskie-lotniska-czeka-wielka-zmiana-tak-bedzie-wygladac-latanie-przyszlosci,1118028.html",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/pogoda/tak-moze-wygladac-pogoda-w-polsce-za-kilkadziesiat-lat-beda-drastyczne-zmiany/fez1xdj",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "zelenski-alarmuje-ograniczenia-starshiel",
+    "dim": "M",
+    "sec": [],
+    "title": "Zełenski alarmuje: Ograniczenia Starshield utrudniają walkę z rosyjskimi dronami",
+    "summary": "Temat zgłoszony przez 2 kanały między 18:00 a 12:57. Inne nagłówki: „Polskie radary na wojnie z rosyjskimi dronami. Ukraina uruchomiła ich serwis” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/konflikty-zbrojne/art45490011-zelenski-alarmuje-ograniczenia-starshield-utrudniaja-walke-z-rosyjskimi-dronami",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/wojna-na-ukrainie-raport-specjalny-defence24/polskie-radary-na-wojnie-z-rosyjskimi-dronami-ukraina-uruchomila-ich-serwis",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "biden-o-zelenskim-kaprysny",
+    "dim": "S",
+    "sec": [],
+    "title": "Biden o Zełenskim: Kapryśny i mniej wdzięczny niż można by się spodziewać",
+    "summary": "Temat zgłoszony przez 2 kanały między 09:32 a 12:53. Inne nagłówki: „\"Kapryśny i uparty\". Joe Biden wspomina Wołodymyra Zełenskiego” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/kaprysny-i-uparty-joe-biden-wspomina-wolodymyra-zelenskiego/qemk8l0",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/polityka/art45489711-biden-o-zelenskim-kaprysny-i-mniej-wdzieczny-niz-mozna-by-sie-spodziewac",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "ofiarami-sa-polskie-dzieci",
+    "dim": "P",
+    "sec": [],
+    "title": "\"Ofiarami są polskie dzieci\" kontra \"nie ulegnę szantażom\". Ostra wymiana zdań między premierem a prezydentem",
+    "summary": "Temat zgłoszony przez 2 kanały między 20:00 a 12:50. Inne nagłówki: „Prezydent powinien przyjąć zaproszenie od premiera? Zapytamy Marcina Mastalerka” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/rozmowy/poranna-rozmowa/news-prezydent-powinien-przyjac-zaproszenie-od-premiera-zapytamy-,nIdn,1026173",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Ofiarami-sa-polskie-dzieci-kontra-nie-ulegne-szantazom-Ostra-wymiana-zdan-miedzy-premierem-a-prezydentem-9228940.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "14.11–15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "plynely-z-wylaczona-nawigacja",
+    "dim": "S",
+    "sec": [],
+    "title": "Płynęły z wyłączoną nawigacją i wpadły na miny. Płoną dwa tankowce w cieśninie Ormuz",
+    "summary": "Temat zgłoszony przez 2 kanały między 08:52 a 11:43. Inne nagłówki: „Iran: trzy tankowce miały wejść na miny w cieśninie Ormuz” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/geopolityka/iran-trzy-tankowce-mialy-wejsc-na-miny-w-ciesninie-ormuz",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Plynely-z-wylaczona-nawigacja-i-wpadly-na-miny-Plona-dwa-tankowce-w-ciesninie-Ormuz-9228996.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "15.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   }
+  ]
+ },
+ {
   "date": "2026-11-14",
   "win": "13.11.2026 13:29 – 14.11.2026 13:29 CET",
   "stop": "14 listopada 2026, 13:29 CET",
