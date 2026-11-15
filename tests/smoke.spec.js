@@ -9,7 +9,7 @@ test('strona i mapa inicjalizują się', async ({ page }) => {
   await expect(page.locator('#map')).toBeVisible();
   await page.getByRole('tab', { name: 'Mapa i teren' }).click();
   await expect(page.locator('#base')).toBeVisible();
-  await expect(page.locator('#bUndo')).toBeVisible();
+  await expect(page.locator('#bUndo')).toHaveCount(1);
 });
 
 test('zmiana podkładu nie pozostawia komunikatu błędu z poprzedniego źródła', async ({ page }) => {
