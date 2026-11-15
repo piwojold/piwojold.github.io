@@ -1557,11 +1557,28 @@ const baseSel=$('base');
 BASEGROUPS.forEach(([g,names])=>{const og=document.createElement('optgroup');og.label=g;names.forEach(n=>{if(BASES[n])og.appendChild(new Option(n,n))});baseSel.appendChild(og)});
 const baseHintDefault='Wszystkie podkłady pochodzą z otwartych lub bezpłatnych źródeł.';
 let curBase=BASES[baseSel.value].addTo(map);
-let tOk=0,tErr=0,blkShown=false;
-function watchTiles(layer){layer.on('tileload',()=>{tOk++;$('blocked').hidden=true}).on('tileerror',()=>{tErr++;if(!tOk&&tErr>=4&&!blkShown){blkShown=true;$('blocked').hidden=false}})}
+let blkShown=false;
+function watchTiles(layer){
+  // Liczniki są lokalne dla każdego podkładu: kafle z innej warstwy
+  // nie mogą maskować błędów aktualnie wybranego źródła.
+  let ok=0,err=0;
+  layer.on('tileload',()=>{
+    ok++;err=0;
+    if(layer===curBase){$('blocked').hidden=true;blkShown=false}
+  }).on('tileerror',()=>{
+    err++;
+    if(layer===curBase&&!ok&&err>=4&&!blkShown){
+      blkShown=true;$('blocked').hidden=false;
+    }
+  });
+}
 Object.values(BASES).forEach(l=>{if(l.on)watchTiles(l)});
 $('blkX').onclick=()=>$('blocked').hidden=true;
-baseSel.onchange=()=>{map.removeLayer(curBase);curBase=BASES[baseSel.value].addTo(map);$('baseHint').textContent=BASEINFO[baseSel.value]||baseHintDefault;save()};
+baseSel.onchange=()=>{
+  map.removeLayer(curBase);curBase=BASES[baseSel.value].addTo(map);
+  blkShown=false;$('blocked').hidden=true;
+  $('baseHint').textContent=BASEINFO[baseSel.value]||baseHintDefault;save()
+};
 
 // sterowanie warstwą wysokości
 function niceStep(span){const t=span/14;for(const s of [1,2,5,10,20,25,50,100,200,250,500,1000])if(s>=t)return s;return 2000}
