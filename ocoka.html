@@ -668,6 +668,18 @@ svg.leaflet-image-layer.leaflet-interactive path {
 		print-color-adjust: exact;
 		}
 	}
+
+/* OCOKA UI resilience patch: viewport and compact overlay */
+html,body{height:100%;height:100dvh;min-height:0;overflow:hidden}
+.app{height:100%;height:100dvh;min-height:0}
+.side{min-height:0;overflow:hidden}
+.side-scroll{min-height:0;overflow:auto;overscroll-behavior:contain}
+.mapwrap{min-height:0;min-width:0}
+.welcome{max-height:calc(100dvh - 32px);overflow:auto;width:min(440px,calc(100% - 24px));padding:clamp(12px,2vw,20px)}
+.welcome h2{font-size:clamp(20px,2.4vw,26px)}
+.blocked{max-height:35dvh;overflow:auto;bottom:max(10px,env(safe-area-inset-bottom));left:10px;right:10px}
+@media(max-height:720px){.welcome{gap:8px;padding:12px 14px}.welcome ol{font-size:13px}.welcome h2{font-size:22px}.welcome input,.welcome button{padding-top:8px;padding-bottom:8px}}
+@media(max-width:760px){.app{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,42dvh) minmax(0,1fr)}.side{grid-row:2;grid-column:1}.mapwrap{grid-row:1;grid-column:1}.toolbar{left:52px;right:6px;top:6px;gap:4px}.blocked{font-size:12px}}
 </style>
 <style>/* Leaflet.draw 1.0.4 (MIT) */
 .leaflet-draw-section{position:relative}.leaflet-draw-toolbar{margin-top:12px}.leaflet-draw-toolbar-top{margin-top:0}.leaflet-draw-toolbar-notop a:first-child{border-top-right-radius:0}.leaflet-draw-toolbar-nobottom a:last-child{border-bottom-right-radius:0}.leaflet-draw-toolbar a{background-image:none;background-image:linear-gradient(transparent,transparent),none;background-repeat:no-repeat;background-size:300px 30px;background-clip:padding-box}.leaflet-retina .leaflet-draw-toolbar a{background-image:none;background-image:linear-gradient(transparent,transparent),none}
@@ -1558,16 +1570,17 @@ BASEGROUPS.forEach(([g,names])=>{const og=document.createElement('optgroup');og.
 const baseHintDefault='Wszystkie podkłady pochodzą z otwartych lub bezpłatnych źródeł.';
 let curBase=BASES[baseSel.value].addTo(map);
 let blkShown=false;
+const tileHealth=new WeakMap();
 function watchTiles(layer){
-  // Liczniki są lokalne dla każdego podkładu: kafle z innej warstwy
-  // nie mogą maskować błędów aktualnie wybranego źródła.
-  let ok=0,err=0;
+  const health={ok:0,err:0};tileHealth.set(layer,health);
   layer.on('tileload',()=>{
-    ok++;err=0;
+    health.ok++;health.err=0;
     if(layer===curBase){$('blocked').hidden=true;blkShown=false}
   }).on('tileerror',()=>{
-    err++;
-    if(layer===curBase&&!ok&&err>=4&&!blkShown){
+    health.err++;
+    // Nie alarmuj na podstawie błędów pojedynczych kafli (np. poza zasięgiem WMS).
+    // Komunikat dotyczy wyłącznie aktywnego podkładu, który nie dostarczył żadnego kafla.
+    if(layer===curBase&&health.ok===0&&health.err>=8&&!blkShown){
       blkShown=true;$('blocked').hidden=false;
     }
   });
@@ -1577,6 +1590,7 @@ $('blkX').onclick=()=>$('blocked').hidden=true;
 baseSel.onchange=()=>{
   map.removeLayer(curBase);curBase=BASES[baseSel.value].addTo(map);
   blkShown=false;$('blocked').hidden=true;
+  const h=tileHealth.get(curBase);if(h){h.ok=0;h.err=0}
   $('baseHint').textContent=BASEINFO[baseSel.value]||baseHintDefault;save()
 };
 
