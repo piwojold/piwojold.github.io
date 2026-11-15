@@ -4233,7 +4233,16 @@ function load(fc,opt={}){
   decorate();render();opsRestore();
   if(!opt.keepView&&drawn.getLayers().length)map.fitBounds(drawn.getBounds(),{padding:[60,60],maxZoom:15});
 }
-function writeLS(){const fc=toGeoJSON();if(!fc.features.length&&!autoBox&&!areaEl.value.trim()&&!Object.values(notes).some(x=>x.trim()))return;try{localStorage.setItem('ocoka-v2',JSON.stringify(fc))}catch(e){}}
+let lsWarned=false;
+function writeLS(){
+  const fc=toGeoJSON();
+  if(!fc.features.length&&!autoBox&&!areaEl.value.trim()&&!Object.values(notes).some(x=>x.trim()))return;
+  try{localStorage.setItem('ocoka-v2',JSON.stringify(fc));lsWarned=false;}
+  catch(e){
+    console.warn('OCOKA: nie udało się zapisać analizy w localStorage',e);
+    if(!lsWarned){lsWarned=true;toast('Nie zapisano zmian lokalnie. Pobierz kopię analizy (Zapisz plik) i sprawdź miejsce/prywatność przeglądarki.');}
+  }
+}
 function save(){writeLS();if(!restoring){clearTimeout(histTimer);histTimer=setTimeout(histPush,500)}}
 
 function toast(t){document.querySelectorAll('.toast').forEach(x=>x.remove());const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
