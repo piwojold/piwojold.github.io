@@ -1,0 +1,20 @@
+name: OCOKA Planer quality tests
+on:
+  push:
+    branches: [main, ocoka-planer-2-quality]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+        env:
+          OCOKA_URL: https://piwojold.github.io/ocoka.html
