@@ -37,6 +37,13 @@ const MATERIALY = [
     tagi: ["Obsidian", "podręcznik", "3 poziomy"]
   },
   {
+    tytul: "Metodyka OSINT śledczego",
+    rodzaj: "Kurs",
+    plik: "metodyka-osint-sledczy.html",
+    opis: "Metodyka pracy dochodzeniowo-analitycznej nad osobami i podmiotami: poziomy ufności i reguła trzech, ocena źródła (Admiralty), higiena dowodowa, legalizm (RODO), pivoty tożsamości, geolokalizacja i analiza powiązań — z 16 szablonami roboczymi do pobrania.",
+    tagi: ["metodyka", "śledczy", "16 szablonów", "RODO"]
+  },
+  {
     tytul: "Dobowy brief OSINT Polska",
     rodzaj: "Narzędzie",
     plik: "dobowy-brief.html",
