@@ -668,18 +668,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 		print-color-adjust: exact;
 		}
 	}
-
-/* OCOKA UI resilience patch: viewport and compact overlay */
-html,body{height:100%;height:100dvh;min-height:0;overflow:hidden}
-.app{height:100%;height:100dvh;min-height:0}
-.side{min-height:0;overflow:hidden}
-.side-scroll{min-height:0;overflow:auto;overscroll-behavior:contain}
-.mapwrap{min-height:0;min-width:0}
-.welcome{max-height:calc(100dvh - 32px);overflow:auto;width:min(440px,calc(100% - 24px));padding:clamp(12px,2vw,20px)}
-.welcome h2{font-size:clamp(20px,2.4vw,26px)}
-.blocked{max-height:35dvh;overflow:auto;bottom:max(10px,env(safe-area-inset-bottom));left:10px;right:10px}
-@media(max-height:720px){.welcome{gap:8px;padding:12px 14px}.welcome ol{font-size:13px}.welcome h2{font-size:22px}.welcome input,.welcome button{padding-top:8px;padding-bottom:8px}}
-@media(max-width:760px){.app{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,42dvh) minmax(0,1fr)}.side{grid-row:2;grid-column:1}.mapwrap{grid-row:1;grid-column:1}.toolbar{left:52px;right:6px;top:6px;gap:4px}.blocked{font-size:12px}}
 </style>
 <style>/* Leaflet.draw 1.0.4 (MIT) */
 .leaflet-draw-section{position:relative}.leaflet-draw-toolbar{margin-top:12px}.leaflet-draw-toolbar-top{margin-top:0}.leaflet-draw-toolbar-notop a:first-child{border-top-right-radius:0}.leaflet-draw-toolbar-nobottom a:last-child{border-bottom-right-radius:0}.leaflet-draw-toolbar a{background-image:none;background-image:linear-gradient(transparent,transparent),none;background-repeat:no-repeat;background-size:300px 30px;background-clip:padding-box}.leaflet-retina .leaflet-draw-toolbar a{background-image:none;background-image:linear-gradient(transparent,transparent),none}
@@ -708,11 +696,7 @@ html,body{height:100%;height:100dvh;min-height:0;overflow:hidden}
 [hidden]{display:none!important}
 html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--f-body)}
-.app{display:grid;grid-template-columns:390px minmax(0,1fr);height:100%;min-height:0}
-.side{display:flex;flex-direction:column;min-height:0;overflow:hidden}
-.side .tabs{flex:0 0 auto}
-.side .tabpanels{flex:1 1 auto;min-height:0;overflow:auto}
-.side .foot{flex:0 0 auto;max-height:42%;overflow:auto}
+.app{display:grid;grid-template-columns:390px 1fr;height:100%}
 input,select,textarea,button{font:inherit;color:var(--ink)}
 input[type=text],input[type=number],select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:7px 9px}
 textarea{resize:vertical;min-height:56px}
@@ -769,6 +753,7 @@ textarea{resize:vertical;min-height:56px}
 .isolab span{position:absolute;transform:translate(-50%,-50%);color:#fff;font:600 11px IBM Plex Mono,monospace;padding:1px 5px;border-radius:8px;white-space:nowrap;box-shadow:0 0 0 1.5px #fff}
 #shareUrl{width:100%;font:12px IBM Plex Mono,monospace}
 .relb{font-size:11px;font-weight:600;margin-left:6px;padding:0 6px;border-radius:8px;border:1px solid var(--cc);color:var(--cc);white-space:nowrap}
+.note.gap-bad{border-left-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,var(--bg))}.note.gap-part{border-left-color:#b26a00}
 .note{background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px;font-size:13px}
 
 /* mapa */
@@ -799,7 +784,7 @@ textarea{resize:vertical;min-height:56px}
 .ri .letter{width:26px;height:26px;font-size:17px}
 .sw{width:14px;height:14px;border-radius:3px;display:inline-block;border:1px solid var(--line)}
 .pix{image-rendering:pixelated}
-.welcome{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:960;width:min(440px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.25);padding:clamp(12px,2vw,18px) clamp(12px,2vw,20px);display:grid;gap:clamp(6px,1.5vh,12px)}
+.welcome{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:960;width:min(440px,calc(100% - 32px));background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.25);padding:18px 20px;display:grid;gap:12px}
 .welcome h2{margin:0;font:700 26px/1.05 var(--f-disp);letter-spacing:.02em}
 .welcome ol{margin:0;padding-left:20px;display:grid;gap:4px;color:var(--muted)}
 .welcome ol b{color:var(--ink)}
@@ -911,6 +896,7 @@ textarea{resize:vertical;min-height:56px}
 .rdoc h2{font:600 19px var(--f-disp);margin:22px 0 6px;padding-bottom:3px;border-bottom:1px solid #c9d0c5;color:#2f4f2c}
 .rdoc p{margin:0 0 8px}
 .rdoc .meta{color:#5d665c;font-size:12.5px}
+.rdoc .warn{border-left:4px solid #b3261e;background:#fdeceb;padding:8px 12px;margin:10px 0 12px;color:#5f1512}
 .rdoc figure{margin:10px 0 14px}
 .rdoc figure img{width:100%;border:1px solid #c9d0c5}
 .rdoc figcaption{font-size:12px;color:#5d665c;font-style:italic;text-align:center;margin-top:4px}
@@ -1573,30 +1559,11 @@ const baseSel=$('base');
 BASEGROUPS.forEach(([g,names])=>{const og=document.createElement('optgroup');og.label=g;names.forEach(n=>{if(BASES[n])og.appendChild(new Option(n,n))});baseSel.appendChild(og)});
 const baseHintDefault='Wszystkie podkłady pochodzą z otwartych lub bezpłatnych źródeł.';
 let curBase=BASES[baseSel.value].addTo(map);
-let blkShown=false;
-const tileHealth=new WeakMap();
-function watchTiles(layer){
-  const health={ok:0,err:0};tileHealth.set(layer,health);
-  layer.on('tileload',()=>{
-    health.ok++;health.err=0;
-    if(layer===curBase){$('blocked').hidden=true;blkShown=false}
-  }).on('tileerror',()=>{
-    health.err++;
-    // Nie alarmuj na podstawie błędów pojedynczych kafli (np. poza zasięgiem WMS).
-    // Komunikat dotyczy wyłącznie aktywnego podkładu, który nie dostarczył żadnego kafla.
-    if(layer===curBase&&health.ok===0&&health.err>=8&&!blkShown){
-      blkShown=true;$('blocked').hidden=false;
-    }
-  });
-}
+let tOk=0,tErr=0,blkShown=false;
+function watchTiles(layer){layer.on('tileload',()=>{tOk++;$('blocked').hidden=true}).on('tileerror',()=>{tErr++;if(!tOk&&tErr>=4&&!blkShown){blkShown=true;$('blocked').hidden=false}})}
 Object.values(BASES).forEach(l=>{if(l.on)watchTiles(l)});
 $('blkX').onclick=()=>$('blocked').hidden=true;
-baseSel.onchange=()=>{
-  map.removeLayer(curBase);curBase=BASES[baseSel.value].addTo(map);
-  blkShown=false;$('blocked').hidden=true;
-  const h=tileHealth.get(curBase);if(h){h.ok=0;h.err=0}
-  $('baseHint').textContent=BASEINFO[baseSel.value]||baseHintDefault;save()
-};
+baseSel.onchange=()=>{map.removeLayer(curBase);curBase=BASES[baseSel.value].addTo(map);$('baseHint').textContent=BASEINFO[baseSel.value]||baseHintDefault;save()};
 
 // sterowanie warstwą wysokości
 function niceStep(span){const t=span/14;for(const s of [1,2,5,10,20,25,50,100,200,250,500,1000])if(s>=t)return s;return 2000}
@@ -2285,7 +2252,7 @@ function reliability(q){
   if(!q)return [];
   const osmOk=!q.osmErr,demOk=q.demFail<0.02,rows=[];
   rows.push(['Rzeźba i nachylenia',demOk?'hi':'mid',`Model terenu AWS Terrain Tiles (SRTM / EU-DEM, ok. 25–30 m), próbkowany w siatce ${q.n}×${q.n} co ok. ${Math.round(q.cell)} m. ${demOk?'Pobrano komplet danych.':`Brakowało ${pct(q.demFail)} próbek – uzupełniono sąsiednimi.`} Drobne formy (rowy, skarpy < 30 m) mogą być niewidoczne.`]);
-  rows.push(['Pokrycie terenu (lasy, wody, zabudowa)',osmOk?'mid':'lo',osmOk?`OpenStreetMap, stan danych: ${q.osmTime?new Date(q.osmTime).toLocaleDateString('pl-PL'):'nieznany'}${q.osmRemark?' (serwer zgłosił: '+q.osmRemark+')':''}. Kompletność zależy od mapowania rejonu; w Polsce lasy i wody są zwykle dobrze odwzorowane.`:'Brak danych OSM – wnioski oparte tylko na rzeźbie.']);
+  rows.push(['Pokrycie terenu (lasy, wody, zabudowa)',osmOk?'mid':'lo',osmOk?`OpenStreetMap, stan danych: ${q.osmTime?new Date(q.osmTime).toLocaleDateString('pl-PL'):'nieznany'}${q.osmRemark?' (serwer zgłosił: '+q.osmRemark+')':''}. Kompletność zależy od mapowania rejonu; w Polsce lasy i wody są zwykle dobrze odwzorowane.`:`Serwer OpenStreetMap nie odpowiedział${q.osmMsg?' ('+q.osmMsg+')':''}. ${String(q.coverSrc||'').includes('wc')?'Lasy, zabudowę i wody zastąpiono zdjęciami satelitarnymi ESA WorldCover; brak dróg, kolei, cieków i nazw obiektów.':'Wnioski oparte wyłącznie na rzeźbie terenu.'}`]);
   if(q.demSrc==='cop')rows.push(['Widoczność i martwe pola','mid',`Linie widoczności liczone na modelu powierzchni Copernicus GLO-30 (DSM, 30 m, dane radarowe z lat 2011–2015), który zawiera rzeczywistą wysokość lasu i zabudowy; obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję. Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.`]);
   else rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',(q.demSrc==='cop-failed'?'Model Copernicus był niedostępny – użyto SRTM. ':'')+(q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`)]);
   rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa, tory kolejowe i nasypy – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
@@ -2293,7 +2260,7 @@ function reliability(q){
   rows.push(['Kierunki podejścia (AA)',OPS.res?'mid':'lo',OPS.res?'Drogi najkrótszego czasu dla wskazanego kierunku działania i rodzaju ruchu (zakładka „Działania”), liczone po siatce z prędkościami orientacyjnymi zależnymi od dróg, klasy MCOO, nachylenia i pogody. Nie uwzględniają zapór, ognia ani stanu nawierzchni.':'Model najmniejszego oporu po klasach MCOO z preferencją dróg; wskazuje kandydatów w dwóch umownych kierunkach (S→N, W→E). Wskaż kierunek działania przeciwnika w zakładce „Działania”, aby je ukierunkować.']);
   if(OPS.res)rows.push(['Czasy ruchu i linie czasowe','lo','Prędkości orientacyjne (nie z konkretnego regulaminu): pieszo wg funkcji Toblera, pojazdy kołowe 40 km/h po drogach i 4–12 km/h w terenie, gąsienicowe 30 i 8–20 km/h, z poprawką na nachylenie i pogodę. Drogi w modelu to tylko drogi publiczne z OSM; drogi gruntowe i mosty na nich nie przyspieszają ruchu. Czasy służą do porównania wariantów, nie do planowania co do minuty.']);
   if(OPS.en)rows.push(['Obserwacja i ogień przeciwnika','lo','Widoczność z naniesionych pozycji liczona na siatce oceny z lasem i zabudową jako przesłonami, w granicach podanych zasięgów. Wynik zależy od dokładności położenia przeciwnika; zasięg ognia traktowany jest jako ogień bezpośredni obserwowany.']);
-  rows.push(['Infrastruktura',q.infErr?'lo':'mid',q.infErr?'Brak danych o infrastrukturze (serwer niedostępny).':'OpenStreetMap: obecność obiektu jest wiarygodna, brak obiektu nie oznacza, że go nie ma.']);
+  rows.push(['Infrastruktura',q.infErr?'lo':'mid',q.infErr?`Nie pobrano danych o infrastrukturze${q.infMsg?' ('+q.infMsg+')':''}. Mosty, stacje, maszty i obiekty energetyczne nie są w ocenie.`:'OpenStreetMap: obecność obiektu jest wiarygodna, brak obiektu nie oznacza, że go nie ma.']);
   return rows;
 }
 function reliabilityHTML(q){
@@ -2474,10 +2441,7 @@ nwr["waterway"~"^(dam|weir)$"](${bb});
 nwr["landuse"="military"](${bb});
 );out center tags 800;
 (way["power"="line"](${bb});way["man_made"="pipeline"](${bb}););out geom tags 300;`;
-  for(const ep of OVERPASS){
-    try{const r=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q)});if(r.ok)return await r.json()}catch(e){}
-  }
-  throw new Error('overpass');
+  return overpassFetch(q,'Infrastruktura',null,{delay:800,rounds:1});
 }
 function classifyInfra(t){
   if(t.power==='line')return 'powerline';if(t.man_made==='pipeline')return 'pipeline';
@@ -2819,8 +2783,9 @@ async function buildReportHTML(snap){
     const sc=niceScale(snap.widthM/0.25);
     parts.push(`<figure data-map><img alt="Mapa rejonu" src="${composite(snap).toDataURL('image/jpeg',.88)}"><figcaption>Mapa rejonu: ${escH(baseSel.value)}. Narożniki: ${mgrs(snap.nw.lat,snap.nw.lng)} (NW), ${mgrs(snap.se.lat,snap.se.lng)} (SE). Szerokość kadru ok. ${fmtDist(snap.widthM)}. Warstwy: ${snap.layers.map(l=>l.name).join(', ')}.</figcaption></figure>`);
   }
-  if(lastSum){const s=lastSum;
-    parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'—':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}; MCOO: teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}.</p>`)}
+  {const g=lastSum&&coverGap(lastSum.q);if(g)parts.push(`<p class="warn"><b>${g.lvl==='bad'?'Uwaga: ocena niepełna – brak danych o terenie.':'Uwaga: niepełne dane.'}</b> ${escH(g.t)}</p>`)}
+  if(lastSum){const s=lastSum,q=s.q||{},bare=!q.dsm&&q.demSrc!=='cop';
+    parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'<b>brak danych</b>':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}${bare?' (po gołym terenie – wartość zawyżona)':''}; MCOO: teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}${q.osmErr&&!String(q.coverSrc||'').includes('wc')?' (wyłącznie z nachyleń, bez pokrycia terenu)':''}.</p>`)}
   parts.push(wxReportHTML());
   parts.push(opsReportHTML());
   const cl=t=>(t||'—').replace(/\n/g,' ');
@@ -2940,6 +2905,7 @@ async function buildDocx(){
       }
       else if(tg==='UL'||tg==='OL')[...n.children].forEach((li,i)=>body+=para(`<w:r><w:t xml:space="preserve">${tg==='OL'?(i+1)+'. ':'• '}</w:t></w:r>`+docxRuns(li),''));
       else if(tg==='DIV'||tg==='SECTION')await walk(n);
+      else if(n.classList.contains('warn'))body+=para(docxRuns(n,{color:'8C1D18'}),'',`<w:pBdr><w:left w:val="single" w:sz="18" w:space="6" w:color="B3261E"/></w:pBdr><w:shd w:val="clear" w:color="auto" w:fill="FDECEB"/><w:spacing w:before="80" w:after="120"/><w:ind w:left="120" w:right="120"/>`);
       else if(n.textContent.trim()||n.querySelector('br'))body+=para(docxRuns(n),n.classList.contains('meta')?'Meta':'');
     }
   };
@@ -3065,6 +3031,8 @@ async function buildPdf(){
     else if(tg==='FIGURE'){const cap=n.querySelector('figcaption');ensure(30);
       if(hasMap){const t=document.createElement('p');t.textContent='Mapa rejonu z warstwami: strona 1. '+(cap?cap.textContent:'');block(t,8.5,2,8,muted)}}
     else if(tg==='UL'||tg==='OL')[...n.children].forEach((li,i)=>{const p=document.createElement('p');p.innerHTML=(tg==='OL'?(i+1)+'. ':'• ')+li.innerHTML;block(p,9.5,0,2)});
+    else if(n.classList.contains('warn')){ensure(40);const y0=y;block(n,9.5,4,8,rgb(.6,.09,.07));
+      page.drawRectangle({x:M-6,y:y+2,width:3,height:y0-y-2,color:rgb(.7,.15,.12)})}
     else if(n.textContent.trim())block(n,n.classList.contains('meta')?8.5:9.5,0,6,n.classList.contains('meta')?muted:ink);
   }
   const pages=doc.getPages();
@@ -3483,7 +3451,24 @@ map.on('click',e=>{
 map.createPane('auto');map.getPane('auto').style.zIndex=330;map.getPane('auto').style.pointerEvents='none';
 const autoBoxLayer=new L.LayerGroup().addTo(map);
 let ovSlope=null,ovDead=null,autoBox=null;
-const OVERPASS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter'];
+const OVERPASS=['https://overpass-api.de/api/interpreter','https://overpass.kumi.systems/api/interpreter','https://overpass.private.coffee/api/interpreter','https://overpass.osm.jp/api/interpreter'];
+async function overpassFetch(q,label,onTry,o={}){
+  if(o.delay)await new Promise(r=>setTimeout(r,o.delay));
+  const rounds=o.rounds||2;let last='';
+  for(let round=0;round<rounds;round++)for(let i=0;i<OVERPASS.length;i++){
+    const ep=OVERPASS[i],n=round*OVERPASS.length+i+1,tot=rounds*OVERPASS.length;
+    if(onTry)onTry(n,tot,ep);
+    try{
+      const ac=new AbortController(),to=setTimeout(()=>ac.abort(),round?120000:75000);
+      const r=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q),signal:ac.signal});
+      clearTimeout(to);
+      if(r.ok){const j=await r.json();if(j&&j.elements)return j;last='pusta odpowiedź'}
+      else last='HTTP '+r.status;
+      if(r.status===429||r.status===504)await new Promise(x=>setTimeout(x,2000+round*3000));
+    }catch(e){last=e&&e.name==='AbortError'?'przekroczony czas oczekiwania':'brak połączenia'}
+  }
+  throw new Error((label||'Overpass')+': '+last);
+}
 L.drawLocal.draw.handlers.rectangle.tooltip.start='Przeciągnij myszą, aby zaznaczyć rejon oceny.';
 L.drawLocal.draw.handlers.simpleshape.tooltip.end='Puść przycisk myszy, aby zakończyć.';
 
@@ -3525,7 +3510,7 @@ function autoFrame(){
   }
   stopModes();runAuto(b);
 }
-let autoRing=null,autoDesc='';
+let autoRing=null,autoDesc='',opStep=null,lastBox=null;
 function setAutoBox(b,ring,desc){
   autoBox=b;autoRing=b&&ring?ring.map(p=>L.latLng(p.lat??p[0],p.lng??p[1])):null;autoDesc=b?(desc||autoDesc||''):'';autoBoxLayer.clearLayers();
   if(!b)return;
@@ -3547,6 +3532,7 @@ async function runAuto(b,opt={}){
   setAutoBox(b,opt.ring,opt.desc||`${mgrs(b.getSouth(),b.getWest())} (SW) – ${mgrs(b.getNorth(),b.getEast())} (NE), ${(w/1000).toFixed(1)} × ${(h/1000).toFixed(1)} km`);showWelcome(false);
   if(!areaEl.value.trim()||areaAuto)nameArea(b.getCenter(),true);
   const step=t=>openProfile('Ocena rejonu',`<span>${t}</span>`,'');
+  opStep=step;lastBox={b,opt};
   try{
     const n=Math.max(64,Math.min(161,Math.round(Math.max(w,h)/75)+1));
     step(`Krok 1 z 3: pobieram model terenu (siatka ${n}×${n}, co ok. ${Math.round(Math.max(w,h)/(n-1))} m)…`+(km2>150?' Duży rejon – to potrwa dłużej.':''));
@@ -3554,19 +3540,19 @@ async function runAuto(b,opt={}){
     g.inside=new Uint8Array(n*n);
     if(opt.ring){for(let k=0;k<n*n;k++)g.inside[k]=pip(g.pts[k],autoRing)?1:0}else g.inside.fill(1);
     step('Krok 2 z 3: pobieram dane OpenStreetMap (lasy, wody, drogi, zabudowa)…');
-    let osm=null,osmErr=false,inf=null;
+    let osm=null,osmErr=false,inf=null,osmMsg='',infMsg='';
     const pInf=overpassInfra(b);pInf.catch(()=>{});
     let osmRaw=null;
-    try{osmRaw=await overpass(b);osm=parseOSM(osmRaw,b,g)}catch(e){osmErr=true}
+    try{osmRaw=await overpass(b);osm=parseOSM(osmRaw,b,g)}catch(e){osmErr=true;osmMsg=String(e&&e.message||e)}
     if(osmRaw)try{setTheme(parseTheme(osmRaw,b))}catch(e){console.error(e)}
     let coverSrc=osm?'osm':'none',wcAdd=0;
-    if($('pCover').value==='wc'){
-      step('Krok 2 z 3: pobieram pokrycie terenu ESA WorldCover (10 m)…');
+    if($('pCover').value==='wc'||osmErr){
+      step(osmErr?'Krok 2 z 3: OpenStreetMap niedostępny – pobieram pokrycie terenu z satelity (ESA WorldCover 10 m)…':'Krok 2 z 3: pobieram pokrycie terenu ESA WorldCover (10 m)…');
       try{const wm=await wcMasks(b,g);if(!osm)osm=parseOSM({elements:[]},b,g);wcAdd=mergeWC(osm,wm,g);coverSrc=osmErr?'wc':'osm+wc'}
-      catch(e){console.error(e);coverSrc=osm?'osm (WorldCover niedostępny)':'none';toast('ESA WorldCover jest niedostępny – używam samego OpenStreetMap.')}
+      catch(e){console.error(e);coverSrc=osm?'osm (WorldCover niedostępny)':'none';toast(osmErr?'Nie udało się pobrać żadnych danych o pokryciu terenu.':'ESA WorldCover jest niedostępny – używam samego OpenStreetMap.')}
     }
     step('Krok 2 z 3: rozpoznaję obiekty infrastruktury…');
-    try{inf=await pInf}catch(e){inf=null}
+    try{inf=await pInf}catch(e){inf=null;infMsg=String(e&&e.message||e)}
     step('Krok 3 z 3: liczę nachylenia i widoczność…');
     await new Promise(r=>setTimeout(r,30));
     let dsm=$('pDsm').checked&&!!osm,hF=+$('pHF').value||0,hB=+$('pHB').value||0,surf=null,demSrc='terrarium';
@@ -3587,7 +3573,7 @@ async function runAuto(b,opt={}){
     }
     if(coverSrc.includes('wc')&&!coverSrc.includes('niedost'))res.N.C.push(`Pokrycie terenu uzupełniono danymi satelitarnymi ESA WorldCover 2021 (10 m)${wcAdd>0.005?`: las poza OpenStreetMap zajmuje dodatkowo ${pct(wcAdd)} rejonu`:''}.`);
     applyAuto(res,b,g,t);setGX(b,g,t,osm);opsReset();
-    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,coverSrc,osmErr,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
+    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,coverSrc,osmErr,osmMsg,infMsg,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
     if(surf)res.N.O.push('Widoczność obliczono na modelu powierzchni Copernicus GLO-30 (rzeczywista wysokość lasu i zabudowy); punkty obserwacyjne wybrano poza lasem i zabudową.');
     else if(dsm)res.N.O.push(`Widoczność obliczono z uwzględnieniem lasu (${hF} m) i zabudowy (${hB} m); punkty obserwacyjne wybrano poza lasem i zabudową.`);
     else res.N.O.push('Widoczność obliczono po gołym terenie (bez lasu i zabudowy) – rzeczywiste martwe pola są większe.');
@@ -3696,13 +3682,7 @@ way["railway"="rail"](${bb});
 node["ford"](${bb});way["ford"](${bb});
 );out geom;
 way["building"](${bb});out count;`;
-  for(const ep of OVERPASS){
-    try{
-      const r=await fetch(ep,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'data='+encodeURIComponent(q)});
-      if(r.ok)return await r.json();
-    }catch(e){}
-  }
-  throw new Error('overpass');
+  return overpassFetch(q,'OpenStreetMap',(n,tot,ep)=>{if(n>1&&typeof opStep==='function')opStep(`Krok 2 z 3: serwer OpenStreetMap nie odpowiada – próba ${n} z ${tot} (${new URL(ep).host})…`)});
 }
 const toLL=g=>g.map(p=>L.latLng(p.lat,p.lon));
 function pip(ll,ring){let c=false;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const a=ring[i],q=ring[j];
@@ -3900,7 +3880,7 @@ function buildResults(b,g,t,o,km2){
   const how=t.dsm?`z uwzględnieniem lasu i zabudowy, obserwator ${$('hObs').value} m`:`po gołym terenie, obserwator ${$('hObs').value} m`;
   const peakTxt=t.peaks.map((p,i)=>{const ll=llOf(p);return `PO-auto ${i+1} (${Math.round(p.h)} m, ${mgrs(ll.lat,ll.lng)}) – widać ${pct(p.visShare)} rejonu`}).join('; ');
   t.peaks.forEach((p,i)=>F.push({cat:'O',kind:'pt',ll:llOf(p),name:`PO-auto ${i+1} (${Math.round(p.h)} m)`,
-    note:`Punkt obserwacyjny wybrany automatycznie spośród ${Math.min(10,t.cand||10)} lokalnych wyniesień jako dający największy łączny zasięg obserwacji. Widać stąd ok. ${pct(p.visShare)} rejonu (${how})`+(p.az!=null?`; główny sektor obserwacji ${p.az}° ±${p.sw/2}°, do ok. ${fmtDist(p.rng)}.`:'.'),
+    note:`Punkt obserwacyjny wybrany automatycznie spośród ${Math.min(10,t.cand||10)} lokalnych wyniesień jako dający największy łączny zasięg obserwacji. Widać stąd ok. ${pct(p.visShare)} rejonu (${how})`+(p.az!=null?(p.sw>=170?`; obserwacja szerokokątna (ok. ${p.sw}°, środek ${p.az}°), do ok. ${fmtDist(p.rng)}.`:`; główny sektor obserwacji ${p.az}° ±${Math.round(p.sw/2)}°, do ok. ${fmtDist(p.rng)}.`):'.'),
     extra:p.az!=null?{az:String(p.az),sw:String(p.sw),range:String(p.rng)}:{}}));
   const best=[...t.peaks].sort((a,c)=>c.visShare-a.visShare)[0];
   F.push({cat:'K',kind:'pt',ll:llOf(best),name:`K-auto: wyniesienie ${Math.round(best.h)} m`,note:`Najlepsza obserwacja rejonu (${pct(best.visShare)} powierzchni). Kandydat na teren kluczowy.`});
@@ -3995,6 +3975,14 @@ function applyAuto(res,b,g,t){
   map.fitBounds(b,{padding:[40,40]});
 }
 
+function coverGap(q){
+  if(!q)return null;
+  const wc=String(q.coverSrc||'').includes('wc')&&!String(q.coverSrc).includes('niedost');
+  if(q.osmErr&&wc)return {lvl:'part',t:`Serwer OpenStreetMap nie odpowiedział${q.osmMsg?' ('+q.osmMsg+')':''}. Lasy, zabudowę i wody odczytano ze zdjęć satelitarnych ESA WorldCover (10 m, stan na 2021 r.), ale w ocenie BRAKUJE dróg, kolei, mostów, cieków, nazw obiektów i infrastruktury. Kierunki podejścia nie uwzględniają dróg. Powtórz ocenę, aby uzupełnić te dane.`};
+  if(q.osmErr)return {lvl:'bad',t:`Nie pobrano żadnych danych o pokryciu terenu${q.osmMsg?' ('+q.osmMsg+')':''}. Ocena opiera się wyłącznie na rzeźbie terenu: lasy, zabudowa, wody, drogi i infrastruktura NIE są uwzględnione. Podane niżej wartości widoczności i przejezdności są zawyżone i nie nadają się do wniosków o terenie – powtórz ocenę, zanim ich użyjesz.`};
+  if(q.infErr)return {lvl:'part',t:`Nie pobrano danych o infrastrukturze${q.infMsg?' ('+q.infMsg+')':''}. Mosty, stacje, maszty i obiekty energetyczne nie są w ocenie.`};
+  return null;
+}
 function sectionRel(q){
   if(!q)return {};
   const osmOk=!q.osmErr,wc=String(q.coverSrc||'').includes('wc')&&!String(q.coverSrc).includes('niedost'),age=q.osmTime?Math.round((Date.now()-new Date(q.osmTime))/864e5):null;
@@ -4008,7 +3996,7 @@ function sectionRel(q){
 function showAutoPanel(sum){
   if(TRAIN.stash){showTrainPanel();return}
   const S=sum,SR=sectionRel(S.q),relB=k=>SR[k]?`<span class="relb" style="--cc:${CONF[SR[k][0]][1]}" title="${esc(SR[k][1])}">wiarygodność ${CONF[SR[k][0]][0]}</span>`:'',relT=k=>SR[k]?`<div class="hint">Podstawa: ${esc(SR[k][1])}.</div>`:'';
-  const stats=`<span>Powierzchnia <b>${S.km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(S.mn)}–${Math.round(S.mx)} m</b></span><span>Lasy <b>${S.forest==null?'—':pct(S.forest)}</b></span>${S.open!=null?`<span>Teren otwarty <b>${pct(S.open)}</b></span>`:''}<span>Widoczność z wzgórz <b>${pct(S.union)}</b></span><span>MCOO U/R/SR <b>${pct(S.mU)} / ${pct(S.mR)} / ${pct(S.mS)}</b></span><span>Obiekty auto <b>${S.objs}</b></span><span>Infrastruktura <b>${S.inf}</b></span>`;
+  const stats=`<span>Powierzchnia <b>${S.km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(S.mn)}–${Math.round(S.mx)} m</b></span><span>Lasy <b>${S.forest==null?'brak danych':pct(S.forest)}</b></span>${S.open!=null?`<span>Teren otwarty <b>${pct(S.open)}</b></span>`:''}<span>Widoczność z wzgórz <b>${pct(S.union)}</b></span><span>MCOO U/R/SR <b>${pct(S.mU)} / ${pct(S.mR)} / ${pct(S.mS)}</b></span><span>Obiekty auto <b>${S.objs}</b></span><span>Infrastruktura <b>${S.inf}</b></span>`;
   const txt=k=>esc(stripAuto(notes[k])||'—').replace(/\n/g,'<br>');
   const enN=drawn.getLayers().filter(l=>l.feature.properties.cat==='E').length;
   const body=`
@@ -4023,14 +4011,14 @@ function showAutoPanel(sum){
       <span class="sw" style="background:rgba(240,190,30,.7)"></span><span class="hint">15–30%</span>
       <span class="sw" style="background:rgba(198,40,40,.75)"></span><span class="hint">&gt;30%</span>
     </div>
-    ${S.osmErr?'<div class="note">Serwer OpenStreetMap (Overpass) nie odpowiedział, więc lasy, wody i drogi nie zostały uwzględnione. Spróbuj ponownie za chwilę.</div>':''}
+    ${(()=>{const g=coverGap(S.q);return g?`<div class="note gap-${g.lvl}"><b>${g.lvl==='bad'?'Niepełna ocena – brak danych o terenie':'Niepełne dane'}</b><br>${esc(g.t)}</div>`:''})()}
     <div class="res">${CATS.map(c=>`<div class="ri" style="--c:var(${c.v})"><div class="letter">${c.l}</div><div><b>${c.name}</b>${relB(c.k)}<div>${txt(c.k)}</div>${relT(c.k)}</div></div>`).join('')}
       <div class="ri" style="--c:var(--I)"><div class="letter">I</div><div><b>Infrastruktura</b><div>${txt('I')}</div></div></div>
       ${enN||notes.E.trim()?`<div class="ri" style="--c:var(--E)"><div class="letter" style="background:none">${diamondMini().replace(/20/g,'26')}</div><div><b>Przeciwnik</b><div>${enN} naniesionych obiektów. ${esc(notes.E.trim())}</div></div></div>`:''}
     </div>
     ${S.desc?`<div class="hint">Rejon: ${esc(S.desc)}</div>`:''}
     ${reliabilityHTML(S.q)}
-    <div class="row"><button class="btn sm primary" id="aEdit">Edytuj wnioski</button><button class="btn sm primary" id="aRep">Raport DOCX / PDF</button><button class="btn sm" id="aAgain">Oceń inny rejon</button><button class="btn sm" id="aDel">Usuń wyniki automatyczne</button></div>
+    <div class="row"><button class="btn sm primary" id="aEdit">Edytuj wnioski</button><button class="btn sm primary" id="aRep">Raport DOCX / PDF</button>${coverGap(S.q)?'<button class="btn sm primary" id="aRetry">Powtórz ocenę (pobierz brakujące dane)</button>':''}<button class="btn sm" id="aAgain">Oceń inny rejon</button><button class="btn sm" id="aDel">Usuń wyniki automatyczne</button></div>
     <div class="hint">Okno pokazuje aktualne wnioski, także po Twoich poprawkach. Zamknij je, a otworzysz ponownie przyciskiem „Ocena” nad mapą. Wynik automatyczny jest wersją roboczą: zweryfikuj go na mapie, ortofotomapie i w terenie.</div>`;
   openProfile('Ocena rejonu – wynik',stats,body);
   const p=$('profile');p.dataset.kind='ocena';
@@ -4042,6 +4030,7 @@ function showAutoPanel(sum){
   $('aEdit').onclick=()=>{p.hidden=true;document.querySelector('.tab[data-tab=analiza]').click();if(narrow())$('cats').scrollIntoView({behavior:'smooth'})};
   $('aRep').onclick=()=>{p.hidden=true;openReport(true)};
   $('aAgain').onclick=()=>{p.hidden=true;startAuto()};
+  if($('aRetry'))$('aRetry').onclick=()=>{if(lastBox)runAuto(lastBox.b,lastBox.opt);else startAuto()};
   $('aDel').onclick=()=>{clearAuto();p.hidden=true;toast('Usunięto wyniki automatyczne')};
 }
 function clearAuto(){
@@ -4251,21 +4240,7 @@ function load(fc,opt={}){
   decorate();render();opsRestore();
   if(!opt.keepView&&drawn.getLayers().length)map.fitBounds(drawn.getBounds(),{padding:[60,60],maxZoom:15});
 }
-let lsWarned=false;
-function writeLS(){
-  const fc=toGeoJSON();
-  if(!fc.features.length&&!autoBox&&!areaEl.value.trim()&&!Object.values(notes).some(x=>x.trim()))return;
-  try{
-    const next=JSON.stringify(fc),prev=localStorage.getItem('ocoka-v2');
-    // Kopia poprzedniego poprawnego stanu pozwala odzyskać analizę,
-    // jeśli główny wpis zostanie uszkodzony lub nadpisany niepełnymi danymi.
-    if(prev){try{const p=JSON.parse(prev);if(p&&p.type==='FeatureCollection')localStorage.setItem('ocoka-v2-backup',prev)}catch(e){console.warn('OCOKA: pominięto uszkodzony stan przy tworzeniu kopii',e)}}
-    localStorage.setItem('ocoka-v2',next);lsWarned=false;
-  }catch(e){
-    console.warn('OCOKA: nie udało się zapisać analizy w localStorage',e);
-    if(!lsWarned){lsWarned=true;toast('Nie zapisano zmian lokalnie. Pobierz kopię analizy (Zapisz plik) i sprawdź miejsce/prywatność przeglądarki.');}
-  }
-}
+function writeLS(){const fc=toGeoJSON();if(!fc.features.length&&!autoBox&&!areaEl.value.trim()&&!Object.values(notes).some(x=>x.trim()))return;try{localStorage.setItem('ocoka-v2',JSON.stringify(fc))}catch(e){}}
 function save(){writeLS();if(!restoring){clearTimeout(histTimer);histTimer=setTimeout(histPush,500)}}
 
 function toast(t){document.querySelectorAll('.toast').forEach(x=>x.remove());const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
@@ -4902,8 +4877,7 @@ function opsRestore(){
 
 // ================= Start =================
 renderCatBar();
-let saved=null;try{saved=JSON.parse(localStorage.getItem('ocoka-v2')||'null')}catch(e){console.warn('OCOKA: główny zapis jest uszkodzony',e)}
-if(!saved){try{saved=JSON.parse(localStorage.getItem('ocoka-v2-backup')||'null');if(saved)console.info('OCOKA: przywrócono kopię zapasową analizy')}catch(e){console.warn('OCOKA: kopia zapasowa jest uszkodzona',e)}}
+let saved=null;try{saved=JSON.parse(localStorage.getItem('ocoka-v2')||'null')}catch(e){}
 load({type:'FeatureCollection',features:[],ocoka:{relief:saved&&saved.ocoka&&saved.ocoka.relief,base:saved&&saved.ocoka&&saved.ocoka.base}});
 map.setView([52.0,19.3],6);
 showWelcome(true);showManual(false);
