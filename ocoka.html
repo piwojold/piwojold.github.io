@@ -997,18 +997,19 @@ textarea{resize:vertical;min-height:56px}
       </div>
       <div class="section">
         <h3>Parametry analizy</h3>
-        <label class="small" for="pDem">Model wysokościowy</label>
-        <select id="pDem"><option value="terrarium">AWS Terrain Tiles – SRTM / EU-DEM (model terenu)</option><option value="cop">Copernicus GLO-30 – model powierzchni (DSM) do widoczności</option></select>
-        <div class="hint">Copernicus GLO-30 (30 m, cały świat, także Białoruś) zawiera rzeczywistą wysokość lasu i zabudowy, więc daje dokładniejsze martwe pola. Nachylenia i MCOO nadal liczone są z modelu terenu. Jeśli Copernicus będzie niedostępny, narzędzie wróci do SRTM i zaznaczy to w ocenie wiarygodności.</div>
+        <label class="small" for="pDem">Numeryczny model terenu (wysokości, nachylenia, MCOO)</label>
+        <select id="pDem"></select>
+        <div class="hint" id="pDemHint"></div>
+        <label class="small" for="pSurf">Model pokrycia terenu (do widoczności i martwych pól)</label>
+        <select id="pSurf"></select>
+        <div class="hint" id="pSurfHint"></div>
         <label class="small" for="pCover">Pokrycie terenu (lasy, zabudowa, wody)</label>
         <select id="pCover"><option value="osm">OpenStreetMap</option><option value="wc">OpenStreetMap + ESA WorldCover 10 m (satelitarne, 2021)</option></select>
         <div class="hint">WorldCover uzupełnia lasy, zabudowę, wody i mokradła tam, gdzie OpenStreetMap jest niepełny (np. Białoruś). Pobranie trwa dłużej; jeśli dane będą niedostępne, narzędzie użyje samego OSM i zaznaczy to w ocenie wiarygodności.</div>
-        <label class="check"><input type="checkbox" id="pDsm" checked> Uwzględnij las i zabudowę w widoczności</label>
-        <div class="row" style="flex-wrap:nowrap">
+        <div class="row" style="flex-wrap:nowrap" id="pHRow">
           <div style="flex:1"><label class="small" for="pHF">Wysokość lasu (m)</label><input type="number" id="pHF" value="20" min="0" max="50" step="1"></div>
           <div style="flex:1"><label class="small" for="pHB">Wysokość zabudowy (m)</label><input type="number" id="pHB" value="10" min="0" max="60" step="1"></div>
         </div>
-        <div class="hint">Bez tej opcji martwe pola liczone są „po gołym terenie”, co zawyża widoczność.</div>
       </div>
       <div class="section">
         <h3>Linia widoczności</h3>
@@ -1362,6 +1363,11 @@ const HELP=`
 <p>Przy ocenie rejonu narzędzie rysuje wektorową mapę terenu z OpenStreetMap: rzeki, cieki i rowy, jeziora i mokradła, lasy, zarośla i sady, drogi według klas, drogi gruntowe, koleje, zabudowę, urwiska, skarpy, nasypy i wyrobiska. Każdą grupę włączasz osobno w nakładkach; trafiają też jako osobne warstwy do PDF. Dodatkowo dostępne są nakładki hydrografii i komunikacji Esri.</p>
 <h3>Pogoda (OCOKA-W)</h3>
 <p>Zakładka <i>Pogoda</i> pobiera prognozę dla środka rejonu oceny (Open-Meteo) i ocenia jej wpływ na działania: opady z ostatnich 72 h a przejezdność, zamarznięty grunt, pokrywa śnieżna, widoczność (mgła), porywy wiatru a loty BSP, godziny wschodu i zachodu oraz faza Księżyca. Progi są orientacyjne. Możesz włączyć radar opadów na mapie (RainViewer), otworzyć mapę Windy w panelu i przejść do serwisów: Windy, Meteoblue, RainViewer, Sat24, IMGW, Meteo.pl, Belgidromet (pogoda.by), Gismeteo i MeteoX. Warunki trafiają do raportu jako sekcja „W”.</p>
+<h4>Numeryczne modele terenu</h4>
+<p>W <i>Parametrach analizy</i> (zakładka „Mapa i teren”) wybierasz osobno dwa modele.</p>
+<p><b>Numeryczny model terenu</b> decyduje o wysokościach, deniwelacji, nachyleniach i klasach MCOO. Do wyboru: <b>AWS Terrain Tiles</b> (SRTM, a w Europie EU-DEM, ok. 25–30 m, cały świat) oraz <b>NMT GUGiK</b> z lotniczego skanowania laserowego (siatka 1 m, wysokości PL-KRON86-NH, tylko Polska), pobierany przez usługę WCS Geoportalu. Model GUGiK pokazuje skarpy, nasypy, rowy i wykopy, których model 30-metrowy w ogóle nie widzi.</p>
+<p><b>Model pokrycia terenu</b> decyduje o widoczności i martwych polach. Do wyboru: las i zabudowa z OpenStreetMap z przyjętą wysokością, <b>Copernicus GLO-30</b> (30 m, cały świat, także Białoruś i Ukraina), <b>Copernicus GLO-90</b> (90 m, przydatny przy bardzo dużych rejonach i tam, gdzie brakuje kafla GLO-30), <b>NMPT GUGiK</b> (1 m, tylko Polska, z rzeczywistą wysokością drzew i budynków) albo brak pokrycia, czyli widoczność po gołym terenie.</p>
+<p>Wybór zapamiętuje się między sesjami i zapisuje w pliku analizy. Jeśli usługa jest niedostępna albo rejon leży poza jej zasięgiem, narzędzie samo wraca do modelu globalnego, pokazuje komunikat i zaznacza to w ocenie wiarygodności. Model NMT GUGiK jest też używany do profilu wysokości i linii widoczności między punktami.</p>
 <h4>Wielkość i kształt rejonu</h4>
 <p>Po kliknięciu <i>Zaznacz rejon</i> pasek u dołu mapy daje kilka sposobów wyboru obszaru: <b>dowolny</b> (przeciągasz prostokąt), <b>nieregularny</b> (klikasz kolejne narożniki, a obszar zamykasz kliknięciem pierwszego punktu, przyciskiem <i>Oceń obszar</i> albo klawiszem Enter), gotowe kwadraty <b>1–50 km</b> oraz panel <b>MGRS</b>. Dla obszaru nieregularnego analiza obejmuje tylko wnętrze wielokąta, a nie jego prostokąt obejmujący.</p>
 <p>Rejon może mieć od 0,2 do 2500 km² (np. 50 × 50 km). Powyżej 400 km² ocena jest przeglądowa: komórka siatki rośnie do ok. 250–300 m, pobierany jest ograniczony zestaw danych OpenStreetMap, a wektorowa mapa terenu nie jest rysowana. Duży rejon liczy się kilka minut – użyj go do wyboru fragmentów, które potem ocenisz dokładniej.</p>
@@ -1377,7 +1383,7 @@ const HELP=`
 <p><b>Pokrycie terenu z ESA WorldCover</b> (Parametry analizy) uzupełnia lasy, zabudowę i wody danymi satelitarnymi 10 m tam, gdzie OpenStreetMap jest niepełny.</p>
 <p><b>Wpływ pogody na działania (macierz IPB)</b>: tabela na 72 h w blokach 6-godzinnych ocenia jako korzystne (K), ograniczające (O) lub niekorzystne (N) warunki dla: śmigłowców, lotnictwa, małych BSP, obserwacji wzrokowej, termowizji, artylerii (ogień obserwowany), przejezdności pojazdów kołowych i gąsienicowych, żołnierzy, łączności, zasłon dymnych i skażeń oraz desantu. Kliknięcie komórki pokazuje przyczynę oceny. Pod macierzą są wnioski dla własnych wojsk i przeciwnika, np. okna bez BSP, okresy słabego kontrastu termicznego, kanalizowanie ruchu przez rozmokły grunt, kierunek dryfu dymów i skażeń. Progi są orientacyjne i można je zmienić w sekcji „Progi oceny”. Podstawa chmur jest szacowana z różnicy temperatury i punktu rosy, więc ma charakter przybliżony.</p>
 <h3>Białoruś</h3>
-<p>Dla Białorusi najdokładniejsze podkłady w narzędziu to radzieckie mapy sztabowe, OpenTopoMap oraz zdjęcia Esri i Sentinel-2. W <i>Parametrach analizy</i> wybierz model <b>Copernicus GLO-30</b> – zawiera rzeczywistą wysokość lasu i zabudowy, więc martwe pola są dokładniejsze. Yandex Mapy, mapa katastralna (maps.nca.by), floodmap.net, topographic-map.com, EarthExplorer i Copernicus Browser otwierasz z sekcji <i>Białoruś</i> w zakładce <i>Mapa i teren</i>.</p>
+<p>Dla Białorusi najdokładniejsze podkłady w narzędziu to radzieckie mapy sztabowe, OpenTopoMap oraz zdjęcia Esri i Sentinel-2. W <i>Parametrach analizy</i> jako model pokrycia terenu wybierz <b>Copernicus GLO-30</b> – zawiera rzeczywistą wysokość lasu i zabudowy, więc martwe pola są dokładniejsze. Modele GUGiK obejmują wyłącznie Polskę i poza nią nie zadziałają. Yandex Mapy, mapa katastralna (maps.nca.by), floodmap.net, topographic-map.com, EarthExplorer i Copernicus Browser otwierasz z sekcji <i>Białoruś</i> w zakładce <i>Mapa i teren</i>.</p>
 <h3>Okno oceny i raport</h3>
 <p>Okno z wynikiem oceny zamykasz przyciskiem <i>Zamknij</i>, a otwierasz ponownie przyciskiem <i>Ocena</i> nad mapą. Pokazuje bieżące wnioski, także po Twoich poprawkach.</p>
 <p><i>Raport</i> (nad mapą lub w stopce panelu) otwiera edytor. Raport tworzy się od nowa, gdy zmieni się rejon, obiekty lub wnioski; jeśli wcześniej edytowałeś jego tekst, narzędzie zapyta przed zastąpieniem zmian. Edytor: treść raportu z mapą, wnioskami i tabelami możesz dowolnie poprawiać, a potem pobrać jako <b>DOCX</b> (edytowalny w Wordzie i LibreOffice), <b>PDF z warstwami</b> (mapa na pierwszej stronie, warstwy włączane w panelu „Warstwy” czytnika, np. Adobe Acrobat) albo Markdown. Opcja <i>Kadr: rejon oceny</i> dopasowuje mapę do zaznaczonego rejonu. Generator PDF pobiera przy pierwszym użyciu bibliotekę i czcionkę z polskimi znakami, więc wymaga internetu.</p>
@@ -2257,11 +2263,13 @@ const CONF={hi:['wysoka','var(--ok)'],mid:['średnia','#b26a00'],lo:['niska','va
 function reliability(q){
   if(!q)return [];
   const osmOk=!q.osmErr,demOk=q.demFail<0.02,rows=[];
-  rows.push(['Rzeźba i nachylenia',demOk?'hi':'mid',`Model terenu AWS Terrain Tiles (SRTM / EU-DEM, ok. 25–30 m), próbkowany w siatce ${q.n}×${q.n} co ok. ${Math.round(q.cell)} m. ${demOk?'Pobrano komplet danych.':`Brakowało ${pct(q.demFail)} próbek – uzupełniono sąsiednimi.`} Drobne formy (rowy, skarpy < 30 m) mogą być niewidoczne.${q.big?` Rejon ma ${Math.round(q.km2)} km², więc komórka siatki to ok. ${Math.round(q.cell)} m – ocena jest przeglądowa i służy do wyboru fragmentów do dokładniejszej analizy.`:''}`]);
+  const gu=q.terrSrc==='gugik';
+  rows.push(['Rzeźba i nachylenia',demOk?'hi':'mid',`${gu?'Numeryczny model terenu GUGiK z lotniczego skanowania laserowego (siatka źródłowa 1 m, wysokości PL-KRON86-NH), pobrany przez usługę WCS Geoportalu':'Model terenu AWS Terrain Tiles (SRTM / EU-DEM, ok. 25–30 m)'}${q.terrSrc==='gugik-failed'?' – usługa NMT GUGiK była niedostępna'+(q.terrNote?' ('+q.terrNote+')':'')+', więc użyto modelu globalnego':''}, próbkowany w siatce ${q.n}×${q.n} co ok. ${Math.round(q.cell)} m. ${demOk?'Pobrano komplet danych.':`Brakowało ${pct(q.demFail)} próbek – uzupełniono sąsiednimi.`} Drobne formy (rowy, skarpy < 30 m) mogą być niewidoczne.${q.big?` Rejon ma ${Math.round(q.km2)} km², więc komórka siatki to ok. ${Math.round(q.cell)} m – ocena jest przeglądowa i służy do wyboru fragmentów do dokładniejszej analizy.`:''}`]);
   if(q.big)rows.push(['Zakres danych dla dużego rejonu','lo',`Przy rejonach powyżej ${ABIG} km² pobierany jest ograniczony zestaw danych OpenStreetMap: bez zarośli, sadów, wyrobisk, nasypów, rowów, dróg gruntowych, brodów i liczby budynków, a przy rejonach powyżej 1200 km² także bez cieków, dróg lokalnych oraz bez lasów, wód i zabudowy z OSM – ich miejsce zajmuje wtedy pokrycie terenu z satelity ESA WorldCover. Wektorowa mapa terenu nie jest rysowana – wczytaj ją dla mniejszego kadru przyciskiem w zakładce „Mapa i teren”.`]);
   rows.push(['Pokrycie terenu (lasy, wody, zabudowa)',osmOk?'mid':'lo',q.huge&&osmOk?`ESA WorldCover (Sentinel, 10 m, stan na 2021 r.). Przy rejonie powyżej 1200 km² dane OpenStreetMap o lasach, wodach i zabudowie nie są pobierane – z OSM pochodzą tylko drogi, koleje i większe cieki. Zmiany po 2021 r. nie są odwzorowane.`:osmOk?`OpenStreetMap, stan danych: ${q.osmTime?new Date(q.osmTime).toLocaleDateString('pl-PL'):'nieznany'}${q.osmRemark?' (serwer zgłosił: '+q.osmRemark+')':''}. Kompletność zależy od mapowania rejonu; w Polsce lasy i wody są zwykle dobrze odwzorowane.`:`Serwer OpenStreetMap nie odpowiedział${q.osmMsg?' ('+q.osmMsg+')':''}. ${String(q.coverSrc||'').includes('wc')?'Lasy, zabudowę i wody zastąpiono zdjęciami satelitarnymi ESA WorldCover; brak dróg, kolei, cieków i nazw obiektów.':'Wnioski oparte wyłącznie na rzeźbie terenu.'}`]);
-  if(q.demSrc==='cop')rows.push(['Widoczność i martwe pola','mid',`Linie widoczności liczone na modelu powierzchni Copernicus GLO-30 (DSM, 30 m, dane radarowe z lat 2011–2015), który zawiera rzeczywistą wysokość lasu i zabudowy; obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję. Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.`]);
-  else rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',(q.demSrc==='cop-failed'?'Model Copernicus był niedostępny – użyto SRTM. ':'')+(q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`)]);
+  const SF={cop:'Copernicus GLO-30 (DSM, 30 m, dane radarowe 2011–2015)',cop90:'Copernicus GLO-90 (DSM, 90 m, dane radarowe 2011–2015)',gugik:'NMPT GUGiK z lotniczego skanowania laserowego (1 m)'};
+  if(SF[q.demSrc])rows.push(['Widoczność i martwe pola',q.demSrc==='gugik'?'hi':'mid',`Linie widoczności liczone na modelu pokrycia terenu ${SF[q.demSrc]}, który zawiera rzeczywistą wysokość lasu i zabudowy; obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję.${q.demSrc==='gugik'?' Model obejmuje tylko Polskę; jego aktualność zależy od daty nalotu w danym arkuszu.':' Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.'}`]);
+  else rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',(/-failed$/.test(q.demSrc||'')?`Wybrany model pokrycia terenu był niedostępny${q.surfNote?' ('+q.surfNote+')':''} – użyto danych zastępczych. `:'')+(q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`)]);
   rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa, tory kolejowe i nasypy – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
   if(String(q.coverSrc||'').includes('wc'))rows.push(['Pokrycie terenu – ESA WorldCover',String(q.coverSrc).includes('niedost')?'lo':'mid',String(q.coverSrc).includes('niedost')?'Dane WorldCover były niedostępne – użyto samego OpenStreetMap.':'ESA WorldCover v200 (Sentinel-1/2, stan na 2021 r., 10 m, CC BY 4.0) uzupełnia lasy, zabudowę, wody i mokradła. Zmiany po 2021 r. (wycinki, nowa zabudowa) nie są odwzorowane; klasyfikacja satelitarna myli się zwykle w kilku–kilkunastu procentach pikseli.']);
   rows.push(['Kierunki podejścia (AA)',OPS.res?'mid':'lo',OPS.res?'Drogi najkrótszego czasu dla wskazanego kierunku działania i rodzaju ruchu (zakładka „Działania”), liczone po siatce z prędkościami orientacyjnymi zależnymi od dróg, klasy MCOO, nachylenia i pogody. Nie uwzględniają zapór, ognia ani stanu nawierzchni.':'Model najmniejszego oporu po klasach MCOO z preferencją dróg; wskazuje kandydatów w dwóch umownych kierunkach (S→N, W→E). Wskaż kierunek działania przeciwnika w zakładce „Działania”, aby je ukierunkować.']);
@@ -2791,7 +2799,7 @@ async function buildReportHTML(snap){
     parts.push(`<figure data-map><img alt="Mapa rejonu" src="${composite(snap).toDataURL('image/jpeg',.88)}"><figcaption>Mapa rejonu: ${escH(baseSel.value)}. Narożniki: ${mgrs(snap.nw.lat,snap.nw.lng)} (NW), ${mgrs(snap.se.lat,snap.se.lng)} (SE). Szerokość kadru ok. ${fmtDist(snap.widthM)}. Warstwy: ${snap.layers.map(l=>l.name).join(', ')}.</figcaption></figure>`);
   }
   {const g=lastSum&&coverGap(lastSum.q);if(g)parts.push(`<p class="warn"><b>${g.lvl==='bad'?'Uwaga: ocena niepełna – brak danych o terenie.':'Uwaga: niepełne dane.'}</b> ${escH(g.t)}</p>`)}
-  if(lastSum){const s=lastSum,q=s.q||{},bare=!q.dsm&&q.demSrc!=='cop';
+  if(lastSum){const s=lastSum,q=s.q||{},bare=!q.dsm&&!/^(cop|cop90|gugik)$/.test(q.demSrc||'');
     parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'<b>brak danych</b>':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}${bare?' (po gołym terenie – wartość zawyżona)':''}; MCOO: teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}${q.osmErr&&!String(q.coverSrc||'').includes('wc')?' (wyłącznie z nachyleń, bez pokrycia terenu)':''}.</p>`)}
   parts.push(wxReportHTML());
   parts.push(opsReportHTML());
@@ -3381,6 +3389,16 @@ function samplePath(lls,N=200){
   return {pts:out,total};
 }
 async function sampleElev(pts,total){
+  if($('pDem')&&$('pDem').value==='gugik'){
+    try{
+      const lls=pts.map(p=>p.ll),bb=L.latLngBounds(lls).pad(.02);
+      const d=Math.max(bb.getNorth()-bb.getSouth(),bb.getEast()-bb.getWest())*111000;
+      const b2=L.latLngBounds([bb.getCenter().lat-d/222000,bb.getCenter().lng-d/(222000*Math.cos(bb.getCenter().lat*Math.PI/180))],
+                              [bb.getCenter().lat+d/222000,bb.getCenter().lng+d/(222000*Math.cos(bb.getCenter().lat*Math.PI/180))]);
+      const v=await wcsGrid('nmt',b2,lls,Math.max(128,Math.min(1200,Math.round(total/3))));
+      if(v.every(x=>isFinite(x)))return Array.from(v);
+    }catch(e){console.error(e);toast('NMT GUGiK niedostępny dla tego odcinka – profil z modelu globalnego.')}
+  }
   const z=total>40000?12:total>10000?13:14;
   const r=await Promise.allSettled(pts.map(p=>elevAt(p.ll,z)));
   if(r.some(x=>x.status!=='fulfilled'))throw new Error('dem');
@@ -3574,7 +3592,10 @@ async function runAuto(b,opt={}){
   try{
     const big=aKm2>ABIG,n=Math.max(64,Math.min(big?201:161,Math.round(Math.max(w,h)/75)+1));
     step(`Krok 1 z 3: pobieram model terenu (siatka ${n}×${n}, co ok. ${Math.round(Math.max(w,h)/(n-1))} m)…`+(big?` Rejon ${Math.round(aKm2)} km² – pobranie i obliczenia potrwają kilka minut, nie zamykaj karty.`:km2>150?' Duży rejon – to potrwa dłużej.':''));
-    const g=await demGrid(b,n,w,h);
+    const demWant=$('pDem').value;
+    if(demWant==='gugik')step(`Krok 1 z 3: pobieram NMT GUGiK (LiDAR 1 m) przez usługę WCS Geoportalu…`);
+    const g=await demGrid(b,n,w,h,demWant);
+    if(g.src==='gugik-failed')toast('NMT GUGiK niedostępny – używam modelu globalnego. '+(g.srcNote||''));
     g.inside=new Uint8Array(n*n);
     if(opt.ring){for(let k=0;k<n*n;k++)g.inside[k]=pip(g.pts[k],autoRing)?1:0}else g.inside.fill(1);
     step('Krok 2 z 3: pobieram dane OpenStreetMap (lasy, wody, drogi, zabudowa)…');
@@ -3595,10 +3616,15 @@ async function runAuto(b,opt={}){
     try{inf=await pInf}catch(e){inf=null;infMsg=String(e&&e.message||e)}
     step('Krok 3 z 3: liczę nachylenia i widoczność…');
     await new Promise(r=>setTimeout(r,30));
-    let dsm=$('pDsm').checked&&!!osm,hF=+$('pHF').value||0,hB=+$('pHB').value||0,surf=null,demSrc='terrarium';
-    if($('pDem').value==='cop'){
-      step('Krok 3 z 3: pobieram model powierzchni Copernicus GLO-30…');
-      try{surf=await copSurface(b,g.pts);demSrc='cop'}catch(e){console.error(e);demSrc='cop-failed';toast('Copernicus GLO-30 jest niedostępny – używam SRTM.')}
+    const sw=$('pSurf').value;
+    let dsm=sw==='osm'&&!!osm,hF=+$('pHF').value||0,hB=+$('pHB').value||0,surf=null,demSrc=sw==='osm'?'osm':sw,surfNote='';
+    if(sw==='cop'||sw==='cop90'||sw==='gugik'){
+      step(`Krok 3 z 3: pobieram model pokrycia terenu (${esc(SURFSRC[sw].n)})…`);
+      try{
+        surf=sw==='gugik'?await wcsGrid('nmpt',b,g.pts,Math.min(1200,n*3)):await copSurfaceOf(sw,b,g.pts);
+        for(let k=0;k<surf.length;k++)if(!isFinite(surf[k]))surf[k]=g.h[k];
+      }catch(e){console.error(e);surfNote=String(e&&e.message||e);demSrc=sw+'-failed';surf=null;
+        dsm=!!osm;toast('Model pokrycia terenu niedostępny'+(osm?' – używam lasu i zabudowy z OpenStreetMap.':' – widoczność po gołym terenie.'))}
       step('Krok 3 z 3: liczę nachylenia i widoczność…');await new Promise(r=>setTimeout(r,30));
     }
     const cover=surf?{surf,forest:osm?osm.forestMask:null,built:osm?osm.builtMask:null}:dsm?{forest:osm.forestMask,built:osm.builtMask,hF,hB}:null;
@@ -3613,8 +3639,8 @@ async function runAuto(b,opt={}){
     }
     if(coverSrc.includes('wc')&&!coverSrc.includes('niedost'))res.N.C.push(`Pokrycie terenu uzupełniono danymi satelitarnymi ESA WorldCover 2021 (10 m)${wcAdd>0.005?`: las poza OpenStreetMap zajmuje dodatkowo ${pct(wcAdd)} rejonu`:''}.`);
     applyAuto(res,b,g,t);setGX(b,g,t,osm);opsReset();
-    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,coverSrc,osmErr,osmMsg,infMsg,km2:aKm2,big,huge,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
-    if(surf)res.N.O.push('Widoczność obliczono na modelu powierzchni Copernicus GLO-30 (rzeczywista wysokość lasu i zabudowy); punkty obserwacyjne wybrano poza lasem i zabudową.');
+    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,surfNote,terrSrc:g.src,terrNote:g.srcNote||'',coverSrc,osmErr,osmMsg,infMsg,km2:aKm2,big,huge,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
+    if(surf)res.N.O.push(`Widoczność obliczono na modelu pokrycia terenu (${SURFSRC[sw].n}) – z rzeczywistą wysokością lasu i zabudowy; punkty obserwacyjne wybrano poza lasem i zabudową.`);
     else if(dsm)res.N.O.push(`Widoczność obliczono z uwzględnieniem lasu (${hF} m) i zabudowy (${hB} m); punkty obserwacyjne wybrano poza lasem i zabudową.`);
     else res.N.O.push('Widoczność obliczono po gołym terenie (bez lasu i zabudowy) – rzeczywiste martwe pola są większe.');
     {const own=notes.O.split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim();notes.O='[AUTO] '+res.N.O.join(' ')+(own?'\n'+own:'');render()}
@@ -3633,18 +3659,27 @@ async function runAuto(b,opt={}){
 }
 
 // ---- model terenu w siatce ----
-async function demGrid(b,n,wM,hM){
+async function demGrid(b,n,wM,hM,src){
   const cell=Math.max(wM,hM)/(n-1),lat=b.getCenter().lat;
   let z=Math.round(Math.log2(40075016.686*Math.cos(lat*Math.PI/180)/256/(cell/2)));
   z=Math.max(8,Math.min(14,z));
   const pts=[];
   for(let j=0;j<n;j++)for(let i=0;i<n;i++)
     pts.push(L.latLng(b.getNorth()-(b.getNorth()-b.getSouth())*j/(n-1),b.getWest()+(b.getEast()-b.getWest())*i/(n-1)));
-  const r=await Promise.allSettled(pts.map(p=>elevAt(p,z)));
-  if(r.filter(x=>x.status==='fulfilled').length<r.length*.9)throw new Error('dem');
-  const h=new Float32Array(n*n);let last=0,fails=0;
-  r.forEach((x,i)=>{if(x.status==='fulfilled'&&x.value>-1000&&isFinite(x.value))h[i]=last=x.value;else{h[i]=last;fails++}});
-  return {n,h,pts,dx:wM/(n-1),dy:hM/(n-1),z,fails:fails/(n*n),cell};
+  let h=null,fails=0,used=src||'terrarium',note='';
+  if(used==='gugik'){
+    try{const v=await wcsGrid('nmt',b,pts,Math.min(1200,n*3));
+      h=new Float32Array(n*n);let last=0;v.forEach((x,i)=>{if(isFinite(x))h[i]=last=x;else{h[i]=last;fails++}});}
+    catch(e){console.error(e);note=String(e&&e.message||e);used='gugik-failed'}
+  }
+  if(!h){
+    const r=await Promise.allSettled(pts.map(p=>elevAt(p,z)));
+    if(r.filter(x=>x.status==='fulfilled').length<r.length*.9)throw new Error('dem');
+    h=new Float32Array(n*n);let last=0;fails=0;
+    r.forEach((x,i)=>{if(x.status==='fulfilled'&&x.value>-1000&&isFinite(x.value))h[i]=last=x.value;else{h[i]=last;fails++}});
+    if(used==='gugik-failed')used='gugik-failed';else used='terrarium';
+  }
+  return {n,h,pts,dx:wM/(n-1),dy:hM/(n-1),z,fails:fails/(n*n),cell,src:used,srcNote:note};
 }
 
 function analyzeTerrain(g,cover){
@@ -4030,8 +4065,9 @@ function sectionRel(q){
   const osmOk=!q.osmErr,wc=String(q.coverSrc||'').includes('wc')&&!String(q.coverSrc).includes('niedost'),age=q.osmTime?Math.round((Date.now()-new Date(q.osmTime))/864e5):null;
   const cov=wc?'OSM + WorldCover 10 m':osmOk?'OSM'+(age!=null?` (dane sprzed ${age} dni)`:''):'brak danych o pokryciu';
   const lv=(a,t)=>[a,t];
-  return {O:lv(q.demSrc==='cop'?'mid':osmOk&&q.dsm?'mid':'lo',`model ${q.demSrc==='cop'?'Copernicus DSM 30 m':'terenu ~30 m'}, siatka ${Math.round(q.cell)} m`),
-    C:lv(wc?'mid':osmOk?'mid':'lo',cov),Ob:lv(osmOk||wc?'mid':'lo',`nachylenia: model ~30 m; ${cov}`),
+  const tn=q.terrSrc==='gugik'?'NMT GUGiK 1 m':'model terenu ~30 m',sn={cop:'pokrycie Copernicus 30 m',cop90:'pokrycie Copernicus 90 m',gugik:'NMPT GUGiK 1 m'}[q.demSrc];
+  return {O:lv(sn?'mid':osmOk&&q.dsm?'mid':'lo',`${tn}${sn?' + '+sn:''}, siatka ${Math.round(q.cell)} m`),
+    C:lv(wc?'mid':osmOk?'mid':'lo',cov),Ob:lv(osmOk||wc?'mid':'lo',`nachylenia: ${tn}; ${cov}`),
     K:lv(osmOk?'mid':'lo',osmOk?'wzniesienia z modelu, mosty z OSM':'tylko wzniesienia z modelu'),
     A:lv(OPS.res?'mid':'lo',OPS.res?'drogi wyznaczone dla wskazanego kierunku działania':'kierunki umowne – wskaż kierunek w zakładce „Działania”')};
 }
@@ -4242,7 +4278,7 @@ const areaEl=$('area');areaEl.oninput=()=>{areaAuto=false;save()};
 function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
-    hObs:$('hObs').value,hTgt:$('hTgt').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,wxTh:JSON.stringify(WXT)!==JSON.stringify(WXT_DEF)?WXT:null,wx:wxState?{lat:wxState.lat,lng:wxState.lng,time:wxState.time,raw:wxState.raw}:null,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,ops:{...OPS,_T:undefined,_isoN:undefined},gx:gxEnc(),train:TRAIN.stash,
+    hObs:$('hObs').value,hTgt:$('hTgt').value,pDem:$('pDem').value,pSurf:$('pSurf').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,wxTh:JSON.stringify(WXT)!==JSON.stringify(WXT_DEF)?WXT:null,wx:wxState?{lat:wxState.lat,lng:wxState.lng,time:wxState.time,raw:wxState.raw}:null,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,ops:{...OPS,_T:undefined,_isoN:undefined},gx:gxEnc(),train:TRAIN.stash,
     mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),inside:MC.inside?Array.from(MC.inside).join(''):null,showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
@@ -4256,6 +4292,8 @@ function load(fc,opt={}){
     if(m.base&&BASES[m.base]&&m.base!==baseSel.value){baseSel.value=m.base;baseSel.onchange()}
     if(m.relief&&typeof m.relief==='object'){const r=m.relief;$('rOn').checked=r.on!==false;$('rTint').checked=!!r.tint;$('rShade').checked=!!r.shade;$('rCont').checked=!!r.cont;$('rOp').value=r.op||.55;$('gugik').checked=!!r.gugik}
     if(m.hObs)$('hObs').value=m.hObs;if(m.hTgt)$('hTgt').value=m.hTgt;
+    if(m.pDem&&DEMSRC[m.pDem])$('pDem').value=m.pDem;if(m.pSurf&&SURFSRC[m.pSurf])$('pSurf').value=m.pSurf;
+    if($('pDem').onchange)$('pDem').onchange();
     applyRelief();closeEditor();
     if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;
   }
@@ -5090,6 +5128,135 @@ function exportSHP(){
   toast(`Zapisano archiwum ZIP z warstwami shapefile (${files.filter(f=>f.name.endsWith('.shp')).length})`);
 }
 
+// ================= Numeryczne modele terenu: WCS (GUGiK) i COG (Copernicus) =================
+const WCS={
+  nmt:{url:'https://mapy.geoportal.gov.pl/wss/service/PZGIK/NMT/GRID1/WCS/DigitalTerrainModelFormatTIFF',cov:'DTM_PL-KRON86-NH_TIFF',n:'NMT GUGiK (LiDAR, 1 m)'},
+  nmpt:{url:'https://mapy.geoportal.gov.pl/wss/service/PZGIK/NMPT/GRID1/WCS/DigitalSurfaceModel',cov:'',n:'NMPT GUGiK (LiDAR, 1 m)'},
+};
+const PL_BOX=L.latLngBounds([48.9,13.9],[55.0,24.3]);
+const wcsCovCache={};
+async function wcsCoverage(key){
+  const s=WCS[key];
+  if(wcsCovCache[key]!==undefined)return wcsCovCache[key];
+  try{
+    const r=await fetch(s.url+'?SERVICE=WCS&REQUEST=GetCapabilities',{credentials:'omit'});
+    const t=await r.text();
+    const m=/<(?:[a-z]+:)?CoverageId>\s*([^<\s]+)\s*</i.exec(t)||/CoverageOfferingBrief[\s\S]{0,400}?<(?:[a-z]+:)?name>\s*([^<\s]+)\s*</i.exec(t);
+    wcsCovCache[key]=m?m[1]:(s.cov||null);
+  }catch(e){wcsCovCache[key]=s.cov||null}
+  return wcsCovCache[key];
+}
+// Pobiera raster wysokości przez WCS 1.0.0 i próbkuje go w punktach siatki.
+// Usługa bywa kapryśna co do nazwy formatu i kolejności osi, więc próbujemy kilku wariantów
+// i za każdym razem sprawdzamy, czy georeferencja odpowiedzi faktycznie pokrywa rejon.
+async function wcsGrid(key,b,pts,px){
+  if(!window.GeoTIFF)await loadScript(GEOTIFF_URL);
+  const s=WCS[key],cov=await wcsCoverage(key);
+  if(!cov)throw new Error(s.n+': usługa nie podała nazwy pokrycia');
+  const W=Math.max(64,Math.min(1200,px)),S=b.getSouth(),N=b.getNorth(),E=b.getEast(),Ww=b.getWest();
+  const q=(fmt,bbox)=>`${s.url}?SERVICE=WCS&VERSION=1.0.0&REQUEST=GetCoverage&COVERAGE=${encodeURIComponent(cov)}&CRS=EPSG:4326&RESPONSE_CRS=EPSG:4326&BBOX=${bbox}&WIDTH=${W}&HEIGHT=${W}&FORMAT=${encodeURIComponent(fmt)}`;
+  const variants=[];
+  for(const fmt of ['GEOTIFF','image/tiff','GeoTIFF'])
+    for(const bbox of [`${Ww},${S},${E},${N}`,`${S},${Ww},${N},${E}`])variants.push(q(fmt,bbox));
+  let last='brak odpowiedzi';
+  for(const url of variants){
+    try{
+      const r=await fetch(url,{credentials:'omit'});
+      if(!r.ok){last='HTTP '+r.status;continue}
+      const buf=await r.arrayBuffer();
+      if(buf.byteLength<256){last='pusta odpowiedź';continue}
+      const head=new TextDecoder().decode(new Uint8Array(buf,0,Math.min(400,buf.byteLength)));
+      if(/<\?xml|ServiceException|<html/i.test(head)){last=(/<[^>]*ServiceException[^>]*>([^<]{0,120})/i.exec(head)||[,'usługa zwróciła błąd'])[1].trim();continue}
+      const tif=await GeoTIFF.fromArrayBuffer(buf),img=await tif.getImage();
+      const [x0,y0,x1,y1]=img.getBoundingBox();
+      const cx=(Ww+E)/2,cy=(S+N)/2;
+      if(!(Math.min(x0,x1)-1e-6<=cx&&cx<=Math.max(x0,x1)+1e-6&&Math.min(y0,y1)-1e-6<=cy&&cy<=Math.max(y0,y1)+1e-6)){last='odpowiedź spoza rejonu';continue}
+      const w=img.getWidth(),h=img.getHeight();
+      const data=(await img.readRasters({samples:[0],interleave:true}));
+      const rx=(Math.max(x0,x1)-Math.min(x0,x1))/w,ry=(Math.max(y0,y1)-Math.min(y0,y1))/h,ox=Math.min(x0,x1),oy=Math.max(y0,y1);
+      const nod=img.getGDALNoData&&img.getGDALNoData();
+      const ok=v=>isFinite(v)&&v>-900&&v<9000&&(nod==null||Math.abs(v-nod)>1e-6);
+      const out=new Float32Array(pts.length);let bad=0;
+      pts.forEach((p,i)=>{
+        const fx=(p.lng-ox)/rx-.5,fy=(oy-p.lat)/ry-.5;
+        const xa=Math.max(0,Math.min(w-1,Math.floor(fx))),ya=Math.max(0,Math.min(h-1,Math.floor(fy)));
+        const xb=Math.min(w-1,xa+1),yb=Math.min(h-1,ya+1),ax=Math.min(1,Math.max(0,fx-xa)),ay=Math.min(1,Math.max(0,fy-ya));
+        const q00=data[ya*w+xa],q10=data[ya*w+xb],q01=data[yb*w+xa],q11=data[yb*w+xb];
+        if(!ok(q00)||!ok(q10)||!ok(q01)||!ok(q11)){out[i]=ok(q00)?q00:NaN;if(!ok(q00))bad++;return}
+        out[i]=q00*(1-ax)*(1-ay)+q10*ax*(1-ay)+q01*(1-ax)*ay+q11*ax*ay;
+      });
+      if(bad>pts.length*.1)throw new Error(s.n+': brak danych na '+pct(bad/pts.length)+' rejonu (poza zasięgiem usługi?)');
+      return out;
+    }catch(e){last=(e&&e.message)||'błąd odczytu';if(/brak danych na/.test(last))throw e}
+  }
+  throw new Error(s.n+': '+last);
+}
+const COP={cop:{base:'https://copernicus-dem-30m.s3.amazonaws.com/',code:'10',n:'Copernicus GLO-30 (DSM, 30 m)'},
+           cop90:{base:'https://copernicus-dem-90m.s3.amazonaws.com/',code:'30',n:'Copernicus GLO-90 (DSM, 90 m)'}};
+const DEMSRC={
+  terrarium:{n:'AWS Terrain Tiles – SRTM / EU-DEM (~30 m, cały świat)',rel:'Model terenu AWS Terrain Tiles (SRTM / EU-DEM, ok. 25–30 m)'},
+  gugik:{n:'NMT GUGiK – LiDAR 1 m (tylko Polska)',rel:'Numeryczny model terenu GUGiK z lotniczego skanowania laserowego (siatka 1 m, układ wysokości PL-KRON86-NH), pobrany przez usługę WCS Geoportalu'},
+};
+const SURFSRC={
+  osm:{n:'Las i zabudowa z OpenStreetMap (wysokości szacunkowe)'},
+  cop:{n:'Copernicus GLO-30 – model pokrycia (30 m, cały świat)'},
+  cop90:{n:'Copernicus GLO-90 – model pokrycia (90 m, cały świat)'},
+  gugik:{n:'NMPT GUGiK – LiDAR 1 m (tylko Polska)'},
+  none:{n:'bez pokrycia – widoczność po gołym terenie'},
+};
+async function copSurfaceOf(kind,b,pts){
+  const c=COP[kind];
+  if(!window.GeoTIFF)await loadScript(GEOTIFF_URL);
+  const tiles=[];
+  for(let la=Math.floor(b.getSouth());la<=Math.floor(b.getNorth()-1e-9);la++)for(let lo=Math.floor(b.getWest());lo<=Math.floor(b.getEast()-1e-9);lo++){
+    const nm=`Copernicus_DSM_COG_${c.code}_${la>=0?'N':'S'}${String(Math.abs(la)).padStart(2,'0')}_00_${lo>=0?'E':'W'}${String(Math.abs(lo)).padStart(3,'0')}_00_DEM`;
+    const tif=await GeoTIFF.fromUrl(`${c.base}${nm}/${nm}.tif`,{allowFullFile:true});const img=await tif.getImage();
+    const [minX,minY,maxX,maxY]=img.getBoundingBox(),W=img.getWidth(),Hh=img.getHeight(),rx=(maxX-minX)/W,ry=(maxY-minY)/Hh;
+    const x0=Math.max(0,Math.floor((Math.max(b.getWest(),minX)-minX)/rx)-1),x1=Math.min(W,Math.ceil((Math.min(b.getEast(),maxX)-minX)/rx)+1);
+    const y0=Math.max(0,Math.floor((maxY-Math.min(b.getNorth(),maxY))/ry)-1),y1=Math.min(Hh,Math.ceil((maxY-Math.max(b.getSouth(),minY))/ry)+1);
+    if(x1<=x0||y1<=y0)continue;
+    const data=await img.readRasters({window:[x0,y0,x1,y1],samples:[0],interleave:true});
+    tiles.push({minX,maxY,rx,ry,x0,y0,w:x1-x0,h:y1-y0,data});
+  }
+  if(!tiles.length)throw new Error(c.n+': brak kafli dla rejonu');
+  const sample=ll=>{for(const t of tiles){const fx=(ll.lng-t.minX)/t.rx-.5-t.x0,fy=(t.maxY-ll.lat)/t.ry-.5-t.y0;
+      if(fx<-1||fy<-1||fx>t.w||fy>t.h)continue;
+      const xa=Math.max(0,Math.min(t.w-1,Math.floor(fx))),ya=Math.max(0,Math.min(t.h-1,Math.floor(fy))),xb=Math.min(t.w-1,xa+1),yb=Math.min(t.h-1,ya+1),ax=Math.min(1,Math.max(0,fx-xa)),ay=Math.min(1,Math.max(0,fy-ya)),D=t.data;
+      return D[ya*t.w+xa]*(1-ax)*(1-ay)+D[ya*t.w+xb]*ax*(1-ay)+D[yb*t.w+xa]*(1-ax)*ay+D[yb*t.w+xb]*ax*ay}
+    return NaN};
+  const out=new Float32Array(pts.length);let bad=0;
+  pts.forEach((p,i)=>{const v=sample(p);if(isFinite(v)&&v>-500)out[i]=v;else{out[i]=NaN;bad++}});
+  if(bad>pts.length*.1)throw new Error(c.n+': brak pokrycia dla rejonu');
+  return out;
+}
+
+const DEM_HINT={
+  terrarium:'Globalny model terenu (SRTM, a w Europie EU-DEM), ok. 25–30 m. Działa wszędzie, także na Białorusi i Ukrainie. Drobne formy terenu – rowy, skarpy, nasypy – są w nim niewidoczne.',
+  gugik:'Numeryczny model terenu GUGiK z lotniczego skanowania laserowego: siatka 1 m, wysokości w układzie PL-KRON86-NH, pobierany przez usługę WCS Geoportalu. Daje realne nachylenia, skarpy i nasypy, ale obejmuje wyłącznie Polskę. Poza Polską albo przy awarii usługi narzędzie samo wróci do modelu globalnego i zaznaczy to w ocenie wiarygodności.',
+};
+const SURF_HINT={
+  osm:'Do wysokości terenu dodawana jest stała wysokość lasu i zabudowy z OpenStreetMap (wartości poniżej). Szybkie, ale przybliżone – nie zna rzeczywistej wysokości drzewostanu.',
+  cop:'Copernicus GLO-30 (30 m, cały świat, także Białoruś): radarowy model pokrycia z lat 2011–2015 z rzeczywistą wysokością lasu i zabudowy. Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.',
+  cop90:'Copernicus GLO-90 (90 m, cały świat): rzadsza wersja tego samego modelu. Użyteczna, gdy GLO-30 nie ma kafla dla rejonu albo rejon jest bardzo duży.',
+  gugik:'Numeryczny model pokrycia terenu GUGiK z lotniczego skanowania laserowego (1 m): najdokładniejsze martwe pola w Polsce, bo zawiera rzeczywistą wysokość drzew i budynków. Tylko Polska.',
+  none:'Widoczność liczona po gołym terenie, bez lasu i zabudowy – martwe pola będą zaniżone, a widoczność zawyżona.',
+};
+function initDem(){
+  const fill=(id,src,def)=>{let v=def;try{v=localStorage.getItem('ocoka-'+id)||def}catch(e){}
+    $(id).innerHTML=Object.entries(src).map(([k,o])=>`<option value="${k}">${o.n}</option>`).join('');
+    if(src[v])$(id).value=v;};
+  fill('pDem',DEMSRC,'terrarium');fill('pSurf',SURFSRC,'osm');
+  const upd=()=>{
+    $('pDemHint').textContent=DEM_HINT[$('pDem').value]||'';
+    $('pSurfHint').textContent=SURF_HINT[$('pSurf').value]||'';
+    $('pHRow').hidden=$('pSurf').value!=='osm';
+    if(!PL_BOX.contains(map.getCenter())&&($('pDem').value==='gugik'||$('pSurf').value==='gugik'))
+      $($('pDem').value==='gugik'?'pDemHint':'pSurfHint').textContent+=' Uwaga: środek mapy leży poza Polską, więc ta usługa najpewniej nie zwróci danych.';
+    try{localStorage.setItem('ocoka-pDem',$('pDem').value);localStorage.setItem('ocoka-pSurf',$('pSurf').value)}catch(e){}
+  };
+  $('pDem').onchange=upd;$('pSurf').onchange=upd;map.on('moveend',upd);upd();
+}
+
 // ================= Start =================
 renderCatBar();
 let saved=null;try{saved=JSON.parse(localStorage.getItem('ocoka-v2')||'null')}catch(e){}
@@ -5104,7 +5271,7 @@ if(saved&&saved.features&&saved.features.length){
 (function(){const box=$('igList');Object.entries(IG).forEach(([g,[c,n]])=>{const l=document.createElement('label');l.className='check';
   l.innerHTML=`<input type="checkbox" id="ig-${g}"> <span class="iico" style="background:${c};width:16px;height:16px;font-size:8px;display:inline-grid"></span> ${n}`;box.appendChild(l);
   l.querySelector('input').onchange=e=>{e.target.checked?igHide.delete(g):igHide.add(g);applyIgHide();save()}});applyIgHide()})();
-initCoordDialog();initReport();initMgrsDialog();initOps();initOffline();openShared();
+initDem();initCoordDialog();initReport();initMgrsDialog();initOps();initOffline();openShared();
 buildLinks('wxLinks',WXLINKS);buildLinks('byLinks',BYLINKS);
 map.on('moveend',()=>{[['wxLinks',WXLINKS],['byLinks',BYLINKS]].forEach(([id,list])=>{const as=$(id).querySelectorAll('a');list.forEach(([n,fn],i)=>{if(as[i])as[i].href=fn(id==='wxLinks'?wxPoint():map.getCenter())})})});
 $('wxGo').onclick=()=>loadWx(wxPoint());
