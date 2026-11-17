@@ -753,6 +753,7 @@ textarea{resize:vertical;min-height:56px}
 .isolab span{position:absolute;transform:translate(-50%,-50%);color:#fff;font:600 11px IBM Plex Mono,monospace;padding:1px 5px;border-radius:8px;white-space:nowrap;box-shadow:0 0 0 1.5px #fff}
 #shareUrl{width:100%;font:12px IBM Plex Mono,monospace}
 .relb{font-size:11px;font-weight:600;margin-left:6px;padding:0 6px;border-radius:8px;border:1px solid var(--cc);color:var(--cc);white-space:nowrap}
+.mini{font:inherit;padding:1px 4px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink)}
 .note.gap-bad{border-left-color:var(--bad);background:color-mix(in srgb,var(--bad) 8%,var(--bg))}.note.gap-part{border-left-color:#b26a00}
 .note{background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px;font-size:13px}
 
@@ -2270,7 +2271,7 @@ function reliability(q){
   const SF={cop:'Copernicus GLO-30 (DSM, 30 m, dane radarowe 2011–2015)',cop90:'Copernicus GLO-90 (DSM, 90 m, dane radarowe 2011–2015)',gugik:'NMPT GUGiK z lotniczego skanowania laserowego (1 m)'};
   if(SF[q.demSrc])rows.push(['Widoczność i martwe pola',q.demSrc==='gugik'?'hi':'mid',`Linie widoczności liczone na modelu pokrycia terenu ${SF[q.demSrc]}, który zawiera rzeczywistą wysokość lasu i zabudowy; obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję.${q.demSrc==='gugik'?' Model obejmuje tylko Polskę; jego aktualność zależy od daty nalotu w danym arkuszu.':' Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.'}`]);
   else rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',(/-failed$/.test(q.demSrc||'')?`Wybrany model pokrycia terenu był niedostępny${q.surfNote?' ('+q.surfNote+')':''} – użyto danych zastępczych. `:'')+(q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`)]);
-  rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa, tory kolejowe i nasypy – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
+  rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Pojazdy gąsienicowe: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa, tory i nasypy – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Pojazdy kołowe: < 15% / 15–30% / > 30%, a las i tory traktowane jako teren bardzo ograniczony. Drogi utwardzone obniżają klasę do nieograniczonej (kołowe) i co najwyżej ograniczonej (gąsienicowe). Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
   if(String(q.coverSrc||'').includes('wc'))rows.push(['Pokrycie terenu – ESA WorldCover',String(q.coverSrc).includes('niedost')?'lo':'mid',String(q.coverSrc).includes('niedost')?'Dane WorldCover były niedostępne – użyto samego OpenStreetMap.':'ESA WorldCover v200 (Sentinel-1/2, stan na 2021 r., 10 m, CC BY 4.0) uzupełnia lasy, zabudowę, wody i mokradła. Zmiany po 2021 r. (wycinki, nowa zabudowa) nie są odwzorowane; klasyfikacja satelitarna myli się zwykle w kilku–kilkunastu procentach pikseli.']);
   rows.push(['Kierunki podejścia (AA)',OPS.res?'mid':'lo',OPS.res?'Drogi najkrótszego czasu dla wskazanego kierunku działania i rodzaju ruchu (zakładka „Działania”), liczone po siatce z prędkościami orientacyjnymi zależnymi od dróg, klasy MCOO, nachylenia i pogody. Nie uwzględniają zapór, ognia ani stanu nawierzchni.':'Model najmniejszego oporu po klasach MCOO z preferencją dróg; wskazuje kandydatów w dwóch umownych kierunkach (S→N, W→E). Wskaż kierunek działania przeciwnika w zakładce „Działania”, aby je ukierunkować.']);
   if(OPS.res)rows.push(['Czasy ruchu i linie czasowe','lo','Prędkości orientacyjne (nie z konkretnego regulaminu): pieszo wg funkcji Toblera, pojazdy kołowe 40 km/h po drogach i 4–12 km/h w terenie, gąsienicowe 30 i 8–20 km/h, z poprawką na nachylenie i pogodę. Drogi w modelu to tylko drogi publiczne z OSM; drogi gruntowe i mosty na nich nie przyspieszają ruchu. Czasy służą do porównania wariantów, nie do planowania co do minuty.']);
@@ -2800,7 +2801,7 @@ async function buildReportHTML(snap){
   }
   {const g=lastSum&&coverGap(lastSum.q);if(g)parts.push(`<p class="warn"><b>${g.lvl==='bad'?'Uwaga: ocena niepełna – brak danych o terenie.':'Uwaga: niepełne dane.'}</b> ${escH(g.t)}</p>`)}
   if(lastSum){const s=lastSum,q=s.q||{},bare=!q.dsm&&!/^(cop|cop90|gugik)$/.test(q.demSrc||'');
-    parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'<b>brak danych</b>':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}${bare?' (po gołym terenie – wartość zawyżona)':''}; MCOO: teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}${q.osmErr&&!String(q.coverSrc||'').includes('wc')?' (wyłącznie z nachyleń, bez pokrycia terenu)':''}.</p>`)}
+    parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'<b>brak danych</b>':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}${bare?' (po gołym terenie – wartość zawyżona)':''}; MCOO (gąsienicowe) teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}${s.wU!=null?`; MCOO (kołowe) ${pct(s.wU)} / ${pct(s.wR)} / ${pct(s.wS)}`:''}${q.osmErr&&!String(q.coverSrc||'').includes('wc')?' (wyłącznie z nachyleń, bez pokrycia terenu)':''}.</p>`)}
   parts.push(wxReportHTML());
   parts.push(opsReportHTML());
   const cl=t=>(t||'—').replace(/\n/g,' ');
@@ -3644,7 +3645,7 @@ async function runAuto(b,opt={}){
     else if(dsm)res.N.O.push(`Widoczność obliczono z uwzględnieniem lasu (${hF} m) i zabudowy (${hB} m); punkty obserwacyjne wybrano poza lasem i zabudową.`);
     else res.N.O.push('Widoczność obliczono po gołym terenie (bez lasu i zabudowy) – rzeczywiste martwe pola są większe.');
     {const own=notes.O.split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim();notes.O='[AUTO] '+res.N.O.join(' ')+(own?'\n'+own:'');render()}
-    lastSum={km2:opt.km2||km2,mn:t.mn,mx:t.mx,forest:osm?osm.forestShare:null,open:osm?osm.openShare:null,union:t.union,mU:t.mU,mR:t.mR,mS:t.mS,objs:res.F.length,inf:res.infCount||0,NI:res.NI||'',osmErr,desc:autoDesc,q,date:new Date().toISOString(),
+    lastSum={km2:opt.km2||km2,mn:t.mn,mx:t.mx,forest:osm?osm.forestShare:null,open:osm?osm.openShare:null,union:t.union,mU:t.mU,mR:t.mR,mS:t.mS,wU:t.wU,wR:t.wR,wS:t.wS,objs:res.F.length,inf:res.infCount||0,NI:res.NI||'',osmErr,desc:autoDesc,q,date:new Date().toISOString(),
       cross:osm?osm.cross.map(c=>({lat:r5(c.ll.lat),lng:r5(c.ll.lng),kind:c.kind,name:c.name,mw:c.mw,w:c.w,water:c.water||''})):[],rivW:osm?osm.rivW:''};
     if(osm&&osm.cross.length){const cr=osm.cross,nb=cr.filter(c=>c.kind==='most').length,nf=cr.length-nb,kn=cr.filter(c=>c.mw!=null);
       notes.K=(notes.K+`\n[AUTO] Przeprawy: mostów ${nb}${nf?`, brodów ${nf}`:''}; nośność znana dla ${kn.length}${kn.length?` (najsłabszy ${Math.min(...kn.map(c=>c.mw))} t)`:''}. Szczegóły i ocena dla masy pojazdu w zakładce „Działania”.`).trim()}
@@ -3934,13 +3935,19 @@ function simplify(pts,tol){
 function buildResults(b,g,t,o,km2){
   const F=[],n=g.n,N2=n*n,llOf=p=>g.pts[p.j*n+p.i];
   // MCOO: kryteria dla pojazdów gąsienicowych (nachylenie) + pokrycie terenu z OSM
-  const mob=new Uint8Array(N2);let mU=0,mR=0,mS=0;const ins=g.inside||new Uint8Array(N2).fill(1),NI=t.NI||N2;
+  const mob=new Uint8Array(N2),mobW=new Uint8Array(N2);let mU=0,mR=0,mS=0,wU=0,wR=0,wS=0;
+  const ins=g.inside||new Uint8Array(N2).fill(1),NI=t.NI||N2;
   for(let k=0;k<N2;k++){
-    const s=t.slope[k];let c=s>=45?2:s>=30?1:0;
-    if(o){if(o.waterMask[k]||o.wetMask[k]||o.riverMask[k]||o.quarryMask[k]||o.cliffMask[k])c=2;else if(o.forestMask[k]||o.builtMask[k]||o.orchMask[k]||o.embMask[k]||o.railMask[k])c=Math.max(c,1)}
-    mob[k]=c;if(ins[k])c===0?mU++:c===1?mR++:mS++;
+    const s=t.slope[k];let c=s>=45?2:s>=30?1:0,cw=s>=30?2:s>=15?1:0;
+    if(o){
+      if(o.waterMask[k]||o.wetMask[k]||o.riverMask[k]||o.quarryMask[k]||o.cliffMask[k]){c=2;cw=2}
+      else if(o.forestMask[k]||o.builtMask[k]||o.orchMask[k]||o.embMask[k]||o.railMask[k]){c=Math.max(c,1);cw=Math.max(cw,(o.forestMask[k]||o.railMask[k])?2:1)}
+    }
+    if(o&&o.roadMask[k]){c=Math.min(c,1);cw=0}
+    mob[k]=c;mobW[k]=cw;
+    if(ins[k]){c===0?mU++:c===1?mR++:mS++;cw===0?wU++:cw===1?wR++:wS++}
   }
-  t.mob=mob;t.mU=mU/NI;t.mR=mR/NI;t.mS=mS/NI;t.inside=ins;
+  t.mob=mob;t.mobW=mobW;t.mU=mU/NI;t.mR=mR/NI;t.mS=mS/NI;t.wU=wU/NI;t.wR=wR/NI;t.wS=wS/NI;t.inside=ins;
   // sektory obserwacji z punktów dominujących
   t.peaks.forEach((p,pi)=>{
     let sx=0,sy=0;const items=[];
@@ -3966,9 +3973,9 @@ function buildResults(b,g,t,o,km2){
   N.O.push(`Teren ${reliefCls}: wysokości ${Math.round(t.mn)}–${Math.round(t.mx)} m n.p.m. (deniwelacja ${Math.round(t.relief)} m).`);
   N.O.push(`Najlepsze punkty obserwacyjne (wybrane według zasięgu widoczności): ${peakTxt}. Łącznie widać z nich ${pct(t.union)} rejonu, martwe pola ok. ${pct(1-t.union)}.${t.union<0.25?' Mała widoczność oznacza teren zakryty – obserwacja wymaga wież, masztów lub BSP.':''}`);
   N.C.push(`Martwe pola względem tych punktów obserwacyjnych zajmują ok. ${pct(1-t.union)} rejonu i dają osłonę przed obserwacją z tych punktów.`);
-  N.Ob.push(`Nachylenie powyżej 30% (niedostępne dla pojazdów): ${pct(t.nogo)} rejonu; 15–30% (ruch utrudniony): ${pct(t.slow)}.`+(t.steep>0.005?` Stoki powyżej 60% (trudne pieszo): ${pct(t.steep)}.`:''));
-  N.A.push(`Nachylenie poniżej 15% występuje na ${pct(t.go)} rejonu, więc o przejezdności poza drogami decyduje głównie pokrycie terenu: według MCOO teren nieograniczony to ${pct(t.mU)} rejonu.`);
-  N.Ob.push(`MCOO (pojazdy gąsienicowe): teren nieograniczony ${pct(t.mU)}, ograniczony ${pct(t.mR)}, bardzo ograniczony ${pct(t.mS)}.`);
+  N.Ob.push(`Nachylenia: powyżej 30% na ${pct(t.nogo)} rejonu (granica dla pojazdów kołowych), 15–30% na ${pct(t.slow)} (ruch kołowy utrudniony), poniżej 15% na ${pct(t.go)}. Dla pojazdów gąsienicowych granicą jest dopiero 45%.`+(t.steep>0.005?` Stoki powyżej 60% (trudne pieszo): ${pct(t.steep)}.`:''));
+  N.A.push(`Nachylenie poniżej 15% występuje na ${pct(t.go)} rejonu, więc o przejezdności poza drogami decyduje głównie pokrycie terenu: według MCOO teren nieograniczony to ${pct(t.mU)} rejonu dla pojazdów gąsienicowych i ${pct(t.wU)} dla kołowych.`);
+  N.Ob.push(`MCOO – pojazdy gąsienicowe: teren nieograniczony ${pct(t.mU)}, ograniczony ${pct(t.mR)}, bardzo ograniczony ${pct(t.mS)}. Pojazdy kołowe: ${pct(t.wU)} / ${pct(t.wR)} / ${pct(t.wS)} – kołowe są ograniczone wcześniej (nachylenie od 15%, las i tory jako teren bardzo ograniczony), więc poza drogami ruch kołowy jest wyraźnie trudniejszy.`);
   // kierunki podejścia: korytarze najmniejszego oporu
   [['S','z S na N'],['W','z W na E']].forEach(([from,lab],ix)=>{
     const path=leastCost(g,mob,o&&o.roadMask,from);if(!path)return;
@@ -4047,7 +4054,7 @@ function applyAuto(res,b,g,t){
   const sl=mk(k=>{const s=t.slope[k];return s<15?[46,125,50,60]:s<30?[240,190,30,140]:[198,40,40,170]});
   if(ovSlope)map.removeLayer(ovSlope);
   ovSlope=L.imageOverlay(sl,b,{pane:'auto',interactive:false,className:'pix'});
-  setMC({b,n,mob:t.mob,dead:Uint8Array.from(t.vis,v=>v?0:1),inside:t.inside,showMob:true,showDead:true,stats:[t.mU,t.mR,t.mS]});
+  setMC({b,n,mob:t.mob,mobW:t.mobW,dead:Uint8Array.from(t.vis,v=>v?0:1),inside:t.inside,showMob:true,showDead:true,wheel:!!(MC&&MC.wheel),stats:[t.mU,t.mR,t.mS],statsW:[t.wU,t.wR,t.wS]});
   decorate();render();save();
   map.fitBounds(b,{padding:[40,40]});
 }
@@ -4074,12 +4081,12 @@ function sectionRel(q){
 function showAutoPanel(sum){
   if(TRAIN.stash){showTrainPanel();return}
   const S=sum,SR=sectionRel(S.q),relB=k=>SR[k]?`<span class="relb" style="--cc:${CONF[SR[k][0]][1]}" title="${esc(SR[k][1])}">wiarygodność ${CONF[SR[k][0]][0]}</span>`:'',relT=k=>SR[k]?`<div class="hint">Podstawa: ${esc(SR[k][1])}.</div>`:'';
-  const stats=`<span>Powierzchnia <b>${S.km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(S.mn)}–${Math.round(S.mx)} m</b></span><span>Lasy <b>${S.forest==null?'brak danych':pct(S.forest)}</b></span>${S.open!=null?`<span>Teren otwarty <b>${pct(S.open)}</b></span>`:''}<span>Widoczność z wzgórz <b>${pct(S.union)}</b></span><span>MCOO U/R/SR <b>${pct(S.mU)} / ${pct(S.mR)} / ${pct(S.mS)}</b></span><span>Obiekty auto <b>${S.objs}</b></span><span>Infrastruktura <b>${S.inf}</b></span>`;
+  const stats=`<span>Powierzchnia <b>${S.km2.toFixed(1)} km²</b></span><span>Wysokości <b>${Math.round(S.mn)}–${Math.round(S.mx)} m</b></span><span>Lasy <b>${S.forest==null?'brak danych':pct(S.forest)}</b></span>${S.open!=null?`<span>Teren otwarty <b>${pct(S.open)}</b></span>`:''}<span>Widoczność z wzgórz <b>${pct(S.union)}</b></span><span>MCOO gąs. <b>${pct(S.mU)} / ${pct(S.mR)} / ${pct(S.mS)}</b></span>${S.wU!=null?`<span>MCOO koł. <b>${pct(S.wU)} / ${pct(S.wR)} / ${pct(S.wS)}</b></span>`:''}<span>Obiekty auto <b>${S.objs}</b></span><span>Infrastruktura <b>${S.inf}</b></span>`;
   const txt=k=>esc(stripAuto(notes[k])||'—').replace(/\n/g,'<br>');
   const enN=drawn.getLayers().filter(l=>l.feature.properties.cat==='E').length;
   const body=`
     <div class="row">
-      <label class="check"><input type="checkbox" id="ovM" ${MC&&MC.showMob?'checked':''}> MCOO</label><span class="sw h1"></span><span class="hint">ograniczony</span><span class="sw h2"></span><span class="hint">bardzo ograniczony</span>
+      <label class="check"><input type="checkbox" id="ovM" ${MC&&MC.showMob?'checked':''}> MCOO</label><select id="ovMW" class="mini" ${MC&&MC.mobW?'':'disabled'}><option value="t" ${MC&&!MC.wheel?'selected':''}>gąsienicowe</option><option value="w" ${MC&&MC.wheel?'selected':''}>kołowe</option></select><span class="sw h1"></span><span class="hint">ograniczony</span><span class="sw h2"></span><span class="hint">bardzo ograniczony</span>
       <label class="check" style="margin-left:12px"><input type="checkbox" id="ovD" ${MC&&MC.showDead?'checked':''}> Martwe pola</label><span class="sw hd"></span>
       <label class="check" style="margin-left:12px"><input type="checkbox" id="ovI" ${$('ov-infra').checked?'checked':''}> Infrastruktura</label><span class="iico" style="background:#37474f;width:18px;height:18px;font-size:9px">M</span>
     </div>
@@ -4105,6 +4112,7 @@ function showAutoPanel(sum){
   $('ovI').onchange=e=>{setOver('infra',e.target.checked);save()};
   $('ovD').onchange=e=>{if(MC){MC.showDead=e.target.checked;mcoo.redraw();save()}};
   $('ovM').onchange=e=>{if(MC){MC.showMob=e.target.checked;mcoo.redraw();save()}};
+  $('ovMW').onchange=e=>{if(MC&&MC.mobW){MC.wheel=e.target.value==='w';mcoo.redraw();save();const st=MC.wheel?MC.statsW:MC.stats;if(st)toast(`MCOO ${MC.wheel?'pojazdy kołowe':'pojazdy gąsienicowe'}: nieograniczony ${pct(st[0])}, ograniczony ${pct(st[1])}, bardzo ograniczony ${pct(st[2])}`)}};
   $('aEdit').onclick=()=>{p.hidden=true;document.querySelector('.tab[data-tab=analiza]').click();if(narrow())$('cats').scrollIntoView({behavior:'smooth'})};
   $('aRep').onclick=()=>{p.hidden=true;openReport(true)};
   $('aAgain').onclick=()=>{p.hidden=true;startAuto()};
@@ -4126,7 +4134,7 @@ const McooLayer=L.GridLayer.extend({
   createTile(c){
     const cv=document.createElement('canvas');cv.width=cv.height=256;
     if(!MC||(!MC.showMob&&!MC.showDead))return cv;
-    const {b,n,mob,dead}=MC,S=b.getSouth(),N=b.getNorth(),W=b.getWest(),E=b.getEast();
+    const {b,n,dead}=MC,mob=(MC.wheel&&MC.mobW)||MC.mob,S=b.getSouth(),N=b.getNorth(),W=b.getWest(),E=b.getEast();
     const ox=c.x*256,oy=c.y*256,lngs=new Float64Array(256),lats=new Float64Array(256);
     for(let q=0;q<256;q++){lngs[q]=map.unproject([ox+q+.5,oy],c.z).lng;lats[q]=map.unproject([ox,oy+q+.5],c.z).lat}
     const g=cv.getContext('2d'),im=g.createImageData(256,256),d=im.data;
@@ -4279,7 +4287,7 @@ function toGeoJSON(){
   const fc={type:'FeatureCollection',features:[],ocoka:{area:areaEl.value,notes:{...notes},base:baseSel.value,
     relief:{on:$('rOn').checked,tint:$('rTint').checked,shade:$('rShade').checked,cont:$('rCont').checked,op:+$('rOp').value,gugik:$('gugik').checked},
     hObs:$('hObs').value,hTgt:$('hTgt').value,pDem:$('pDem').value,pSurf:$('pSurf').value,autoBox:autoBox?[[autoBox.getSouth(),autoBox.getWest()],[autoBox.getNorth(),autoBox.getEast()]]:null,doct,over:overState(),sum:lastSum,wxTh:JSON.stringify(WXT)!==JSON.stringify(WXT_DEF)?WXT:null,wx:wxState?{lat:wxState.lat,lng:wxState.lng,time:wxState.time,raw:wxState.raw}:null,areaAuto,igHide:[...igHide],autoRing:autoRing?autoRing.map(p=>[r5(p.lat),r5(p.lng)]):null,autoDesc,ops:{...OPS,_T:undefined,_isoN:undefined},gx:gxEnc(),train:TRAIN.stash,
-    mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),dead:Array.from(MC.dead).join(''),inside:MC.inside?Array.from(MC.inside).join(''):null,showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
+    mc:MC?{b:[[MC.b.getSouth(),MC.b.getWest()],[MC.b.getNorth(),MC.b.getEast()]],n:MC.n,mob:Array.from(MC.mob).join(''),mobW:MC.mobW?Array.from(MC.mobW).join(''):null,wheel:!!MC.wheel,statsW:MC.statsW||null,dead:Array.from(MC.dead).join(''),inside:MC.inside?Array.from(MC.inside).join(''):null,showMob:MC.showMob,showDead:MC.showDead,stats:MC.stats}:null,saved:new Date().toISOString()}};
   drawn.eachLayer(l=>{const g=l.toGeoJSON();g.properties={...l.feature.properties};fc.features.push(g)});
   return fc;
 }
@@ -4304,7 +4312,7 @@ function load(fc,opt={}){
   if(!opt.keepView){let th=null;try{th=JSON.parse(localStorage.getItem('ocoka-theme')||'null')}catch(e){}
     if(th&&m.autoBox&&Math.abs(th.b[0][0]-m.autoBox[0][0])<1e-6&&Math.abs(th.b[1][1]-m.autoBox[1][1])<1e-6){theme=th;renderTheme()}else if(!m.autoBox){theme=null;renderTheme()}}
   doct=m.doct!==false;$('bDoct').setAttribute('aria-pressed',doct);doct?mcoo.addTo(map):map.removeLayer(mcoo);
-  const mc=m.mc;setMC(mc&&mc.mob&&mc.mob.length===mc.n*mc.n?{b:L.latLngBounds(mc.b),n:mc.n,mob:Uint8Array.from(mc.mob,Number),dead:Uint8Array.from(mc.dead,Number),inside:mc.inside?Uint8Array.from(mc.inside,Number):null,showMob:mc.showMob!==false,showDead:mc.showDead!==false,stats:mc.stats}:null);
+  const mc=m.mc;setMC(mc&&mc.mob&&mc.mob.length===mc.n*mc.n?{b:L.latLngBounds(mc.b),n:mc.n,mob:Uint8Array.from(mc.mob,Number),mobW:mc.mobW&&mc.mobW.length===mc.n*mc.n?Uint8Array.from(mc.mobW,Number):null,dead:Uint8Array.from(mc.dead,Number),inside:mc.inside?Uint8Array.from(mc.inside,Number):null,showMob:mc.showMob!==false,showDead:mc.showDead!==false,wheel:!!mc.wheel,stats:mc.stats,statsW:mc.statsW||null}:null);
   if(!opt.keepView&&Array.isArray(m.over))Object.keys(OVER).forEach(k=>setOver(k,m.over.includes(k)));
   (fc.features||[]).forEach(ft=>{const isI=ft&&ft.properties&&ft.properties.cat==='I';
    const igc=isI?'ig-'+((IT[ft.properties.itype]||{g:'tr'}).g):'';
