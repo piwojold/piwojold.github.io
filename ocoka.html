@@ -1035,9 +1035,9 @@ textarea{resize:vertical;min-height:56px}
       </div>
       <div class="section">
         <h3>Wymiana danych</h3>
-        <div class="row"><button class="btn sm" id="xKml">Eksport KML</button><button class="btn sm" id="xGpx">Eksport GPX</button><button class="btn sm" id="xGeo">Eksport GeoJSON</button><button class="btn sm" id="xImp">Import KML / GPX / GeoJSON</button></div>
-        <div class="hint">KML otworzysz w ATAK, Google Earth i QGIS; GPX w odbiornikach GPS i aplikacjach terenowych. Import dodaje obiekty do bieżącej analizy (do aktywnej kategorii, jeśli plik jej nie podaje).</div>
-        <div class="row"><button class="btn sm primary" id="xLink">Kopiuj link do analizy</button></div>
+        <div class="row"><button class="btn sm" id="xKml">Eksport KML</button><button class="btn sm" id="xGpx">Eksport GPX</button><button class="btn sm" id="xGeo">Eksport GeoJSON</button><button class="btn sm" id="xShp">Eksport SHP (ZIP)</button><button class="btn sm" id="xImp">Import KML / GPX / GeoJSON</button></div>
+        <div class="hint">KML otworzysz w ATAK, Google Earth i QGIS; GPX w odbiornikach GPS i aplikacjach terenowych; SHP to archiwum ZIP z osobnymi warstwami punktów, linii i obszarów (WGS 84, UTF-8) dla QGIS, ArcGIS i systemów GIS. Import dodaje obiekty do bieżącej analizy (do aktywnej kategorii, jeśli plik jej nie podaje).</div>
+        <div class="row"><button class="btn sm primary" id="xLink">Kopiuj link do analizy</button><button class="btn sm" id="xBak" hidden>Przywróć poprzednią analizę</button></div>
         <div id="shareOut" class="mform" hidden></div>
       </div>
       <div class="section">
@@ -1373,7 +1373,7 @@ const HELP=`
 <p><b>Widoczność między dwoma punktami</b>: wskaż punkt A i B, a zobaczysz profil terenu, odpowiedź „widać / nie widać” i miejsce, w którym teren przesłania cel.</p>
 <p><b>Tryb szkoleniowy</b>: po zaznaczeniu rejonu wynik automatyczny jest ukrywany. Uczestnik sam nanosi obiekty i wpisuje wnioski, a przycisk „Porównaj” zestawia je z oceną automatyczną.</p>
 <h4>Wymiana danych i praca bez internetu</h4>
-<p>W zakładce „Mapa i teren” wyeksportujesz analizę do KML (ATAK, Google Earth, QGIS), GPX i GeoJSON oraz zaimportujesz obiekty z tych formatów. „Kopiuj link do analizy” tworzy adres, który odtwarza rejon, obiekty i wnioski u innej osoby. „Zapisz podkład rejonu offline” pobiera kafle wybranego podkładu, tak aby mapa i zapisana analiza działały bez połączenia; nowa ocena rejonu i pogoda wymagają internetu.</p>
+<p>W zakładce „Mapa i teren” wyeksportujesz analizę do KML (ATAK, Google Earth, QGIS), GPX, GeoJSON i <b>SHP</b> oraz zaimportujesz obiekty z KML, GPX i GeoJSON. Eksport SHP tworzy archiwum ZIP z trzema warstwami ESRI Shapefile – osobno punkty, linie i obszary (shapefile nie łączy rodzajów geometrii w jednym pliku) – w układzie WGS 84 (EPSG:4326) i kodowaniu UTF-8, wraz z plikami .prj, .cpg oraz opisem pól w pliku czytaj_to.txt. Obszar oceny jest pierwszym rekordem warstwy obszarów. „Kopiuj link do analizy” tworzy adres, który odtwarza rejon, obiekty i wnioski u innej osoby. „Zapisz podkład rejonu offline” pobiera kafle wybranego podkładu, tak aby mapa i zapisana analiza działały bez połączenia; nowa ocena rejonu i pogoda wymagają internetu.</p>
 <p><b>Pokrycie terenu z ESA WorldCover</b> (Parametry analizy) uzupełnia lasy, zabudowę i wody danymi satelitarnymi 10 m tam, gdzie OpenStreetMap jest niepełny.</p>
 <p><b>Wpływ pogody na działania (macierz IPB)</b>: tabela na 72 h w blokach 6-godzinnych ocenia jako korzystne (K), ograniczające (O) lub niekorzystne (N) warunki dla: śmigłowców, lotnictwa, małych BSP, obserwacji wzrokowej, termowizji, artylerii (ogień obserwowany), przejezdności pojazdów kołowych i gąsienicowych, żołnierzy, łączności, zasłon dymnych i skażeń oraz desantu. Kliknięcie komórki pokazuje przyczynę oceny. Pod macierzą są wnioski dla własnych wojsk i przeciwnika, np. okna bez BSP, okresy słabego kontrastu termicznego, kanalizowanie ruchu przez rozmokły grunt, kierunek dryfu dymów i skażeń. Progi są orientacyjne i można je zmienić w sekcji „Progi oceny”. Podstawa chmur jest szacowana z różnicy temperatury i punktu rosy, więc ma charakter przybliżony.</p>
 <h3>Białoruś</h3>
@@ -2065,7 +2065,7 @@ function startBrush(){
 
 // ================= Cofnij / ponów =================
 let hist=[],hi=-1,histTimer=null,restoring=false;
-function snap(){const fc=toGeoJSON();delete fc.ocoka.saved;delete fc.ocoka.gx;return JSON.stringify(fc)}
+function snap(){const fc=toGeoJSON();delete fc.ocoka.saved;delete fc.ocoka.gx;if(fc.ocoka.ops&&fc.ocoka.ops.en)fc.ocoka.ops.en={...fc.ocoka.ops.en,mask:undefined};return JSON.stringify(fc)}
 function histPush(){if(restoring)return;const sn=snap();if(hist[hi]===sn)return;hist=hist.slice(0,hi+1);hist.push(sn);if(hist.length>60)hist.shift();hi=hist.length-1;updUndo()}
 function updUndo(){$('bUndo').disabled=hi<=0;$('bRedo').disabled=hi>=hist.length-1}
 function restore(sn){
@@ -2258,8 +2258,8 @@ function reliability(q){
   if(!q)return [];
   const osmOk=!q.osmErr,demOk=q.demFail<0.02,rows=[];
   rows.push(['Rzeźba i nachylenia',demOk?'hi':'mid',`Model terenu AWS Terrain Tiles (SRTM / EU-DEM, ok. 25–30 m), próbkowany w siatce ${q.n}×${q.n} co ok. ${Math.round(q.cell)} m. ${demOk?'Pobrano komplet danych.':`Brakowało ${pct(q.demFail)} próbek – uzupełniono sąsiednimi.`} Drobne formy (rowy, skarpy < 30 m) mogą być niewidoczne.${q.big?` Rejon ma ${Math.round(q.km2)} km², więc komórka siatki to ok. ${Math.round(q.cell)} m – ocena jest przeglądowa i służy do wyboru fragmentów do dokładniejszej analizy.`:''}`]);
-  if(q.big)rows.push(['Zakres danych dla dużego rejonu','lo',`Przy rejonach powyżej ${ABIG} km² pobierany jest ograniczony zestaw danych OpenStreetMap: bez zarośli, sadów, wyrobisk, nasypów, rowów, dróg gruntowych, brodów i liczby budynków, a przy rejonach powyżej 1200 km² także bez cieków i dróg lokalnych. Wektorowa mapa terenu nie jest rysowana – wczytaj ją dla mniejszego kadru przyciskiem w zakładce „Mapa i teren”.`]);
-  rows.push(['Pokrycie terenu (lasy, wody, zabudowa)',osmOk?'mid':'lo',osmOk?`OpenStreetMap, stan danych: ${q.osmTime?new Date(q.osmTime).toLocaleDateString('pl-PL'):'nieznany'}${q.osmRemark?' (serwer zgłosił: '+q.osmRemark+')':''}. Kompletność zależy od mapowania rejonu; w Polsce lasy i wody są zwykle dobrze odwzorowane.`:`Serwer OpenStreetMap nie odpowiedział${q.osmMsg?' ('+q.osmMsg+')':''}. ${String(q.coverSrc||'').includes('wc')?'Lasy, zabudowę i wody zastąpiono zdjęciami satelitarnymi ESA WorldCover; brak dróg, kolei, cieków i nazw obiektów.':'Wnioski oparte wyłącznie na rzeźbie terenu.'}`]);
+  if(q.big)rows.push(['Zakres danych dla dużego rejonu','lo',`Przy rejonach powyżej ${ABIG} km² pobierany jest ograniczony zestaw danych OpenStreetMap: bez zarośli, sadów, wyrobisk, nasypów, rowów, dróg gruntowych, brodów i liczby budynków, a przy rejonach powyżej 1200 km² także bez cieków, dróg lokalnych oraz bez lasów, wód i zabudowy z OSM – ich miejsce zajmuje wtedy pokrycie terenu z satelity ESA WorldCover. Wektorowa mapa terenu nie jest rysowana – wczytaj ją dla mniejszego kadru przyciskiem w zakładce „Mapa i teren”.`]);
+  rows.push(['Pokrycie terenu (lasy, wody, zabudowa)',osmOk?'mid':'lo',q.huge&&osmOk?`ESA WorldCover (Sentinel, 10 m, stan na 2021 r.). Przy rejonie powyżej 1200 km² dane OpenStreetMap o lasach, wodach i zabudowie nie są pobierane – z OSM pochodzą tylko drogi, koleje i większe cieki. Zmiany po 2021 r. nie są odwzorowane.`:osmOk?`OpenStreetMap, stan danych: ${q.osmTime?new Date(q.osmTime).toLocaleDateString('pl-PL'):'nieznany'}${q.osmRemark?' (serwer zgłosił: '+q.osmRemark+')':''}. Kompletność zależy od mapowania rejonu; w Polsce lasy i wody są zwykle dobrze odwzorowane.`:`Serwer OpenStreetMap nie odpowiedział${q.osmMsg?' ('+q.osmMsg+')':''}. ${String(q.coverSrc||'').includes('wc')?'Lasy, zabudowę i wody zastąpiono zdjęciami satelitarnymi ESA WorldCover; brak dróg, kolei, cieków i nazw obiektów.':'Wnioski oparte wyłącznie na rzeźbie terenu.'}`]);
   if(q.demSrc==='cop')rows.push(['Widoczność i martwe pola','mid',`Linie widoczności liczone na modelu powierzchni Copernicus GLO-30 (DSM, 30 m, dane radarowe z lat 2011–2015), który zawiera rzeczywistą wysokość lasu i zabudowy; obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję. Wycinki i nowa zabudowa po 2015 r. nie są odwzorowane.`]);
   else rows.push(['Widoczność i martwe pola',osmOk&&q.dsm?'mid':'lo',(q.demSrc==='cop-failed'?'Model Copernicus był niedostępny – użyto SRTM. ':'')+(q.dsm&&osmOk?`Linie widoczności liczone na modelu terenu z dodaniem wysokości lasu (${q.hF} m) i zabudowy (${q.hB} m), obserwator ${q.hO} m, cel ${q.hT} m, z poprawką na krzywiznę Ziemi i refrakcję (k = 0,13). Pojedyncze drzewa, budynki i rzeczywista wysokość drzewostanu nie są uwzględnione.`:`Linie widoczności liczone na gołym terenie (bez lasu i zabudowy) – widoczność jest zawyżona.`)]);
   rows.push(['MCOO (przejezdność)',osmOk?'mid':'lo',`Kryteria dla pojazdów gąsienicowych: nachylenie < 30% nieograniczony, 30–45% ograniczony, > 45% bardzo ograniczony; las, sad, zabudowa, tory kolejowe i nasypy – ograniczony; wody, rzeki, mokradła, wyrobiska, urwiska – bardzo ograniczony. Nie uwzględnia nośności gruntu, pogody ani gęstości drzewostanu.`]);
@@ -2851,7 +2851,7 @@ async function openReport(regen){
 // ================= Eksport: DOCX (OOXML, bez bibliotek) =================
 const CRC_T=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
 function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC_T[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
-function zipStore(files){
+function zipStore(files,mime){
   const enc=new TextEncoder(),chunks=[],cen=[];let off=0;
   for(const f of files){
     const name=enc.encode(f.name),data=typeof f.data==='string'?enc.encode(f.data):f.data,crc=crc32(data);
@@ -2865,7 +2865,7 @@ function zipStore(files){
   }
   const cenLen=cen.reduce((s,x)=>s+x.length,0),e=new DataView(new ArrayBuffer(22));
   e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cenLen,true);e.setUint32(16,off,true);
-  return new Blob([...chunks,...cen,new Uint8Array(e.buffer)],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+  return new Blob([...chunks,...cen,new Uint8Array(e.buffer)],{type:mime||'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
 }
 const xe=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 function docxRuns(node,fmt={}){
@@ -3585,10 +3585,11 @@ async function runAuto(b,opt={}){
     if(osmRaw&&!big)try{setTheme(parseTheme(osmRaw,b))}catch(e){console.error(e)}
     else if(big)setTheme(null);
     let coverSrc=osm?'osm':'none',wcAdd=0;
-    if($('pCover').value==='wc'||osmErr){
-      step(osmErr?'Krok 2 z 3: OpenStreetMap niedostępny – pobieram pokrycie terenu z satelity (ESA WorldCover 10 m)…':'Krok 2 z 3: pobieram pokrycie terenu ESA WorldCover (10 m)…');
-      try{const wm=await wcMasks(b,g);if(!osm)osm=parseOSM({elements:[]},b,g);wcAdd=mergeWC(osm,wm,g);coverSrc=osmErr?'wc':'osm+wc'}
-      catch(e){console.error(e);coverSrc=osm?'osm (WorldCover niedostępny)':'none';toast(osmErr?'Nie udało się pobrać żadnych danych o pokryciu terenu.':'ESA WorldCover jest niedostępny – używam samego OpenStreetMap.')}
+    const huge=aKm2>1200;
+    if($('pCover').value==='wc'||osmErr||huge){
+      step(osmErr?'Krok 2 z 3: OpenStreetMap niedostępny – pobieram pokrycie terenu z satelity (ESA WorldCover 10 m)…':huge?'Krok 2 z 3: bardzo duży rejon – pokrycie terenu pobieram z satelity (ESA WorldCover 10 m)…':'Krok 2 z 3: pobieram pokrycie terenu ESA WorldCover (10 m)…');
+      try{const wm=await wcMasks(b,g);if(!osm)osm=parseOSM({elements:[]},b,g);wcAdd=mergeWC(osm,wm,g);coverSrc=osmErr||huge?'wc':'osm+wc'}
+      catch(e){console.error(e);coverSrc=osm&&!huge?'osm (WorldCover niedostępny)':osm?'none (WorldCover niedostępny)':'none';toast(osmErr?'Nie udało się pobrać żadnych danych o pokryciu terenu.':'ESA WorldCover jest niedostępny – ocena pokrycia terenu będzie niepełna.')}
     }
     step('Krok 2 z 3: rozpoznaję obiekty infrastruktury…');
     try{inf=await pInf}catch(e){inf=null;infMsg=String(e&&e.message||e)}
@@ -3612,7 +3613,7 @@ async function runAuto(b,opt={}){
     }
     if(coverSrc.includes('wc')&&!coverSrc.includes('niedost'))res.N.C.push(`Pokrycie terenu uzupełniono danymi satelitarnymi ESA WorldCover 2021 (10 m)${wcAdd>0.005?`: las poza OpenStreetMap zajmuje dodatkowo ${pct(wcAdd)} rejonu`:''}.`);
     applyAuto(res,b,g,t);setGX(b,g,t,osm);opsReset();
-    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,coverSrc,osmErr,osmMsg,infMsg,km2:aKm2,big,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
+    const q={n,cell:g.cell,z:g.z,demFail:g.fails,demSrc,coverSrc,osmErr,osmMsg,infMsg,km2:aKm2,big,huge,osmTime:osm?osm.osmTime:'',osmRemark:osm?osm.remark:'',dsm,hF,hB,hO:+$('hObs').value||2,hT:+$('hTgt').value||1.5,infErr:!inf};
     if(surf)res.N.O.push('Widoczność obliczono na modelu powierzchni Copernicus GLO-30 (rzeczywista wysokość lasu i zabudowy); punkty obserwacyjne wybrano poza lasem i zabudową.');
     else if(dsm)res.N.O.push(`Widoczność obliczono z uwzględnieniem lasu (${hF} m) i zabudowy (${hB} m); punkty obserwacyjne wybrano poza lasem i zabudową.`);
     else res.N.O.push('Widoczność obliczono po gołym terenie (bez lasu i zabudowy) – rzeczywiste martwe pola są większe.');
@@ -3622,10 +3623,11 @@ async function runAuto(b,opt={}){
     if(osm&&osm.cross.length){const cr=osm.cross,nb=cr.filter(c=>c.kind==='most').length,nf=cr.length-nb,kn=cr.filter(c=>c.mw!=null);
       notes.K=(notes.K+`\n[AUTO] Przeprawy: mostów ${nb}${nf?`, brodów ${nf}`:''}; nośność znana dla ${kn.length}${kn.length?` (najsłabszy ${Math.min(...kn.map(c=>c.mw))} t)`:''}. Szczegóły i ocena dla masy pojazdu w zakładce „Działania”.`).trim()}
     updOcenaBtn();save();
+    opStep=null;
     showAutoPanel(lastSum);showManual(true);orientAA(true);renderOps();
     if(TRAIN.on)trainHide();
   }catch(e){
-    console.error(e);
+    opStep=null;console.error(e);
     openProfile('Ocena rejonu','Nie udało się pobrać modelu terenu. Sprawdź połączenie z internetem i spróbuj ponownie.','');
   }
 }
@@ -3712,11 +3714,11 @@ async function overpass(b,km2){
   const big=(km2||0)>ABIG,huge=(km2||0)>1200;
   const q=`[out:json][timeout:${big?240:90}];(
 ${big?'':`way["natural"~"^(scrub|heath|cliff)$"](${bb});way["landuse"~"^(orchard|vineyard|quarry)$"](${bb});way["man_made"="embankment"](${bb});
-way["waterway"~"^(ditch|drain)$"](${bb});`}relation["natural"="wetland"](${bb});
+way["waterway"~"^(ditch|drain)$"](${bb});`}${huge?'':`relation["natural"="wetland"](${bb});
 way["natural"="wood"](${bb});way["landuse"="forest"](${bb});relation["natural"="wood"](${bb});relation["landuse"="forest"](${bb});
 way["natural"="water"](${bb});relation["natural"="water"](${bb});way["natural"="wetland"](${bb});
+way["landuse"~"^(residential|industrial|commercial|retail)$"](${bb});`}
 way["waterway"~"^(river|canal${huge?'':'|stream'})$"](${bb});
-way["landuse"~"^(residential|industrial|commercial|retail)$"](${bb});
 way["highway"~"^(motorway|trunk|primary|secondary|tertiary${huge?'':'|unclassified'}${big?'':'|track'})$"](${bb});
 way["railway"="rail"](${bb});
 ${big?'':`node["ford"](${bb});way["ford"](${bb});`}
@@ -3977,7 +3979,7 @@ function buildResults(b,g,t,o,km2){
     // drogi
     const rd=Object.values(o.roads).filter(r=>r.len>300).sort((a,c)=>a.cls-c.cls||c.len-a.len);
     if(rd.length){
-      N.A.push('Drogi: '+rd.slice(0,6).map(r=>{const run=r.runs.sort((a,c)=>runLen(c)-runLen(a))[0];return `${r.name} (${r.clsName}, przebieg ${dirLabel(run)}, ${fmtDist(r.len)})`}).join('; ')+'.');
+      N.A.push('Drogi: '+rd.slice(0,6).map(r=>{const run=r.runs.sort((a,c)=>runLen(c)-runLen(a))[0];return `${r.name} (${r.clsName}, przebieg ${dirLabel(run)}, łącznie ${fmtDist(r.len)} w rejonie)`}).join('; ')+'. W tabeli obiektów podano najdłuższy odcinek każdej drogi.');
       rd.slice(0,3).forEach(r=>{const run=r.runs[0];F.push({cat:'A',kind:'line',lls:run,name:`${r.name} (auto)`,note:`${r.clsName[0].toUpperCase()+r.clsName.slice(1)}, przebieg ${dirLabel(run)}. Korytarz ruchu dla pojazdów kołowych.`,extra:{aaType:'MC',side:'wróg'}})});
     }else N.A.push('Brak dróg utwardzonych wyższej klasy w rejonie.');
     N.A.push(`Drogi lokalne: ${o.minorKm.toFixed(1)} km, drogi gruntowe i leśne: ${o.trackKm.toFixed(1)} km.`);
@@ -4280,7 +4282,14 @@ function load(fc,opt={}){
   decorate();render();opsRestore();
   if(!opt.keepView&&drawn.getLayers().length)map.fitBounds(drawn.getBounds(),{padding:[60,60],maxZoom:15});
 }
-function writeLS(){const fc=toGeoJSON();if(!fc.features.length&&!autoBox&&!areaEl.value.trim()&&!Object.values(notes).some(x=>x.trim()))return;try{localStorage.setItem('ocoka-v2',JSON.stringify(fc))}catch(e){}}
+let lsWarned=false;
+function writeLS(){const fc=toGeoJSON();if(!fc.features.length&&!autoBox&&!areaEl.value.trim()&&!Object.values(notes).some(x=>x.trim()))return;
+  try{localStorage.setItem('ocoka-v2',JSON.stringify(fc));lsWarned=false}
+  catch(e){
+    try{const lite={...fc,ocoka:{...fc.ocoka,gx:null,mc:null,wx:null}};localStorage.setItem('ocoka-v2',JSON.stringify(lite));
+      if(!lsWarned){lsWarned=true;toast('Analiza jest duża – w przeglądarce zapisano ją bez warstw pomocniczych. Zapisz plik, żeby nic nie stracić.')}}
+    catch(e2){if(!lsWarned){lsWarned=true;toast('Nie udało się zapisać analizy w przeglądarce (brak miejsca). Zapisz plik przyciskiem „Zapisz plik”.')}}
+  }}
 function save(){writeLS();if(!restoring){clearTimeout(histTimer);histTimer=setTimeout(histPush,500)}}
 
 function toast(t){document.querySelectorAll('.toast').forEach(x=>x.remove());const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
@@ -4342,6 +4351,13 @@ $('xImp').onclick=()=>$('file').click();
 $('xGeo').onclick=()=>$('bExport').onclick();
 $('xKml').onclick=()=>{download(`${slug()}-${stamp()}.kml`,toKML(),'application/vnd.google-earth.kml+xml');toast('Zapisano plik KML')};
 $('xGpx').onclick=()=>{download(`${slug()}-${stamp()}.gpx`,toGPX(),'application/gpx+xml');toast('Zapisano plik GPX')};
+$('xShp').onclick=exportSHP;
+function bakBtn(){let has=false;try{has=!!localStorage.getItem('ocoka-v2-bak')}catch(e){}$('xBak').hidden=!has}
+$('xBak').onclick=()=>{let b=null;try{b=localStorage.getItem('ocoka-v2-bak')}catch(e){}
+  if(!b){bakBtn();return}
+  try{const cur=toGeoJSON();if((cur.features||[]).length)localStorage.setItem('ocoka-v2-bak',JSON.stringify(cur));else localStorage.removeItem('ocoka-v2-bak')}catch(e){}
+  load(JSON.parse(b));save();histPush();bakBtn();showWelcome(false);showManual(true);toast('Przywrócono poprzednią analizę. Ponowne kliknięcie wróci do poprzedniego stanu.')};
+bakBtn();
 $('xLink').onclick=()=>shareLink();
 let clearArmed=false;
 $('bClear').onclick=()=>{
@@ -4736,15 +4752,22 @@ function wcName(lat,lon){const la=Math.floor(lat/3)*3,lo=Math.floor(lon/3)*3;
 async function wcMasks(b,g){
   if(!window.GeoTIFF)await loadScript(GEOTIFF_URL);
   const tiles=[],seen=new Set();
+  const WCC=new Set([10,20,30,40,50,60,70,80,90,95,100]);
+  const target=Math.max((b.getNorth()-b.getSouth())/(g.n-1),(b.getEast()-b.getWest())/(g.n-1))/3;
   for(const la of [b.getSouth(),b.getNorth()-1e-9])for(const lo of [b.getWest(),b.getEast()-1e-9]){
     const url=wcName(la,lo);if(seen.has(url))continue;seen.add(url);
-    const tif=await GeoTIFF.fromUrl(url,{allowFullFile:true}),img=await tif.getImage();
+    const tif=await GeoTIFF.fromUrl(url,{allowFullFile:true}),full=await tif.getImage();
+    let img=full,cnt=1;try{cnt=await tif.getImageCount()}catch(e){}
+    for(let i=1;i<cnt;i++){const im=await tif.getImage(i);let r;try{r=Math.abs(im.getResolution(full)[0])}catch(e){break}
+      if(r<=target)img=im;else break}
     const [minX,minY,maxX,maxY]=img.getBoundingBox(),W=img.getWidth(),Hh=img.getHeight(),rx=(maxX-minX)/W,ry=(maxY-minY)/Hh;
     const x0=Math.max(0,Math.floor((Math.max(b.getWest(),minX)-minX)/rx)-1),x1=Math.min(W,Math.ceil((Math.min(b.getEast(),maxX)-minX)/rx)+1);
     const y0=Math.max(0,Math.floor((maxY-Math.min(b.getNorth(),maxY))/ry)-1),y1=Math.min(Hh,Math.ceil((maxY-Math.max(b.getSouth(),minY))/ry)+1);
     if(x1<=x0||y1<=y0)continue;
     const sc=Math.max(1,Math.ceil(Math.max(x1-x0,y1-y0)/2400)),w=Math.ceil((x1-x0)/sc),h=Math.ceil((y1-y0)/sc);
     const data=await img.readRasters({window:[x0,y0,x1,y1],width:w,height:h,samples:[0],interleave:true,resampleMethod:'nearest'});
+    let bad=0;for(let i=0;i<data.length;i+=Math.max(1,Math.floor(data.length/500)))if(data[i]&&!WCC.has(data[i]))bad++;
+    if(bad>8)throw new Error('wc classes');
     tiles.push({minX,maxY,rx:rx*(x1-x0)/w,ry:ry*(y1-y0)/h,ox:minX+x0*rx,oy:maxY-y0*ry,w,h,data});
   }
   if(!tiles.length)throw new Error('wc');
@@ -4872,6 +4895,8 @@ async function shareLink(){
 async function openShared(){
   const m=/[#&]s=([A-Za-z0-9_-]+)/.exec(location.hash);if(!m)return false;
   try{const fc=await unpackState(m[1]);if(!fc||!fc.ocoka)throw new Error('fmt');
+    try{const prev=localStorage.getItem('ocoka-v2');
+      if(prev&&(JSON.parse(prev).features||[]).length){localStorage.setItem('ocoka-v2-bak',prev);setTimeout(()=>{bakBtn();toast('Twoja poprzednia analiza została zachowana – przywrócisz ją w zakładce „Mapa i teren”.')},1500)}}catch(e){}
     load(fc);showWelcome(false);showManual(true);save();histPush();updOcenaBtn();
     try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
     toast('Wczytano analizę z linku'+(fc.ocoka.area?': '+fc.ocoka.area:''));return true}
@@ -4914,6 +4939,155 @@ function opsRestore(){
   OPS._T=null;
   if(OPS.res&&gxOk()&&DIRS[OPS.res.dir]){const az=DIRS[OPS.res.dir][0],v=speedField(OPS.res.mode),src=edgeCells(OPS.res.task==='nat'?(az+180)%360:az).map(k=>nearPassable(k,v)).filter(k=>k>=0);OPS._T=timeField(v,src).T}
   drawIso();drawEnemy();renderOps();
+}
+
+// ================= Eksport do ESRI Shapefile =================
+const SHP_PRJ='GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]';
+const SHP_FIELDS=[['ID',12],['KAT',4],['KATEGORIA',40],['NAZWA',80],['TYP',30],['MGRS',22],['WYMIAR',20],['AUTO',1],['STRONA',12],['PEWNOSC',14],['SZCZEBEL',12],['RODZAJ',44],['OPIS',240]];
+const shpRing=r=>{let a=0;for(let i=1;i<r.length;i++)a+=(r[i][0]-r[i-1][0])*(r[i][1]+r[i-1][1]);return a};
+function shpGeom(feats,type){
+  const recs=feats.map(f=>{
+    if(type===1){
+      const [x,y]=f.parts[0][0],c=new ArrayBuffer(20),v=new DataView(c);
+      v.setInt32(0,1,true);v.setFloat64(4,x,true);v.setFloat64(12,y,true);
+      return {u:new Uint8Array(c),box:[x,y,x,y]};
+    }
+    const parts=f.parts,pts=[].concat(...parts),len=44+4*parts.length+16*pts.length;
+    const c=new ArrayBuffer(len),v=new DataView(c);
+    let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity;
+    pts.forEach(([x,y])=>{if(x<x0)x0=x;if(y<y0)y0=y;if(x>x1)x1=x;if(y>y1)y1=y});
+    v.setInt32(0,type,true);
+    v.setFloat64(4,x0,true);v.setFloat64(12,y0,true);v.setFloat64(20,x1,true);v.setFloat64(28,y1,true);
+    v.setInt32(36,parts.length,true);v.setInt32(40,pts.length,true);
+    let o=44,acc=0;parts.forEach(p=>{v.setInt32(o,acc,true);o+=4;acc+=p.length});
+    pts.forEach(([x,y])=>{v.setFloat64(o,x,true);v.setFloat64(o+8,y,true);o+=16});
+    return {u:new Uint8Array(c),box:[x0,y0,x1,y1]};
+  });
+  const B=[Infinity,Infinity,-Infinity,-Infinity];
+  recs.forEach(r=>{B[0]=Math.min(B[0],r.box[0]);B[1]=Math.min(B[1],r.box[1]);B[2]=Math.max(B[2],r.box[2]);B[3]=Math.max(B[3],r.box[3])});
+  if(!recs.length){B[0]=B[1]=B[2]=B[3]=0}
+  const hdr=bytes=>{const c=new ArrayBuffer(100),v=new DataView(c);
+    v.setInt32(0,9994);v.setInt32(24,bytes/2);v.setInt32(28,1000,true);v.setInt32(32,type,true);
+    v.setFloat64(36,B[0],true);v.setFloat64(44,B[1],true);v.setFloat64(52,B[2],true);v.setFloat64(60,B[3],true);
+    return new Uint8Array(c)};
+  const shpLen=100+recs.reduce((s,r)=>s+8+r.u.length,0);
+  const shp=new Uint8Array(shpLen),shx=new Uint8Array(100+8*recs.length);
+  shp.set(hdr(shpLen),0);shx.set(hdr(100+8*recs.length),0);
+  let off=100;
+  recs.forEach((r,i)=>{
+    const h=new DataView(new ArrayBuffer(8));h.setInt32(0,i+1);h.setInt32(4,r.u.length/2);
+    shp.set(new Uint8Array(h.buffer),off);shp.set(r.u,off+8);
+    const xh=new DataView(new ArrayBuffer(8));xh.setInt32(0,off/2);xh.setInt32(4,r.u.length/2);
+    shx.set(new Uint8Array(xh.buffer),100+8*i);
+    off+=8+r.u.length;
+  });
+  return {shp,shx};
+}
+function shpDbf(fields,rows){
+  const enc=new TextEncoder(),recLen=1+fields.reduce((s,f)=>s+f[1],0),hLen=33+32*fields.length;
+  const u=new Uint8Array(hLen+recLen*rows.length+1),v=new DataView(u.buffer),d=new Date();
+  u[0]=3;u[1]=d.getFullYear()-1900;u[2]=d.getMonth()+1;u[3]=d.getDate();
+  v.setUint32(4,rows.length,true);v.setUint16(8,hLen,true);v.setUint16(10,recLen,true);
+  fields.forEach((f,i)=>{const o=32+32*i;u.set(enc.encode(f[0].slice(0,10)),o);u[o+11]=67;u[o+16]=f[1]});
+  u[hLen-1]=0x0D;
+  let o=hLen;
+  rows.forEach(r=>{u[o++]=0x20;
+    fields.forEach((f,i)=>{
+      const bytes=enc.encode(String(r[i]??'').replace(/[\r\n\t]+/g,' '));
+      let n=Math.min(bytes.length,f[1]);
+      while(n>0&&(bytes[n]&0xC0)===0x80)n--;
+      u.set(bytes.subarray(0,n),o);
+      for(let k=n;k<f[1];k++)u[o+k]=0x20;
+      o+=f[1];
+    })});
+  u[o]=0x1A;
+  return u;
+}
+function shpRows(layers,kind){
+  const feats=[],rows=[];
+  layers.forEach(l=>{
+    const p=l.feature.properties,a=anchor(l);
+    let parts=null;
+    if(kind==='pt')parts=[[[r7(l.getLatLng().lng),r7(l.getLatLng().lat)]]];
+    else if(kind==='line'){const c=l.getLatLngs().map(q=>[r7(q.lng),r7(q.lat)]);if(c.length>1)parts=[c]}
+    else{const rings=flatRings(l.getLatLngs()).filter(r=>r.length>2).map((r,ri)=>{
+        const c=r.map(q=>[r7(q.lng),r7(q.lat)]);
+        if(c[0][0]!==c[c.length-1][0]||c[0][1]!==c[c.length-1][1])c.push(c[0]);
+        const cw=shpRing(c)>0;             // ri 0 – obrys zgodnie z ruchem wskazówek, dalsze – otwory przeciwnie
+        return (ri===0)===cw?c:c.reverse()});
+      if(rings.length)parts=rings}
+    if(!parts)return;
+    feats.push({parts});
+    const cat=ALLCATS.find(c=>c.k===p.cat)||{k:p.cat,name:''};
+    rows.push([p.id||'',p.cat||'',p.cat==='E'?'Przeciwnik / siły':(cat.l?cat.l+' – '+cat.name:cat.name),p.name||'',kindOf(l),
+      mgrs(a.lat,a.lng),measure(l)||'',p.auto?'T':'N',p.cat==='E'?(p.side==='własne'?'własne':'przeciwnik'):'',
+      p.cat==='E'?(p.conf==='prz'?'przypuszczalny':'potwierdzony'):'',p.cat==='E'&&p.ech?(ECH[p.ech]||p.ech):'',
+      p.cat==='I'&&p.itype?(IT[p.itype]||{n:''}).n:(p.cat==='A'&&p.aaType?(p.aaType==='MC'?'korytarz ruchu':'kierunek podejścia'):''),
+      stripAuto(p.note||'')]);
+  });
+  return {feats,rows};
+}
+const r7=x=>Math.round(x*1e7)/1e7;
+const kindOf=l=>kind(l);
+function shpFiles(){
+  const out=[],stamp2=new Date().toLocaleString('pl-PL');
+  const groups=[['punkty',1,'pt',l=>l instanceof L.Marker],
+                ['linie',3,'line',l=>l instanceof L.Polyline&&!(l instanceof L.Polygon)],
+                ['obszary',5,'poly',l=>l instanceof L.Polygon]];
+  const base=slug(),made=[];
+  groups.forEach(([nm,type,kind2,test])=>{
+    const ls=drawn.getLayers().filter(test);
+    let {feats,rows}=shpRows(ls,kind2);
+    if(nm==='obszary'&&autoBox){
+      const ring=(autoRing||[autoBox.getSouthWest(),autoBox.getSouthEast(),autoBox.getNorthEast(),autoBox.getNorthWest()]).map(q=>[r7(q.lng),r7(q.lat)]);
+      ring.push(ring[0]);
+      feats.unshift({parts:[shpRing(ring)<0?ring.reverse():ring]});
+      rows.unshift(['rejon','REJ','Rejon oceny',areaEl.value||'Rejon oceny','Obszar',
+        mgrs(autoBox.getCenter().lat,autoBox.getCenter().lng),
+        lastSum?lastSum.km2.toFixed(2)+' km2':'','T','','','','',stripAuto(autoDesc||'')]);
+    }
+    if(!feats.length)return;
+    const {shp,shx}=shpGeom(feats,type),nmf=`${base}_${nm}`;
+    out.push({name:nmf+'.shp',data:shp},{name:nmf+'.shx',data:shx},
+      {name:nmf+'.dbf',data:shpDbf(SHP_FIELDS,rows)},{name:nmf+'.prj',data:SHP_PRJ},{name:nmf+'.cpg',data:'UTF-8'});
+    made.push(`${nmf}.shp – ${rows.length} ${nm==='punkty'?'punktów':nm==='linie'?'linii':'obszarów'}`);
+  });
+  if(!out.length)return null;
+  out.push({name:'czytaj_to.txt',data:
+`OCOKA Planer – eksport do ESRI Shapefile\r\n`+
+`Rejon: ${areaEl.value||'bez nazwy'}\r\n`+
+`Data eksportu: ${stamp2}\r\n\r\n`+
+`Pliki w archiwum:\r\n`+made.map(x=>'  - '+x+'\r\n').join('')+
+`\r\nUkład współrzędnych: WGS 84 (EPSG:4326), współrzędne geograficzne w stopniach (plik .prj).\r\n`+
+`Kodowanie tekstu: UTF-8 (plik .cpg). Jeśli program pyta o kodowanie tabeli atrybutów, wybierz UTF-8,\r\n`+
+`inaczej polskie znaki w nazwach i opisach będą nieczytelne.\r\n\r\n`+
+`Shapefile przechowuje jeden rodzaj geometrii w jednym pliku, dlatego punkty, linie i obszary\r\n`+
+`są w osobnych warstwach. Obszar oceny jest pierwszym rekordem warstwy obszarów (KAT = REJ).\r\n\r\n`+
+`Pola tabeli atrybutów:\r\n`+
+`  ID        identyfikator obiektu w narzędziu\r\n`+
+`  KAT       litera kategorii OCOKA: O, C, Ob, K, A oraz I (infrastruktura), E (przeciwnik), REJ (rejon)\r\n`+
+`  KATEGORIA pełna nazwa kategorii\r\n`+
+`  NAZWA     nazwa obiektu\r\n`+
+`  TYP       punkt, linia, obszar albo rodzaj symbolu\r\n`+
+`  MGRS      współrzędne MGRS punktu lub środka obiektu\r\n`+
+`  WYMIAR    długość albo powierzchnia\r\n`+
+`  AUTO      T, gdy obiekt pochodzi z oceny automatycznej\r\n`+
+`  STRONA    własne albo przeciwnik (tylko kategoria E)\r\n`+
+`  PEWNOSC   potwierdzony albo przypuszczalny (tylko kategoria E)\r\n`+
+`  SZCZEBEL  szczebel jednostki (tylko kategoria E)\r\n`+
+`  RODZAJ    rodzaj obiektu infrastruktury albo kierunku podejścia\r\n`+
+`  OPIS      opis i wpływ na działania, skrócony do 240 bajtów\r\n\r\n`+
+`Uwaga: opisy dłuższe niż 240 bajtów są w tabeli atrybutów skrócone – pełna treść jest w raporcie\r\n`+
+`DOCX/PDF oraz w pliku GeoJSON.\r\n`});
+  return out;
+}
+function exportSHP(){
+  const files=shpFiles();
+  if(!files){toast('Nie ma czego wyeksportować – nanieś obiekty albo wykonaj ocenę rejonu.');return}
+  const blob=zipStore(files,'application/zip'),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=`${slug()}-${stamp()}-shp.zip`;
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+  toast(`Zapisano archiwum ZIP z warstwami shapefile (${files.filter(f=>f.name.endsWith('.shp')).length})`);
 }
 
 // ================= Start =================
