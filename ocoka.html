@@ -684,14 +684,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* Układ: panel z zakładkami po lewej, mapa z paskiem narzędzi u góry i panelem profilu u dołu */
 :root{
   --bg:#eef0ec; --panel:#f8f9f6; --ink:#1d221d; --muted:#5d665c; --line:#cfd5cb; --accent:#3d5a3a; --accent-ink:#ffffff;
-  --O:#2166ac; --C:#2e7d32; --Ob:#c62828; --K:#7b3fa0; --A:#e07b00; --E:#d0021b; --I:#37474f; --ok:#2e7d32; --bad:#c62828;
+  --O:#2166ac; --C:#2e7d32; --Ob:#c62828; --K:#7b3fa0; --A:#e07b00; --R:#00838f; --E:#d0021b; --I:#37474f; --ok:#2e7d32; --bad:#c62828;
   --f-disp:"Barlow Condensed","Arial Narrow",sans-serif;
   --f-body:"IBM Plex Sans",system-ui,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){:root{
   --bg:#141714; --panel:#1b1f1b; --ink:#e3e8e0; --muted:#9aa597; --line:#323a31; --accent:#9cc297; --accent-ink:#142014;
-  --O:#5ea3e6; --C:#66bb6a; --Ob:#ef5350; --K:#b884d6; --A:#ffa53a; --E:#ff4d5e; --I:#90a4ae; --ok:#66bb6a; --bad:#ef5350; color-scheme:dark}}
+  --O:#5ea3e6; --C:#66bb6a; --Ob:#ef5350; --K:#b884d6; --A:#ffa53a; --R:#4dd0e1; --E:#ff4d5e; --I:#90a4ae; --ok:#66bb6a; --bad:#ef5350; color-scheme:dark}}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{height:100%;margin:0}
@@ -1073,6 +1073,21 @@ textarea{resize:vertical;min-height:56px}
         <div id="opEnOut" class="mform"></div>
       </div>
       <div class="section">
+        <h3>Przewężenia, NAI i TAI</h3>
+        <div class="hint">Na wyznaczonych drogach podejścia narzędzie mierzy szerokość przejezdnego korytarza i wskazuje miejsca, w których się zwęża. Z przewężeń, przepraw i wejść kierunków do rejonu tworzy rejony zainteresowania (NAI), a te widoczne z własnych punktów obserwacyjnych oznacza jako rejony celów (TAI).</div>
+        <div class="row"><button class="btn sm primary" id="opChoke">Wyznacz przewężenia, NAI i TAI</button></div>
+      </div>
+      <div class="section">
+        <h3>Zasięg łączności radiowej</h3>
+        <div class="row" style="flex-wrap:nowrap">
+          <div style="flex:1"><label class="small" for="rdTx">Antena nadawcza (m)</label><input type="number" id="rdTx" value="10" min="1" max="120" step="1"></div>
+          <div style="flex:1"><label class="small" for="rdRx">Antena odbiorcza (m)</label><input type="number" id="rdRx" value="2" min="0" max="60" step="0.5"></div>
+          <div style="flex:1"><label class="small" for="rdR">Promień (km)</label><input type="number" id="rdR" value="15" min="1" max="60" step="1"></div>
+        </div>
+        <div class="row"><button class="btn sm primary" id="opRadio">Wskaż stanowisko na mapie</button></div>
+        <div class="hint">Model geometryczny z zastępczym promieniem Ziemi 4/3: pokazuje, dokąd sięga linia widzenia anteny. Nie uwzględnia tłumienia w lesie i zabudowie ani strefy Fresnela, więc rzeczywisty zasięg jest mniejszy.</div>
+      </div>
+      <div class="section">
         <h3>Przeprawy</h3>
         <div class="row" style="flex-wrap:nowrap;align-items:end"><div style="flex:1"><label class="small" for="opMass">Masa pojazdu (t)</label><input type="number" id="opMass" value="40" min="1" max="150" step="1"></div><div style="flex:2" class="hint">Mosty o mniejszej nośności zostaną oznaczone i wyłączone z ruchu pojazdów.</div></div>
         <div id="opCross" class="mform"></div>
@@ -1097,6 +1112,11 @@ textarea{resize:vertical;min-height:56px}
         <div class="row"><button class="btn sm primary" id="wxGo">Pobierz prognozę</button><button class="btn sm" id="wxMap">Użyj środka mapy</button></div>
         <div id="wxOut" class="mform"></div>
         <label class="check"><input type="checkbox" id="wxRep" checked> Dołącz warunki meteorologiczne do raportu</label>
+      </div>
+      <div class="section">
+        <h3>Światło i Księżyc</h3>
+        <div class="row" style="flex-wrap:nowrap;align-items:end"><div style="flex:1"><label class="small" for="ltDate">Doba</label><input type="date" id="ltDate"></div><button class="btn sm" id="ltToday">Dziś</button></div>
+        <div id="ltOut" class="mform"></div>
       </div>
       <div class="section">
         <h3>Wpływ pogody na działania (IPB)</h3>
@@ -1308,7 +1328,8 @@ const CATS=[
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const ENEMY={k:'E',l:'N',name:'Przeciwnik',en:'Enemy situation',v:'--E',q:'Skład, ugrupowanie i prawdopodobny sposób działania przeciwnika.'};
 const INFRA={k:'I',l:'I',name:'Infrastruktura',en:'Infrastructure',v:'--I',q:'Obiekty infrastruktury krytycznej i ich znaczenie dla działań.'};
-const ALLCATS=[...CATS,INFRA,ENEMY];
+const NAIC={k:'R',l:'R',name:'Rejony zainteresowania (NAI/TAI)',en:'Named / Target Areas of Interest',v:'--R',q:'Gdzie szukać oznak działania przeciwnika (NAI), a gdzie można go razić (TAI)?'};
+const ALLCATS=[...CATS,INFRA,NAIC,ENEMY];
 const catOf=k=>ALLCATS.find(c=>c.k===k)||CATS[0];
 const colOf=k=>css(catOf(k).v);
 
@@ -1372,12 +1393,16 @@ const HELP=`
 <h4>Wielkość i kształt rejonu</h4>
 <p>Po kliknięciu <i>Zaznacz rejon</i> pasek u dołu mapy daje kilka sposobów wyboru obszaru: <b>dowolny</b> (przeciągasz prostokąt), <b>nieregularny</b> (klikasz kolejne narożniki, a obszar zamykasz kliknięciem pierwszego punktu, przyciskiem <i>Oceń obszar</i> albo klawiszem Enter), gotowe kwadraty <b>1–50 km</b> oraz panel <b>MGRS</b>. Dla obszaru nieregularnego analiza obejmuje tylko wnętrze wielokąta, a nie jego prostokąt obejmujący.</p>
 <p>Rejon może mieć od 0,2 do 2500 km² (np. 50 × 50 km). Powyżej 400 km² ocena jest przeglądowa: komórka siatki rośnie do ok. 250–300 m, pobierany jest ograniczony zestaw danych OpenStreetMap, a wektorowa mapa terenu nie jest rysowana. Duży rejon liczy się kilka minut – użyj go do wyboru fragmentów, które potem ocenisz dokładniej.</p>
+<h4>Światło i Księżyc</h4>
+<p>W zakładce <i>Pogoda</i> narzędzie liczy dla wskazanej doby i punktu rejonu: <b>BMNT</b> (świt żeglarski, Słońce 12° pod horyzontem), świt cywilny, wschód i zachód Słońca, zmierzch cywilny, <b>EENT</b> (zmierzch żeglarski), wschód i zachód Księżyca oraz oświetlenie jego tarczy. Podaje też długość ciemnej części doby między EENT a BMNT – to okno działań nocnych. Czas jest lokalny dla rejonu. Pozycje liczone z uproszczonych efemeryd, z dokładnością rzędu minuty; fazy Księżyca sprawdzono z kalendarzem astronomicznym.</p>
 <h4>Zakładka „Działania”</h4>
 <p><b>Kierunek działania i zadanie</b>: wskaż, z której strony działa przeciwnik (albo zostaw „automatycznie” – kierunek wynika wtedy z naniesionych symboli), wybierz obronę lub natarcie i rodzaj ruchu. Narzędzie wyznaczy najszybszą drogę podejścia i drogę alternatywną, poda czasy przejścia pieszo, na kołach i na gąsienicach, pokaże, jaką część drogi widać z własnych punktów obserwacyjnych, i dopisze wnioski do sekcji A i K.</p>
 <p><b>Linie czasowe</b> pokazują, dokąd dany rodzaj ruchu dotrze w kolejnych minutach od krawędzi rejonu. „auto” dobiera czasy do wielkości rejonu; możesz wpisać własne, np. 30, 60, 120. Prędkości są orientacyjne i zależą od dróg, klasy MCOO, nachylenia oraz – jeśli pobrano prognozę – pogody.</p>
 <p><b>Przeciwnik – obserwacja i ogień</b>: w edycji symbolu przeciwnika podaj zasięg obserwacji i zasięg ognia. Przycisk liczy, jaką część rejonu i dróg podejścia przeciwnik widzi (pomarańczowy) i ma w zasięgu ognia (czerwony); reszta to pola martwe względem przeciwnika.</p>
 <p><b>Przeprawy</b>: lista mostów i brodów z nośnością i szerokością z OpenStreetMap. Po wpisaniu masy pojazdu mosty zbyt słabe są oznaczane i wyłączane z obliczeń ruchu pojazdów. Brak danych o nośności jest częsty – takie mosty trzeba sprawdzić w terenie.</p>
 <p><b>Widoczność między dwoma punktami</b>: wskaż punkt A i B, a zobaczysz profil terenu, odpowiedź „widać / nie widać” i miejsce, w którym teren przesłania cel.</p>
+<p><b>Przewężenia, NAI i TAI</b>: narzędzie mierzy szerokość przejezdnego korytarza prostopadle do każdej drogi podejścia (według wybranego rodzaju pojazdu) i wskazuje miejsca, w których się zwęża. Z przewężeń, przepraw na trasie i wejść kierunków do rejonu tworzy <b>NAI</b> – rejony zainteresowania, w których szuka się oznak działania przeciwnika. Te z nich, które są widoczne z własnych punktów obserwacyjnych, oznacza jako <b>TAI</b> – rejony celów, nadające się do rażenia ogniem obserwowanym i uruchomienia zapór. Rejony trafiają do osobnej kategorii <i>R</i>, do raportu i do eksportu. Szerokość korytarza mierzona jest na siatce oceny, więc z dokładnością do rozmiaru komórki.</p>
+<p><b>Zasięg łączności radiowej</b>: wskaż miejsce stanowiska, podaj wysokość anteny nadawczej i odbiorczej oraz promień. Narzędzie pobiera model terenu wokół punktu i pokazuje, dokąd sięga linia widzenia, licząc z zastępczym promieniem Ziemi 4/3 (refrakcja radiowa na UKF). To model czysto geometryczny: bez tłumienia w lesie i zabudowie, bez strefy Fresnela i bez dyfrakcji, więc rzeczywisty zasięg będzie mniejszy. Służy do wyboru miejsc na przekaźnik, nie do obliczeń radiowych.</p>
 <p><b>Tryb szkoleniowy</b>: po zaznaczeniu rejonu wynik automatyczny jest ukrywany. Uczestnik sam nanosi obiekty i wpisuje wnioski, a przycisk „Porównaj” zestawia je z oceną automatyczną.</p>
 <h4>Wymiana danych i praca bez internetu</h4>
 <p>W zakładce „Mapa i teren” wyeksportujesz analizę do KML (ATAK, Google Earth, QGIS), GPX, GeoJSON i <b>SHP</b> oraz zaimportujesz obiekty z KML, GPX i GeoJSON. Eksport SHP tworzy archiwum ZIP z trzema warstwami ESRI Shapefile – osobno punkty, linie i obszary (shapefile nie łączy rodzajów geometrii w jednym pliku) – w układzie WGS 84 (EPSG:4326) i kodowaniu UTF-8, wraz z plikami .prj, .cpg oraz opisem pól w pliku czytaj_to.txt. Obszar oceny jest pierwszym rekordem warstwy obszarów. „Kopiuj link do analizy” tworzy adres, który odtwarza rejon, obiekty i wnioski u innej osoby. „Zapisz podkład rejonu offline” pobiera kafle wybranego podkładu, tak aby mapa i zapisana analiza działały bez połączenia; nowa ocena rejonu i pogoda wymagają internetu.</p>
@@ -1634,10 +1659,10 @@ D.polygon.tooltip={start:'Kliknij, aby rozpocząć obszar.',cont:'Kliknij kolejn
 D.polyline.error='<b>Błąd:</b> linie nie mogą się przecinać.';
 
 let active='O',seq=1,handler=null,mode=null,losFrom=null;
-const notes={O:'',C:'',Ob:'',K:'',A:'',I:'',E:''};
+const notes={O:'',C:'',Ob:'',K:'',A:'',I:'',R:'',E:''};
 
 function pinIcon(k){return L.divIcon({className:'',html:`<div class="pin" style="background:${colOf(k)}"></div>`,iconSize:[18,18],iconAnchor:[9,9],popupAnchor:[0,-10]})}
-function kind(l){const p=l.feature&&l.feature.properties||{};if(p.cat==='I')return (IT[p.itype]||{n:'Obiekt'}).n;if(p.cat==='E')return l instanceof L.Marker?(UT[p.utype]||'Jednostka'):l instanceof L.Polygon?(EPA[p.pa]||'Rejon'):(ELN[p.ln]||'Linia');return l instanceof L.Marker?'Punkt':l instanceof L.Polygon?'Obszar':'Linia'}
+function kind(l){const p=l.feature&&l.feature.properties||{};if(p.cat==='R')return (RTYPE[p.rtype]||'Rejon zainteresowania').split(' – ')[0];if(p.cat==='I')return (IT[p.itype]||{n:'Obiekt'}).n;if(p.cat==='E')return l instanceof L.Marker?(UT[p.utype]||'Jednostka'):l instanceof L.Polygon?(EPA[p.pa]||'Rejon'):(ELN[p.ln]||'Linia');return l instanceof L.Marker?'Punkt':l instanceof L.Polygon?'Obszar':'Linia'}
 const TOOLNAME={marker:'punkt',polyline:'linię',polygon:'obszar'};
 
 const COARSE=matchMedia('(pointer:coarse)').matches;
@@ -1708,6 +1733,8 @@ function updateStatus(){
   const tap=COARSE?'Dotknij':'Kliknij',np=drawState?drawState.pts.length:0;
   const apN=autoPoly?autoPoly.pts.length:0,apA=autoPoly?autoPoly.area():0;
   s.innerHTML=mode==='auto'?`<span>${autoSize===-1?`${tap} kolejne narożniki obszaru · punktów: ${apN}${apA?` · ${apA.toFixed(apA<10?2:1)} km²`:''}${apN>=3?` · ${tap.toLowerCase()} pierwszy punkt, aby zamknąć`:''}`:autoSize?`${tap} środek rejonu ${autoSize} × ${autoSize} km${autoSnap?' (wyrównany do siatki 1 km)':''}`:`${COARSE?'Przeciągnij palcem':'Przeciągnij myszą'} prostokąt rejonu (0,2–${AMAX} km²)`}</span><div class="seg">${[[0,'dowolny'],[-1,'nieregularny'],[1,'1 km'],[2,'2 km'],[5,'5 km'],[10,'10 km'],[20,'20 km'],[50,'50 km']].map(([v,l])=>`<button data-asz="${v}" aria-pressed="${autoSize===v}">${l}</button>`).join('')}</div>${autoSize>0?`<label><input type="checkbox" id="aSnap" ${autoSnap?'checked':''}> siatka</label>`:''}${autoSize===-1?`<button data-aundo ${apN?'':'disabled'}>Cofnij punkt</button><button data-afin ${apN>=3?'':'disabled'}>Oceń obszar</button>`:'<button data-frame>Oceń widoczny kadr</button><button data-mgrs>MGRS…</button>'}<button>Anuluj</button>`
+    :mode==='radio'
+    ?`<span>${tap} miejsce stanowiska łączności na mapie</span><button>Anuluj</button>`
     :mode==='los'
     ?`<span>Linia widoczności z „${esc(losFrom.feature.properties.name)}”: ${tap.toLowerCase()} cel na mapie</span><button>Anuluj</button>`
     :`<span>${active==='E'&&mode==='marker'?`${tap} mapę, aby nanieść: ${esc(UT[lastUnit.utype])} ${lastUnit.side==='własne'?'(własne)':'przeciwnika'}`
@@ -1782,6 +1809,12 @@ function decorate(){
     if(hasSector)deco.addLayer(L.polygon(wedge(l.getLatLng(),+p.az,+p.sw,+p.range),{color:c,weight:1.5,dashArray:'6 4',fillOpacity:.06,interactive:false}));
     else if(l instanceof L.Marker&&+p.range>0)
       deco.addLayer(L.circle(l.getLatLng(),{radius:+p.range,color:c,weight:1.5,dashArray:'4 4',fillOpacity:.05,interactive:false}));
+    if(p.cat==='R'){
+      const tai=p.rtype==='tai',col=tai?css('--Ob'):css('--R');
+      if(l instanceof L.Polygon)deco.addLayer(L.polygon(l.getLatLngs(),{color:col,weight:2.5,dashArray:tai?null:'8 5',fillColor:col,fillOpacity:tai?.16:.08,interactive:false}));
+      dlabelC(anchor(l),p.name||(tai?'TAI':'NAI'),col);
+      return;
+    }
     if(p.cat==='E'&&l instanceof L.Marker&&+p.fire>0)deco.addLayer(L.circle(l.getLatLng(),{radius:+p.fire,color:eCol(p),weight:2,fill:false,interactive:false}));
     if(p.cat==='E')return decoEnemy(l,p,isLine);
     if(!doct)return decoClassic(l,p,c);
@@ -1827,6 +1860,7 @@ function popupFor(l){
     <label class="small">${p.cat==='E'?'Oznaczenie':'Nazwa'}</label><input type="text" data-f="name">
     <label class="small">Kategoria</label><select data-f="cat">${ALLCATS.map(c=>`<option value="${c.k}">${c.k==='E'?'Przeciwnik / siły':c.l+' – '+c.name}</option>`).join('')}</select>
     ${p.cat==='E'?enemyFields(l,isPt,isLine):''}
+    ${p.cat==='R'?`<label class="small">Rodzaj rejonu</label><select data-f="rtype">${Object.entries(RTYPE).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`:''}
     ${p.cat==='I'?`<label class="small">Rodzaj obiektu</label><select data-f="itype">${Object.entries(IT).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join('')}</select>${p.itype&&IT[p.itype]?`<div class="hint">Znaczenie: ${IT[p.itype].sig}</div>`:''}`:''}
     ${isPt&&p.cat!=='E'&&p.cat!=='I'?'<label class="small">Zasięg obserwacji / ognia (m)</label><input type="number" min="0" step="50" data-f="range" placeholder="np. 800">':''}
     ${isPt&&p.cat==='O'?'<div class="row" style="flex-wrap:nowrap"><div style="flex:1"><label class="small">Sektor: azymut (°)</label><input type="number" min="0" max="359" step="5" data-f="az" placeholder="np. 180"></div><div style="flex:1"><label class="small">Szerokość (°)</label><input type="number" min="5" max="355" step="5" data-f="sw" placeholder="np. 90"></div></div>':''}
@@ -1911,7 +1945,7 @@ function startMove(l){
 }
 
 function attach(l,props){
-  l.feature={type:'Feature',properties:Object.assign({id:'f'+(seq++),cat:active,name:'',note:'',range:'',az:'',sw:'',aaType:'AA',side:'wróg'},props)};
+  l.feature={type:'Feature',properties:Object.assign({id:'f'+(seq++),cat:active,name:'',note:'',range:'',az:'',sw:'',aaType:'AA',side:'wróg',rtype:'nai'},props)};
   l.on('click',e=>{
     if(mode==='los'&&losFrom){L.DomEvent.stop(e);const f=losFrom;stopModes();runLOS(f,e.latlng);return}
     if(mode)return;
@@ -2802,7 +2836,7 @@ async function buildReportHTML(snap){
   {const g=lastSum&&coverGap(lastSum.q);if(g)parts.push(`<p class="warn"><b>${g.lvl==='bad'?'Uwaga: ocena niepełna – brak danych o terenie.':'Uwaga: niepełne dane.'}</b> ${escH(g.t)}</p>`)}
   if(lastSum){const s=lastSum,q=s.q||{},bare=!q.dsm&&!/^(cop|cop90|gugik)$/.test(q.demSrc||'');
     parts.push(`<h2>Podsumowanie oceny</h2><p>Powierzchnia ${s.km2.toFixed(1)} km²; wysokości ${Math.round(s.mn)}–${Math.round(s.mx)} m n.p.m.; lasy ${s.forest==null?'<b>brak danych</b>':pct(s.forest)}; widoczność z wzgórz dominujących ${pct(s.union)}${bare?' (po gołym terenie – wartość zawyżona)':''}; MCOO (gąsienicowe) teren nieograniczony ${pct(s.mU)}, ograniczony ${pct(s.mR)}, bardzo ograniczony ${pct(s.mS)}${s.wU!=null?`; MCOO (kołowe) ${pct(s.wU)} / ${pct(s.wR)} / ${pct(s.wS)}`:''}${q.osmErr&&!String(q.coverSrc||'').includes('wc')?' (wyłącznie z nachyleń, bez pokrycia terenu)':''}.</p>`)}
-  parts.push(wxReportHTML());
+  parts.push(wxReportHTML());parts.push(lightReportHTML());
   parts.push(opsReportHTML());
   const cl=t=>(t||'—').replace(/\n/g,' ');
   const en=drawn.getLayers().filter(l=>l.feature.properties.cat==='E');
@@ -2810,6 +2844,13 @@ async function buildReportHTML(snap){
     parts.push(`<h2>Przeciwnik i siły własne</h2><p><b>Ocena przeciwnika:</b> ${escH(notes.E.trim()||'—')}</p>`);
     if(en.length)parts.push(tableHTML(['Oznaczenie','Strona','Rodzaj','Szczebel','Pewność','MGRS','Uwagi'],en.map(l=>{const p=l.feature.properties,a=anchor(l),isPt=l instanceof L.Marker;
       return [p.name||'—',p.side==='własne'?'własne':'przeciwnik',kind(l),isPt?(ECH[p.ech||'']||'—'):'—',p.conf==='prz'?'przypuszczalny':'potwierdzony',mgrs(a.lat,a.lng),cl([p.note,p.vs?'pole widzenia: '+p.vs:'',isPt&&p.mv!==''&&p.mv!=null?'kierunek ruchu '+p.mv+'°':''].filter(Boolean).join('; '))]})));
+  }
+  const nai=drawn.getLayers().filter(l=>l.feature.properties.cat==='R');
+  if(nai.length||notes.R.trim()){
+    nai.sort((a,b)=>String(a.feature.properties.rtype).localeCompare(b.feature.properties.rtype)||String(a.feature.properties.name).localeCompare(b.feature.properties.name));
+    parts.push(`<h2>R – Rejony zainteresowania (NAI / TAI)</h2><p><b>Wnioski:</b> ${escH(stripAuto(notes.R)||'—')}</p>`);
+    if(nai.length)parts.push(tableHTML(['Rejon','Rodzaj','MGRS','Wymiar','Znaczenie'],nai.map(l=>{const p=l.feature.properties,a=anchor(l);
+      return [p.name||'—',RTYPE[p.rtype]||'NAI',mgrs(a.lat,a.lng),measure(l)||'—',cl(p.note)]})));
   }
   const inf=drawn.getLayers().filter(l=>l.feature.properties.cat==='I');
   if(inf.length){
@@ -2837,7 +2878,7 @@ async function buildReportHTML(snap){
   return parts.join('\n');
 }
 let rSig='',rEdited=false;
-function repSig(){return JSON.stringify([areaEl.value,autoDesc,lastSum&&lastSum.date,hi,drawn.getLayers().length,wxState&&wxState.time,wxState&&$('wxRep').checked,WXT,OPS.res&&OPS.res.date,OPS.en&&OPS.en.date,OPS.mass])}
+function repSig(){return JSON.stringify([areaEl.value,autoDesc,lastSum&&lastSum.date,hi,drawn.getLayers().length,wxState&&wxState.time,wxState&&$('wxRep').checked,WXT,lightRes&&lightRes.date,OPS.res&&OPS.res.date,OPS.en&&OPS.en.date,OPS.mass])}
 async function openReport(regen){
   const m=$('rmodal');m.hidden=false;$('rStale').hidden=true;
   if(!regen&&$('rDoc').innerHTML.trim()&&rSnap){
@@ -3275,6 +3316,29 @@ function matrixHTML(m,interactive){
   return `<div class="wxmx"><table class="wxm"><thead><tr><th>System / działanie</th>${m.cols.map(c=>`<th class="${c.night?'nt':''}" title="${c.night?'noc':'dzień'}">${c.label}${c.night?' ☾':''}</th>`).join('')}</tr></thead><tbody>
   ${m.rows.map((r,ri)=>`<tr><th>${esc(r.n)}</th>${r.cells.map((c,ci)=>`<td class="lv-${c.lv}" data-wx="${c.lv}"${interactive?` data-r="${ri}" data-c="${ci}" tabindex="0"`:''} title="${esc(c.why.join('; '))}">${LVS[c.lv]}</td>`).join('')}</tr>`).join('')}
   </tbody></table></div>`;
+}
+function lightPt(){const p=wxState?L.latLng(wxState.lat,wxState.lng):wxPoint();
+  const off=wxState&&wxState.raw&&isFinite(wxState.raw.utc_offset_seconds)?wxState.raw.utc_offset_seconds:-new Date().getTimezoneOffset()*60;
+  return {p,off}}
+let lightRes=null;
+function renderLight(){
+  const box=$('ltOut');if(!box)return;
+  const {p,off}=lightPt();
+  let v=$('ltDate').value;
+  if(!v){const n=new Date(Date.now()+off*1000);v=n.toISOString().slice(0,10);$('ltDate').value=v}
+  const [y,mo,d]=v.split('-').map(Number);
+  const start=Date.UTC(y,mo-1,d)-off*1000;
+  const L=lightTable(p.lat,p.lng,off,start);
+  lightRes={...L,date:v,mg:mgrs(p.lat,p.lng),off};
+  box.innerHTML=`<table class="optab">${L.rows.map(r=>`<tr><td>${esc(r[0])}</td><td class="mono" style="text-align:right">${esc(r[1])}</td></tr>`).join('')}</table>
+    <div class="note">${esc(lightNote(L))}</div>
+    <div class="hint">Czas lokalny rejonu (przesunięcie ${off>=0?'+':''}${(off/3600).toFixed(off%3600?1:0)} h), punkt ${esc(lightRes.mg)}. BMNT i EENT liczone dla Słońca 12° pod horyzontem, wschód i zachód z poprawką na refrakcję. Pozycje z uproszczonych efemeryd – dokładność rzędu minuty.</div>`;
+}
+function lightReportHTML(){
+  if(!lightRes||!$('wxRep').checked)return '';
+  return `<h3>Światło i Księżyc – ${escH(lightRes.date)}</h3>`+
+    tableHTML(['Zjawisko','Czas lokalny'],lightRes.rows.map(r=>[r[0],r[1]]))+
+    `<p>${escH(lightNote(lightRes))}</p>`;
 }
 function renderWxMatrix(){
   const box=$('wxMx');if(!box)return;
@@ -4098,6 +4162,7 @@ function showAutoPanel(sum){
     </div>
     ${(()=>{const g=coverGap(S.q);return g?`<div class="note gap-${g.lvl}"><b>${g.lvl==='bad'?'Niepełna ocena – brak danych o terenie':'Niepełne dane'}</b><br>${esc(g.t)}</div>`:''})()}
     <div class="res">${CATS.map(c=>`<div class="ri" style="--c:var(${c.v})"><div class="letter">${c.l}</div><div><b>${c.name}</b>${relB(c.k)}<div>${txt(c.k)}</div>${relT(c.k)}</div></div>`).join('')}
+      ${drawn.getLayers().some(l=>l.feature.properties.cat==='R')||notes.R.trim()?`<div class="ri" style="--c:var(--R)"><div class="letter">R</div><div><b>Rejony zainteresowania (NAI/TAI)</b><div>${txt('R')}</div></div></div>`:''}
       <div class="ri" style="--c:var(--I)"><div class="letter">I</div><div><b>Infrastruktura</b><div>${txt('I')}</div></div></div>
       ${enN||notes.E.trim()?`<div class="ri" style="--c:var(--E)"><div class="letter" style="background:none">${diamondMini().replace(/20/g,'26')}</div><div><b>Przeciwnik</b><div>${enN} naniesionych obiektów. ${esc(notes.E.trim())}</div></div></div>`:''}
     </div>
@@ -4121,7 +4186,7 @@ function showAutoPanel(sum){
 }
 function clearAuto(){
   drawn.getLayers().filter(l=>l.feature.properties.auto).forEach(l=>drawn.removeLayer(l));
-  [...CATS,INFRA].forEach(c=>notes[c.k]=notes[c.k].split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim());
+  [...CATS,INFRA,NAIC].forEach(c=>notes[c.k]=notes[c.k].split('\n').filter(x=>!x.startsWith('[AUTO]')).join('\n').trim());
   if(ovSlope)map.removeLayer(ovSlope);ovSlope=null;setMC(null);lastSum=null;updOcenaBtn();GX=null;TRAIN.stash=null;opsReset();
   setAutoBox(null);decorate();render();save();
 }
@@ -4308,7 +4373,7 @@ function load(fc,opt={}){
   setAutoBox(m.autoBox?L.latLngBounds(m.autoBox):null,m.autoRing||null,m.autoDesc||'');
   lastSum=m.sum||null;updOcenaBtn();selectObj(null);
   if(!opt.keepView){WXT={...WXT_DEF,...(m.wxTh||{})};if($('wxTh').innerHTML)buildWxThUI();
-    wxState=m.wx&&m.wx.raw?{...m.wx,a:analyzeWx(m.wx.raw)}:null;renderWx();$('rDoc').innerHTML='';rSnap=null}
+    wxState=m.wx&&m.wx.raw?{...m.wx,a:analyzeWx(m.wx.raw)}:null;renderWx();if($('ltOut'))renderLight();$('rDoc').innerHTML='';rSnap=null}
   if(!opt.keepView){let th=null;try{th=JSON.parse(localStorage.getItem('ocoka-theme')||'null')}catch(e){}
     if(th&&m.autoBox&&Math.abs(th.b[0][0]-m.autoBox[0][0])<1e-6&&Math.abs(th.b[1][1]-m.autoBox[1][1])<1e-6){theme=th;renderTheme()}else if(!m.autoBox){theme=null;renderTheme()}}
   doct=m.doct!==false;$('bDoct').setAttribute('aria-pressed',doct);doct?mcoo.addTo(map):map.removeLayer(mcoo);
@@ -4735,7 +4800,11 @@ function initOps(){
   bind('opDir','dir',t=>t.value);bind('opTask','task',t=>t.value);bind('opMode','mode',t=>t.value);bind('opWx','wx',t=>t.checked);
   bind('opIso','iso',t=>t.value,()=>{if(OPS.res){OPS.res.iso=isoLevels();drawIso()}});bind('opIsoOn','isoOn',t=>t.checked,drawIso);bind('opEnOn','enOn',t=>t.checked,drawEnemy);
   bind('opMass','mass',t=>Math.max(1,+t.value||40),renderOps);
-  $('opRun').onclick=runOps;$('opEn').onclick=runEnemy;
+  $('opRun').onclick=runOps;$('opEn').onclick=runEnemy;$('opChoke').onclick=runChoke;
+  $('opRadio').onclick=()=>{stopModes();mode='radio';map.getContainer().style.cursor='crosshair';updateStatus();
+    if(narrow())document.querySelector('.mapwrap').scrollIntoView({behavior:'smooth'});
+    toast((COARSE?'Dotknij':'Kliknij')+' miejsce stanowiska łączności na mapie.')};
+  map.on('click',e=>{if(mode!=='radio')return;stopModes();runRadio(e.latlng)});
   $('opLos').onclick=()=>{stopModes();mode='los2';map.getContainer().style.cursor='crosshair';if(narrow())document.querySelector('.mapwrap').scrollIntoView({behavior:'smooth'});toast((COARSE?'Dotknij':'Kliknij')+' punkt A (obserwator), potem punkt B (cel).')};
   map.on('click',e=>{if(mode!=='los2')return;const ll=e.latlng;losLayer.clearLayers();losLayer.addLayer(L.circleMarker(ll,{radius:6,color:'#fff',weight:2,fillColor:'#111',fillOpacity:1,interactive:false}));
     setTimeout(()=>{losFrom={getLatLng:()=>ll,feature:{properties:{name:'punkt A '+mgrs(ll.lat,ll.lng)}}};mode='los';updateStatus()},0)});
@@ -5265,6 +5334,232 @@ function initDem(){
   $('pDem').onchange=upd;$('pSurf').onchange=upd;map.on('moveend',upd);upd();
 }
 
+// ================= Astronomia: świt i zmierzch żeglarski, Księżyc =================
+const D2R=Math.PI/180,R2D=180/Math.PI;
+const j2000=d=>d.getTime()/86400000+2440587.5-2451545.0;
+function sunEq(n){
+  const L=(280.460+0.9856474*n)%360,g=((357.528+0.9856003*n)%360)*D2R;
+  const lam=(L+1.915*Math.sin(g)+0.020*Math.sin(2*g))*D2R,eps=(23.439-0.0000004*n)*D2R;
+  return {ra:Math.atan2(Math.cos(eps)*Math.sin(lam),Math.cos(lam)),dec:Math.asin(Math.sin(eps)*Math.sin(lam))};
+}
+function moonEq(n){
+  const d=n+1.5; // elementy orbitalne Schlytera liczone są od 1999-12-31 0:00 UT, a nie od J2000
+  const N=((125.1228-0.0529538083*d)%360)*D2R,i=5.1454*D2R,w=((318.0634+0.1643573223*d)%360)*D2R;
+  const a=60.2666,e=0.054900,M=((115.3654+13.0649929509*d)%360)*D2R;
+  let E=M+e*Math.sin(M)*(1+e*Math.cos(M));
+  for(let k=0;k<6;k++)E=E-(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));
+  const xv=a*(Math.cos(E)-e),yv=a*Math.sqrt(1-e*e)*Math.sin(E);
+  const v=Math.atan2(yv,xv),r=Math.hypot(xv,yv);
+  const xh=r*(Math.cos(N)*Math.cos(v+w)-Math.sin(N)*Math.sin(v+w)*Math.cos(i));
+  const yh=r*(Math.sin(N)*Math.cos(v+w)+Math.cos(N)*Math.sin(v+w)*Math.cos(i));
+  const zh=r*Math.sin(v+w)*Math.sin(i);
+  let lon=Math.atan2(yh,xh),lat=Math.atan2(zh,Math.hypot(xh,yh));
+  const Ms=((356.0470+0.9856002585*d)%360)*D2R,ws=((282.9404+4.70935e-5*d)%360)*D2R;
+  const Ls=ws+Ms,Lm=N+w+M,Dd=Lm-Ls,F=Lm-N;
+  lon+=D2R*(-1.274*Math.sin(M-2*Dd)+0.658*Math.sin(2*Dd)-0.186*Math.sin(Ms)-0.059*Math.sin(2*M-2*Dd)
+    -0.057*Math.sin(M-2*Dd+Ms)+0.053*Math.sin(M+2*Dd)+0.046*Math.sin(2*Dd-Ms)+0.041*Math.sin(M-Ms)
+    -0.035*Math.sin(Dd)-0.031*Math.sin(M+Ms)-0.015*Math.sin(2*F-2*Dd)+0.011*Math.sin(M-4*Dd));
+  lat+=D2R*(-0.173*Math.sin(F-2*Dd)-0.055*Math.sin(M-F-2*Dd)-0.046*Math.sin(M+F-2*Dd)
+    +0.033*Math.sin(F+2*Dd)+0.017*Math.sin(2*M+F));
+  const eps=(23.4393-3.563e-7*d)*D2R;
+  const xe=Math.cos(lat)*Math.cos(lon),ye=Math.cos(lat)*Math.sin(lon),ze=Math.sin(lat);
+  const y2=ye*Math.cos(eps)-ze*Math.sin(eps),z2=ye*Math.sin(eps)+ze*Math.cos(eps);
+  return {ra:Math.atan2(y2,xe),dec:Math.asin(z2),elong:Math.acos(Math.cos(lon-Ls)*Math.cos(lat))};
+}
+function altAt(eq,n,lat,lon){
+  const gmst=(18.697374558+24.06570982441908*n)%24;
+  const H=((gmst*15+lon)%360)*D2R-eq.ra;
+  return Math.asin(Math.sin(lat*D2R)*Math.sin(eq.dec)+Math.cos(lat*D2R)*Math.cos(eq.dec)*Math.cos(H))*R2D;
+}
+// Szuka przejść przez zadaną wysokość w ciągu doby (czas lokalny rejonu), krokiem 10 min i bisekcją.
+function crossings(body,lat,lon,t0,h0,hours=24){
+  const f=t=>{const n=j2000(new Date(t));return altAt(body==='sun'?sunEq(n):moonEq(n),n,lat,lon)-h0};
+  const step=600000,out={up:null,down:null};
+  let pt=t0,pv=f(t0);
+  for(let t=t0+step;t<=t0+hours*3600000;t+=step){
+    const v=f(t);
+    if(pv<0&&v>=0||pv>=0&&v<0){
+      let a=pt,bq=t;
+      for(let k=0;k<26;k++){const m=(a+bq)/2;((f(a)<0)===(f(m)<0))?a=m:bq=m}
+      const key=pv<0?'up':'down';if(out[key]===null)out[key]=(a+bq)/2;
+    }
+    pt=t;pv=v;
+  }
+  out.always=out.up===null&&out.down===null?(pv>=0?'nad':'pod'):null;
+  return out;
+}
+// Doba planistyczna: od północy czasu lokalnego rejonu
+function lightTable(lat,lon,offsetSec,dayStartMs){
+  const loc=ms=>ms==null?null:new Date(ms+offsetSec*1000);
+  const hm=ms=>{const d=loc(ms);return d?String(d.getUTCHours()).padStart(2,'0')+':'+String(d.getUTCMinutes()).padStart(2,'0'):'—'};
+  const sun=crossings('sun',lat,lon,dayStartMs,-0.833);
+  const naut=crossings('sun',lat,lon,dayStartMs,-12);
+  const civ=crossings('sun',lat,lon,dayStartMs,-6);
+  const moon=crossings('moon',lat,lon,dayStartMs,0.125);
+  const n=j2000(new Date(dayStartMs+43200000)),m=moonEq(n);
+  const ill=(1-Math.cos(m.elong))/2;
+  const rows=[
+    ['BMNT – świt żeglarski (słońce −12°)',hm(naut.up)],
+    ['Świt cywilny (−6°)',hm(civ.up)],
+    ['Wschód Słońca',hm(sun.up)],
+    ['Zachód Słońca',hm(sun.down)],
+    ['Zmierzch cywilny (−6°)',hm(civ.down)],
+    ['EENT – zmierzch żeglarski (−12°)',hm(naut.down)],
+    ['Wschód Księżyca',hm(moon.up)],
+    ['Zachód Księżyca',hm(moon.down)],
+    ['Oświetlenie tarczy Księżyca',Math.round(ill*100)+'%'],
+  ];
+  const dark=naut.down!=null&&naut.up!=null?(naut.up+86400000-naut.down)/3600000%24:null;
+  return {rows,sun,naut,civ,moon,ill,dark,always:sun.always};
+}
+function lightNote(L){
+  if(L.always)return L.always==='nad'?'Dzień polarny – Słońce nie zachodzi.':'Noc polarna – Słońce nie wschodzi.';
+  const p=[];
+  if(L.naut.down!=null&&L.naut.up!=null)p.push(`Ciemna część doby (między EENT a BMNT) trwa ok. ${L.dark.toFixed(1)} h – to okno dla działań nocnych.`);
+  const ill=Math.round(L.ill*100);
+  if(L.moon.up==null&&L.moon.down==null)p.push('Księżyc tej doby nie wschodzi ani nie zachodzi w rejonie.');
+  else if(ill<25)p.push(`Księżyc oświetlony w ${ill}% – noce ciemne, sprzyjają skrytemu przemieszczaniu; obserwacja wzrokowa i noktowizja bez wspomagania będą słabe.`);
+  else if(ill>75)p.push(`Księżyc oświetlony w ${ill}% – jasne noce ułatwiają obserwację bez noktowizji, ale utrudniają skryte podejście.`);
+  else p.push(`Księżyc oświetlony w ${ill}% – noce o średniej jasności.`);
+  return p.join(' ');
+}
+
+// ================= Przewężenia, NAI/TAI, zasięg łączności =================
+const RTYPE={nai:'NAI – rejon zainteresowania',tai:'TAI – rejon celu'};
+function chokeOnPath(lls,mob){
+  const n=GX.n,ins=MC.inside,cell=(GX.dx+GX.dy)/2,MAXW=Math.min(80,Math.round(n/2));
+  const {pts,total}=samplePath(lls,Math.max(40,Math.min(400,Math.round(total0(lls)/40))));
+  const prof=[];
+  for(let q=0;q<pts.length;q++){
+    const k=llCell(pts[q].ll);if(k<0){prof.push(null);continue}
+    const a=pts[Math.max(0,q-2)].ll,c=pts[Math.min(pts.length-1,q+2)].ll;
+    const ka=llCell(a,true),kc=llCell(c,true);
+    let dx=(kc%n)-(ka%n),dy=Math.floor(kc/n)-Math.floor(ka/n);
+    const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+    const px=-dy,py=dx,i0=k%n,j0=Math.floor(k/n);
+    const ray=sgn=>{for(let s=1;s<=MAXW;s++){
+        const ii=Math.round(i0+px*s*sgn),jj=Math.round(j0+py*s*sgn);
+        if(ii<0||jj<0||ii>=n||jj>=n)return s;
+        const kk=jj*n+ii;
+        if((ins&&!ins[kk])||mob[kk]!==0)return s;
+      }return MAXW+1};
+    const l=ray(-1),r=ray(1);
+    prof.push({q,d:pts[q].d,ll:pts[q].ll,w:(l+r-1)*cell,open:l>MAXW&&r>MAXW});
+  }
+  const val=prof.filter(Boolean).filter(p=>!p.open);
+  if(val.length<6)return [];
+  const sorted=val.map(p=>p.w).sort((a,b)=>a-b),med=sorted[Math.floor(sorted.length/2)];
+  const lim=Math.min(med*0.6,1000);
+  const out=[];
+  for(const p of val){
+    if(p.w>lim)continue;
+    if(p.d<total*0.06||p.d>total*0.94)continue;
+    const near=out.find(o=>o.ll.distanceTo(p.ll)<Math.max(300,cell*4));
+    if(near){if(p.w<near.w){near.w=p.w;near.ll=p.ll;near.d=p.d}continue}
+    out.push({...p});
+  }
+  return out.sort((a,b)=>a.w-b.w).slice(0,6).map(p=>({...p,med}));
+}
+const total0=lls=>{let d=0;for(let i=1;i<lls.length;i++)d+=lls[i-1].distanceTo(lls[i]);return d};
+function circleRing(ll,r,k=24){const o=[];for(let i=0;i<k;i++)o.push(dest(ll,i*360/k,r));o.push(o[0]);return o}
+
+function runChoke(){
+  if(!gxOk()){toast('Najpierw wykonaj ocenę rejonu.');return}
+  const aa=drawn.getLayers().filter(l=>l instanceof L.Polyline&&!(l instanceof L.Polygon)&&l.feature.properties.cat==='A');
+  if(!aa.length){toast('Brak kierunków podejścia. Wyznacz je przyciskiem powyżej albo narysuj linię w kategorii „Kierunki podejścia”.');return}
+  drawn.getLayers().filter(l=>l.feature.properties.auto&&/^(Przewężenie|NAI|TAI)/.test(l.feature.properties.name||'')).forEach(l=>drawn.removeLayer(l));
+  const mobSel=(MC.wheel&&MC.mobW)||MC.mob;
+  const ops=drawn.getLayers().filter(l=>l instanceof L.Marker&&l.feature.properties.cat==='O'&&!/^Stanowisko łączności/.test(l.feature.properties.name||''))
+    .map(l=>({l,k:llCell(l.getLatLng())})).filter(o=>o.k>=0).slice(0,8);
+  const hO=+$('hObs').value||2,hT=+$('hTgt').value||1.5,n=GX.n;
+  ops.forEach(o=>o.vis=vsGX(o.k%n,Math.floor(o.k/n),hO,hT,+o.l.feature.properties.range||1e9));
+  const seen=k=>ops.some(o=>o.vis[k]);
+  const cross=(lastSum&&lastSum.cross)||[];
+  const chokes=[],nais=[],tais=[];
+  aa.forEach(l=>{
+    const nm=l.feature.properties.name||'kierunek podejścia';
+    const ch=chokeOnPath(l.getLatLngs(),mobSel);
+    ch.forEach(p=>{
+      const dup=chokes.find(c=>c.ll.distanceTo(p.ll)<Math.max(300,(GX.dx+GX.dy)*2));
+      if(dup){if(!dup.aa.includes(nm))dup.aa+=' i '+nm;if(p.w<dup.w)dup.w=p.w;return}
+      chokes.push({ll:p.ll,w:p.w,aa:nm,med:p.med});
+      const k=llCell(p.ll),obs=k>=0&&seen(k);
+      if(nais.concat(tais).some(x=>x.ll.distanceTo(p.ll)<Math.max(450,(GX.dx+GX.dy)*2.5)))return;
+      (obs?tais:nais).push({ll:p.ll,r:Math.max(200,Math.min(600,p.w/2+100)),why:`przewężenie korytarza do ${Math.round(p.w)} m na trasie ${nm}`,obs,kind:'przewężenie'});
+    });
+    // przeprawy na trasie
+    const {pts}=samplePath(l.getLatLngs(),200);
+    cross.forEach(c=>{
+      const cl=L.latLng(c.lat,c.lng);
+      if(!pts.some(p=>p.ll.distanceTo(cl)<Math.max(150,(GX.dx+GX.dy)/2*1.5)))return;
+      if(nais.concat(tais).some(x=>x.ll.distanceTo(cl)<Math.max(350,(GX.dx+GX.dy)*2)))return;
+      const k=llCell(cl),obs=k>=0&&seen(k);
+      (obs?tais:nais).push({ll:cl,r:250,why:`${c.kind==='bród'?'bród':'most'}${c.name?' '+c.name:''} na trasie ${nm}`,obs,kind:'przeprawa'});
+    });
+    // wejście kierunku do rejonu
+    const first=l.getLatLngs()[0];
+    if(!nais.concat(tais).some(x=>x.ll.distanceTo(first)<500))
+      nais.push({ll:first,r:400,why:`wejście kierunku ${nm} do rejonu – miejsce wczesnego wykrycia`,obs:false,kind:'wejście'});
+  });
+  if(!chokes.length&&!nais.length&&!tais.length){toast('Nie znaleziono przewężeń ani przepraw na drogach podejścia – korytarz jest szeroki na całej długości.');return}
+  chokes.sort((a,b)=>a.w-b.w).slice(0,8).forEach((c,i)=>{
+    attach(L.marker(c.ll),{cat:'Ob',name:`Przewężenie ${i+1} (${Math.round(c.w)} m)`,auto:true,range:String(Math.round(Math.max(100,c.w/2))),
+      note:`Korytarz przejezdny zwęża się tu do ok. ${Math.round(c.w)} m (mediana na trasie ${Math.round(c.med)} m) na kierunku ${c.aa}. Miejsce na zapory, pole minowe i ogień skupiony; dla własnego ruchu – odcinek do szybkiego pokonania i rozpoznania przed wejściem. Szerokość mierzona na siatce oceny, więc z dokładnością do ok. ${Math.round((GX.dx+GX.dy)/2)} m.`});
+  });
+  let ni=0,ti=0;
+  nais.forEach(x=>{ni++;attach(L.polygon(circleRing(x.ll,x.r)),{cat:'R',rtype:'nai',name:`NAI ${ni}`,auto:true,
+    note:`Rejon zainteresowania: ${x.why}. Szukaj tu oznak ruchu, rozpoznania i prac inżynieryjnych. ${x.kind==='przeprawa'?'Zniszczenie lub opanowanie przeprawy zmienia tempo działania.':'Wykrycie w tym miejscu daje czas na reakcję.'}`});});
+  tais.forEach(x=>{ti++;attach(L.polygon(circleRing(x.ll,x.r)),{cat:'R',rtype:'tai',name:`TAI ${ti}`,auto:true,
+    note:`Rejon celu: ${x.why}. Miejsce obserwowane z własnych punktów obserwacyjnych, więc nadaje się do rażenia ogniem obserwowanym i do uruchomienia zapór.`});});
+  const setAuto=(k,tag,txt)=>{const ls=notes[k].split('\n').filter(x=>!x.startsWith('[AUTO] '+tag));const ix=ls.findIndex(x=>!x.startsWith('[AUTO]'));if(txt)ls.splice(ix<0?ls.length:ix,0,'[AUTO] '+tag+' '+txt);notes[k]=ls.join('\n').trim()};
+  setAuto('Ob','Przewężenia:',chokes.length?`${chokes.length} na drogach podejścia, najwęższe ${Math.round(chokes[0].w)} m (${mgrs(chokes[0].ll.lat,chokes[0].ll.lng)}). Tam ruch jest kanalizowany i tam najtaniej go zatrzymać.`:'');
+  setAuto('R','Rejony:',`Wyznaczono ${ni} NAI i ${ti} TAI na podstawie przewężeń, przepraw i wejść kierunków podejścia do rejonu${ops.length?`; podział na NAI i TAI wynika z tego, czy miejsce jest widoczne z ${ops.length===1?'jedynego własnego punktu obserwacyjnego':ops.length+' własnych punktów obserwacyjnych'}`:'; brak własnych punktów obserwacyjnych, więc wszystkie miejsca pozostały jako NAI'}.`);
+  decorate();render();save();renderOps();
+  toast(`Przewężenia: ${chokes.length}, NAI: ${ni}, TAI: ${ti}`);
+}
+
+// ---- zasięg łączności radiowej ----
+let radioLayer=null,radioRes=null;
+async function runRadio(ll){
+  const hTx=+$('rdTx').value||10,hRx=+$('rdRx').value||2,R=Math.max(1,Math.min(60,+$('rdR').value||15))*1000;
+  openProfile('Zasięg łączności','<span>Pobieram model terenu…</span>','');
+  try{
+    const b=L.latLngBounds([dest(ll,180,R).lat,dest(ll,270,R).lng],[dest(ll,0,R).lat,dest(ll,90,R).lng]);
+    const n=161,{w,h}=kmDims(b);
+    const g=await demGrid(b,n,w,h,$('pDem').value);
+    const c=(n-1)/2,Rk=6371000*4/3,drop=d=>d*d/(2*Rk);
+    const H=(i,j)=>g.h[j*n+i],eye=H(c,c)+hTx,vis=new Uint8Array(n*n);
+    const bil=(x,y)=>{const x0=Math.floor(x),y0=Math.floor(y),x1=Math.min(n-1,x0+1),y1=Math.min(n-1,y0+1),fx=x-x0,fy=y-y0;
+      return H(x0,y0)*(1-fx)*(1-fy)+H(x1,y0)*fx*(1-fy)+H(x0,y1)*(1-fx)*fy+H(x1,y1)*fx*fy};
+    let inside=0,ok=0;
+    for(let j=0;j<n;j++)for(let i=0;i<n;i++){
+      const di=i-c,dj=j-c,D=Math.hypot(di*g.dx,dj*g.dy);
+      if(D>R)continue;inside++;
+      if(!di&&!dj){vis[j*n+i]=1;ok++;continue}
+      const steps=Math.max(Math.abs(di),Math.abs(dj));let maxA=-Infinity;
+      for(let s=1;s<steps;s++){const f=s/steps,d=D*f,a=(bil(c+di*f,c+dj*f)-drop(d)-eye)/d;if(a>maxA)maxA=a}
+      if((H(i,j)+hRx-drop(D)-eye)/D>=maxA){vis[j*n+i]=1;ok++}
+    }
+    if(radioLayer){map.removeLayer(radioLayer);radioLayer=null}
+    const cv=document.createElement('canvas');cv.width=cv.height=n;const x=cv.getContext('2d'),im=x.createImageData(n,n);
+    for(let k=0;k<n*n;k++)if(vis[k])im.data.set([21,101,192,90],k*4);
+    x.putImageData(im,0,0);
+    radioLayer=L.imageOverlay(cv.toDataURL(),b,{pane:'auto',interactive:false,className:'pix'}).addTo(map);
+    const share=ok/(inside||1);
+    radioRes={mg:mgrs(ll.lat,ll.lng),hTx,hRx,R,share,src:g.src,date:new Date().toISOString()};
+    attach(L.marker(ll),{cat:'O',name:`Stanowisko łączności (antena ${hTx} m)`,range:String(R),
+      note:`Zasięg łączności w linii widzenia: ${pct(share)} powierzchni koła o promieniu ${fmtDist(R)} przy antenie nadawczej ${hTx} m i odbiorczej ${hRx} m. Obliczono po gołym terenie z zastępczym promieniem Ziemi 4/3 (refrakcja radiowa); bez tłumienia w lesie i zabudowie oraz bez strefy Fresnela.`});
+    decorate();render();save();
+    openProfile('Zasięg łączności',
+      `<span>Stanowisko <b>${radioRes.mg}</b></span><span>Antena <b>${hTx} / ${hRx} m</b></span><span>Promień <b>${fmtDist(R)}</b></span><span>Pokrycie <b>${pct(share)}</b></span>`,
+      `<div class="row"><span class="sw" style="background:rgba(21,101,192,.5)"></span><span class="hint">łączność w linii widzenia</span></div>
+       <div class="hint">Model geometryczny: goły teren, zastępczy promień Ziemi 4/3 (typowy dla UKF), bez tłumienia w lesie i zabudowie, bez strefy Fresnela i bez dyfrakcji. Rzeczywisty zasięg będzie mniejszy, zwłaszcza w lesie i w terenie zabudowanym. Wynik służy do wyboru miejsc na przekaźnik, nie do obliczeń radiowych.</div>
+       <div class="row"><button class="btn sm" id="rdOff">Ukryj warstwę</button></div>`);
+    $('profile').dataset.kind='';
+    $('rdOff').onclick=()=>{if(radioLayer){map.removeLayer(radioLayer);radioLayer=null}};
+  }catch(e){console.error(e);openProfile('Zasięg łączności','Nie udało się pobrać modelu terenu dla tego promienia. Zmniejsz promień i spróbuj ponownie.','');}
+}
+
 // ================= Start =================
 renderCatBar();
 let saved=null;try{saved=JSON.parse(localStorage.getItem('ocoka-v2')||'null')}catch(e){}
@@ -5286,7 +5581,9 @@ $('wxGo').onclick=()=>loadWx(wxPoint());
 $('wxMap').onclick=()=>{loadWx(map.getCenter())};
 $('wxWindyGo').onclick=showWindy;$('wxLayer').onchange=()=>{if($('wxWindy').innerHTML)showWindy()};
 $('ov-radar').onchange=e=>{setOver('radar',e.target.checked);save()};
-buildWxThUI();renderWxMatrix();
+buildWxThUI();renderWxMatrix();renderLight();
+$('ltDate').onchange=renderLight;$('ltToday').onclick=()=>{$('ltDate').value='';renderLight()};
+map.on('moveend',()=>{if(!wxState)renderLight()});
 $('wxWide').onclick=openWxMatrixWide;$('wmX').onclick=()=>{$('wmodal').hidden=true};$('wmodal').onclick=e=>{if(e.target===$('wmodal'))$('wmodal').hidden=true};updEditBtns();updOcenaBtn();updThemeInfo();
 $('bMgrs').onclick=openMgrsDialog;$('wMgrs').onclick=()=>{showWelcome(false);openMgrsDialog()};
 $('thLoad').onclick=()=>{const b=autoBox&&kmDims(autoBox).km2<=ABIG?autoBox:map.getBounds();if(autoBox&&b!==autoBox)toast('Rejon jest za duży na mapę wektorową – wczytuję ją dla widocznego kadru.');loadThemeFor(b)};
