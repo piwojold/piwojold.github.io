@@ -1,5 +1,914 @@
 window.BRIEF_EDITIONS = [
  {
+  "date": "2026-11-19",
+  "win": "18.11.2026 15:40 – 19.11.2026 15:40 CET",
+  "stop": "19 listopada 2026, 15:40 CET",
+  "kind": "auto",
+  "note": "Wydanie automatyczne: zgrupowane nagłówki z kanałów RSS, bez analizy i bez redakcji człowieka.",
+  "obraz": [
+   "To wydanie powstało automatycznie. Skrypt odpytał 29 kanałów RSS, odpowiedziało 29, i zebrał 487 pozycji opublikowanych w ciągu ostatnich 24 godzin. Powtarzające się tematy zostały połączone w 306 wątków, z których w wydaniu znalazło się 25 najszerzej relacjonowanych.",
+   "Rozkład wątków po przypisaniu słowami kluczowymi: gospodarka: 10, wojsko i bezpieczeństwo: 8, polityka: 4, społeczeństwo: 2, informacja i cyber: 1. Przypisanie wymiaru PMESII i regionu jest mechaniczne i bywa błędne, a kolejność wątków odzwierciedla tylko liczbę kanałów, które podały temat, a nie jego wagę.",
+   "Czego tu nie ma: zbiorczej oceny sytuacji, weryfikacji informacji, wskazania rozbieżności między źródłami ani wniosków analitycznych. Każdy wpis to zestaw nagłówków z linkami, które trzeba otworzyć i ocenić samodzielnie."
+  ],
+  "events": [
+   {
+    "id": "anthropic-wycenil-sie-powyzej",
+    "dim": "M",
+    "sec": [],
+    "title": "Anthropic wycenił się powyżej oczekiwań. Fala komentarzy o największym debiucie w historii",
+    "summary": "Temat zgłoszony przez 13 kanałów między 16:11 a 15:29. Inne nagłówki: „Kolejny atak na Most Krymski. Ukraińskie wojsko \"gratuluje\" Lizbonie” (TVN24); „Dania i Ukraina łączą siły w rozwoju wojskowej sztucznej inteligencji” (CyberDefence24); „Polski przemysł zbrojeniowy dostarcza kolejne Borsuki. Wojsko szkoli załogi” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 25 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/swiat/kolejny-atak-na-most-krymski-ukrainskie-wojsko-gratuluje-lizbonie-st9347396?source=rss",
+      "PL"
+     ],
+     [
+      "CyberDefence24",
+      "https://cyberdefence24.pl/technologie/uczniowie-poznaja-sztuczna-inteligencje-pracownie-ai-juz-w-szkolach",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Wladimir-Putin-nie-jest-gotowy-na-pokoj-Wywiad-Rosja-szykuje-sie-zime-9231097.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/sily-zbrojne/armia-nie-tylko-sie-zbroi-ale-i-szkoli-nadszedl-czas-na-rozwoj-szkolnictwa-wojskowego",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "mazowieckie, podkarpackie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "mazowieckie",
+     "podkarpackie"
+    ],
+    "pts": [
+     [
+      52.23,
+      21.01,
+      "Warszawa",
+      "l"
+     ],
+     [
+      49.78,
+      22.77,
+      "Przemyśl"
+     ]
+    ],
+    "top": 1,
+    "lead": "Zgłoszone przez 4 kanały: TVN24, CyberDefence24, Bankier.pl, Defence24."
+   },
+   {
+    "id": "dania-podjela-ostateczna-decyzje",
+    "dim": "P",
+    "sec": [],
+    "title": "Dania podjęła ostateczną decyzję w sprawie Grenlandii. \"To nie jest koniec, lecz początek\"",
+    "summary": "Temat zgłoszony przez 10 kanałów między 17:25 a 15:17. Inne nagłówki: „Nowe limity dla lekarzy. Sejm przyjął ograniczenia etatów i wysokości zarobków” (Business Insider Polska); „Nowe limity zarobków lekarzy. Sejm zdecydował, ile maksymalnie będą mogli zarabiać” (Rzeczpospolita); „Sejm zdecydował ws. ustawy o sprawiedliwym dostępie do danych” (CyberDefence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 18 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gospodarka/porozumienie-w-sprawie-grenlandii-zatwierdzone-dania-dala-zielone-swiatlo/4lx941l",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/polityka/art45514541-nowe-limity-zarobkow-lekarzy-sejm-zdecydowal-ile-maksymalnie-beda-mogli-zarabiac",
+      "PL"
+     ],
+     [
+      "CyberDefence24",
+      "https://cyberdefence24.pl/polityka-i-prawo/polska/w-polsce-ma-ruszyc-produkcja-chipow-sejm-przyjal-ustawe-trwa-szukanie-pieniedzy",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Koniec-samowolki-w-najmie-krotkoterminowym-Sejm-przyjal-poprawki-Senatu-9231690.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 2,
+    "lead": "Zgłoszone przez 4 kanały: Business Insider Polska, Rzeczpospolita, CyberDefence24, Bankier.pl."
+   },
+   {
+    "id": "anthropic-wchodzi-na-gielde",
+    "dim": "M",
+    "sec": [],
+    "title": "Anthropic wchodzi na giełdę. Pierwsza w historii oferta akcji za 100 mld dolarów [HIRSCH O GOSPODARCE]",
+    "summary": "Temat zgłoszony przez 9 kanałów między 19:50 a 14:50. Inne nagłówki: „Gigantyczna operacja \"INFERNO\". Policja zabezpieczyła miliony plików i zatrzymała 123 osoby” (TVN24); „123 zatrzymanych w ogólnopolskiej akcji policji przeciwko siatce pedofilskiej” (OKO.press); „Anthropic wchodzi na giełdę. Tysiące pracowników giganta zostanie milionerami” (Business Insider Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 11 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/trojmiasto/miliony-zabezpieczonych-plikow-i-123-zatrzymane-osoby-ogolnopolska-akcja-policji-inferno-st9347668?source=rss",
+      "PL"
+     ],
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/123-zatrzymanych-w-ogolnopolskiej-akcji-policji-przeciwko-siatce-pedofilskiej",
+      "PL"
+     ],
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gielda/anthropic-debiutuje-na-gieldzie-pracownicy-i-inwestorzy-licza-na-fortune/493evjb",
+      "PL"
+     ],
+     [
+      "Money.pl",
+      "https://www.money.pl/gielda/4-tysiace-milionerow-w-jednej-firmie-rekordowy-debiut-giganta-7352655792363520v.html",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 3,
+    "lead": "Zgłoszone przez 4 kanały: TVN24, OKO.press, Business Insider Polska, Money.pl."
+   },
+   {
+    "id": "pan-putin-nie-jest",
+    "dim": "M",
+    "sec": [],
+    "title": "„Pan Putin nie jest naszym przyjacielem i nie będzie”. Tusk rusza do Berlina, w grudniu do Chin",
+    "summary": "Temat zgłoszony przez 7 kanałów między 06:45 a 15:29. Inne nagłówki: „Tusk wybiera się do Chin, znany jest termin. \"Liczę, że poznam intencje\"” (Interia Fakty); „Tusk zapowiada wizytę w Chinach. Chce poznać intencje Pekinu ws. Ukrainy” (Bankier.pl); „Trump spotkał się z Putinem, nazwał go \"przyjacielem\". Tusk reaguje” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 12 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-spotkania-nie-bylo-w-harmonogramie-trump-to-moj-przyjaciel,nId,23575777",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Nieformalna-rozmowa-Trumpa-i-Putina-Nazwal-go-swoim-przyjacielem-9231296.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polityka/news-trump-bardziej-przyjacielem-putina-czy-nawrockiego-sikorski-,nIdn,1026747",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-19/sikorski-skomentowal-spotkanie-trump-putin-zadal-pytanie-o-nawrockiego/",
+      "PL"
+     ]
+    ],
+    "date": "19.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr",
+    "top": 4,
+    "lead": "Zgłoszone przez 4 kanały: Interia Fakty, Bankier.pl, RMF24 Polska, Polsat News."
+   },
+   {
+    "id": "maksymalne-ceny-paliw-w",
+    "dim": "E",
+    "sec": [],
+    "title": "Maksymalne ceny paliw w piątek 20 listopada. Benzyna i diesel idą w różnych kierunkach",
+    "summary": "Temat zgłoszony przez 7 kanałów między 13:56 a 14:33. Inne nagłówki: „Na koniec tygodnia ceny maksymalne benzyny oraz diesla idą w dół” (RMF24); „W piątek niższe ceny maksymalne na stacjach paliw” (Energetyka24); „Nowe ceny paliw. W piątek zapłacimy jeszcze mniej” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/ekonomia/news-na-koniec-tygodnia-ceny-maksymalne-benzyny-oraz-diesla-ida-w,nIdn,1026841",
+      "PL"
+     ],
+     [
+      "Energetyka24",
+      "https://energetyka24.com/surowce/ropa/w-piatek-nizsze-ceny-maksymalne-na-stacjach-paliw",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://energia.rp.pl/paliwa/art45514381-nowe-ceny-paliw-w-piatek-zaplacimy-jeszcze-mniej",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-19/maksymalne-ceny-paliwa-w-piatek-minister-podal-decyzje/",
+      "PL"
+     ]
+    ],
+    "date": "19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 5,
+    "lead": "Zgłoszone przez 4 kanały: RMF24, Energetyka24, Rzeczpospolita, Polsat News."
+   },
+   {
+    "id": "inwestycje-w-energetyke-przyspiesza",
+    "dim": "M",
+    "sec": [],
+    "title": "Inwestycje w energetykę przyspieszą jak projekty wojskowe? Minister Motyka: Blackout to miliardy złotych strat",
+    "summary": "Temat zgłoszony przez 6 kanałów między 15:51 a 15:28. Inne nagłówki: „Sikorski po rozmowach na Węgrzech. Polska chce wojsk USA i uszczelnienia sankcji na Rosję” (Rzeczpospolita); „Polska i ECMWF – rozmowy o akcesji do Europejskiego Centrum Prognoz Średnioterminowych” (IMGW); „Polska w rozmowach o Ukrainie. Nowy sondaż, jasna ocena” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/polityka/art45514981-sikorski-po-rozmowach-na-wegrzech-polska-chce-wojsk-usa-i-uszczelnienia-sankcji-na-rosje",
+      "PL"
+     ],
+     [
+      "IMGW",
+      "https://imgw.pl/polska-i-ecmwf-rozmowy-o-akcesji-do-europejskiego-centrum-prognoz-srednioterminowych/",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-polska-w-rozmowach-o-ukrainie-nowy-sondaz-jasna-ocena,nId,23575776",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/pozyczki-dla-ukrainy-wiadomo-jakie-koszty-ponosi-polska",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Poza Polską",
+    "label": "Informacja urzędowa",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "orlen-znalazl-sposob-na",
+    "dim": "E",
+    "sec": [],
+    "title": "Orlen znalazł sposób na tańszy LNG? Zerwanie umowy z gazowym gigantem miało poprawić jej warunki",
+    "summary": "Temat zgłoszony przez 5 kanałów między 16:23 a 14:29. Inne nagłówki: „Orlen ramię w ramię z trzema gigantami z USA. Jest porozumienie” (Business Insider Polska); „Orlen łączy siły z amerykańskim gigantem inwestycyjnym. Porozumienie z funduszem Carlyle” (Energetyka24); „Wielkie porozumienie Orlenu z amerykańskim gigantem. W grze potężne inwestycje w Polsce” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/biznes/orlen-stawia-na-sztuczna-inteligencje-z-tymi-trzema-gigantami-bedzie-dzialal/3js2znk",
+      "PL"
+     ],
+     [
+      "Energetyka24",
+      "https://energetyka24.com/gospodarka/spolki/orlen-laczy-sily-z-amerykanskim-gigantem-inwestycyjnym-porozumienie-z-funduszem-carlyle",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/orlen-znalazl-sposob-na-tanszy-lng-zerwanie-umowy-z-gazowym-gigantem-mialo-poprawic-jej-warunki,1121363.html",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Orlen-i-amerykanski-fundusz-Carlyle-podpisaly-podczas-P-TEC-2026-memorandum-o-wspolpracy-w-dziedzinie-energii-i-inwestycji-9231466.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "holownia-kandydatem-na-ambasadora",
+    "dim": "P",
+    "sec": [],
+    "title": "Hołownia kandydatem na ambasadora w Watykanie. Tusk: Ostateczna decyzja należy do prezydenta",
+    "summary": "Temat zgłoszony przez 4 kanały między 18:37 a 14:49. Inne nagłówki: „Mieszkańcy Częstochowy wybiorą prezydenta. Kto będzie kandydował?” (TVN24); „Tusk wprost o spotkaniach w Pałacu Prezydenckim ws. TK. \"Trzymam kciuki\"” (Polsat News); „Trzech kandydatów na prezydenta FIFA. Diallo i Tashima rzucają wyzwanie Infantino” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/katowice/mieszkancy-czestochowy-wybiora-prezydenta-kto-bedzie-kandydowal-st9347655?source=rss",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Holownia-kandydatem-na-ambasadora-w-Watykanie-Tusk-Ostateczna-decyzja-nalezy-do-prezydenta-9231601.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-19/tusk-wprost-o-spotkaniach-w-palacu-prezydenckim-ws-tk-trzymam-kciuki/",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polityka/news-szymon-holownia-coraz-blizej-watykanu-nie-znam-zadnego-zapew,nIdn,1026705",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "śląskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "śląskie"
+    ],
+    "pts": [
+     [
+      50.81,
+      19.12,
+      "Częstochow"
+     ]
+    ]
+   },
+   {
+    "id": "deklaracja-po-spotkaniu-trumpa",
+    "dim": "M",
+    "sec": [],
+    "title": "Deklaracja po spotkaniu Trumpa, Putina i Xi. Przywódcy krytykują Międzynarodowy Trybunał Karny. \"Nie może nadużywać jurysdykcji\"",
+    "summary": "Temat zgłoszony przez 4 kanały między 20:10 a 14:07. Inne nagłówki: „Przełomowy wyrok Międzynarodowego Trybunału Sprawiedliwości ws. śmierci 10 tys. osób” (Rzeczpospolita); „\"Deklaracja pokoju\" Chin, USA i Rosji. Przywódcy zawarli porozumienie” (Interia Fakty); „Historyczne spotkanie Xi, Trumpa i Putina. \"Powinniśmy czerpać z historii\"” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/prawo-na-swiecie/art45513841-przelomowy-wyrok-miedzynarodowego-trybunalu-sprawiedliwosci-ws-smierci-10-tys-osob",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/politico/trump-xi-i-putin-krytykuja-mtk-nie-moze-tego-robic/vjflhcs",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-historyczne-spotkanie-xi-trumpa-i-putina-powinnismy-czerpac,nId,23575795",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polityka/news-bogucki-po-spotkaniu-ws-trybunalu-konstytucyjnego-zostalo-na,nIdn,1026712",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "kolejne-trzy-osoby-z",
+    "dim": "M",
+    "sec": [],
+    "title": "Kolejne trzy osoby z zarzutami w sprawie zondacrypto. Kim jest Jacek R.?",
+    "summary": "Temat zgłoszony przez 4 kanały między 17:03 a 15:00. Inne nagłówki: „Dwie osoby z zarzutami działania na rzecz rosyjskiego wywiadu” (TVN24); „Palantir na celowniku rosyjskiego wywiadu” (CyberDefence24); „Nowe zatrzymania w sprawie Zondacrypto. Prokuratura ujawnia szczegóły” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/poznan/hasla-slawa-upa-na-trzech-poznanskich-pomnikach-dwie-osoby-z-zarzutami-dzialania-na-rzecz-rosyjskiego-wywiadu-st9347621?source=rss",
+      "PL"
+     ],
+     [
+      "CyberDefence24",
+      "https://cyberdefence24.pl/biznes-i-finanse/palantir-na-celowniku-rosyjskiego-wywiadu",
+      "PL"
+     ],
+     [
+      "OKO.press",
+      "https://oko.press/kolejne-trzy-osoby-z-zarzutami-w-sprawie-zondacrypto-kim-jest-jacek-r",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-18/nowe-zatrzymania-w-sprawie-zondacrypto-prokuratura-ujawnia-szczegoly/",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "ustawa-prohibicyjna-przyjeta-przez",
+    "dim": "P",
+    "sec": [],
+    "title": "Ustawa prohibicyjna przyjęta przez Sejm. Przeszedł zakaz reklamy zerówek",
+    "summary": "Temat zgłoszony przez 4 kanały między 13:20 a 14:42. Inne nagłówki: „Nocna prohibicja i koniec promocji na alkohol. Sejm podjął decyzję” (RMF24); „Nocna prohibicja. Jest decyzja Sejmu” (Interia Fakty); „Zakaz nocnej sprzedaży alkoholu. Sejm podjął decyzję” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/prawo-w-polsce/art45514641-ustawa-prohibicyjna-przyjeta-przez-sejm-przeszedl-zakaz-reklamy-zerowek",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-nocna-prohibicja-i-koniec-promocji-na-alkohol-sejm-podjal-de,nIdn,1026833",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-nocna-prohibicja-jest-decyzja-sejmu,nId,23576129",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-19/zakaz-nocnej-sprzedazy-alkoholu-sejm-podjal-decyzje/",
+      "PL"
+     ]
+    ],
+    "date": "19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "komunikat-w-sprawie-zmiany",
+    "dim": "E",
+    "sec": [],
+    "title": "Komunikat w sprawie zmiany wezwania do zapisywania się na sprzedaż akcji ERSTE BANK POLSKA S.A.",
+    "summary": "Temat zgłoszony przez 4 kanały między 19:04 a 14:26. Inne nagłówki: „Polska sprowadza coraz więcej uzbrojenia z zagranicy. Eksport naszej broni zwolnił” (WNP.pl); „Polski atom kosztuje coraz więcej. Byli pracownicy PEJ ujawniają” (Energetyka24); „Bruksela ugina się w sprawie metanu. Polska chciała więcej” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/bezpieczenstwo/polska-sprowadza-coraz-wiecej-uzbrojenia-z-zagranicy-eksport-naszej-broni-zwolnil,1121444.html",
+      "PL"
+     ],
+     [
+      "Energetyka24",
+      "https://energetyka24.com/energetyka/atom/polski-atom-kosztuje-coraz-wiecej-byli-pracownicy-pej-ujawniaja-kulisy",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-bruksela-ugina-sie-w-sprawie-metanu-polska-chciala-wiecej,nIdn,1026774",
+      "PL"
+     ],
+     [
+      "PAP Biznes",
+      "https://biznes.pap.pl/wiadomosci/firmy/komunikat-w-sprawie-zmiany-wezwania-do-zapisywania-sie-na-sprzedaz-akcji-erste",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "aktualizacja-autopay-zhackowany-wykradzi",
+    "dim": "I",
+    "sec": [],
+    "title": "[AKTUALIZACJA] Autopay zhackowany. Wykradziono dane kart płatniczych Polaków",
+    "summary": "Temat zgłoszony przez 4 kanały między 18:23 a 12:23. Inne nagłówki: „Wykradziono dane z Autopay. Stoi za tym AI?” (OKO.press); „Hakerzy wykradli rządowe dane. Wieloletnia operacja w europejskim państwie” (CyberDefence24); „Autopay zhackowane. Możliwy wyciek danych finansowych. [Aktualizacja]” (Sekurak). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/wykradziono-dane-z-autopay-stoi-za-tym-ai",
+      "PL"
+     ],
+     [
+      "CyberDefence24",
+      "https://cyberdefence24.pl/cyberbezpieczenstwo/cyberataki/hakerzy-wykradli-rzadowe-dane-wieloletnia-operacja-w-europejskim-panstwie",
+      "PL"
+     ],
+     [
+      "Niebezpiecznik",
+      "https://niebezpiecznik.pl/post/autopay-zhackowany-wykradziono-dane-kart-platniczych-polakow/",
+      "PL"
+     ],
+     [
+      "Sekurak",
+      "https://sekurak.pl/autopay-zhackowane-mozliwy-wyciek-danych-finansowych/",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "zaskakujace-dane-o-finansach",
+    "dim": "E",
+    "sec": [],
+    "title": "Zaskakujące dane o finansach samorządów. Wyniki kompletnie różnią się od planów",
+    "summary": "Temat zgłoszony przez 3 kanały między 19:37 a 15:18. Inne nagłówki: „Planowano 47 mld zł deficytu, jest 45,5 mld zł nadwyżki. Samorządy zaskoczyły” (Bankier.pl); „Miliardowe zyski i planowane inwestycje. Enea pokazała wyniki” (WNP.pl); „W wyjątkowo wymagającym otoczeniu Unimot poprawił wyniki finansowe” (WNP.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gospodarka/samorzady-zaskoczyly-wynikiem-budzety-zupelnie-inne-od-planu/65k2myh",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Planowano-47-mld-zl-deficytu-jest-45-5-mld-zl-nadwyzki-Samorzady-zaskoczyly-9231704.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/tauron-podsumowal-trzy-kwartaly-2-5-miliarda-zysku-i-inwestycje-za-3-8-mld-zl,1121152.html",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "usa-wycina-rosyjskie-surowce",
+    "dim": "M",
+    "sec": [],
+    "title": "USA wycina rosyjskie surowce z Europy. Polska z kluczową rolką w nowej układance",
+    "summary": "Temat zgłoszony przez 3 kanały między 07:01 a 15:29. Inne nagłówki: „Rosyjska energia powróci do Europy? Amerykański sekretarz o nastrojach” (TVN24); „Zaskakująca sytuacja w dystrybucji energii. Polska dostała cenną lekcję z Europy” (WNP.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/biznes/ze-swiata/europa-nie-chce-powrotu-rosyjskiej-energii-usa-zwieksza-dostawy-lng-st9347683?source=rss",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/USA-wycina-rosyjskie-surowce-z-Europy-Polska-z-kluczowa-rolka-w-nowej-ukladance-9231760.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/zaskakujaca-sytuacja-w-dystrybucji-energii-polska-dostala-cenna-lekcje-z-europy-zachodniej,1120665.html",
+      "PL"
+     ]
+    ],
+    "date": "19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "swieczkowski-napisal-do-glapinskiego",
+    "dim": "E",
+    "sec": [],
+    "title": "Święczkowski napisał do Glapińskiego. Chce dostępu do rachunków bankowych TK",
+    "summary": "Temat zgłoszony przez 3 kanały między 18:38 a 15:10. Inne nagłówki: „Bogdan Święczkowski napisał do prezesa NBP. \"Winienem mieć dostęp\"” (Onet Wiadomości); „Żurek odpowiada Święczkowskiemu. \"Chce zaklinać rzeczywistość\"” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/sady-i-trybunaly/art45514871-swieczkowski-napisal-do-glapinskiego-chce-dostepu-do-rachunkow-bankowych-tk",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/bogdan-swieczkowski-napisal-do-prezesa-nbp-winienem-miec-dostep/cvx5xxx",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-18/zurek-odpowiada-swieczkowskiemu-chce-zaklinac-rzeczywistosc/",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "izby-sadu-najwyzszego-zabraly",
+    "dim": "P",
+    "sec": [],
+    "title": "Izby Sądu Najwyższego zabrały głos ws. orzeczeń TK. Żurek: „Nibyuchwała neosędziów”",
+    "summary": "Temat zgłoszony przez 3 kanały między 18:02 a 14:57. Inne nagłówki: „Paris Hilton zabrała głos w sprawie deepfake'ów o charakterze seksualnym” (TVN24); „Sąd Najwyższy o Trybunale Konstytucyjnym. Zapadło orzeczenie” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/swiat/usa-paris-hilton-zabrala-glos-w-sprawie-deepfake-ow-o-charakterze-seksualnym-st9347715?source=rss",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polska/news-izby-sadu-najwyzszego-zabraly-glos-ws-orzeczen-tk-zurek-niby,nIdn,1026707",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-18/sad-najwyzszy-o-trybunale-konstytucyjnym-zapadlo-orzeczenie/",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "wiecej-gazu-na-gieldzie",
+    "dim": "E",
+    "sec": [],
+    "title": "Więcej gazu na giełdzie i niższe opłaty za przesył. Polska buduje regionalny hub gazowy",
+    "summary": "Temat zgłoszony przez 3 kanały między 07:00 a 13:21. Inne nagłówki: „Polska i USA zacieśniają sojusz jądrowy i gazowy. Motyka: Nie ma alternatywy” (Bankier.pl); „Nie tylko Tomahawki. Polska buduje system głębokich uderzeń w terytorium wroga” (WNP.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Energetyka24",
+      "https://energetyka24.com/surowce/gaz/wiecej-gazu-na-gieldzie-i-nizsze-oplaty-za-przesyl-polska-buduje-regionalny-hub-gazowy",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Polska-i-USA-zaciesniaja-sojusz-jadrowy-i-gazowy-Motyka-Nie-ma-alternatywy-9231487.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/bezpieczenstwo/nie-tylko-tomahawki-polska-buduje-system-glebokich-uderzen-w-terytorium-wroga,1120750.html",
+      "PL"
+     ]
+    ],
+    "date": "19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "usa-wysylaja-wiadomosc-rosji",
+    "dim": "M",
+    "sec": [],
+    "title": "USA wysyłają wiadomość Rosji i Ukrainie. \"Ostatnia realna szansa\"",
+    "summary": "Temat zgłoszony przez 3 kanały między 21:19 a 12:54. Inne nagłówki: „Tysiąc dronów dalekiego zasięgu dla Ukrainy. Dolecą w głąb Rosji” (Business Insider Polska); „Drony o zasięgu ponad 1000 km dla Ukrainy. Nowy pakiet z Londynu” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/gospodarka/tysiac-dronow-dalekiego-zasiegu-dla-ukrainy-rosja-moze-sie-bac/sznvlgn",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/wojna-na-ukrainie-raport-specjalny-defence24/drony-o-zasiegu-ponad-1000-km-dla-ukrainy-nowy-pakiet-z-londynu",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/ukraina-rosja/news-usa-wysylaja-wiadomosc-rosji-i-ukrainie-ostatnia-realna-szan,nId,23575730",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "emerytury-do-5-tys",
+    "dim": "E",
+    "sec": [],
+    "title": "Emerytury do 5 tys. zł bez PIT. Co dalej z wielką obietnicą? Rząd wskazuje na miliardy",
+    "summary": "Temat zgłoszony przez 3 kanały między 23:14 a 11:23. Inne nagłówki: „Co dalej z metrem w Krakowie? Łukasz Gibała wskazuje na Donalda Tuska” (WNP.pl); „Gibała chciał zawieszenia partnerstwa ze Lwowem. Radni Krakowa zdecydowali” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Money.pl",
+      "https://www.money.pl/emerytury/emerytury-bez-pit-mialy-byc-obietnica-rzad-wskazuje-na-miliardy-7352655435851808a.html",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/budownictwo/co-dalej-z-metrem-w-krakowie-lukasz-gibala-wskazuje-na-donalda-tuska,1121342.html",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-18/gibala-chcial-zawieszenie-partnerstwa-ze-lwowem-radni-krakowa-zdecydowali/",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "małopolskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "małopolskie"
+    ],
+    "pts": [
+     [
+      50.06,
+      19.94,
+      "Kraków"
+     ]
+    ]
+   },
+   {
+    "id": "w-stawie-odnaleziono-samochod",
+    "dim": "S",
+    "sec": [],
+    "title": "W stawie odnaleziono samochód i ludzkie szczątki. Tajemnica sprzed dekady wyjaśniona",
+    "summary": "Temat zgłoszony przez 3 kanały między 06:36 a 09:17. Inne nagłówki: „Zatopiony samochód, w nim ludzkie szczątki. Tragiczny finał poszukiwań 31-latka” (Polsat News); „Finał poszukiwań po 10 latach. W stawie znaleziono ciało, DNA potwierdza” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-19/zatopiony-samochod-a-w-nim-ludzkie-szczatki-tragiczny-final-poszukiwan-31-latka/",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/wielkopolskie/news-final-poszukiwan-po-10-latach-w-stawie-znaleziono-cialo-dna,nId,23575829",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/poznan/news-w-stawie-odnaleziono-samochod-i-ludzkie-szczatki-tajemnica-s,nIdn,1026731",
+      "PL"
+     ]
+    ],
+    "date": "19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "medicalgorithmics-sa-52-2026",
+    "dim": "E",
+    "sec": [],
+    "title": "MEDICALGORITHMICS SA (52/2026) Wykaz akcjonariuszy posiadających co najmniej 5% liczby głosów na Nadzwyczajnym Walnym Zgromadzeniu Medicalgorithmics S.A. w dniu",
+    "summary": "Temat zgłoszony przez 2 kanały między 20:37 a 22:45. Inne nagłówki: „Wyniki Lotto na środę 18 listopada 2026. Sprawdź szczęśliwe liczby” (Polsat News); „IMAGE POWER SA (19/2026) Wykaz akcjonariuszy posiadających co najmniej 5% liczby głosów na Walnym Zgromadzeniu w dniu 18 listopada 2026 roku.” (PAP Biznes); „MEDICALGORITHMICS SA (53/2026) Uchwały Nadzwyczajnego Walnego Zgromadzenia Medicalgorithmics S.A., które odbyło się w dniu 18 listopada 2026 r.” (PAP Biznes). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 5 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-18/wyniki-lotto-na-srode-18-listopada-2026-sprawdz-szczesliwe-liczby/",
+      "PL"
+     ],
+     [
+      "PAP Biznes",
+      "https://biznes.pap.pl/wiadomosci/firmy/tauron-power-posts-pln-102-bln-net-profit-q3-2026-line-prelims",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "bez-nich-nie-bedzie",
+    "dim": "E",
+    "sec": [],
+    "title": "Bez nich nie będzie polskiej elektrowni jądrowej. PEJ chce rozszerzyć umowę z Amerykanami",
+    "summary": "Temat zgłoszony przez 2 kanały między 12:15 a 14:19. Inne nagłówki: „Budowa elektrowni jądrowej ma przyspieszyć. Sejm uchwalił zmiany w przepisach” (Bankier.pl); „Szefowie ABW, CBA i AW pod ochroną własnych służb. Sejm uchwalił zmiany” (Bankier.pl); „Orlen ma umowę z Amerykanami. Polski potentat szuka nowych możliwości zarobku” (WNP.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/orlen-ma-porozumienie-z-amerykanami-szuka-mozliwosci-inwestycyjnych-ustalamy-horyzont-90-dni,1121356.html",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Szefowie-ABW-CBA-i-AW-pod-ochrona-wlasnych-sluzb-Sejm-uchwalil-zmiany-9231620.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "19.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "wzywajacy-podniosl-cene-akcji",
+    "dim": "E",
+    "sec": [],
+    "title": "Wzywający podniósł cenę akcji w wezwaniu na akcje Erste Bank Polska z 713,6 zł do 800 zł za akcję",
+    "summary": "Temat zgłoszony przez 2 kanały między 19:21 a 22:47. Inne nagłówki: „Znamy cenę za akcję w ratunkowej emisji Mostostalu Warszawa” (WNP.pl); „Anthropic ustalił cenę w IPO na 83 USD za akcję - media” (PAP Biznes); „Mostostal Warszawa builder sets series VI issue price at PLN2.75 apiece” (PAP Biznes). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/budownictwo/znamy-cene-za-akcje-w-ratunkowej-emisji-mostostalu-warszawa,1121215.html",
+      "PL"
+     ],
+     [
+      "PAP Biznes",
+      "https://biznes.pap.pl/wiadomosci/firmy/wzywajacy-podniosl-cene-akcji-w-wezwaniu-na-akcje-erste-bank-polska-z-7136-zl-do",
+      "PL"
+     ]
+    ],
+    "date": "18.11–19.11",
+    "region": "mazowieckie",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [
+     "mazowieckie"
+    ],
+    "pts": [
+     [
+      52.23,
+      21.01,
+      "Warszawa",
+      "l"
+     ]
+    ]
+   },
+   {
+    "id": "jest-kolejny-rekord-upadlosci",
+    "dim": "S",
+    "sec": [],
+    "title": "Jest kolejny rekord upadłości. Nowe prawo jeszcze przyspieszy bankructwa konsumentów",
+    "summary": "Temat zgłoszony przez 2 kanały między 06:00 a 16:30. Inne nagłówki: „Polski mały atom ma produkować nie tylko prąd. Dodano ważny komponent” (WNP.pl); „Polski atom przyspiesza. Kolejne elementy reaktora trafiają do produkcji” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/energia/polski-smr-ma-produkowac-nie-tylko-prad-dodano-wazny-komponent,1121506.html",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Jest-kolejny-rekord-upadlosci-Nowe-prawo-jeszcze-przyspieszy-bankructwa-konsumentow-9231075.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "19.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   }
+  ]
+ },
+ {
   "date": "2026-11-18",
   "win": "17.11.2026 15:32 – 18.11.2026 15:32 CET",
   "stop": "18 listopada 2026, 15:32 CET",
