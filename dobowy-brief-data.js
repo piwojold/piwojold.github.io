@@ -1,5 +1,853 @@
 window.BRIEF_EDITIONS = [
  {
+  "date": "2026-11-21",
+  "win": "20.11.2026 14:41 – 21.11.2026 14:41 CET",
+  "stop": "21 listopada 2026, 14:41 CET",
+  "kind": "auto",
+  "note": "Wydanie automatyczne: zgrupowane nagłówki z kanałów RSS, bez analizy i bez redakcji człowieka.",
+  "obraz": [
+   "To wydanie powstało automatycznie. Skrypt odpytał 29 kanałów RSS, odpowiedziało 29, i zebrał 368 pozycji opublikowanych w ciągu ostatnich 24 godzin. Powtarzające się tematy zostały połączone w 254 wątków, z których w wydaniu znalazło się 25 najszerzej relacjonowanych.",
+   "Rozkład wątków po przypisaniu słowami kluczowymi: wojsko i bezpieczeństwo: 11, gospodarka: 7, społeczeństwo: 5, polityka: 2. Przypisanie wymiaru PMESII i regionu jest mechaniczne i bywa błędne, a kolejność wątków odzwierciedla tylko liczbę kanałów, które podały temat, a nie jego wagę.",
+   "Czego tu nie ma: zbiorczej oceny sytuacji, weryfikacji informacji, wskazania rozbieżności między źródłami ani wniosków analitycznych. Każdy wpis to zestaw nagłówków z linkami, które trzeba otworzyć i ocenić samodzielnie."
+  ],
+  "events": [
+   {
+    "id": "trzy-rosyjskie-obiekty-spadly",
+    "dim": "M",
+    "sec": [],
+    "title": "Trzy rosyjskie obiekty spadły w Polsce. Nowe informacje z prokuratury. \"Najtrudniejsza sytuacja jest w Nowym Lipowcu\"",
+    "summary": "Temat zgłoszony przez 6 kanałów między 15:11 a 13:30. Inne nagłówki: „Żandarmeria wykluczyła obecność zagrożeń w miejscach upadku rosyjskich środków bojowych” (Defence24); „„Największe potencjalne zagrożenie w Lipowcu”. Prokuratura o działaniach po upadku rosyjskich maszyn” (RMF24); „Trzy obiekty spadły w Polsce. Sikorski zapowiada reakcję wobec Rosji” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 10 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/sily-zbrojne/zandarmeria-wykluczyla-obecnosc-zagrozen-w-miejscach-upadku-rosyjskich-srodkow-bojowych",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/regiony/lublin/news-prokuratura-rozpoczela-ogledziny-w-nowym-lipowcu-szczegoly-d,nIdn,1027023",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/rosja-celowo-wystrzelila-obiekty-w-strone-polski-isw-wyjasnia-dlaczego/se5tehq",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/polityka/art45523241-trzy-obiekty-spadly-w-polsce-sikorski-zapowiada-reakcje-wobec-rosji",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "dolnośląskie, śląskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "dolnośląskie",
+     "śląskie"
+    ],
+    "top": 1,
+    "lead": "Zgłoszone przez 4 kanały: Defence24, RMF24 Polska, Onet Wiadomości, Rzeczpospolita."
+   },
+   {
+    "id": "rutte-po-naruszeniu-polskiej",
+    "dim": "M",
+    "sec": [],
+    "title": "Rutte po naruszeniu polskiej przestrzeni: będziemy nadal wzmacniać zdolność odstraszania i obrony",
+    "summary": "Temat zgłoszony przez 5 kanałów między 15:32 a 14:40. Inne nagłówki: „Rutte w Warszawie: NATO będzie bronić każdego centymetra polskiego terytorium” (Defence24); „Mark Rutte w Warszawie: Gwarantuję, że NATO będzie bronić każdego cala waszego terytorium” (RMF24); „NATO reaguje na naruszenie polskiej przestrzeni powietrznej. Rutte zabrał głos” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 8 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/potrzebujemy-awacs-ow-i-f-35-apel-polskiego-ministra-obrony-do-sojusznikow-z-nato",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-mark-rutte-w-warszawie-gwarantuje-ze-nato-bedzie-bronic-kazd,nIdn,1027098",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/NATO-reaguje-na-naruszenie-polskiej-przestrzeni-powietrznej-Rutte-zabral-glos-9232616.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "InfoSecurity24",
+      "https://infosecurity24.pl/bezpieczenstwo-wewnetrzne/rosyjskie-obiekty-naruszyly-polska-przestrzen-powietrzna-sluzby-i-wojsko-dzialaly-przez-cala-noc",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "mazowieckie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "mazowieckie"
+    ],
+    "pts": [
+     [
+      52.23,
+      21.01,
+      "Warszawa",
+      "l"
+     ]
+    ],
+    "top": 2,
+    "lead": "Zgłoszone przez 4 kanały: Defence24, RMF24, Bankier.pl, InfoSecurity24."
+   },
+   {
+    "id": "dopiero-ofiary-przelamia-niechec",
+    "dim": "M",
+    "sec": [],
+    "title": "„Dopiero ofiary przełamią niechęć polityków”. Ekspert o rosyjskich rakietach nad Polską",
+    "summary": "Temat zgłoszony przez 5 kanałów między 16:00 a 14:00. Inne nagłówki: „Kolejny kraj NATO z rekordowym budżetem na wojsko” (Defence24); „Rakiety nad Polską. Eksperci wojskowi ostrzegają i zaznaczają, że „NATO ryzykuje”” (Rzeczpospolita); „\"Poważny problem\". Ekspert ds. ochrony cywilnej ostrzega ws. alertów RCB” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/kolejny-kraj-nato-z-rekordowym-budzetem-na-wojsko",
+      "PL"
+     ],
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/konflikty-zbrojne/art45523171-rakiety-nad-polska-eksperci-wojskowi-ostrzegaja-i-zaznaczaja-ze-nato-ryzykuje",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-20/rosyjski-pocisk-przelecial-nad-jego-gmina-wojt-wskazuje-na-powazny-problem/",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Rekordowe-wydatki-Chorwacji-na-obronnosc-Budzet-wyzszy-niz-w-czasie-wojny-w-1995-roku-9229898.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj",
+    "top": 3,
+    "lead": "Zgłoszone przez 4 kanały: Defence24, Rzeczpospolita, Polsat News, Bankier.pl."
+   },
+   {
+    "id": "rosja-odrzuca-gwarancje-bezpieczenstwa",
+    "dim": "M",
+    "sec": [],
+    "title": "Rosja odrzuca gwarancje bezpieczeństwa dla Ukrainy. „Quasi-członkostwo” w NATO nie wchodzi w grę",
+    "summary": "Temat zgłoszony przez 5 kanałów między 17:19 a 13:51. Inne nagłówki: „Szef NATO o naruszeniu polskiej przestrzeni, padła deklaracja. \"Mogę zagwarantować\"” (Interia Fakty); „Prace służb po naruszeniu polskiej przestrzeni powietrznej. Nowy komunikat” (Interia Fakty); „ISW: Naruszenie polskiej przestrzeni było celowym działaniem Rosji” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 7 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-isw-wprost-w-raporcie-rosyjskie-obiekty-nad-polska-to-nie-pr,nId,23576927",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/polska-wezmie-na-siebie-wieksza-odpowiedzialnosc-szef-mon-o-bezpieczenstwie-nato",
+      "PL"
+     ],
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/rosja-odrzuca-gwarancje-bezpieczenstwa-dla-ukrainy-quasi-czlonkostwo-w-nato-nie-wchodzi-w-gre",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-20/rosyjskie-rakiety-na-polskim-niebie-ukrainski-premier-w-trakcie-ataku-byl-w-polsce/",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr",
+    "top": 4,
+    "lead": "Zgłoszone przez 4 kanały: Interia Fakty, Defence24, OKO.press, Polsat News."
+   },
+   {
+    "id": "nato-reaguje-na-to",
+    "dim": "M",
+    "sec": [],
+    "title": "NATO reaguje na to, co stało się na wschodzie Polski. Ważne spotkanie w Kwaterze Głównej",
+    "summary": "Temat zgłoszony przez 4 kanały między 15:04 a 14:21. Inne nagłówki: „Rosyjskie rakiety spadły na Polskę. NATO reaguje, ale Moskwa nie odpuści” (Defence24); „Rosyjskie rakiety i dron spadły na Polskę. Nasz kraj \"od dawna jest na celowniku Kremla\"” (WNP.pl); „Nowe informacje ws. obiektów które spadły na Polskę. Pierwsze uderzenie o godz. 6:36” (RMF24 Polska). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/nato-reaguje-na-to-co-stalo-sie-na-wschodzie-polski-jest-data-waznego-spotkania/8x5p1cx",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/geopolityka/rosyjskie-rakiety-spadly-na-polske-nato-reaguje-ale-moskwa-nie-odpusci",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/bezpieczenstwo/rosja-realizuje-plan-polska-od-dawna-jest-na-celowniku-kremla,1122069.html",
+      "PL"
+     ],
+     [
+      "RMF24 Polska",
+      "https://www.rmf24.pl/fakty/polska/news-nowe-informacje-ws-obiektow-ktore-spadly-na-polske-pierwsze-,nIdn,1027019",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr",
+    "top": 5,
+    "lead": "Zgłoszone przez 4 kanały: Onet Wiadomości, Defence24, WNP.pl, RMF24 Polska."
+   },
+   {
+    "id": "jestes-do-odstrzalu-42",
+    "dim": "M",
+    "sec": [],
+    "title": "\"Jesteś do odstrzału\". 42-latek z zarzutami za groźby wobec posłanki",
+    "summary": "Temat zgłoszony przez 4 kanały między 09:23 a 10:37. Inne nagłówki: „Posłanka KO dostawała nienawistne SMS-y. 42-latek z zarzutem” (Interia Fakty); „\"Jesteś do odstrzału\". Mężczyzna groził posłance” (Onet Wiadomości); „Groził posłance na Sejm. 42-latek w rękach policji” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/wroclaw/walbrzych-jestes-do-odstrzalu-42-latek-mial-grozic-poslance-st9350457?source=rss",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/dolnoslaskie/news-poslanka-ko-dostawala-nienawistne-sms-y-42-latek-z-zarzutem,nId,23576944",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/wroclaw/jestes-do-odstrzalu-mezczyzna-grozil-poslance/7h0t7el",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/regiony/wroclaw/news-grozil-poslance-na-sejm-42-latek-w-rekach-policji,nIdn,1027078",
+      "PL"
+     ]
+    ],
+    "date": "21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "ma-teraz-ciezki-okres",
+    "dim": "E",
+    "sec": [],
+    "title": "„Ma teraz ciężki okres, bo toczy wojnę, która powinna trwać jeden dzień”. Trump o Putinie",
+    "summary": "Temat zgłoszony przez 4 kanały między 19:53 a 09:15. Inne nagłówki: „Iran chce zakończyć wojnę, ale ma warunki. Ormuz pozostaje kartą przetargową” (Bankier.pl); „Dzień Dostawcy w PSG. O przetargach, inwestycjach i nowych warunkach umów” (Energetyka24); „Trump chce zakończyć wojnę w tym roku. \"Amerykanom się spieszy\"” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Iran-chce-zakonczyc-wojne-ale-ma-warunki-Ormuz-pozostaje-karta-przetargowa-9232922.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Energetyka24",
+      "https://energetyka24.com/surowce/gaz/dzien-dostawcy-w-psg-o-przetargach-inwestycjach-i-nowych-warunkach-umow",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/ukraina-rosja/news-trump-chce-zakonczyc-wojne-w-tym-roku-amerykanom-sie-spieszy,nId,23576909",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-ma-teraz-ciezki-okres-bo-toczy-wojne-ktora-powinna-trwac-jed,nIdn,1027055",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "trump-nazwal-putina-przyjacielem",
+    "dim": "M",
+    "sec": [],
+    "title": "Trump nazwał Putina „przyjacielem”. Szefernaker: Myślę, że to kwestia dyplomacji",
+    "summary": "Temat zgłoszony przez 3 kanały między 17:49 a 08:32. Inne nagłówki: „Trump ujawnia słowa Putina. „Nie dokonałbym inwazji, gdybyś był prezydentem”” (Bankier.pl); „Trump tłumaczy obecność rosyjskich dronów w Polsce. Padły zaskakujące słowa” (Defence24); „Ukraina zniknęła z deklaracji Trumpa, Xi i Putina. Stubb ujawnia kulisy” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 4 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/rozmowy/sprawdzam/news-trump-nazwal-putina-przyjacielem-szefernaker-mysle-ze-to-kwe,nIdn,1027053",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Ukraina-zniknela-z-deklaracji-Trumpa-Xi-i-Putina-Stubb-ujawnia-kulisy-9232796.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/trump-tlumaczy-obecnosc-rosyjskich-dronow-w-polsce-padly-zaskakujace-slowa",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "gta-vi-osiagnela-sprzedazowy",
+    "dim": "S",
+    "sec": [],
+    "title": "GTA VI osiągnęła sprzedażowy rekord w całej branży rozrywkowej - Rockstar Games",
+    "summary": "Temat zgłoszony przez 3 kanały między 09:00 a 13:18. Inne nagłówki: „Nawet najbardziej kasowy film nie miał szans. Rekord dla całej branży” (TVN24); „GTA VI pobiło rekord wszech czasów. Takiego wyniku nie osiągnął nawet Hollywood” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "TVN24",
+      "https://tvn24.pl/biznes/tech/gta-6-nawet-najbardziej-kasowy-film-nie-mial-szans-rekord-dla-calej-branzy-st9350505?source=rss",
+      "PL"
+     ],
+     [
+      "PAP Biznes",
+      "https://biznes.pap.pl/wiadomosci/firmy/gta-vi-osiagnela-sprzedazowy-rekord-w-calej-branzy-rozrywkowej-rockstar-games",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/GTA-VI-pobila-rekord-wszech-czasow-Takiego-wyniku-nie-osiagnal-nawet-Hollywood-9232923.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "strzelal-w-strone-migrantow",
+    "dim": "M",
+    "sec": [],
+    "title": "Strzelał w stronę migrantów na granicy z Białorusią. Sąd uchylił uniewinnienie",
+    "summary": "Temat zgłoszony przez 3 kanały między 16:40 a 12:58. Inne nagłówki: „Żołnierz uniewinniony po strzałach na granicy. Sprawa wraca do sądu” (Defence24); „Żołnierz strzelał na granicy z Białorusią. Sąd podjął decyzję” (Polsat News). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/strzelal-w-strone-migrantow-na-granicy-z-bialorusia-sprawa-zolnierza-wraca-do-sadu",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/sily-zbrojne/zolnierz-uniewinniony-po-strzalach-na-granicy-sprawa-wraca-do-sadu",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-20/oddal-12-strzalow-na-granicy-z-bialorusia-sad-zadecydowal/",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "dramatyczna-przecena-na-rynku",
+    "dim": "E",
+    "sec": [],
+    "title": "Dramatyczna przecena na rynku złota. Wartość kruszcu w skarbcach NBP spadła o 26 mld zł",
+    "summary": "Temat zgłoszony przez 3 kanały między 15:00 a 11:09. Inne nagłówki: „Ceny złota zanurkowały. To druga taka przecena w ostatnim ćwierćwieczu” (Business Insider Polska); „Rosja zwiększa sprzedaż złota z rezerw. Konsekwentny proces upłynniania kruszcu” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Business Insider Polska",
+      "https://businessinsider.com.pl/poradnik-finansowy/inwestowanie/dlaczego-zloto-traci-na-wartosci-eksperci-wskazuja-kluczowe-powody/215079h",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/rynki/dramatyczna-przecena-na-rynku-zlota-wartosc-kruszcu-w-skarbcach-nbp-spadla-o-26-mld-zl,1122138.html",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Centralny-Bank-Rosji-oglasza-kolejna-sprzedaz-zlota-Rezerwy-zmniejszyly-sie-o-ponad-9-ton-9232622.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "polacy-wskazali-lidera-prawicy",
+    "dim": "S",
+    "sec": [],
+    "title": "Polacy wskazali lidera prawicy. Nie jest nim Jarosław Kaczyński [SONDAŻ]",
+    "summary": "Temat zgłoszony przez 3 kanały między 17:12 a 10:51. Inne nagłówki: „Polacy wskazali lidera prawicy. Nawrocki wyprzedza Kaczyńskiego” (Polsat News); „\"Polityczny WF\": Gra o reset. Czy Nawrocki postawi się Kaczyńskiemu?” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/kraj/polacy-wskazali-lidera-prawicy-nie-jest-nim-jaroslaw-kaczynski-sondaz/zd3qlhk",
+      "PL"
+     ],
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-21/polacy-wskazali-lidera-prawicy-nawrocki-wyprzedza-kaczynskiego/",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/podcasty/polityczny-wf/video-polityczny-wf-gra-o-reset-czy-nawrocki-postawi-sie-kaczynski,nId,23576852",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "silny-wstrzas-na-slasku",
+    "dim": "S",
+    "sec": [],
+    "title": "Silny wstrząs na Śląsku. Odczuli go mieszkańcy sześciu miast",
+    "summary": "Temat zgłoszony przez 3 kanały między 06:49 a 09:42. Inne nagłówki: „Silny wstrząs o świcie. Odczuli go mieszkańcy sześciu miast” (Interia Fakty); „Silny wstrząs w kopalni Staszic w Katowicach” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-21/silny-wstrzas-na-slasku-odczuli-go-mieszkancy-szesciu-miast/",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/wiadomosci-lokalne/news-silny-wstrzas-o-swicie-odczuli-go-mieszkancy-szesciu-miast,nId,23576921",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/regiony/slaskie/news-silny-wstrzas-w-kopalni-staszic-w-katowicach,nIdn,1027073",
+      "PL"
+     ]
+    ],
+    "date": "21.11",
+    "region": "śląskie",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [
+     "śląskie"
+    ],
+    "pts": [
+     [
+      50.26,
+      19.02,
+      "Katowic"
+     ]
+    ]
+   },
+   {
+    "id": "czerwony-tydzien-na-gieldzie",
+    "dim": "E",
+    "sec": [],
+    "title": "Czerwony tydzień na giełdzie. Wall Street traci najmocniej od pandemii",
+    "summary": "Temat zgłoszony przez 3 kanały między 23:25 a 09:22. Inne nagłówki: „Na Wall Street dalsza wyprzedaż. S&P 500 i DJI w strefie korekty” (Bankier.pl); „Gwałtowne spadki na Wall Street. Najgorszy tydzień od pandemii” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Money.pl",
+      "https://www.money.pl/gielda/czerwony-tydzien-na-gieldzie-wall-street-traci-najmocniej-od-pandemii-7353333428803616a.html",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Na-Wall-Street-dalsza-wyprzedaz-S-P-500-i-DJI-w-strefie-korekty-9232919.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/ekonomia/news-gwaltowne-spadki-na-wall-street-najgorszy-tydzien-od-pandemi,nIdn,1027070",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "jedna-z-najwiekszych-zagadek",
+    "dim": "E",
+    "sec": [],
+    "title": "Jedna z największych zagadek matematyki rozwiązana? Naukowiec Anthropic twierdzi, że rozwiązał hipotezę Riemanna",
+    "summary": "Temat zgłoszony przez 3 kanały między 18:33 a 09:20. Inne nagłówki: „Czy AI pomogła rozwiązać jedną z największych zagadek matematyki?” (RMF24); „Jedna z największych inwestycji PKP Intercity gotowa. Kosztowała 360 mln zł” (WNP.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Jedna-z-najwiekszych-zagadek-matematyki-rozwiazana-Naukowiec-Anthropic-twierdzi-ze-rozwiazal-hipoteze-Riemanna-9232918.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/nauka/news-czy-ai-pomogla-rozwiazac-jedna-z-najwiekszych-zagadek-matema,nIdn,1027049",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/logistyka/jedna-z-najwiekszych-inwestycji-pkp-intercity-gotowa-kosztowala-360-mln-zl,1122124.html",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "juz-nie-tylko-wysoki",
+    "dim": "S",
+    "sec": [],
+    "title": "Już nie tylko wysoki mandat. Od dziś za te wykroczenia możesz stracić prawo jazdy",
+    "summary": "Temat zgłoszony przez 3 kanały między 07:12 a 09:20. Inne nagłówki: „Nowe kary dla kierowców. Za te błędy stracisz prawo jazdy” (InfoSecurity24); „Nowe przepisy już obowiązują. Za przejazd na czerwonym stracisz prawo jazdy” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "InfoSecurity24",
+      "https://infosecurity24.pl/bezpieczenstwo-wewnetrzne/nowe-kary-dla-kierowcow-za-te-bledy-stracisz-prawo-jazdy",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Nowe-przepisy-juz-obowiazuja-Za-przejazd-na-czerwonym-stracisz-prawo-jazdy-9232930.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/polska/news-juz-nie-tylko-wysoki-mandat-od-dzis-za-te-wykroczenia-mozesz,nIdn,1026601",
+      "PL"
+     ]
+    ],
+    "date": "21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "francja-zmienia-zasady-uzycia",
+    "dim": "P",
+    "sec": [],
+    "title": "Francja zmienia zasady użycia broni przez policję. Nowe przepisy budzą protesty",
+    "summary": "Temat zgłoszony przez 3 kanały między 22:05 a 23:36. Inne nagłówki: „Francuska policja z \"licencją na zabijanie\". Decyzja Senatu” (Interia Fakty); „Francuski Senat przyjął kontrowersyjną ustawę o użyciu broni przez policję” (RMF24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/zagranica/news-francuska-policja-z-licencja-na-zabijanie-decyzja-senatu,nId,23576913",
+      "PL"
+     ],
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-francuski-senat-przyjal-kontrowersyjna-ustawe-o-uzyciu-broni,nIdn,1027068",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Francja-zmienia-zasady-uzycia-broni-przez-policje-Nowe-przepisy-budza-protesty-9232901.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "waldemar-zurek-odsuwa-beate",
+    "dim": "S",
+    "sec": [],
+    "title": "Waldemar Żurek odsuwa Beatę Marczak. Sąd Dyscyplinarny przedłuża zawieszenie Tomasza Janeczka",
+    "summary": "Temat zgłoszony przez 3 kanały między 16:32 a 18:33. Inne nagłówki: „Waldemar Żurek zawiesił zastępczynię. \"Nikt nie stoi ponad prawem\"” (Polsat News); „Waldemar Żurek podjął decyzję. Zawiesił zastępczynię, wskazał powód” (Interia Fakty). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Polsat News",
+      "https://www.polsatnews.pl/wiadomosc/2026-11-20/waldemar-zurek-zawiesil-zastepczynie-nikt-nie-stoi-ponad-prawem/",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/kraj/news-waldemar-zurek-podjal-decyzje-zawiesil-zastepczynie-wskazal,nId,23576828",
+      "PL"
+     ],
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/waldemar-zurek-odsuwa-beate-marczak-sad-dyscyplinarny-przedluza-zawieszenie-tomasza-janeczka",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "coraz-blizej-polaczenia-jelcza",
+    "dim": "E",
+    "sec": [],
+    "title": "Coraz bliżej połączenia Jelcza i RFK. Podpisano umowę inwestycyjną, Polimex obejmie udziały",
+    "summary": "Temat zgłoszony przez 3 kanały między 16:12 a 18:03. Inne nagłówki: „Polska będzie produkować szwedzką amunicję. PGZ podpisała umowę z Saab” (Bankier.pl); „Nowoczesna amunicja z polskiej fabryki. Umowa podpisana” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 3 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Polska-bedzie-produkowac-szwedzka-amunicje-PGZ-podpisala-umowe-z-Saab-9232809.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ],
+     [
+      "WNP.pl",
+      "https://www.wnp.pl/bezpieczenstwo/coraz-blizej-polaczenia-jelcza-i-rfk-podpisano-umowe-inwestycyjna-polimex-obejmie-udzialy,1122081.html",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/przemysl/nowoczesna-amunicja-z-polskiej-fabryki-umowa-podpisana",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Wysoka",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "polregio-musi-wycofac-ponad",
+    "dim": "E",
+    "sec": [],
+    "title": "Polregio musi wycofać ponad sto pociągów w pięć lat. Prezes: Jeżeli nic nie zrobimy, nie będzie czym wozić pasażerów",
+    "summary": "Temat zgłoszony przez 2 kanały między 18:55 a 13:52. Inne nagłówki: „Prezes Taurona: Węgiel będzie zasadny w energetyce tak długo, jak będzie to pragmatyczne” (Bankier.pl). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/transport/art45506401-polregio-musi-wycofac-ponad-sto-pociagow-w-piec-lat-prezes-jezeli-nic-nie-zrobimy-nie-bedzie-czym-wozic-pasazerow",
+      "PL"
+     ],
+     [
+      "Bankier.pl",
+      "https://www.bankier.pl/wiadomosc/Prezes-Taurona-Wegiel-bedzie-zasadny-w-energetyce-tak-dlugo-jak-bedzie-to-pragmatyczne-9232833.html?utm_source=RSS&utm_medium=RSS&utm_campaign=Wiadomosci",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "atak-na-baltyku-rosyjski",
+    "dim": "M",
+    "sec": [],
+    "title": "Atak na Bałtyku. Rosyjski statek ostrzelany na drodze do Królewca",
+    "summary": "Temat zgłoszony przez 2 kanały między 11:32 a 13:47. Inne nagłówki: „Rosyjski statek płonie na Bałtyku. Został trafiony dronami” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/rosyjski-statek-plonie-na-baltyku-zostal-trafiony-dronami/12slmvp",
+      "PL"
+     ],
+     [
+      "Interia Fakty",
+      "https://wydarzenia.interia.pl/ukraina-rosja/news-atak-na-baltyku-rosyjski-statek-ostrzelany-na-drodze-do-krol,nId,23576971",
+      "PL"
+     ]
+    ],
+    "date": "21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "polska-przedstawi-w-poniedzialek",
+    "dim": "M",
+    "sec": [],
+    "title": "Polska przedstawi w poniedziałek NATO konkretne propozycje wzmocnienia obrony powietrznej",
+    "summary": "Temat zgłoszony przez 2 kanały między 19:10 a 13:43. Inne nagłówki: „Siły powietrzne NATO nad Polską. W tle incydent przy granicy” (Defence24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-polska-przedstawi-w-poniedzialek-nato-konkretne-propozycje-w,nIdn,1027097",
+      "PL"
+     ],
+     [
+      "Defence24",
+      "https://defence24.pl/polityka-obronna/sily-powietrzne-nato-nad-polska-w-tle-incydent-przy-granicy",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "unia-europejska-i-wielka",
+    "dim": "P",
+    "sec": [],
+    "title": "Unia Europejska i Wielka Brytania robią kolejny krok w odbudowie relacji po Brexicie",
+    "summary": "Temat zgłoszony przez 2 kanały między 15:31 a 13:35. Inne nagłówki: „Unia Europejska opracowuje broń do ataku z orbity” (Rzeczpospolita). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://radar.rp.pl/przemysl-zbrojeniowy/art45523221-unia-europejska-opracowuje-bron-do-ataku-z-orbity",
+      "PL"
+     ],
+     [
+      "OKO.press",
+      "https://oko.press/na-zywo/na-zywo-relacja/unia-europejska-wielka-brytania-reset-relacji",
+      "PL"
+     ]
+    ],
+    "date": "20.11–21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   },
+   {
+    "id": "najtrudniejsza-sytuacja-w-nowym",
+    "dim": "M",
+    "sec": [],
+    "title": "Najtrudniejsza sytuacja w Nowym Lipowcu. Służby wydobywają szczątki rosyjskiego obiektu",
+    "summary": "Temat zgłoszony przez 2 kanały między 11:26 a 13:21. Inne nagłówki: „Wydobyto \"elementy napędowe\" i \"sterownicze\" jednego z rosyjskich obiektów” (TVN24). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "Rzeczpospolita",
+      "https://www.rp.pl/sluzby/art45523291-najtrudniejsza-sytuacja-w-nowym-lipowcu-sluzby-wydobywaja-szczatki-rosyjskiego-obiektu",
+      "PL"
+     ],
+     [
+      "TVN24",
+      "https://tvn24.pl/rzeszow/rudnik-trzy-obiekty-spadly-w-polsce-prokuratura-zabezpiecza-slady-st9350535?source=rss",
+      "PL"
+     ]
+    ],
+    "date": "21.11",
+    "region": "Poza Polską",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "zagr"
+   },
+   {
+    "id": "budzet-ue-po-nowemu",
+    "dim": "E",
+    "sec": [],
+    "title": "Budżet UE po nowemu. Co propozycja Costy oznacza dla Polski?",
+    "summary": "Temat zgłoszony przez 2 kanały między 11:39 a 13:09. Inne nagłówki: „Nowa propozycja budżetu UE. Specjalny mechanizm dla Polski” (Onet Wiadomości). Treść wpisu to nagłówki kanałów, nie streszczenie artykułów. Szczegóły w źródłach.",
+    "prov": "Wpis zbudowany automatycznie: zgrupowane nagłówki 2 pozycji RSS. Wymiar PMESII i region przypisane po słowach kluczowych, więc mogą być nietrafione. Brak oceny wiarygodności i znaczenia.",
+    "sources": [
+     [
+      "RMF24",
+      "https://www.rmf24.pl/fakty/swiat/news-budzet-ue-po-nowemu-co-propozycja-costy-oznacza-dla-polski,nIdn,1027092",
+      "PL"
+     ],
+     [
+      "Onet Wiadomości",
+      "https://wiadomosci.onet.pl/swiat/nowa-propozycja-budzetu-ue-specjalny-mechanizm-dla-polski/ly6q6g5",
+      "PL"
+     ]
+    ],
+    "date": "21.11",
+    "region": "Polska, bez przypisanego regionu",
+    "label": "Doniesienie medialne",
+    "rel": "Średnia",
+    "follow": false,
+    "woj": [],
+    "scope": "kraj"
+   }
+  ]
+ },
+ {
   "date": "2026-11-20",
   "win": "19.11.2026 15:21 – 20.11.2026 15:21 CET",
   "stop": "20 listopada 2026, 15:21 CET",
