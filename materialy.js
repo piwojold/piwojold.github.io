@@ -69,9 +69,9 @@ const MATERIALY = [
     rodzaj: "Narzędzie",
     plik: "tgmon.html",
     krotko: "TGMON",
-    skrot: "Telegram RU/BY, tłumaczenie, 5W",
+    skrot: "Telegram, tłumaczenie, mapa, 5W",
     haslo: true,
-    opis: "Program na Windows do monitorowania publicznych kanałów Telegram (RU/BY): tłumaczenie na polski obok oryginału, własne zapytania, karta 5W w układzie INTREP, raporty PDF/Word i tryb OPSEC. Paczka z instalatorem i instrukcją od zera.",
+    opis: "Program na Windows do monitorowania publicznych kanałów Telegram: tłumaczenie na polski obok oryginału, własne zapytania, mapa z podkładami jak w OCOKA Planer, karta 5W w układzie INTREP, raporty PDF/Word i tryb OPSEC. Paczka z instalatorem i instrukcją od zera.",
     tagi: ["Telegram", "Windows", "5W / INTREP", "OPSEC"]
   },
   {
