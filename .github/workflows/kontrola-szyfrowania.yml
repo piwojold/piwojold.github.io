@@ -1,0 +1,17 @@
+name: Kontrola szyfrowania
+
+# Przy każdym pushu sprawdza, czy w repozytorium nie ma niezaszyfrowanej strony
+# ani niezaszyfrowanych danych. Czerwony wynik = coś trafiło do repo jawnie.
+on:
+  push:
+  pull_request:
+
+jobs:
+  sprawdz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: node tools/strona.mjs sprawdz

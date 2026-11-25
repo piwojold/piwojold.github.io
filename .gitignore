@@ -1,0 +1,13 @@
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+
+# Niezaszyfrowane źródła witryny – NIGDY do repozytorium
+zrodla/
+dobowy-brief-data.js
+materialy.js
+node_modules/
+test-results/
+playwright-report/
